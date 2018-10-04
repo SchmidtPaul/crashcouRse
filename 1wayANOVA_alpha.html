@@ -281,14 +281,23 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="1wayANOVA_crd.html">1wayANOVA_crd</a>
-</li>
-<li>
-  <a href="1wayANOVA_rcbd.html">1wayANOVA_rcbd</a>
-</li>
-<li>
-  <a href="1wayANOVA_alpha.html">1wayANOVA_alpha</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    1-way ANOVAs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1wayANOVA_crd.html">CRD</a>
+    </li>
+    <li>
+      <a href="1wayANOVA_rcbd.html">RCBD</a>
+    </li>
+    <li>
+      <a href="1wayANOVA_alpha.html">alpha-lattice</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -328,7 +337,7 @@ library(lme4); library(lmerTest) # Gemischtes Modell</code></pre>
 <p>Dieses Experiment wurde als ein <span class="math inline">\(\alpha\)</span>-lattice angelegt. Dies wurde im letzten Beispiel verschwiegen und stattdessen behauptet, es wÃ¤re eine randomisierte vollstÃ¤ndige Blockanlage. In der Tat besitzt das eigentliche Experiment dieselben vollstÃ¤ndigen BlÃ¶cke, allerdings gibt es innerhalb dieser noch jeweils 6 unvollstÃ¤ndige BlÃ¶cke. Die ‘rep’ Spalte steht also weiterhin fÃ¼r die vollstÃ¤ndigen BlÃ¶cke, zusÃ¤tzlich gibt es jedoch noch eine ‘inc.block’ (<em>incomplete block</em>) Spalte fÃ¼r die unvollstÃ¤ndigen BlÃ¶cke.</p>
 <div class="row">
 <div class="col-md-6">
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-5-2.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>head(alpha)</code></pre>
@@ -364,7 +373,7 @@ library(lme4); library(lmerTest) # Gemischtes Modell</code></pre>
 ## 5: G02  R2        B5 5.1566
 ## 6: G02  R3        B2 4.0510</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$gen)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(alpha)</code></pre>
@@ -377,11 +386,11 @@ library(lme4); library(lmerTest) # Gemischtes Modell</code></pre>
 ##  G06    : 3           B6:12     Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$rep)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
 <pre class="r"><code>boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="schlieayende-statistik" class="section level1">
 <h1><span class="header-section-number">3</span> SchlieÃŸende Statistik</h1>
@@ -437,7 +446,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
   theme_bw() +
   annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 
 
