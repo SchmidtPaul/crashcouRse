@@ -37,6 +37,10 @@ colors <- c(brewer.pal(8,"Blues"),
             brewer.pal(8,"YlGn"))
 desplot(data=rcbd, form= gen ~ col+row, col.regions=colors,
         text=gen, cex=0.4, shorten="no",
+        main="Feldplan", 
+        xlab="", ylab="", show.key=F, out1=rep)
+desplot(data=rcbd, form= rep ~ col+row, col.regions=brewer.pal(3,"Reds"),
+        text=gen, cex=0.4, shorten="no",
         main="Block1          Block2          Block3", 
         xlab="", ylab="", show.key=F, out1=rep)
 rcbd <- rcbd[,c("gen", "rep", "yield")]
@@ -44,6 +48,7 @@ rcbd <- rcbd[,c("gen", "rep", "yield")]
 </div> <div class = "col-md-6">
 ```{r}
 head(rcbd)
+head(tail)
 ```
 </div> </div>
 

@@ -36,19 +36,29 @@ Dieses Experiment wurde als ein $\alpha$-lattice angelegt. Dies wurde im letzten
 
 <div class = "row"> <div class = "col-md-6">
 ```{r, echo=F, fig.height = 2, fig.width = 4, fig.align = "center"}
-colors <- c(brewer.pal(8,"Blues"), 
-            brewer.pal(8,"Oranges"), 
-            brewer.pal(8,"YlGn"))
-desplot(data=alpha, form= gen ~ col+row, col.regions=colors,
+colors24 <- c(brewer.pal(8,"Blues"), 
+              brewer.pal(8,"Oranges"), 
+              brewer.pal(8,"YlGn"))
+colors18 <- c(brewer.pal(6,"Blues"), 
+              brewer.pal(6,"Oranges"), 
+              brewer.pal(6,"YlGn"))
+alpha$real.inc.block <- paste0(alpha$rep, alpha$inc.block)
+desplot(data=alpha, form= gen ~ col+row, col.regions=colors24,
         text=gen, cex=0.4, shorten="no",
-        main="Block1          Block2          Block3", 
+        main="Feldplan", 
         xlab="", ylab="", show.key=F, out1=rep,
         out2=inc.block, out2.gpar=list(col="black", lwd=1, lty=1))
+desplot(data=alpha, form= real.inc.block ~ col+row,
+        col.regions=colors18,
+        text=gen, cex=0.4, shorten="no",
+        main="Block1          Block2          Block3", 
+        xlab="", ylab="", show.key=F, out1=rep)
 alpha <- alpha[,c("gen", "rep", "inc.block", "yield")]
 ```
 </div> <div class = "col-md-6">
 ```{r}
 head(alpha)
+tail(alpha)
 ```
 </div> </div>
 
