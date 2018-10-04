@@ -1,5 +1,3 @@
----
-title: "1-way ANOVA"
----
 
-Auswertung einer einfaktoriellen Varianzanalyse.
+
+### Auswertung einer einfaktoriellen Varianzanalyse.

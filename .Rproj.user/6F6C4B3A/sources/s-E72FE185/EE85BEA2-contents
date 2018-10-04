@@ -1,8 +1,7 @@
-name: "my-website"
-output_dir: "."
+name: "crashcouRse-website"
+output_dir: "."    # in GitHub master folder instead of default "_site" so that GitHub Pages works
 navbar:
-  title: "My Website"
-  type: inverse
+  title: "crashcouRse"
   left:
     - text: "Home"
       href: index.html
