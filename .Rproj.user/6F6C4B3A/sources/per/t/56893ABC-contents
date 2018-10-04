@@ -1,0 +1,19 @@
+library(agridat) 
+library(desplot) 
+library(RColorBrewer)
+alpha <- john.alpha
+alpha$row <- rep(4:1)
+alpha$col <- sort(rep(seq(18:1),4))
+alpha$all.block <- paste(alpha$rep, alpha$block)
+
+colors18 <- c(brewer.pal(6,"Blues"), 
+              brewer.pal(6,"Oranges"), 
+              brewer.pal(6,"YlGn"))
+
+desplot(data=alpha, form=all.block ~ col+row,
+        col.regions=colors18,
+        text=gen, cex=0.4, shorten="no",
+        main="Block1            Block2            Block3", 
+        xlab="", ylab="", show.key=F, 
+        out1=rep, 
+        out2=all.block ,out2.gpar=list(col="black", lwd=1, lty=1))
