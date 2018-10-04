@@ -5,16 +5,16 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2763787220",
+    "hash" : "0",
     "id" : "61CDEA12",
-    "lastKnownWriteTime" : 1538641283,
-    "last_content_update" : 1538641283208,
+    "lastKnownWriteTime" : 1538652208,
+    "last_content_update" : 1538652208947,
     "path" : "D:/RKurse/Dokumentation/crashcouRse/1wayANOVA.Rmd",
     "project_path" : "1wayANOVA.Rmd",
     "properties" : {
-        "cursorPosition" : "2,2",
+        "cursorPosition" : "30,48",
         "docOutlineVisible" : "0",
-        "scrollLine" : "0"
+        "scrollLine" : "26"
     },
     "relative_order" : 4,
     "source_on_save" : false,
