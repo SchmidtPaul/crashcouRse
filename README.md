@@ -3,3 +3,4 @@ To Do
 * Mulitpler Mittelwertvergleich (t-test, Tukey-Test) - Adjustierung
 * alpha lattice auswertung
 * adjustierter Mittelwert erklären
+* Standardfehler, Standardabweichung, Konfidenzintervall
