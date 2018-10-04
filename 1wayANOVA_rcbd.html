@@ -333,7 +333,7 @@ div.tocify {
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Dieses Beispiel ist dem Beispiel “1wayANOVA_crd” sehr Ã¤hnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollstÃ¤ndige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusÃ¤tzliche Spalte im Datensatz, die Informationen zu den vollstÃ¤ndigen BlÃ¶cken enthÃ¤lt. Diese Spalte heiÃŸt hier “rep” (<em>replicate</em>), da vollstÃ¤ndige BlÃ¶cke auch oft <em>Wiederholungen</em> genannt werden.</p>
+<p>Dieses Beispiel ist dem Beispiel “1wayANOVA_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden.</p>
 <div class="row">
 <div class="col-md-6">
 <p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
@@ -360,7 +360,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 <div id="deskriptive-statistik" class="section level1">
 <h1>Deskriptive Statistik</h1>
-<p>Erst wollen wir ein GefÃ¼hl fÃ¼r den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1wayANOVA_crd” erstellen wir diesmal auch einen Boxplot fÃ¼r die BlÃ¶cke.</p>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1wayANOVA_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>head(rcbd[order(gen)])</code></pre>
@@ -389,13 +389,13 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 </div>
 </div>
-<div id="schlieayende-statistik" class="section level1">
-<h1>SchlieÃŸende Statistik</h1>
+<div id="schlieende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
 <div id="lineares-modell" class="section level2">
 <h2>Lineares Modell</h2>
-<p>Wir kÃ¶nnen uns nun entschlieÃŸen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. AuÃŸerdem haben wir den nun noch den qualitativen Faktor ‘rep’ im Modell.</p>
+<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. Außerdem haben wir den nun noch den qualitativen Faktor ‘rep’ im Modell.</p>
 <pre class="r"><code>mod &lt;- lm(yield ~ gen + rep, data=rcbd)</code></pre>
-<p>ZunÃ¤chst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber Ã¼bersprungen wird. Erst dann ist eine Varianzanalyse zulÃ¤ssig.</p>
+<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
 </div>
 <div id="varianzanalyse" class="section level2">
 <h2>Varianzanalyse</h2>
@@ -409,11 +409,11 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ## Residuals 46  6.1910 0.13459                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test fÃ¼r den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es Ã¼blich multiple Mittelwertvergleiche durchzufÃ¼hren (z.B. t-test oder Tukey-test).</p>
+<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
-<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte fÃ¼r jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)
 as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 <pre><code>##    gen   emmean        SE df lower.CL upper.CL
@@ -431,7 +431,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 ## 4: G01 - G05 0.09813333 0.2995396 46 0.3276139 1.000000e+00
 ## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
 ## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
-<p>Im Vergleich zum Beispiel “1wayANOVA_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, wÃ¤hrend es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller mÃ¶glichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fÃ¤llt auÃŸerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser grÃ¶ÃŸeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen kÃ¶nnen.</p>
+<p>Im Vergleich zum Beispiel “1wayANOVA_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
 <pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
 as.data.table(means$emmeans)[1:6,]</code></pre>
 <pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
@@ -445,7 +445,7 @@ as.data.table(means$emmeans)[1:6,]</code></pre>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">
 <h1>Ergebnisaufbereitung</h1>
-<p>Erneut wollen wir die Ergebnisse abschlieÃŸend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1wayANOVA_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots Ã¤ndern. Um aber nicht jede Linie, FÃ¼llfarbe usw. einzeln bearbeiten zu mÃ¼ssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht Â± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. AuÃŸerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. SchlieÃŸlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fÃ¼gen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fÃ¼gen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
+<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1wayANOVA_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
 <pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
   geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
   geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +

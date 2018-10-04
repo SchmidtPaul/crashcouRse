@@ -2,5 +2,5 @@ setwd("D:/RKurse/Dokumentation/crashcouRse")
 library("rmarkdown")
 
 rmarkdown::clean_site()  # delete old files
-rmarkdown::render_site() # create new files
+rmarkdown::render_site(encoding="UTF-8") # create new files
 
