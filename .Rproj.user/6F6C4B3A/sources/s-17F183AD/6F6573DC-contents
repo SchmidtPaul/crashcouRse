@@ -17,7 +17,7 @@ title: "One-Factor ANOVA - alpha-design"
 
 # Datensatz
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
 library(agridat) # agrarwissenschaftliche Beispieldatensätze
 library(data.table)
 library(desplot) # plotte Feldplan
@@ -32,7 +32,7 @@ names(alpha)[3] <- "inc.block"
 library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte
-library(lme4); library(lmerTest) # Gemischtes Modell
+library(lme4); library(lmerTest) # gemischtes Modell
 ```
 
 Dieses Beispiel ist den Beispielen "1wayANOVA_crd" und vor allem "1wayANOVA_rcbd" sehr ähnlich und baut darauf auf. Tatsächlich handelt es sich um den gleichen Datensatz wie in "1wayANOVA_rcbd". Es ist ein Beispieldatensatz mit dem Namen `john.alpha` aus dem `agridat` package.

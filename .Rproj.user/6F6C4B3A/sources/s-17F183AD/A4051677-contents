@@ -16,7 +16,7 @@ title: "One-Factor ANOVA - RCBD"
 </style>
 # Datensatz
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
 library(agridat) # agrarwissenschaftliche Beispieldatensätze
 library(data.table)
 library(desplot) # plotte Feldplan

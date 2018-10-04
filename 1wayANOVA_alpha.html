@@ -330,11 +330,10 @@ div.tocify {
 </style>
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
-<pre><code>## data.table 1.11.4  Latest news: http://r-datatable.com</code></pre>
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte
-library(lme4); library(lmerTest) # Gemischtes Modell</code></pre>
+library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p>Dieses Beispiel ist den Beispielen “1wayANOVA_crd” und vor allem “1wayANOVA_rcbd” sehr ähnlich und baut darauf auf. Tatsächlich handelt es sich um den gleichen Datensatz wie in “1wayANOVA_rcbd”. Es ist ein Beispieldatensatz mit dem Namen <code>john.alpha</code> aus dem <code>agridat</code> package.</p>
 <p>Dieses Experiment wurde als ein <span class="math inline">\(\alpha\)</span>-lattice angelegt. Dies wurde im letzten Beispiel verschwiegen und stattdessen behauptet, es wäre eine randomisierte vollständige Blockanlage. In der Tat besitzt das eigentliche Experiment dieselben vollständigen Blöcke, allerdings gibt es innerhalb dieser noch jeweils 6 unvollständige Blöcke. Die ‘rep’ Spalte steht also weiterhin für die vollständigen Blöcke, zusätzlich gibt es jedoch noch eine ‘inc.block’ (<em>incomplete block</em>) Spalte für die unvollständigen Blöcke.</p>
 <div class="row">
