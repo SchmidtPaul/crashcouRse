@@ -1,0 +1,8 @@
+"0","library(agridat) # agrarwissenschaftliche Beispieldatensätze"
+"0","library(data.table)"
+"0","library(desplot) # plotte Feldplan"
+"0","library(RColorBrewer) # Farben für Feldplan"
+"0","alpha <- data.table(john.alpha)"
+"0","alpha$row <- rep(4:1)"
+"0","alpha$col <- sort(rep(seq(18:1),4))"
+"0","names(alpha)[3] <- ""inc.block"""

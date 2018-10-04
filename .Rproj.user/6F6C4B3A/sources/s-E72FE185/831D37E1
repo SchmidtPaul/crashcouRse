@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1538669944123.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "52|59|54|0|\n56|6|58|0|\n65|6|67|0|\n",
+    "hash" : "3331203843",
+    "id" : "831D37E1",
+    "lastKnownWriteTime" : 1538675288,
+    "last_content_update" : 1538675288263,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/1wayANOVA_crd.Rmd",
+    "project_path" : "1wayANOVA_crd.Rmd",
+    "properties" : {
+        "cursorPosition" : "22,32",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "7"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

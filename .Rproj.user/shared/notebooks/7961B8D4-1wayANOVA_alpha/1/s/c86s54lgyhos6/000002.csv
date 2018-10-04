@@ -1,0 +1,8 @@
+"0","colors <- c(brewer.pal(8,""Blues""), "
+"0","            brewer.pal(8,""Oranges""), "
+"0","            brewer.pal(8,""YlGn""))"
+"0","desplot(data=alpha, form= gen ~ col+row, col.regions=colors,"
+"0","        text=gen, cex=0.4, shorten=""no"","
+"0","        main=""Block1          Block2          Block3"", "
+"0","        xlab="""", ylab="""", show.key=F, out1=rep,"
+"0","        out2=inc.block, out2.gpar=list(col=""black"", lwd=1, lty=1))"

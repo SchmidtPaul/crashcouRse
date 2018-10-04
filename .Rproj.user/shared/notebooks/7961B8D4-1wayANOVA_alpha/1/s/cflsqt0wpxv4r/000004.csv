@@ -1,2 +1,0 @@
-"0","alpha <- alpha[, -c(""plot"")] # ""plot"" ist selbst hier überflüssig"
-"0","names(alpha)[2] <- ""inc.block"" # ""block"" ist die zweite Spalte"

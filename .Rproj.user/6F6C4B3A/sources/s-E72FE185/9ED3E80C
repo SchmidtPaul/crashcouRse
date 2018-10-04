@@ -2,13 +2,13 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1538638325138.000,
-    "dirty" : true,
+    "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "414938791",
     "id" : "9ED3E80C",
-    "lastKnownWriteTime" : 1538640781,
-    "last_content_update" : 1538663613482,
+    "lastKnownWriteTime" : 1538663993,
+    "last_content_update" : 1538663993375,
     "path" : "D:/RKurse/Dokumentation/crashcouRse/render_site.R",
     "project_path" : "render_site.R",
     "properties" : {
@@ -16,7 +16,7 @@
         "scrollLine" : "0",
         "tempName" : "Untitled1"
     },
-    "relative_order" : 1,
+    "relative_order" : 2,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_source"

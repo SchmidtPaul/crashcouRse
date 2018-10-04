@@ -318,57 +318,66 @@ div.tocify {
   text-align: left;
 }
 </style>
-<div id="setup-import" class="section level1">
-<h1><span class="header-section-number">1</span> Setup &amp; Import</h1>
+<div id="setup" class="section level1">
+<h1><span class="header-section-number">1</span> Setup</h1>
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
-library(ggplot2); library(ggfortify) # bessere plots
+library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Dieses Beispiel ist dem Beispiel “1wayANOVA_crd” sehr Ã¤hnlich und baut darauf auf. ZunÃ¤chst importieren wir den Beispieldatensatz <code>john.alpha</code> aus dem <code>agridat</code> package und formatieren es als <code>data.table</code> Objekt.</p>
-<pre class="r"><code>library(agridat) # agrarwissenschaftliche BeispieldatensÃ¤tze
-rcbd &lt;- data.table(john.alpha)</code></pre>
-<p>Auch in diesem Beispiel werden wir zumindest teilweise ignorieren wie das Experiment eigentlich angelegt war (i.e. <span class="math inline">\(\alpha\)</span>-lattice) und werten es stattdessen aus, als wÃ¤re es eine <strong>randomisierte vollstÃ¤ndige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) gewesen. Demnach kÃ¶nnen wir die Spalten mit den Informationen zum eigentlichen Versuchsdesign teilweise entfernen. Behalten mÃ¼ssen wir die Design-Spalte, die die Informationen zu den vollstÃ¤ndigen BlÃ¶cken enthÃ¤lt. Diese heiÃŸt hier “rep” (<em>replicate</em>), da vollstÃ¤ndige BlÃ¶cke auch oft <em>Wiederholungen</em> genannt werden. Desweiteren nehmen wir diesmal an, dass nur 8 Sorten getestet wurden, damit Datensatz und Ergebnisse Ã¼bersichtlicher sind. Wir reduzieren den Datensatz also wie folgt:</p>
-<pre class="r"><code>rcbd &lt;- rcbd[, -c(&quot;plot&quot;, &quot;block&quot;)] # lÃ¶sche Designspalten
-rcbd &lt;- rcbd[gen %in% c(&quot;G01&quot;,&quot;G02&quot;,&quot;G03&quot;,&quot;G04&quot;,&quot;G05&quot;,&quot;G06&quot;,&quot;G07&quot;,&quot;G08&quot;),] # behalte G01-G08
-rcbd &lt;- droplevels(rcbd) # vergiss ursprÃ¼ngliche Level G09-G24</code></pre>
+<p>Dieses Beispiel ist dem Beispiel “1wayANOVA_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden.</p>
+<div class="row">
+<div class="col-md-6">
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>head(rcbd)</code></pre>
+<pre><code>##    gen rep  yield
+## 1: G11  R1 4.1172
+## 2: G04  R1 4.4461
+## 3: G05  R1 5.8757
+## 4: G22  R1 4.5784
+## 5: G21  R1 4.6540
+## 6: G10  R1 4.1736</code></pre>
+</div>
+</div>
 </div>
 <div id="deskriptive-statistik" class="section level1">
 <h1><span class="header-section-number">2</span> Deskriptive Statistik</h1>
-<p>Erst wollen wir ein GefÃ¼hl fÃ¼r den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1wayANOVA_crd” erstellen wir diesmal auch einen Boxplot mit den BlÃ¶cken.</p>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1wayANOVA_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>head(rcbd[order(gen)])</code></pre>
-<pre><code>##    rep gen  yield
-## 1:  R1 G01 5.1202
-## 2:  R2 G01 5.7161
-## 3:  R3 G01 4.6512
-## 4:  R1 G02 4.3350
-## 5:  R2 G02 5.1566
-## 6:  R3 G02 4.0510</code></pre>
-<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen)</code></pre>
-<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-4-1.png" width="384" style="display: block; margin: auto;" /></p>
+<pre><code>##    gen rep  yield
+## 1: G01  R1 5.1202
+## 2: G01  R2 5.7161
+## 3: G01  R3 4.6512
+## 4: G02  R1 4.3350
+## 5: G02  R2 5.1566
+## 6: G02  R3 4.0510</code></pre>
+<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(rcbd)</code></pre>
-<pre><code>##  rep         gen        yield      
-##  R1:8   G01    :3   Min.   :2.887  
-##  R2:8   G02    :3   1st Qu.:4.036  
-##  R3:8   G03    :3   Median :4.378  
-##         G04    :3   Mean   :4.456  
-##         G05    :3   3rd Qu.:5.029  
-##         G06    :3   Max.   :5.876  
-##         (Other):6</code></pre>
+<pre><code>##       gen     rep         yield      
+##  G01    : 3   R1:24   Min.   :2.887  
+##  G02    : 3   R2:24   1st Qu.:4.110  
+##  G03    : 3   R3:24   Median :4.404  
+##  G04    : 3           Mean   :4.480  
+##  G05    : 3           3rd Qu.:4.968  
+##  G06    : 3           Max.   :5.876  
+##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
-<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
 </div>
-<div id="schlieayende-statistik" class="section level1">
-<h1><span class="header-section-number">3</span> SchlieÃŸende Statistik</h1>
+<div id="schlieende-statistik" class="section level1">
+<h1><span class="header-section-number">3</span> Schließende Statistik</h1>
 <div id="lineares-modell" class="section level2">
 <h2><span class="header-section-number">3.1</span> Lineares Modell</h2>
-<p>Wir kÃ¶nnen uns nun entschlieÃŸen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. AuÃŸerdem haben wir den qualitativen Faktor ‘rep’ im Modell.</p>
+<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. Außerdem haben wir den nun noch den qualitativen Faktor ‘rep’ im Modell.</p>
 <pre class="r"><code>mod &lt;- lm(yield ~ gen + rep, data=rcbd)</code></pre>
-<p>ZunÃ¤chst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber Ã¼bersprungen wird. Erst dann ist eine Varianzanalyse zulÃ¤ssig.</p>
+<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
 </div>
 <div id="varianzanalyse" class="section level2">
 <h2><span class="header-section-number">3.2</span> Varianzanalyse</h2>
@@ -376,92 +385,58 @@ rcbd &lt;- droplevels(rcbd) # vergiss ursprÃ¼ngliche Level G09-G24</code></pre
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: yield
-##           Df Sum Sq Mean Sq F value   Pr(&gt;F)   
-## gen        7 6.9078 0.98683  6.3691 0.001679 **
-## rep        2 2.5269 1.26343  8.1544 0.004487 **
-## Residuals 14 2.1692 0.15494                    
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen       23 14.0765 0.61202  4.5475 6.259e-06 ***
+## rep        2  6.1355 3.06774 22.7939 1.322e-07 ***
+## Residuals 46  6.1910 0.13459                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test fÃ¼r den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschiede zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es Ã¼blich multiple Mittelwertvergleiche durchzufÃ¼hren (z.B. t-test oder Tukey-test).</p>
+<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2><span class="header-section-number">3.3</span> Multipler Mittelwertvergleich</h2>
-<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die Mittelwerte fÃ¼r jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)
-means$emmeans # Mittelwerte </code></pre>
-<pre><code>##  gen   emmean        SE df lower.CL upper.CL
-##  G01 5.162500 0.2272589 14 4.675078 5.649922
-##  G02 4.514200 0.2272589 14 4.026778 5.001622
-##  G03 3.343067 0.2272589 14 2.855645 3.830488
-##  G04 4.400667 0.2272589 14 3.913245 4.888088
-##  G05 5.064367 0.2272589 14 4.576945 5.551788
-##  G06 4.710333 0.2272589 14 4.222912 5.197755
-##  G07 4.129933 0.2272589 14 3.642512 4.617355
-##  G08 4.324533 0.2272589 14 3.837112 4.811955
-## 
-## Results are averaged over the levels of: rep 
-## Confidence level used: 0.95</code></pre>
-<pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
-<pre><code>##  contrast     estimate        SE df t.ratio p.value
-##  G01 - G02  0.64830000 0.3213926 14   2.017  0.5044
-##  G01 - G03  1.81943333 0.3213926 14   5.661  0.0011
-##  G01 - G04  0.76183333 0.3213926 14   2.370  0.3244
-##  G01 - G05  0.09813333 0.3213926 14   0.305  1.0000
-##  G01 - G06  0.45216667 0.3213926 14   1.407  0.8401
-##  G01 - G07  1.03256667 0.3213926 14   3.213  0.0866
-##  G01 - G08  0.83796667 0.3213926 14   2.607  0.2307
-##  G02 - G03  1.17113333 0.3213926 14   3.644  0.0408
-##  G02 - G04  0.11353333 0.3213926 14   0.353  0.9999
-##  G02 - G05 -0.55016667 0.3213926 14  -1.712  0.6809
-##  G02 - G06 -0.19613333 0.3213926 14  -0.610  0.9981
-##  G02 - G07  0.38426667 0.3213926 14   1.196  0.9204
-##  G02 - G08  0.18966667 0.3213926 14   0.590  0.9985
-##  G03 - G04 -1.05760000 0.3213926 14  -3.291  0.0758
-##  G03 - G05 -1.72130000 0.3213926 14  -5.356  0.0019
-##  G03 - G06 -1.36726667 0.3213926 14  -4.254  0.0136
-##  G03 - G07 -0.78686667 0.3213926 14  -2.448  0.2910
-##  G03 - G08 -0.98146667 0.3213926 14  -3.054  0.1133
-##  G04 - G05 -0.66370000 0.3213926 14  -2.065  0.4777
-##  G04 - G06 -0.30966667 0.3213926 14  -0.964  0.9728
-##  G04 - G07  0.27073333 0.3213926 14   0.842  0.9870
-##  G04 - G08  0.07613333 0.3213926 14   0.237  1.0000
-##  G05 - G06  0.35403333 0.3213926 14   1.102  0.9461
-##  G05 - G07  0.93443333 0.3213926 14   2.907  0.1442
-##  G05 - G08  0.73983333 0.3213926 14   2.302  0.3558
-##  G06 - G07  0.58040000 0.3213926 14   1.806  0.6265
-##  G06 - G08  0.38580000 0.3213926 14   1.200  0.9189
-##  G07 - G08 -0.19460000 0.3213926 14  -0.605  0.9982
-## 
-## Results are averaged over the levels of: rep 
-## P value adjustment: tukey method for comparing a family of 8 estimates</code></pre>
-<p>Es fÃ¤llt auf, dass im Vergleich zum Beispiel “1wayANOVA_crd” deutlich mehr Differenzen/paarweise Vergleiche angezeigt werden. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, wÃ¤hrend es hier 8 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller mÃ¶glichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fÃ¤llt auÃŸerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser grÃ¶ÃŸeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen kÃ¶nnen.</p>
+as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
+<pre><code>##    gen   emmean        SE df lower.CL upper.CL
+## 1: G01 5.162500 0.2118065 46 4.736156 5.588844
+## 2: G02 4.514200 0.2118065 46 4.087856 4.940544
+## 3: G03 3.343067 0.2118065 46 2.916722 3.769411
+## 4: G04 4.400667 0.2118065 46 3.974322 4.827011
+## 5: G05 5.064367 0.2118065 46 4.638022 5.490711
+## 6: G06 4.710333 0.2118065 46 4.283989 5.136678</code></pre>
+<pre class="r"><code>as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen</code></pre>
+<pre><code>##     contrast   estimate        SE df   t.ratio      p.value
+## 1: G01 - G02 0.64830000 0.2995396 46 2.1643215 8.669495e-01
+## 2: G01 - G03 1.81943333 0.2995396 46 6.0740994 5.296688e-05
+## 3: G01 - G04 0.76183333 0.2995396 46 2.5433476 6.406025e-01
+## 4: G01 - G05 0.09813333 0.2995396 46 0.3276139 1.000000e+00
+## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
+## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
+<p>Im Vergleich zum Beispiel “1wayANOVA_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
 <pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
-means$emmeans</code></pre>
-<pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
-##  G03 3.343067 0.2272589 14 2.855645 3.830488  a    
-##  G07 4.129933 0.2272589 14 3.642512 4.617355  ab   
-##  G08 4.324533 0.2272589 14 3.837112 4.811955  ab   
-##  G04 4.400667 0.2272589 14 3.913245 4.888088  ab   
-##  G02 4.514200 0.2272589 14 4.026778 5.001622   b   
-##  G06 4.710333 0.2272589 14 4.222912 5.197755   b   
-##  G05 5.064367 0.2272589 14 4.576945 5.551788   b   
-##  G01 5.162500 0.2272589 14 4.675078 5.649922   b   
-## 
-## Results are averaged over the levels of: rep 
-## Confidence level used: 0.95 
-## P value adjustment: tukey method for comparing a family of 8 estimates 
-## significance level used: alpha = 0.05</code></pre>
-<p>Erneut wollen wir die Ergebnisse abschlieÃŸend in einem Balkendiagramm darstellen. Diesmal ist der Plot allerdings im Gegensatz zum Beispiel “1wayANOVA_crd” ein wenig mehr abÃ¤ndern. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots Ã¤ndern. Um aber nicht jede Linie, FÃ¼llfarbe usw. einzeln bearbeiten zu mÃ¼ssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht Â± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. AuÃŸerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. SchlieÃŸlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fÃ¼gen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fÃ¼gen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
+as.data.table(means$emmeans)[1:6,]</code></pre>
+<pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
+## 1: G03 3.343067 0.2118065 46 2.916722 3.769411   a   
+## 2: G09 3.611600 0.2118065 46 3.185256 4.037944   ab  
+## 3: G20 3.784867 0.2118065 46 3.358522 4.211211   abc 
+## 4: G07 4.129933 0.2118065 46 3.703589 4.556278   abcd
+## 5: G23 4.136200 0.2118065 46 3.709856 4.562544   abcd
+## 6: G24 4.142367 0.2118065 46 3.716022 4.568711   abcd</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1><span class="header-section-number">4</span> Ergebnisaufbereitung</h1>
+<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1wayANOVA_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
 <pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
   geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
   geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
-  geom_text(aes(y=(upper.CL)*1.1, label=.group)) +
-  labs(y=&quot;Adjustierter Ertragsmittelwert Â± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
+  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle=90)) +
+  labs(y=&quot;Adjustierter Ertragsmittelwert mit 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
   theme_bw() +
-  annotate(geom=&quot;label&quot;, y=1, x=5, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
+  annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-</div>
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 
 
