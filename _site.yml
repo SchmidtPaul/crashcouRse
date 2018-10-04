@@ -2,12 +2,9 @@ name: "my-website"
 output_dir: "."
 navbar:
   title: "My Website"
+  type: inverse
   left:
     - text: "Home"
       href: index.html
     - text: "About"
       href: about.html
-output:
-  html_document:
-    theme: cosmo
-    highlight: textmate
