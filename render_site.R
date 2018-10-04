@@ -1,4 +1,6 @@
 setwd("D:/RKurse/Dokumentation/crashcouRse")
 library("rmarkdown")
 
+rmarkdown::clean_site()
 rmarkdown::render_site()
+

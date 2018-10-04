@@ -6,5 +6,5 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "1wayANOVA"
+      href: 1wayANOVA.html
