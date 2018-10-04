@@ -5,3 +5,4 @@ To Do
 * adjustierter Mittelwert erklären
 * Standardfehler, Standardabweichung, Konfidenzintervall
 * Plot Layout Graph - Experimental Design
+* ANOVA table with F-tests and p-values using Satterthwaite's or Kenward-Roger's method for denominator degrees-of-freedom and F-statistic.
