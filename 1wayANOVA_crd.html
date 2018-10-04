@@ -11,7 +11,7 @@
 
 
 
-<title></title>
+<title>One-Factor ANOVA - CRD</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -311,6 +311,7 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">One-Factor ANOVA - CRD</h1>
 
 </div>
 
@@ -327,8 +328,8 @@ div.tocify {
   text-align: left;
 }
 </style>
-<div id="setup" class="section level1">
-<h1><span class="header-section-number">1</span> Setup</h1>
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
@@ -353,7 +354,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 </div>
 <div id="deskriptive-statistik" class="section level1">
-<h1><span class="header-section-number">2</span> Deskriptive Statistik</h1>
+<h1>Deskriptive Statistik</h1>
 <p>Erst wollen wir ein GefÃ¼hl fÃ¼r den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie einen Plot.</p>
 <div class="row">
 <div class="col-md-6">
@@ -373,15 +374,15 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 </div>
 <div id="schlieayende-statistik" class="section level1">
-<h1><span class="header-section-number">3</span> SchlieÃŸende Statistik</h1>
+<h1>SchlieÃŸende Statistik</h1>
 <div id="lineares-modell" class="section level2">
-<h2><span class="header-section-number">3.1</span> Lineares Modell</h2>
+<h2>Lineares Modell</h2>
 <p>Wir kÃ¶nnen uns nun entschlieÃŸen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor.</p>
 <pre class="r"><code>mod &lt;- lm(yield ~ gen, data=crd)</code></pre>
 <p>ZunÃ¤chst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber Ã¼bersprungen wird. Erst dann ist eine Varianzanalyse zulÃ¤ssig.</p>
 </div>
 <div id="varianzanalyse" class="section level2">
-<h2><span class="header-section-number">3.2</span> Varianzanalyse</h2>
+<h2>Varianzanalyse</h2>
 <pre class="r"><code>anova(mod)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -394,7 +395,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Der F-Test fÃ¼r den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es Ã¼blich multiple Mittelwertvergleiche durchzufÃ¼hren (z.B. t-test oder Tukey-test).</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
-<h2><span class="header-section-number">3.3</span> Multipler Mittelwertvergleich</h2>
+<h2>Multipler Mittelwertvergleich</h2>
 <p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) fÃ¼r jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)
 means$emmeans # Mittelwerte </code></pre>
@@ -426,7 +427,7 @@ means$emmeans</code></pre>
 </div>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">
-<h1><span class="header-section-number">4</span> Ergebnisaufbereitung</h1>
+<h1>Ergebnisaufbereitung</h1>
 <p>SchlieÃŸlich kann man die Ergebnisse final in einem Plot darstellen. DafÃ¼r eignet sich beispielsweise ein Balkendiagramm.</p>
 <pre class="r"><code>ggplot(data=means$emmeans, aes(x=gen)) +
   geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +

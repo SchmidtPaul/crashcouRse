@@ -1,3 +1,7 @@
+---
+title: "One-Factor ANOVA - alpha-design"
+---
+
 <style>
 .column-left{
   float: left;
@@ -10,7 +14,8 @@
   text-align: left;
 }
 </style>
-# Setup & Import
+
+# Datensatz
 
 ```{r, echo=FALSE}
 library(agridat) # agrarwissenschaftliche Beispieldatensätze
