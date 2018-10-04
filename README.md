@@ -4,3 +4,4 @@ To Do
 * alpha lattice auswertung
 * adjustierter Mittelwert erklären
 * Standardfehler, Standardabweichung, Konfidenzintervall
+* Plot Layout Graph - Experimental Design
