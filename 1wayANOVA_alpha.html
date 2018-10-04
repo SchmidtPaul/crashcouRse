@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="1wayANOVA_crd.html">1wayANOVA_crd</a>
+</li>
+<li>
+  <a href="1wayANOVA_rcbd.html">1wayANOVA_rcbd</a>
+</li>
+<li>
+  <a href="1wayANOVA_alpha.html">1wayANOVA_alpha</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<style>
+.column-left{
+  float: left;
+  width: 49%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 49%;
+  text-align: left;
+}
+</style>
+<div id="setup-import" class="section level1">
+<h1><span class="header-section-number">1</span> Setup &amp; Import</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere plots
+library(emmeans) # adjustierte Mittelwerte
+library(lme4); library(lmerTest) # Gemischtes Modell</code></pre>
+<p>Dieses Beispiel ist den Beispielen “1wayANOVA_crd” und “1wayANOVA_rcbd” sehr Ã¤hnlich und baut darauf auf. ZunÃ¤chst importieren wir den Beispieldatensatz <code>john.alpha</code> aus dem <code>agridat</code> package und formatieren es als <code>data.table</code> Objekt.</p>
+<pre class="r"><code>library(agridat) # agrarwissenschaftliche BeispieldatensÃ¤tze
+alpha &lt;- data.table(john.alpha)</code></pre>
+<p>Dieses Experiment wurde als ein <span class="math inline">\(\alpha\)</span>-lattice angelegt. Demnach haben wir unvollstÃ¤ndige BlÃ¶cke innerhalb von vollstÃ¤ndigen BlÃ¶cken. Die ‘rep’ Spalte steht fÃ¼r die vollstÃ¤ndigen BlÃ¶cke, die ‘block’ Spalte fÃ¼r die unvollstÃ¤ndigen BlÃ¶cke. Um die Trennung der beiden schon in der Namensgebung eindeutiger zu machen werden wir die ‘block’ Spalte umbennen zu ‘inc.block’ (<em>incomplete block</em>). SchlieÃŸlich werden wir im Gegensatz zu den vorangegangenen 1wayANOVA Beispielen keinerlei Sorten/Daten ausschlieÃŸen, sondern den vollstÃ¤ndigen Datensatz mit dem korrekten Modell auswerten.</p>
+<pre class="r"><code>alpha &lt;- alpha[, -c(&quot;plot&quot;)] # &quot;plot&quot; ist selbst hier Ã¼berflÃ¼ssig
+names(alpha)[2] &lt;- &quot;inc.block&quot; # &quot;block&quot; ist die zweite Spalte</code></pre>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1><span class="header-section-number">2</span> Deskriptive Statistik</h1>
+<p>Erst wollen wir ein GefÃ¼hl fÃ¼r den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu den vorangegangenen 1wayANOVA Beispielen erstellen wir diesmal auch einen komplexeren Boxplot via <code>boxplot()</code>, in dem eine Box pro unvollstÃ¤ndigem Block zu sehen ist.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>head(alpha[order(gen)])</code></pre>
+<pre><code>##    rep inc.block gen  yield
+## 1:  R1        B5 G01 5.1202
+## 2:  R2        B4 G01 5.7161
+## 3:  R3        B1 G01 4.6512
+## 4:  R1        B2 G02 4.3350
+## 5:  R2        B5 G02 5.1566
+## 6:  R3        B2 G02 4.0510</code></pre>
+<pre class="r"><code>plot(y=alpha$yield, x=alpha$gen)</code></pre>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-4-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>summary(alpha)</code></pre>
+<pre><code>##  rep     inc.block      gen         yield      
+##  R1:24   B1:12     G01    : 3   Min.   :2.887  
+##  R2:24   B2:12     G02    : 3   1st Qu.:4.110  
+##  R3:24   B3:12     G03    : 3   Median :4.404  
+##          B4:12     G04    : 3   Mean   :4.480  
+##          B5:12     G05    : 3   3rd Qu.:4.968  
+##          B6:12     G06    : 3   Max.   :5.876  
+##                    (Other):54</code></pre>
+<pre class="r"><code>plot(y=alpha$yield, x=alpha$rep)</code></pre>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+</div>
+<pre class="r"><code>boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung</code></pre>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="schlieayende-statistik" class="section level1">
+<h1><span class="header-section-number">3</span> SchlieÃŸende Statistik</h1>
+<div id="gemischtes-modell" class="section level2">
+<h2><span class="header-section-number">3.1</span> Gemischtes Modell</h2>
+<p>Wir kÃ¶nnen uns nun entschlieÃŸen die Daten mittels eines Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. AuÃŸerdem haben wir den qualitativen Faktor ‘rep’ im Modell. Im Gegensatz zu den vorangegangenen 1wayANOVA Beispielen mÃ¼ssen wir diesmal auch Effekte fÃ¼r die unvollstÃ¤ndigen BlÃ¶cke modellieren. Diese sind ebenso qualitativ, sollten aber in diesem Fall als zufÃ¤llige Effekte genommen werden. Somit haben wir gleichzeitig feste und zufÃ¤llige Effekte im Modell und demnach ein gemischtes Modell. Die Funktion <code>lm()</code> ist nicht in der Lage gemischte Modelle anzupassen, sodass wir in diesem Beispiel zu <code>lmer()</code> aus dem <code>lme4</code> package wechseln, welches immer zusammen mit dem <code>lmerTest()</code> package geladen werden sollte. Die Syntax ist dem von <code>lm()</code> recht Ã¤hnlich, mit dem Unterschied, dass zufÃ¤llige Effekte generell wie folgt codiert werden:</p>
+<pre class="r"><code>mod &lt;- lmer(yield ~ gen + rep + (1|rep:inc.block), data=alpha)</code></pre>
+<p>Randnotiz: Es fÃ¤llt auf, dass wir den zufÃ¤lligen Effekt fÃ¼r die unvollstÃ¤ndigen BlÃ¶cke zusammen mit rep und getrennt durch einen Doppelpunkt geschrieben haben. Das liegt daran, wie die ‘inc.block’ Spalte in diesem Datensatz angelegt wurde. SIe enthÃ¤lt lediglich die 6 verschiedenen EintrÃ¤ge B1-B6. Es gab allerdings in jedem vollstÃ¤ndigem 6, also insgesamt 18 unvollstÃ¤ndige BlÃ¶cke. Ã„hnlich wie bei dem Boxplot oben muss also die Kombination aus ‘rep’ und ‘inc.block’ angegeben werden um im Modell die 18 korrekten zufÃ¤lligen Effekte fÃ¼r die unvollstÃ¤ndigen BlÃ¶cke anzupassen. Als Alternative hÃ¤tte man auch direkt B1-B18 in die ‘inc.block’ Spalte und demnach <code>(1|inc.block)</code> ins Modell schreiben kÃ¶nnen. ZunÃ¤chst sollten nun die Residuenplots evaluiert werden, was bei einem <code>lmer()</code> Objekt nicht mit <code>autoplot(mod)</code>, sondern beispielsweise mit <code>plot(mod)</code> und <code>qqnorm(resid(mod)); qqline(resid(mod))</code> funktioniert. Erst danach ist eine Varianzanalyse zulÃ¤ssig.</p>
+</div>
+<div id="varianzanalyse" class="section level2">
+<h2><span class="header-section-number">3.2</span> Varianzanalyse</h2>
+<pre class="r"><code>anova(mod)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##      Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
+## gen 10.6786 0.46429    23 34.736  5.4478 4.376e-06 ***
+## rep  1.5703 0.78513     2 10.394  9.2124  0.004992 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Obwohl der Befehl <code>anova(mod)</code> exakt derselbe scheint wie in den vorangegangenen 1wayANOVA Beispielen, wird er nun durch das <code>lmerTest</code> package durchgefÃ¼hrt, sodass andere Berechnungen durchgefÃ¼hrt werden, die besser fÃ¼r Varianzanalysen von gemischten Modellen geeignet sind. Der F-Test fÃ¼r den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschiede zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es Ã¼blich multiple Mittelwertvergleiche durchzufÃ¼hren (z.B. t-test oder Tukey-test).</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2><span class="header-section-number">3.3</span> Multipler Mittelwertvergleich</h2>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die Mittelwerte fÃ¼r jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten. Es ist sehr praktisch, dass das <code>emmeans</code> package nicht nur <code>lm()</code> Objekte, sondern auch <code>lmer()</code> Objekte, also gemischte Modelle, als Grundlage fÃ¼r die adjustierte MittelwertschÃ¤tzung verwenden kann.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)
+as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
+<pre><code>##    gen   emmean        SE       df lower.CL upper.CL
+## 1: G01 5.107700 0.1990122 44.32700 4.706700 5.508699
+## 2: G02 4.478532 0.1990122 44.32700 4.077533 4.879531
+## 3: G03 3.499200 0.1990122 44.32700 3.098200 3.900199
+## 4: G04 4.490095 0.1990122 44.32700 4.089095 4.891094
+## 5: G05 5.037210 0.1989050 44.28463 4.636417 5.438004
+## 6: G06 4.536662 0.1989050 44.28463 4.135868 4.937456</code></pre>
+<pre class="r"><code>as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen</code></pre>
+<pre><code>##     contrast   estimate        SE       df   t.ratio      p.value
+## 1: G01 - G02 0.62916742 0.2753985 39.06267 2.2845707 0.8028476437
+## 2: G01 - G03 1.60849988 0.2740562 38.53561 5.8692330 0.0001803976
+## 3: G01 - G04 0.61760500 0.2740562 38.53561 2.2535704 0.8194173419
+## 4: G01 - G05 0.07048919 0.2613108 35.91550 0.2697523 1.0000000000
+## 5: G01 - G06 0.57103738 0.2740696 38.54725 2.0835491 0.8976547456
+## 6: G01 - G07 0.99656336 0.2613101 35.91456 3.8137192 0.0658591109</code></pre>
+<p>Es fÃ¤llt auf, dass im Vergleich zum Beispiel “1wayANOVA_crd” deutlich mehr Differenzen/paarweise Vergleiche angezeigt werden. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, wÃ¤hrend es hier 8 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller mÃ¶glichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fÃ¤llt auÃŸerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser grÃ¶ÃŸeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen kÃ¶nnen.</p>
+<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
+as.data.table(means$emmeans)[1:6,]</code></pre>
+<pre><code>##    gen   emmean        SE       df lower.CL upper.CL .group
+## 1: G03 3.499200 0.1990122 44.32700 3.098200 3.900199   ab  
+## 2: G09 3.502181 0.1989050 44.28463 3.101387 3.902975   a c 
+## 3: G20 4.039985 0.1989050 44.28463 3.639191 4.440779   abcd
+## 4: G07 4.111136 0.1990122 44.32700 3.710137 4.512135   abcd
+## 5: G24 4.153874 0.1990122 44.32700 3.752875 4.554873   abcd
+## 6: G23 4.252449 0.1989050 44.28463 3.851655 4.653243   abcd</code></pre>
+<p>Erneut wollen wir die Ergebnisse abschlieÃŸend in einem Balkendiagramm darstellen. Die einzigen Unterschiede zu dem Code des Plots im Beispiel “1wayANOVA_rcbd” sind (i) die x-Koordindate des <code>annotate()</code> statements und (ii) die 90Â°-Drehung der Buchstaben im <code>geom_text()</code> statement.</p>
+<pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
+  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle = 90)) +
+  labs(y=&quot;Adjustierter Ertragsmittelwert Â± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
+  theme_bw() +
+  annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
+  label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

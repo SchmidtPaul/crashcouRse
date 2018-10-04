@@ -282,7 +282,13 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="1wayANOVA.html">1wayANOVA</a>
+  <a href="1wayANOVA_crd.html">1wayANOVA_crd</a>
+</li>
+<li>
+  <a href="1wayANOVA_rcbd.html">1wayANOVA_rcbd</a>
+</li>
+<li>
+  <a href="1wayANOVA_alpha.html">1wayANOVA_alpha</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -317,13 +323,13 @@ div.tocify {
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Zunächst importieren wir den Beispieldatensatz <code>john.alpha</code> aus dem <code>agridat</code> package und formatieren es als <code>data.table</code> Objekt.</p>
-<pre class="r"><code>library(agridat) # agrarwissenschaftliche Beispieldatensätze
+<p>ZunÃ¤chst importieren wir den Beispieldatensatz <code>john.alpha</code> aus dem <code>agridat</code> package und formatieren es als <code>data.table</code> Objekt.</p>
+<pre class="r"><code>library(agridat) # agrarwissenschaftliche BeispieldatensÃ¤tze
 crd &lt;- data.table(john.alpha)</code></pre>
-<p>In diesem Beispiel werden wir ignorieren wie das Experiment eigentlich angelegt war (i.e. <span class="math inline">\(\alpha\)</span>-lattice) und werten es stattdessen aus, als wäre es eine <strong>vollständig randomisierte Anlage</strong> gewesen. Demnach können wir die Spalten mit den Informationen zum eigentlich Versuchsdesign entfernen. Desweiteren nehmen wir an, dass nur 4 Sorten getestet wurden, damit Datensatz und Ergebnisse übersichtlicher sind.</p>
-<pre class="r"><code>crd &lt;- crd[, -c(&quot;plot&quot;, &quot;rep&quot;, &quot;block&quot;)] # lösche Designspalten
+<p>In diesem Beispiel werden wir ignorieren wie das Experiment eigentlich angelegt war (i.e. <span class="math inline">\(\alpha\)</span>-lattice) und werten es stattdessen aus, als wÃ¤re es eine <strong>vollstÃ¤ndig randomisierte Anlage</strong> gewesen. Demnach kÃ¶nnen wir die Spalten mit den Informationen zum eigentlich Versuchsdesign entfernen. Desweiteren nehmen wir an, dass nur 4 Sorten getestet wurden, damit Datensatz und Ergebnisse Ã¼bersichtlicher sind.</p>
+<pre class="r"><code>crd &lt;- crd[, -c(&quot;plot&quot;, &quot;rep&quot;, &quot;block&quot;)] # lÃ¶sche Designspalten
 crd &lt;- crd[gen %in% c(&quot;G01&quot;, &quot;G02&quot;, &quot;G03&quot;),] # behalte Zeilen mit G01-G03
-crd &lt;- droplevels(crd) # vergiss ursprüngliche Level G04-G24
+crd &lt;- droplevels(crd) # vergiss ursprÃ¼ngliche Level G04-G24
 head(crd[order(gen)]) # zeige obere Zeilen des Datensatzes sortiert nach &quot;gen&quot;</code></pre>
 <pre><code>##    gen  yield
 ## 1: G01 5.1202
@@ -335,7 +341,7 @@ head(crd[order(gen)]) # zeige obere Zeilen des Datensatzes sortiert nach &quot;g
 </div>
 <div id="deskriptive-statistik" class="section level1">
 <h1><span class="header-section-number">2</span> Deskriptive Statistik</h1>
-<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie einen Plot.</p>
+<p>Erst wollen wir ein GefÃ¼hl fÃ¼r den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie einen Plot.</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>summary(crd)</code></pre>
@@ -349,17 +355,17 @@ head(crd[order(gen)]) # zeige obere Zeilen des Datensatzes sortiert nach &quot;g
 </div>
 <div class="col-md-6">
 <pre class="r"><code>plot(y=crd$yield, x=crd$gen)</code></pre>
-<p><img src="1wayANOVA_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="1wayANOVA_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 </div>
 </div>
 </div>
-<div id="schlieende-statistik" class="section level1">
-<h1><span class="header-section-number">3</span> Schließende Statistik</h1>
+<div id="schlieayende-statistik" class="section level1">
+<h1><span class="header-section-number">3</span> SchlieÃŸende Statistik</h1>
 <div id="lineares-modell" class="section level2">
 <h2><span class="header-section-number">3.1</span> Lineares Modell</h2>
-<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor.</p>
+<p>Wir kÃ¶nnen uns nun entschlieÃŸen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor.</p>
 <pre class="r"><code>mod &lt;- lm(yield ~ gen, data=crd)</code></pre>
-<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
+<p>ZunÃ¤chst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber Ã¼bersprungen wird. Erst dann ist eine Varianzanalyse zulÃ¤ssig.</p>
 </div>
 <div id="varianzanalyse" class="section level2">
 <h2><span class="header-section-number">3.2</span> Varianzanalyse</h2>
@@ -372,11 +378,11 @@ head(crd[order(gen)]) # zeige obere Zeilen des Datensatzes sortiert nach &quot;g
 ## Residuals  6 1.6455 0.27424                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschiede zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
+<p>Der F-Test fÃ¼r den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschiede zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es Ã¼blich multiple Mittelwertvergleiche durchzufÃ¼hren (z.B. t-test oder Tukey-test).</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2><span class="header-section-number">3.3</span> Multipler Mittelwertvergleich</h2>
-<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die Mittelwerte fÃ¼r jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)
 means$emmeans # Mittelwerte </code></pre>
 <pre><code>##  gen   emmean        SE df lower.CL upper.CL
@@ -392,7 +398,7 @@ means$emmeans # Mittelwerte </code></pre>
 ##  G02 - G03 1.171133 0.4275844  6   2.739  0.0754
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
-<p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
+<p>Beim Betrachten der p-Werte der Differenzen fÃ¤llt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist Ã¼blich fÃ¼r solche Resultate die Buchstabendarstellung anzuwenden.</p>
 <pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
 means$emmeans</code></pre>
 <pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
@@ -403,14 +409,14 @@ means$emmeans</code></pre>
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<p>Das <code>cld()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> sich signifikant voneinander unterscheiden. Schließlich kann man die Ergebnisse final in einem Plot darstellen. Dafür eignet sich beispielsweise ein Balkendiagramm.</p>
+<p>Das <code>cld()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefÃ¼gt, in denen Buchstaben zu sehen sind. FÃ¼r letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> sich signifikant voneinander unterscheiden. SchlieÃŸlich kann man die Ergebnisse final in einem Plot darstellen. DafÃ¼r eignet sich beispielsweise ein Balkendiagramm.</p>
 <pre class="r"><code>ggplot(data=means$emmeans, aes(x=gen)) +
  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
  geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.4) +
  geom_text(aes(y=(emmean+SE)*1.1, label=.group)) +
  labs(y=&quot;Adjustierter Ertragsmittelwert&quot;, x=&quot;Sorte&quot;, 
       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="1wayANOVA_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 </div>
 </div>
 

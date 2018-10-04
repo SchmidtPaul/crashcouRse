@@ -1,0 +1,1 @@
+"0","boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung"

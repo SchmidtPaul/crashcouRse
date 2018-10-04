@@ -1,0 +1,102 @@
+<style>
+.column-left{
+  float: left;
+  width: 49%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 49%;
+  text-align: left;
+}
+</style>
+# Setup & Import
+
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere plots
+library(emmeans) # adjustierte Mittelwerte
+library(lme4); library(lmerTest) # Gemischtes Modell
+```
+
+Dieses Beispiel ist den Beispielen "1wayANOVA_crd" und "1wayANOVA_rcbd" sehr ähnlich und baut darauf auf. Zunächst importieren wir den Beispieldatensatz `john.alpha` aus dem `agridat` package und formatieren es als `data.table` Objekt.
+```{r}
+library(agridat) # agrarwissenschaftliche Beispieldatensätze
+alpha <- data.table(john.alpha)
+```
+
+Dieses Experiment wurde als ein $\alpha$-lattice angelegt. Demnach haben wir unvollständige Blöcke innerhalb von vollständigen Blöcken. Die 'rep' Spalte steht für die vollständigen Blöcke, die 'block' Spalte für die unvollständigen Blöcke. Um die Trennung der beiden schon in der Namensgebung eindeutiger zu machen werden wir die 'block' Spalte umbennen zu 'inc.block' (*incomplete block*). Schließlich werden wir im Gegensatz zu den vorangegangenen 1wayANOVA Beispielen keinerlei Sorten/Daten ausschließen, sondern den vollständigen Datensatz mit dem korrekten Modell auswerten.
+
+```{r}
+alpha <- alpha[, -c("plot")] # "plot" ist selbst hier überflüssig
+names(alpha)[2] <- "inc.block" # "block" ist die zweite Spalte
+```
+
+# Deskriptive Statistik
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu den vorangegangenen 1wayANOVA Beispielen erstellen wir diesmal auch einen komplexeren Boxplot via `boxplot()`, in dem eine Box pro unvollständigem Block zu sehen ist.
+
+<div class = "row"> <div class = "col-md-6">
+```{r, fig.height = 3, fig.width = 4, fig.align = "center"}
+head(alpha[order(gen)])
+plot(y=alpha$yield, x=alpha$gen)
+```
+</div> <div class = "col-md-6">
+```{r}
+summary(alpha)
+plot(y=alpha$yield, x=alpha$rep)
+```
+</div> </div>
+
+```{r}
+boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung
+```
+
+# Schließende Statistik
+## Gemischtes Modell
+Wir können uns nun entschließen die Daten mittels eines Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. 'Sorte' ist ein qualitativer Faktor. Außerdem haben wir den qualitativen Faktor 'rep' im Modell. Im Gegensatz zu den vorangegangenen 1wayANOVA Beispielen müssen wir diesmal auch Effekte für die unvollständigen Blöcke modellieren. Diese sind ebenso qualitativ, sollten aber in diesem Fall als zufällige Effekte genommen werden. Somit haben wir gleichzeitig feste und zufällige Effekte im Modell und demnach ein gemischtes Modell. Die Funktion `lm()` ist nicht in der Lage gemischte Modelle anzupassen, sodass wir in diesem Beispiel zu `lmer()` aus dem `lme4` package wechseln, welches immer zusammen mit dem `lmerTest()` package geladen werden sollte. Die Syntax ist dem von `lm()` recht ähnlich, mit dem Unterschied, dass zufällige Effekte generell wie folgt codiert werden:
+
+```{r}
+mod <- lmer(yield ~ gen + rep + (1|rep:inc.block), data=alpha)
+```
+
+Randnotiz: Es fällt auf, dass wir den zufälligen Effekt für die unvollständigen Blöcke zusammen mit rep und getrennt durch einen Doppelpunkt geschrieben haben. Das liegt daran, wie die 'inc.block' Spalte in diesem Datensatz angelegt wurde. SIe enthält lediglich die 6 verschiedenen Einträge B1-B6. Es gab allerdings in jedem vollständigem 6, also insgesamt 18 unvollständige Blöcke. Ähnlich wie bei dem Boxplot oben muss also die Kombination aus 'rep' und 'inc.block' angegeben werden um im Modell die 18 korrekten zufälligen Effekte für die unvollständigen Blöcke anzupassen. Als Alternative hätte man auch direkt B1-B18 in die 'inc.block' Spalte und demnach `(1|inc.block)` ins Modell schreiben können.
+Zunächst sollten nun die Residuenplots evaluiert werden, was bei einem `lmer()` Objekt nicht mit `autoplot(mod)`, sondern beispielsweise mit `plot(mod)` und `qqnorm(resid(mod)); qqline(resid(mod))` funktioniert. Erst danach ist eine Varianzanalyse zulässig.
+
+## Varianzanalyse
+```{r}
+anova(mod)
+```
+Obwohl der Befehl `anova(mod)` exakt derselbe scheint wie in den vorangegangenen 1wayANOVA Beispielen, wird er nun durch das `lmerTest` package durchgeführt, sodass andere Berechnungen durchgeführt werden, die besser für Varianzanalysen von gemischten Modellen geeignet sind.
+Der F-Test für den Faktor 'Sorte' zeigt einen p-Wert < 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, **dass** es mindestens einen signifikanten Unterschiede zwischen den Sorten gibt, aber nicht zwischen **welchen** Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test). 
+
+## Multipler Mittelwertvergleich
+Mit `emmeans()` erhalten wir in einem Zug sowowhl die Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten. Es ist sehr praktisch, dass das `emmeans` package nicht nur `lm()` Objekte, sondern auch `lmer()` Objekte, also gemischte Modelle, als Grundlage für die adjustierte Mittelwertschätzung verwenden kann.
+
+```{r}
+means <- emmeans(mod, pairwise ~ gen, adjust="tukey")
+as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte 
+```
+```{r}
+as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen
+```
+Es fällt auf, dass im Vergleich zum Beispiel "1wayANOVA_crd" deutlich mehr Differenzen/paarweise Vergleiche angezeigt werden. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 8 sind. Mit steigender Sortenanzahl *n* steigt die Anzahl aller möglichen Sortenvergleiche *n(n-1)/2* sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem `CLD()` statement erzeugen können.
+
+```{r}
+means <- CLD(means$emmeans, details=TRUE, Letters=letters)
+as.data.table(means$emmeans)[1:6,]
+```
+
+Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Die einzigen Unterschiede zu dem Code des Plots im Beispiel "1wayANOVA_rcbd" sind (i) die x-Koordindate des `annotate()` statements und (ii) die 90°-Drehung der Buchstaben im `geom_text()` statement. 
+
+```{r}
+ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
+  geom_bar(aes(y=emmean), stat="identity", width=0.8) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle = 90)) +
+  labs(y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="Sorte") +
+  theme_bw() +
+  annotate(geom="label", y=1, x=12, size=3, color="grey50", fill="white",
+  label="Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+  
+```
+

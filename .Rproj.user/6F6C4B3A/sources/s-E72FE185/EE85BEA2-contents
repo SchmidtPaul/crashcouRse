@@ -5,8 +5,12 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "1wayANOVA"
-      href: 1wayANOVA.html
+    - text: "1wayANOVA_crd"
+      href: 1wayANOVA_crd.html
+    - text: "1wayANOVA_rcbd"
+      href: 1wayANOVA_rcbd.html
+    - text: "1wayANOVA_alpha"
+      href: 1wayANOVA_alpha.html
 output:
   html_document:
     theme: lumen

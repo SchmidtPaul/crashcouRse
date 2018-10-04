@@ -1,0 +1,4 @@
+"0","library(data.table) # bessere Datenmanipulation"
+"0","library(ggplot2); library(ggfortify) # bessere plots"
+"0","library(emmeans) # adjustierte Mittelwerte"
+"0","library(lme4); library(lmerTest) # Gemischtes Modell"

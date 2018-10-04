@@ -1,0 +1,98 @@
+<style>
+.column-left{
+  float: left;
+  width: 49%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 49%;
+  text-align: left;
+}
+</style>
+# Setup & Import
+
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere plots
+library(emmeans) # adjustierte Mittelwerte
+```
+
+Dieses Beispiel ist dem Beispiel "1wayANOVA_crd" sehr ähnlich und baut darauf auf. Zunächst importieren wir den Beispieldatensatz `john.alpha` aus dem `agridat` package und formatieren es als `data.table` Objekt.
+```{r}
+library(agridat) # agrarwissenschaftliche Beispieldatensätze
+rcbd <- data.table(john.alpha)
+```
+
+Auch in diesem Beispiel werden wir zumindest teilweise ignorieren wie das Experiment eigentlich angelegt war (i.e. $\alpha$-lattice) und werten es stattdessen aus, als wäre es eine **randomisierte vollständige Blockanlage** (=**R**andomized **C**omplete **B**lock **D**esign) gewesen. Demnach können wir die Spalten mit den Informationen zum eigentlichen Versuchsdesign teilweise entfernen. Behalten müssen wir die Design-Spalte, die die Informationen zu den vollständigen Blöcken enthält. Diese heißt hier "rep" (*replicate*), da vollständige Blöcke auch oft *Wiederholungen* genannt werden. 
+Desweiteren nehmen wir diesmal an, dass nur 8 Sorten getestet wurden, damit Datensatz und Ergebnisse übersichtlicher sind. Wir reduzieren den Datensatz also wie folgt:
+
+```{r}
+rcbd <- rcbd[, -c("plot", "block")] # lösche Designspalten
+rcbd <- rcbd[gen %in% c("G01","G02","G03","G04","G05","G06","G07","G08"),] # behalte G01-G08
+rcbd <- droplevels(rcbd) # vergiss ursprüngliche Level G09-G24
+```
+
+# Deskriptive Statistik
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel "1wayANOVA_crd" erstellen wir diesmal auch einen Boxplot mit den Blöcken.
+
+<div class = "row"> <div class = "col-md-6">
+```{r, fig.height = 3, fig.width = 4, fig.align = "center"}
+head(rcbd[order(gen)])
+plot(y=rcbd$yield, x=rcbd$gen)
+```
+</div> <div class = "col-md-6">
+```{r}
+summary(rcbd)
+plot(y=rcbd$yield, x=rcbd$rep)
+```
+</div> </div>
+
+# Schließende Statistik
+## Lineares Modell
+Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. 'Sorte' ist ein qualitativer Faktor. Außerdem haben wir den qualitativen Faktor 'rep' im Modell.
+
+```{r}
+mod <- lm(yield ~ gen + rep, data=rcbd)
+```
+
+Zunächst sollten nun die Residuenplots (z.b. mit `autoplot(mod)`) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.
+
+## Varianzanalyse
+```{r}
+anova(mod)
+```
+Der F-Test für den Faktor 'Sorte' zeigt einen p-Wert < 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, **dass** es mindestens einen signifikanten Unterschiede zwischen den Sorten gibt, aber nicht zwischen **welchen** Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test). 
+
+## Multipler Mittelwertvergleich
+Mit `emmeans()` erhalten wir in einem Zug sowowhl die Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.
+
+```{r}
+means <- emmeans(mod, pairwise ~ gen, adjust="tukey")
+means$emmeans # Mittelwerte 
+```
+```{r}
+means$contrasts # Differenzen zwischen Mittelwerten
+```
+Es fällt auf, dass im Vergleich zum Beispiel "1wayANOVA_crd" deutlich mehr Differenzen/paarweise Vergleiche angezeigt werden. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 8 sind. Mit steigender Sortenanzahl *n* steigt die Anzahl aller möglichen Sortenvergleiche *n(n-1)/2* sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem `CLD()` statement erzeugen können.
+
+```{r}
+means <- CLD(means$emmeans, details=TRUE, Letters=letters)
+means$emmeans
+```
+
+Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal ist der Plot allerdings im Gegensatz zum Beispiel "1wayANOVA_crd" ein wenig mehr abändern. So kann man generell mit dem `theme()` statement [sehr viele](https://ggplot2.tidyverse.org/reference/theme.html) Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch [vorgefertigte Themes](https://ggplot2.tidyverse.org/reference/ggtheme.html) nutzen, wie wir hier das `theme_bw()`. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im `emmeans()` statement berechnet wurden.
+Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem `reorder()` statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als `caption=` unter der Grafik erscheinen, sondern fügen mittles `annotate()`eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge *\\n* ein.
+
+```{r}
+ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
+  geom_bar(aes(y=emmean), stat="identity", width=0.8) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=(upper.CL)*1.1, label=.group)) +
+  labs(y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="Sorte") +
+  theme_bw() +
+  annotate(geom="label", y=1, x=5, size=3, color="grey50", fill="white",
+  label="Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+  
+```
+

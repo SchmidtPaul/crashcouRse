@@ -5,18 +5,18 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "2738641740",
     "id" : "61CDEA12",
-    "lastKnownWriteTime" : 1538652208,
-    "last_content_update" : 1538652208947,
-    "path" : "D:/RKurse/Dokumentation/crashcouRse/1wayANOVA.Rmd",
-    "project_path" : "1wayANOVA.Rmd",
+    "lastKnownWriteTime" : 1538658184,
+    "last_content_update" : 1538658184595,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/1wayANOVA_crd.Rmd",
+    "project_path" : "1wayANOVA_crd.Rmd",
     "properties" : {
-        "cursorPosition" : "30,48",
+        "cursorPosition" : "65,76",
         "docOutlineVisible" : "0",
-        "scrollLine" : "26"
+        "scrollLine" : "63"
     },
-    "relative_order" : 4,
+    "relative_order" : 3,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_markdown"
