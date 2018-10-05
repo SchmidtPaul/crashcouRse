@@ -20,14 +20,6 @@ navbar:
   right:
     - icon: fa-portrait fa-lg
       href: Kontakt.html
-    - icon: fa-linkedin fa-lg
-      href: https://www.linkedin.com/in/schmidtpaul1989/
-    - icon: fa-xing fa-lg
-      href: https://www.xing.com/profile/Paul_Schmidt203/cv   
-    - icon: fa-flask fa-lg
-      href: https://www.researchgate.net/profile/Paul_Schmidt17    
-    - icon: fa-university fa-lg
-      href: https://www.uni-hohenheim.de/organisation/person/paul-schmidt    
 output:
   html_document:
     theme: lumen
