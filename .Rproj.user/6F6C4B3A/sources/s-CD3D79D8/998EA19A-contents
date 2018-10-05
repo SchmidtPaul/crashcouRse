@@ -2,14 +2,20 @@
 title: "R im Versuchswesen"
 ---
 
-Wählen Sie oben im Menü oder unten in der Tabelle ein Kapitel aus.
+Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus. 
+
+Weitere Codes finden sich hier: [https://github.com/SchmidtPaul/R-SAS.Introductory.Courses](https://github.com/SchmidtPaul/R-SAS.Introductory.Courses)
 
 ### Inhaltsverzeichnis
 
-Link | Analyse | Design | Modellierung
------|---------|--------|-------------
-[Ch.1](1wayANOVA_crd.html) | ANOVA (1 Factor) | CRD | `lm()`
-[Ch.2](1wayANOVA_rcbd.html) | ANOVA (1 Factor) | RCBD | `lm()`
-[Ch.3](1wayANOVA_alpha.html) | ANOVA (1 Factor) | $\alpha$-lattice | `lmer()`
+Link | Analyse | Design | Funktion
+-----|---------|--------|---------
+[Kapitel 1](1wayANOVA_crd.html) | ANOVA (1 Factor) | CRD | `lm()`
+[Kapitel 2](1wayANOVA_rcbd.html) | ANOVA (1 Factor) | RCBD | `lm()`
+[Kapitel 3](1wayANOVA_alpha.html) | ANOVA (1 Factor) | $\alpha$-lattice | `lmer()`
+
+Appendix | Beschreibung | Funktion
+---------|--------------|---------
+[Appendix 1](desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
 
 ### Referenzen

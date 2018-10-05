@@ -1,0 +1,19 @@
+---
+title: "Paul Schmidt"
+---
+
+<img src="PS.jpg" style="width:25%; margin-right: 20px" align="left">
+
+Ich bin Doktorand im [Fachgebiet Biostatistik](https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik) an der Universität Hohenheim. Für mehr Informationen bitte auf die entsprechenden Symbole oben rechts klicken.
+
+
+
+*Kontakt:* paul.schmidt@uni-hohenheim.de
+
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+```{r load_packages, message=FALSE, warning=FALSE, include=FALSE} 
+library(fontawesome)
+```

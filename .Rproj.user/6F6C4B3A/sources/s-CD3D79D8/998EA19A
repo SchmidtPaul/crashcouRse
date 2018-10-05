@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "566832416",
     "id" : "998EA19A",
-    "lastKnownWriteTime" : 1538680809,
-    "last_content_update" : 1538680809506,
+    "lastKnownWriteTime" : 1538778989,
+    "last_content_update" : 1538778989619,
     "path" : "D:/RKurse/Dokumentation/crashcouRse/index.Rmd",
     "project_path" : "index.Rmd",
     "properties" : {
-        "cursorPosition" : "0,0",
-        "scrollLine" : "0"
+        "cursorPosition" : "20,0",
+        "scrollLine" : "4"
     },
     "relative_order" : 3,
     "source_on_save" : false,
