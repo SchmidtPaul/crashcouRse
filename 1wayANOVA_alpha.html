@@ -350,7 +350,7 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p>Dieses Experiment wurde als ein <span class="math inline">\(\alpha\)</span>-lattice angelegt. Dies wurde im letzten Beispiel verschwiegen und stattdessen behauptet, es wäre eine randomisierte vollständige Blockanlage. In der Tat besitzt das eigentliche Experiment dieselben vollständigen Blöcke, allerdings gibt es innerhalb dieser noch jeweils 6 unvollständige Blöcke. Die ‘rep’ Spalte steht also weiterhin für die vollständigen Blöcke, zusätzlich gibt es jedoch noch eine ‘inc.block’ (<em>incomplete block</em>) Spalte für die unvollständigen Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-8-2.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-4-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-4-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>head(alpha)</code></pre>
@@ -386,7 +386,7 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 ## 5: G02  R2        B5 5.1566
 ## 6: G02  R3        B2 4.0510</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$gen)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(alpha)</code></pre>
@@ -399,11 +399,11 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 ##  G06    : 3           B6:12     Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$rep)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
 <pre class="r"><code>boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="schlieende-statistik" class="section level1">
 <h1>Schließende Statistik</h1>
@@ -459,7 +459,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
   theme_bw() +
   annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 
 

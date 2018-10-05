@@ -8,17 +8,17 @@ library(data.table)
 library(desplot) # plotte Feldplan
 library(RColorBrewer) # Farben für Feldplan
 alpha <- data.table(john.alpha)
+alpha$yield <- alpha$yield*10
 alpha$row <- rep(4:1)
 alpha$col <- sort(rep(seq(18:1),4))
 alpha$inc.block <- paste0(alpha$rep,"-",alpha$block)
 alpha <- alpha[,c("row", "col", "rep", "gen", "inc.block", "yield")]
 ```
 
-Die Feldpläne, die das Versuchsdesigns in den verschiedenen Kapiteln grafisch darstellen, wurden mit dem `desplot` package erstellt. Hier sind beispielhaft ein paar Codes aufgeführt. Für detaillierte Informationen zu den einzelnen Argumenten der Funktion siehe `?desplot`.
+Die Feldpläne, die das Versuchsdesign in den verschiedenen Kapiteln dieser Website grafisch darstellen, wurden mit dem `desplot` package erstellt. Hier sind beispielhaft ein paar Codes aufgeführt. Für detaillierte Informationen zu den einzelnen Argumenten der Funktion siehe `?desplot`.
 
 ```{r}
 library(desplot)
-library(RColorBrewer) # bessere Farbauswahlen
 ```
 
 # Beispiel 1
@@ -37,7 +37,7 @@ str(alpha, width=40, strict.width="cut")
 <div class = "row"> <div class = "col-md-6">
 ## Sorte je Parzelle
 
-Die Variable, die im `form=` Argument zuerst steht, bestimmt die Färbung der Parzelle. Desweiteren kann mit dem `text=` Argument bestimmt wie die Parzellen beschriftet werden.
+Die Variable, die im `form=` Argument links der Tilde steht, bestimmt die Färbung der Parzelle. Desweiteren können wir mit dem `text=` Argument die Parzellenbeschriftung bestimmen.
 
 ```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
 desplot(data=alpha, form= gen ~ col+row, 
@@ -48,11 +48,11 @@ desplot(data=alpha, form= gen ~ col+row,
 
 ## Ertrag je Parzelle
 
-Im `form=` Argument kann auch eine numerische Variable, wie z.B. die Zielvariable eingfügt werden. Statt des `text=` Arguments, sollte dann das `num=` Argument genutzt werden. 
+Im `form=` Argument kann auch eine numerische Variable, wie z.B. der Ertrag eingfügt werden. Dann sollte statt des `text=` Arguments das `num=` Argument genutzt werden. 
 
 ```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
 desplot(data=alpha, form= yield ~ col+row, 
-        num=yield,
+        num=yield, 
         main="", show.key=F)
 ```
 </div> </div>
@@ -67,14 +67,15 @@ Mit den `out1 =` und `out2=` Argumenten kann angegeben werden um welche Gruppen 
 desplot(data=alpha, form= rep ~ col+row, 
         text=gen, shorten="no",
         out1=rep,
-        main="", show.key=F)
+        main="", 
+        show.key=F)
+
 ```
 </div> <div class = "col-md-6">
 ```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
 desplot(data=alpha, form= inc.block ~ col+row,
         text=gen, shorten="no",
-        out1=rep,
-        out2=inc.block, 
+        out1=rep, out2=inc.block, 
         out2.gpar=list(col="black"),
         main="", show.key=F)
 ```
@@ -85,6 +86,8 @@ Außerdem können sämtliche Farben des Plots selbst ausgesucht werden. Die Farb
 
 <div class = "row"> <div class = "col-md-6">
 ```{r, eval=FALSE}
+library(RColorBrewer)
+
 mycolors <- c(brewer.pal(6, "Blues"), 
               brewer.pal(6, "Reds"), 
               brewer.pal(6, "Greens"))
@@ -106,8 +109,7 @@ mycolors <- c(brewer.pal(6, "Blues"),
 desplot(data=alpha, form= inc.block ~ col+row,
         col.regions=mycolors,
         text=gen, shorten="no",
-        out1=rep,
-        out2=inc.block, 
+        out1=rep, out2=inc.block, 
         out2.gpar=list(col="black"),
         main="", show.key=F)
 ```

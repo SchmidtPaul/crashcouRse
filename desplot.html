@@ -328,9 +328,8 @@ div.tocify {
 </div>
 
 
-<p>Die Feldpläne, die das Versuchsdesigns in den verschiedenen Kapiteln grafisch darstellen, wurden mit dem <code>desplot</code> package erstellt. Hier sind beispielhaft ein paar Codes aufgeführt. Für detaillierte Informationen zu den einzelnen Argumenten der Funktion siehe <code>?desplot</code>.</p>
-<pre class="r"><code>library(desplot)
-library(RColorBrewer) # bessere Farbauswahlen</code></pre>
+<p>Die Feldpläne, die das Versuchsdesign in den verschiedenen Kapiteln dieser Website grafisch darstellen, wurden mit dem <code>desplot</code> package erstellt. Hier sind beispielhaft ein paar Codes aufgeführt. Für detaillierte Informationen zu den einzelnen Argumenten der Funktion siehe <code>?desplot</code>.</p>
+<pre class="r"><code>library(desplot)</code></pre>
 <div id="beispiel-1" class="section level1">
 <h1>Beispiel 1</h1>
 <p>Bei diesem Datensatz handelt es sich um ein <span class="math inline">\(\alpha\)</span>-Design mit 3 vollständigen Blöcken, die jeweils 6 unvollständige Blöcke a 4 Parzellen enthalten. Es wurden 24 Sorten geprüft.</p>
@@ -338,12 +337,12 @@ library(RColorBrewer) # bessere Farbauswahlen</code></pre>
 <div class="col-md-6">
 <pre class="r"><code>head(alpha)</code></pre>
 <pre><code>##    row col rep gen inc.block  yield
-## 1:   4   1  R1 G11     R1-B1 4.1172
-## 2:   3   1  R1 G04     R1-B1 4.4461
-## 3:   2   1  R1 G05     R1-B1 5.8757
-## 4:   1   1  R1 G22     R1-B1 4.5784
-## 5:   4   2  R1 G21     R1-B2 4.6540
-## 6:   3   2  R1 G10     R1-B2 4.1736</code></pre>
+## 1:   4   1  R1 G11     R1-B1 41.172
+## 2:   3   1  R1 G04     R1-B1 44.461
+## 3:   2   1  R1 G05     R1-B1 58.757
+## 4:   1   1  R1 G22     R1-B1 45.784
+## 5:   4   2  R1 G21     R1-B2 46.540
+## 6:   3   2  R1 G10     R1-B2 41.736</code></pre>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>str(alpha, width=40, strict.width=&quot;cut&quot;)</code></pre>
@@ -353,14 +352,14 @@ library(RColorBrewer) # bessere Farbauswahlen</code></pre>
 ##  $ rep      : Factor w/ 3 levels &quot;R1&quot;&quot;..
 ##  $ gen      : Factor w/ 24 levels &quot;G0&quot;..
 ##  $ inc.block: chr  &quot;R1-B1&quot; &quot;R1-B1&quot; &quot;R&quot;..
-##  $ yield    : num  4.12 4.45 5.88 4.58..
+##  $ yield    : num  41.2 44.5 58.8 45.8..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 </div>
 </div>
 <div class="row">
 <div class="col-md-6">
 <h2 id="sorte-je-parzelle">Sorte je Parzelle</h2>
-<p>Die Variable, die im <code>form=</code> Argument zuerst steht, bestimmt die Färbung der Parzelle. Desweiteren kann mit dem <code>text=</code> Argument bestimmt wie die Parzellen beschriftet werden.</p>
+<p>Die Variable, die im <code>form=</code> Argument links der Tilde steht, bestimmt die Färbung der Parzelle. Desweiteren können wir mit dem <code>text=</code> Argument die Parzellenbeschriftung bestimmen.</p>
 <pre class="r"><code>desplot(data=alpha, form= gen ~ col+row, 
         text=gen, shorten=&quot;no&quot;,
         main=&quot;&quot;, show.key=F)</code></pre>
@@ -368,9 +367,9 @@ library(RColorBrewer) # bessere Farbauswahlen</code></pre>
 </div>
 <div class="col-md-6">
 <h2 id="ertrag-je-parzelle">Ertrag je Parzelle</h2>
-<p>Im <code>form=</code> Argument kann auch eine numerische Variable, wie z.B. die Zielvariable eingfügt werden. Statt des <code>text=</code> Arguments, sollte dann das <code>num=</code> Argument genutzt werden.</p>
+<p>Im <code>form=</code> Argument kann auch eine numerische Variable, wie z.B. der Ertrag eingfügt werden. Dann sollte statt des <code>text=</code> Arguments das <code>num=</code> Argument genutzt werden.</p>
 <pre class="r"><code>desplot(data=alpha, form= yield ~ col+row, 
-        num=yield,
+        num=yield, 
         main=&quot;&quot;, show.key=F)</code></pre>
 <p><img src="desplot_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
@@ -383,14 +382,14 @@ library(RColorBrewer) # bessere Farbauswahlen</code></pre>
 <pre class="r"><code>desplot(data=alpha, form= rep ~ col+row, 
         text=gen, shorten=&quot;no&quot;,
         out1=rep,
-        main=&quot;&quot;, show.key=F)</code></pre>
+        main=&quot;&quot;, 
+        show.key=F)</code></pre>
 <p><img src="desplot_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>desplot(data=alpha, form= inc.block ~ col+row,
         text=gen, shorten=&quot;no&quot;,
-        out1=rep,
-        out2=inc.block, 
+        out1=rep, out2=inc.block, 
         out2.gpar=list(col=&quot;black&quot;),
         main=&quot;&quot;, show.key=F)</code></pre>
 <p><img src="desplot_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
@@ -402,7 +401,9 @@ library(RColorBrewer) # bessere Farbauswahlen</code></pre>
 <p>Außerdem können sämtliche Farben des Plots selbst ausgesucht werden. Die Farbwahl in R ist generell <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">sehr groß</a>. Wer nicht jede Farbe einzeln aussuchen möchte, kann das package <code>RColorBrewer</code> nutzen. So können wir für die unvollständigen Blöcke mit dem <code>brewer.pal()</code> Statement je 6 blau-, rot- und grün-Töne pro vollständigem Block auswählen um die Eigenschaften des Designs noch klarer hervorzuheben.</p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>mycolors &lt;- c(brewer.pal(6, &quot;Blues&quot;), 
+<pre class="r"><code>library(RColorBrewer)
+
+mycolors &lt;- c(brewer.pal(6, &quot;Blues&quot;), 
               brewer.pal(6, &quot;Reds&quot;), 
               brewer.pal(6, &quot;Greens&quot;))
 
