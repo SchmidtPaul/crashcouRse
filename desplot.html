@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Feldpläne mit dem desplot package</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    1-way ANOVAs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1wayANOVA_crd.html">CRD</a>
+    </li>
+    <li>
+      <a href="1wayANOVA_rcbd.html">RCBD</a>
+    </li>
+    <li>
+      <a href="1wayANOVA_alpha.html">alpha-lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Nützliches
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="desplot.html">desplot package</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Feldpläne mit dem desplot package</h1>
+
+</div>
+
+
+<p>Die Feldpläne, die das Versuchsdesigns in den verschiedenen Kapiteln grafisch darstellen, wurden mit dem <code>desplot</code> package erstellt. Hier sind beispielhaft ein paar Codes aufgeführt. Für detaillierte Informationen zu den einzelnen Argumenten der Funktion siehe <code>?desplot</code>.</p>
+<pre class="r"><code>library(desplot)
+library(RColorBrewer) # bessere Farbauswahlen</code></pre>
+<div id="beispiel-1" class="section level1">
+<h1>Beispiel 1</h1>
+<p>Bei diesem Datensatz handelt es sich um ein <span class="math inline">\(\alpha\)</span>-Design mit 3 vollständigen Blöcken, die jeweils 6 unvollständige Blöcke a 4 Parzellen enthalten. Es wurden 24 Sorten geprüft.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>head(alpha)</code></pre>
+<pre><code>##    row col rep gen inc.block  yield
+## 1:   4   1  R1 G11     R1-B1 4.1172
+## 2:   3   1  R1 G04     R1-B1 4.4461
+## 3:   2   1  R1 G05     R1-B1 5.8757
+## 4:   1   1  R1 G22     R1-B1 4.5784
+## 5:   4   2  R1 G21     R1-B2 4.6540
+## 6:   3   2  R1 G10     R1-B2 4.1736</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(alpha, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  6 variables:
+##  $ row      : int  4 3 2 1 4 3 2 1 4 3..
+##  $ col      : int  1 1 1 1 2 2 2 2 3 3..
+##  $ rep      : Factor w/ 3 levels &quot;R1&quot;&quot;..
+##  $ gen      : Factor w/ 24 levels &quot;G0&quot;..
+##  $ inc.block: chr  &quot;R1-B1&quot; &quot;R1-B1&quot; &quot;R&quot;..
+##  $ yield    : num  4.12 4.45 5.88 4.58..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<h2 id="sorte-je-parzelle">Sorte je Parzelle</h2>
+<p>Die Variable, die im <code>form=</code> Argument zuerst steht, bestimmt die Färbung der Parzelle. Desweiteren kann mit dem <code>text=</code> Argument bestimmt wie die Parzellen beschriftet werden.</p>
+<pre class="r"><code>desplot(data=alpha, form= gen ~ col+row, 
+        text=gen, shorten=&quot;no&quot;,
+        main=&quot;&quot;, show.key=F)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<h2 id="ertrag-je-parzelle">Ertrag je Parzelle</h2>
+<p>Im <code>form=</code> Argument kann auch eine numerische Variable, wie z.B. die Zielvariable eingfügt werden. Statt des <code>text=</code> Arguments, sollte dann das <code>num=</code> Argument genutzt werden.</p>
+<pre class="r"><code>desplot(data=alpha, form= yield ~ col+row, 
+        num=yield,
+        main=&quot;&quot;, show.key=F)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="blocke-umranden" class="section level2">
+<h2>Blöcke umranden</h2>
+<p>Mit den <code>out1 =</code> und <code>out2=</code> Argumenten kann angegeben werden um welche Gruppen von Parzellen Linien gezogen werden sollen. Dies ist z.B. für Blöcke sinnvoll.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>desplot(data=alpha, form= rep ~ col+row, 
+        text=gen, shorten=&quot;no&quot;,
+        out1=rep,
+        main=&quot;&quot;, show.key=F)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>desplot(data=alpha, form= inc.block ~ col+row,
+        text=gen, shorten=&quot;no&quot;,
+        out1=rep,
+        out2=inc.block, 
+        out2.gpar=list(col=&quot;black&quot;),
+        main=&quot;&quot;, show.key=F)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="manuelle-farbwahl" class="section level2">
+<h2>Manuelle Farbwahl</h2>
+<p>Außerdem können sämtliche Farben des Plots selbst ausgesucht werden. Die Farbwahl in R ist generell <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">sehr groß</a>. Wer nicht jede Farbe einzeln aussuchen möchte, kann das package <code>RColorBrewer</code> nutzen. So können wir für die unvollständigen Blöcke mit dem <code>brewer.pal()</code> Statement je 6 blau-, rot- und grün-Töne pro vollständigem Block auswählen um die Eigenschaften des Designs noch klarer hervorzuheben.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>mycolors &lt;- c(brewer.pal(6, &quot;Blues&quot;), 
+              brewer.pal(6, &quot;Reds&quot;), 
+              brewer.pal(6, &quot;Greens&quot;))
+
+desplot(data=alpha, form= inc.block ~ col+row,
+        col.regions=mycolors,
+        text=gen, shorten=&quot;no&quot;,
+        out1=rep,
+        out2=inc.block, 
+        out2.gpar=list(col=&quot;black&quot;),
+        main=&quot;&quot;, show.key=F)</code></pre>
+</div>
+<div class="col-md-6">
+<p><img src="desplot_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+</div>
+<div id="beispiel-2" class="section level1">
+<h1>Beispiel 2</h1>
+<p>In diesem Beispiel gibt es neben den Faktor <em>Sorte</em> (3 Stufen) einen zweiten Faktor <em>Nitro</em> (4 Stufen) und somit 12 Faktorkombinationen. Der Versuch wurde als Split-Plot design angelegt: Es gibt 6 vollständige Blöcke, in denen die 3 Sorten jeweils in 4 Parzellen gruppiert (= <em>Main Plot</em>) vorkommen. Es wurden also im ersten Schritt den Main Plots zufällig Sorten zugewiesen und im zweiten Schritt die Nitro-Stufen innerhalb jedes Main Plots randomisiert.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>head(oats)</code></pre>
+<pre><code>##    row col block        gen nitro yield
+## 1:  16   3    B1 GoldenRain     0    80
+## 2:  12   4    B2 GoldenRain     0    60
+## 3:   3   3    B3 GoldenRain     0    89
+## 4:  14   1    B4 GoldenRain     0   117
+## 5:   8   2    B5 GoldenRain     0    64
+## 6:   5   2    B6 GoldenRain     0    70</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(oats, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  6 variables:
+##  $ row  : int  16 12 3 14 8 5 15 11 3 ..
+##  $ col  : int  3 4 3 1 2 2 4 4 4 2 ...
+##  $ block: Factor w/ 6 levels &quot;B1&quot;,&quot;B2&quot;..
+##  $ gen  : Factor w/ 3 levels &quot;GoldenR&quot;..
+##  $ nitro: num  0 0 0 0 0 0 0.2 0.2 0.2..
+##  $ yield: int  80 60 89 117 64 70 82 1..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+<p>Um auch den zweiten Faktor farblich hervorheben zu können, kann man mit dem <code>col=</code> statement zusätzlich die Beschriftung der Parzellen einfärben. In Beispiel 1 hatten wir zum einen mit dem <code>show.key=F</code> statement das Anzeigen einer Legende unterdrückt, zum anderen mit dem <code>shorten=&quot;no&quot;</code> statement das Kürzen der Sortennamen verboten. Hier ist beides jedoch sehr hilfreich.</p>
+<pre class="r"><code>desplot(data=oats, form=block ~ col+row, 
+        text=gen, cex=1, col=nitro, 
+        out1=block,
+        out2=gen, out2.gpar=list(col=&quot;gray50&quot;),
+        main=&quot;&quot;)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="beispiel-3" class="section level1">
+<h1>Beispiel 3</h1>
+<p>Hier handelt es sich um einem Versuch in dem der Trockenmasseertrag von 6 Erdnusssorten verglichen wurde. Der Versuch ist als randomisierte vollständige Blockanlage (RCBD) angelegt.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>head(nuts)</code></pre>
+<pre><code>##    row col block gen dry
+## 1:   4   1    B1   F 2.3
+## 2:   4   2    B1   A 3.3
+## 3:   4   3    B1   D 1.8
+## 4:   4   4    B1   B 1.8
+## 5:   4   5    B1   E 2.8
+## 6:   4   6    B1   C 1.4</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(nuts, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   24 obs. of  5 variables:
+##  $ row  : int  4 4 4 4 4 4 3 3 3 3 ...
+##  $ col  : int  1 2 3 4 5 6 1 2 3 4 ...
+##  $ block: Factor w/ 4 levels &quot;B1&quot;,&quot;B2&quot;..
+##  $ gen  : Factor w/ 6 levels &quot;A&quot;,&quot;B&quot;,&quot;..
+##  $ dry  : num  2.3 3.3 1.8 1.8 2.8 1.4..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+<p>In diesem Beispiel wollen wir einen zusätzlichen Plot erstellen. Im Gegensatz zu den vorangegangenen Plots soll hier der Fokus weder auf dem Versuchsdesign, noch den Messwerten liegen. Stattdessen sollen die Daten erst modelliert werden und dann die Residuen dargestellt werden.</p>
+<pre class="r"><code>mod &lt;- lm(data=nuts, formula= dry ~ block + gen)
+nuts$res &lt;- resid(mod)</code></pre>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>desplot(data=nuts, form= block ~ col+row,
+        text=gen, cex=0.8,
+        out1=block, show.key=F, 
+        main=&quot;rand. compl. block design&quot;)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>desplot(data=nuts, form= res ~ col+row,
+        text=gen, cex=0.8,
+        show.key=F,
+        main=&quot;Residuen des RCBD Modells&quot;)</code></pre>
+<p><img src="desplot_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<p>So fällt hier auf, dass das größte und kleinste Residuum direkt nebeneinander vorkommen. Ein Grund dafür könnte sein, dass die Ertragswerte dieser beiden Parzellen versehentlich vertauscht wurden.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

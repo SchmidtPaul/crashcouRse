@@ -1,0 +1,8 @@
+"0","desplot(data=nuts, form= res ~ col+row,
+        num=res, cex=0.5,
+        out1=block, show.key=F,
+        main=""Residuen des RCBD Modells"")
+"
+"2","Error in cleanup(substitute(num), dn) : 
+  Could not find 'res' in the data frame.
+"

@@ -13,6 +13,10 @@ navbar:
           href: 1wayANOVA_rcbd.html
         - text: "alpha-lattice"
           href: 1wayANOVA_alpha.html
+    - text: "Nützliches"
+      menu:
+        - text: "desplot package"
+          href: desplot.html
 output:
   html_document:
     theme: lumen

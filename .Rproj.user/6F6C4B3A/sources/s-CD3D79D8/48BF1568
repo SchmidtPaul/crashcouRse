@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1538763015966.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2505714263",
+    "id" : "48BF1568",
+    "lastKnownWriteTime" : 1538771705,
+    "last_content_update" : 1538771705429,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/desplot.Rmd",
+    "project_path" : "desplot.Rmd",
+    "properties" : {
+        "cursorPosition" : "1,15",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
