@@ -1,4 +1,5 @@
 To Do
+* Other: Desplot page
 * Vergleich Versuchsanlagen. Wann zufälliger Blockeffekt? Wann Blockeffekt aus dem Modell nehmen?
 * Mulitpler Mittelwertvergleich (t-test, Tukey-Test) - Adjustierung
 * alpha lattice auswertung
