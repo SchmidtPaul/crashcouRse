@@ -13,7 +13,9 @@ Link | Analyse | Design | Funktion
 [Kapitel 1](1wayANOVA_crd.html) | ANOVA (1 Factor) | CRD | `lm()`
 [Kapitel 2](1wayANOVA_rcbd.html) | ANOVA (1 Factor) | RCBD | `lm()`
 [Kapitel 3](1wayANOVA_alpha.html) | ANOVA (1 Factor) | $\alpha$-lattice | `lmer()`
+[Kapitel 4](2wayANOVA_splitplot.html) | ANOVA (2 Factor) | split-plot | `lmer()`
 
 Appendix | Beschreibung | Funktion
 ---------|--------------|---------
 [Appendix 1](desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
+[Appendix 2](DesignList.html) | Vergleich Versuchsdesigns | -

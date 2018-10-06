@@ -19,6 +19,8 @@ navbar:
       menu:
         - text: "1) desplot package"
           href: desplot.html
+        - text: "2) Versuchsdesigns"
+          href: DesignList.html
   right:
     - text: "Kontakt"
       href: Kontakt.html
