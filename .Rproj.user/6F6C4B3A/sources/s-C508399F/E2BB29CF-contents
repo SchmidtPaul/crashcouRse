@@ -1,0 +1,12 @@
+library(tidyverse)
+
+# dplyr
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl %>% summarise(disp=mean(disp), hp=mean(hp)) # MW anzeigen
+
+library(data.table)
+# data.table
+mtcars <- data.table(mtcars)
+mtcars[,     .(disp=mean(disp), hp=mean(hp)), by=cyl] # MW anzeigen
+mtcars[, ':=' (disp=mean(disp), hp=mean(hp)), by=cyl] # MW als zusätzliche Spalten einfügen
+head(mtcars)

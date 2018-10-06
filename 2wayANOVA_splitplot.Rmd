@@ -1,0 +1,55 @@
+---
+title: "Two-Factor ANOVA - split-plot-design"
+---
+
+# Datensatz
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table)
+library(desplot) # plotte Feldplan
+library(RColorBrewer) # Farben für Feldplan
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/rice split plot.rda")
+```
+
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(ggplot2) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte
+library(lme4); library(lmerTest) # gemischtes Modell
+```
+
+
+```{r, echo=F, fig.height = 3, fig.width = 5, fig.align = "center"}
+desplot(data=rice, form= rep ~ col+row|rep, flip=T,
+        text=G, cex=1, col=N,
+        col.regions=c("grey100", "grey90", "grey80"),
+        col.text=brewer.pal(6, "Dark2"),
+        main="Feldplan", key.cex = 0.6,
+        out1=row, out1.gpar=list(col="grey50", lwd=1, lty=1),
+        out2=col, out2.gpar=list(col="grey50", lwd=1, lty=1))
+rice <- rice[,c("N", "G", "rep", "mainplot", "yield")]
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(rice, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r}
+str(rice, width=40, strict.width="cut")
+```
+</div> </div>
+
+...to be continued...
+
+
+
+
+
+
+
+
+
+
+
+

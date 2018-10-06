@@ -1,0 +1,12 @@
+library(agriTutorial)
+data(sorghum)
+sorghum
+
+sorghum <- sorghum[1:4]
+names(sorghum) <- c("y", "var", "rep", "week")
+setcolorder(sorghum, c("week", "var", "rep", "y"))
+levels(sorghum$var) <- LETTERS[1:4]
+head(sorghum)
+
+# fwrite(sorghum, "06 sorghum repeated measures.txt", sep="\t")
+

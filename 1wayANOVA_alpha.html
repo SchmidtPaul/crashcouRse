@@ -25,9 +25,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -286,41 +283,41 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    1-way ANOVAs
+    Kapitel
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="1wayANOVA_crd.html">CRD</a>
+      <a href="1wayANOVA_crd.html">1) 1wANOVA crd</a>
     </li>
     <li>
-      <a href="1wayANOVA_rcbd.html">RCBD</a>
+      <a href="1wayANOVA_rcbd.html">2) 1wANOVA rcbd</a>
     </li>
     <li>
-      <a href="1wayANOVA_alpha.html">alpha-lattice</a>
+      <a href="1wayANOVA_alpha.html">3) 1wANOVA alpha</a>
+    </li>
+    <li>
+      <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Nützliches
+    Appendix
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="desplot.html">desplot package</a>
+      <a href="desplot.html">1) desplot package</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="Kontakt.html">
-    <span class="fa fa-portrait fa-lg"></span>
-     
-  </a>
+  <a href="Kontakt.html">Kontakt</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -336,22 +333,10 @@ div.tocify {
 </div>
 
 
-<style>
-.column-left{
-  float: left;
-  width: 49%;
-  text-align: left;
-}
-.column-right{
-  float: right;
-  width: 49%;
-  text-align: left;
-}
-</style>
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
-library(ggplot2); library(ggfortify) # bessere Plots
+library(ggplot2) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte
 library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p>Dieses Beispiel ist den Beispielen “1wayANOVA_crd” und vor allem “1wayANOVA_rcbd” sehr ähnlich und baut darauf auf. Tatsächlich handelt es sich um den gleichen Datensatz wie in “1wayANOVA_rcbd”. Es ist ein Beispieldatensatz mit dem Namen <code>john.alpha</code> aus dem <code>agridat</code> package.</p>
@@ -361,22 +346,19 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
-<pre class="r"><code>head(alpha)</code></pre>
-<pre><code>##    gen rep inc.block  yield
-## 1: G11  R1        B1 4.1172
-## 2: G04  R1        B1 4.4461
-## 3: G05  R1        B1 5.8757
-## 4: G22  R1        B1 4.5784
-## 5: G21  R1        B2 4.6540
-## 6: G10  R1        B2 4.1736</code></pre>
-<pre class="r"><code>tail(alpha)</code></pre>
-<pre><code>##    gen rep inc.block  yield
-## 1: G16  R3        B5 4.3852
-## 2: G24  R3        B5 3.5655
-## 3: G03  R3        B6 2.8873
-## 4: G05  R3        B6 4.1972
-## 5: G20  R3        B6 3.7349
-## 6: G07  R3        B6 3.6096</code></pre>
+<pre class="r"><code>print(alpha, nrows=10)</code></pre>
+<pre><code>##     gen rep inc.block  yield
+##  1: G11  R1        B1 4.1172
+##  2: G04  R1        B1 4.4461
+##  3: G05  R1        B1 5.8757
+##  4: G22  R1        B1 4.5784
+##  5: G21  R1        B2 4.6540
+## ---                         
+## 68: G24  R3        B5 3.5655
+## 69: G03  R3        B6 2.8873
+## 70: G05  R3        B6 4.1972
+## 71: G20  R3        B6 3.7349
+## 72: G07  R3        B6 3.6096</code></pre>
 </div>
 </div>
 </div>
@@ -385,14 +367,13 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu den vorangegangenen ‘1wayANOVA’ Beispielen erstellen wir diesmal auch einen komplexeren Boxplot via <code>boxplot()</code> für die unvollständigem Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>head(alpha[order(gen)])</code></pre>
-<pre><code>##    gen rep inc.block  yield
-## 1: G01  R1        B5 5.1202
-## 2: G01  R2        B4 5.7161
-## 3: G01  R3        B1 4.6512
-## 4: G02  R1        B2 4.3350
-## 5: G02  R2        B5 5.1566
-## 6: G02  R3        B2 4.0510</code></pre>
+<pre class="r"><code>str(alpha, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  4 variables:
+##  $ gen      : Factor w/ 24 levels &quot;G0&quot;..
+##  $ rep      : Factor w/ 3 levels &quot;R1&quot;&quot;..
+##  $ inc.block: Factor w/ 6 levels &quot;B1&quot;&quot;..
+##  $ yield    : num  4.12 4.45 5.88 4.58..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$gen)</code></pre>
 <p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
