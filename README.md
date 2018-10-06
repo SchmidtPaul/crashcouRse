@@ -1,5 +1,5 @@
 To Do
-* Other: Desplot page
+* ASREML cov strukturen 
 * Vergleich Versuchsanlagen. Wann zufälliger Blockeffekt? Wann Blockeffekt aus dem Modell nehmen?
 * Mulitpler Mittelwertvergleich (t-test, Tukey-Test) - Adjustierung
 * alpha lattice auswertung
