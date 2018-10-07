@@ -1,0 +1,7 @@
+library(data.table) # bessere Datenmanipulation
+library(asreml) # gemischtes Modell package 2 - benötigt R version 3.2.3. und Lizenz
+
+asr.un <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ us(week):plot)
+summary(asr.un)$varcomp[, c(2,3,5)] # UN vars + cors

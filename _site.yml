@@ -21,6 +21,8 @@ navbar:
           href: desplot.html
         - text: "2) Versuchsdesigns"
           href: DesignList.html
+        - text: "3) Varianzstrukturen"
+          href: VarCovStr1.html
   right:
     - text: "Kontakt"
       href: Kontakt.html

@@ -16,6 +16,7 @@ library(data.table) # bessere Datenmanipulation
 library(ggplot2) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte
 library(lme4); library(lmerTest) # gemischtes Modell
+library(RColorBrewer) # bessere Farben
 ```
 
 In diesem Experiment wurden die Auswirkungen von 6 Stickstoffdüngern (N) auf den Ertrag von 4 Reissorten (G) untersucht. Demnach gab es zwei Behandlungsfaktoren mit insgesamt 6x4=24 Behandlungsstufenkombinationen. Diese 24 Kombinationen wurden 3 mal in vollständigen Blöcken wiederholt. Innerhalb der vollständigen Blöcke wurden die Kombinationen allerdings nicht wie bei einem RCBD vollständig randomisiert. Grund hierfür war, dass es beim Anlegen des Feldversuchs und speziell beim ausbringen der Dünger praktisch einfacher ist, wenn die Parzellen mit demselben Dünger in einer Linie liegen. Deshalb wurden die vollständigen Blöcke erst in 6 Spalten (=*main plots*) unterteilt, auf welche die 6 N-Stufen randomisert wurden. Erst dann, wurden die 4 Sorten den 4 Zeilen innerhalb jeder Spalte (=*sub-plot*) zufällig zugeordnet. Solch eine Versuchsanlage nennt man **split-plot design**. [Hier mehr Infos zu Versuchsdesigns](DesignList.html)

@@ -2,9 +2,9 @@
 title: "Paul Schmidt"
 ---
 
-<img src="PS.jpg" style="width:25%; margin-right: 20px" align="left">
+<img src="images/PS.jpg" style="width:25%; margin-right: 20px" align="left">
 
-Ich bin Doktorand im <a href="https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik" target="_blank">Fachgebiet Biostatistik</a> an der Universität Hohenheim.
+Ich bin Doktorand im <a href="https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik" target="_blank">Fachgebiet Biostatistik</a> der Universität Hohenheim.
 
 <i class="fas fa-envelope fa-lg"></i> paul.schmidt@uni-hohenheim.de
 
