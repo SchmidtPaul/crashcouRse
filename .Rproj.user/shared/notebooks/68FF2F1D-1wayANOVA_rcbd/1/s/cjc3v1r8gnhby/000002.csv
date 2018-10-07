@@ -1,0 +1,8 @@
+"0","ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +"
+"0","  geom_bar(aes(y=emmean), stat=""identity"", width=0.8) +"
+"0","  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +"
+"0","  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle=90)) +"
+"0","  labs(y=""Adjustierter Ertragsmittelwert mit 95% Konfidenzintervall"", x=""Sorte"") +"
+"0","  theme_bw() +"
+"0","  annotate(geom=""label"", y=1, x=12, size=3, color=""grey50"", fill=""white"","
+"0","  label=""Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden."")"

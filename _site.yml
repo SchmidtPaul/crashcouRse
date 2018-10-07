@@ -31,4 +31,4 @@ output:
     toc: true
     toc_float: true
     # number_sections: true
-    # css: 'styles.css'
+    css: 'styles.css'

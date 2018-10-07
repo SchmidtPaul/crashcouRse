@@ -1,0 +1,2 @@
+"0","means <- CLD(means$emmeans, details=TRUE, Letters=letters)"
+"0","as.data.table(means$emmeans)[1:6,]"

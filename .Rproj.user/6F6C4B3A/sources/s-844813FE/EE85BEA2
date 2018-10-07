@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "149078577",
+    "hash" : "0",
     "id" : "EE85BEA2",
-    "lastKnownWriteTime" : 1538859752,
-    "last_content_update" : 1538859752841,
+    "lastKnownWriteTime" : 1538913427,
+    "last_content_update" : 1538913427735,
     "path" : "D:/RKurse/Dokumentation/crashcouRse/_site.yml",
     "project_path" : "_site.yml",
     "properties" : {
-        "cursorPosition" : "16,16",
-        "scrollLine" : "4"
+        "cursorPosition" : "14,16",
+        "scrollLine" : "10"
     },
     "relative_order" : 1,
     "source_on_save" : false,

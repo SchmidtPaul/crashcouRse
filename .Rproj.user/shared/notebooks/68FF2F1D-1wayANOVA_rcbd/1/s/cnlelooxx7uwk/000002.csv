@@ -1,0 +1,1 @@
+"0","mod <- lm(yield ~ gen + rep, data=rcbd)"

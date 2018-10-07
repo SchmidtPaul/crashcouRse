@@ -1,0 +1,4 @@
+"0","desplot(data=rcbd, form= rep ~ col+row, col.regions=brewer.pal(3,""Reds""),"
+"0","        text=gen, cex=0.4, shorten=""no"","
+"0","        main=""Block1          Block2          Block3"", "
+"0","        xlab="""", ylab="""", show.key=F, out1=rep)"

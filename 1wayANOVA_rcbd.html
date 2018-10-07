@@ -71,6 +71,7 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="styles.css" type="text/css" />
 
 </head>
 
@@ -341,25 +342,25 @@ div.tocify {
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Dieses Beispiel ist dem Beispiel “1wayANOVA_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden.</p>
+<p>Dieses Beispiel ist dem Beispiel “1wayANOVA_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden. <a href="DesignList.html">Hier mehr Infos zu Versuchsdesigns</a></p>
 <div class="row">
 <div class="col-md-6">
 <p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>print(rcbd, nrows=10)</code></pre>
-<pre><code>##     gen rep  yield
-##  1: G11  R1 4.1172
-##  2: G04  R1 4.4461
-##  3: G05  R1 5.8757
-##  4: G22  R1 4.5784
-##  5: G21  R1 4.6540
-## ---               
-## 68: G24  R3 3.5655
-## 69: G03  R3 2.8873
-## 70: G05  R3 4.1972
-## 71: G20  R3 3.7349
-## 72: G07  R3 3.6096</code></pre>
+<pre><code>##     gen  rep  yield
+##  1: G11 Rep1 4.1172
+##  2: G04 Rep1 4.4461
+##  3: G05 Rep1 5.8757
+##  4: G22 Rep1 4.5784
+##  5: G21 Rep1 4.6540
+## ---                
+## 68: G24 Rep3 3.5655
+## 69: G03 Rep3 2.8873
+## 70: G05 Rep3 4.1972
+## 71: G20 Rep3 3.7349
+## 72: G07 Rep3 3.6096</code></pre>
 </div>
 </div>
 </div>
@@ -371,7 +372,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <pre class="r"><code>str(rcbd, width=40, strict.width=&quot;cut&quot;)</code></pre>
 <pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  3 variables:
 ##  $ gen  : Factor w/ 24 levels &quot;G01&quot;,&quot;&quot;..
-##  $ rep  : Factor w/ 3 levels &quot;R1&quot;,&quot;R2&quot;..
+##  $ rep  : Factor w/ 3 levels &quot;Rep1&quot;,&quot;&quot;..
 ##  $ yield: num  4.12 4.45 5.88 4.58 4.6..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
@@ -379,13 +380,13 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(rcbd)</code></pre>
-<pre><code>##       gen     rep         yield      
-##  G01    : 3   R1:24   Min.   :2.887  
-##  G02    : 3   R2:24   1st Qu.:4.110  
-##  G03    : 3   R3:24   Median :4.404  
-##  G04    : 3           Mean   :4.480  
-##  G05    : 3           3rd Qu.:4.968  
-##  G06    : 3           Max.   :5.876  
+<pre><code>##       gen       rep         yield      
+##  G01    : 3   Rep1:24   Min.   :2.887  
+##  G02    : 3   Rep2:24   1st Qu.:4.110  
+##  G03    : 3   Rep3:24   Median :4.404  
+##  G04    : 3             Mean   :4.480  
+##  G05    : 3             3rd Qu.:4.968  
+##  G06    : 3             Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
 <p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
