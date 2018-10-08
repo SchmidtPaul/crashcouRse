@@ -180,7 +180,7 @@ desplot(data=nuts, form= block ~ col+row,
 </div> <div class = "col-md-6">
 ```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
 desplot(data=nuts, form= res ~ col+row,
-        text=gen, cex=0.8,
+        text=res, cex=0.8, shorten="no",
         show.key=F,
         main="Residuen des RCBD Modells")
 ```
