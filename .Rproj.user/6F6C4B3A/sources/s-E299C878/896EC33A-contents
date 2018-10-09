@@ -1,0 +1,101 @@
+library(asreml) # requires R version 3.2.3. and license
+library(desplot)
+
+data(nin89) # load example dataset from asreml package
+
+### Basic model p. 25
+#####################
+nin89.asr <- asreml(fixed  = yield ~ Variety, 
+                    random =       ~ Rep,
+                    data   = nin89, 
+                    na.method.X = "include")
+
+# Basic model outputs
+summary(nin89.asr)$varcomp[,c(2,3,5)] # variance components
+predict(nin89.asr, classify="Variety")$pred$pvals # adjusted means with s.e.
+predict(nin89.asr, classify="Variety")$pred$avsed # average s.e.d.
+  # AIC: actually need to define a function. I pasted it at the bottom of this code.
+  # After running it, this gets you the AIC: getAIC(nin89.asr)
+
+
+# (p.54) Check rules for combining variance models
+nin89 <- nin89[order(nin89$Column),] # data must be ordered according to first factor.
+
+
+### Model 2 p.42
+################
+sp.asr <- asreml(fixed = yield ~ Variety, 
+                 rcov  = ~ Column:ar1(Row),
+                 data  = nin89, 
+                 na.method.X = "include")
+
+summary(sp.asr)$varcomp[,c(2,3,5)]
+
+
+### Model 2a p.42
+#################
+sp.asr <- asreml(fixed = yield ~ Variety, 
+                 rcov  = ~ ar1(Column):ar1(Row),
+                 data  = nin89, 
+                 na.method.X = "include")
+
+summary(sp.asr)$varcomp[,c(2,3,5)]
+
+
+### Model 2b p.42
+#################
+sp.asr <- asreml(fixed = yield ~ Variety,
+                 random = ~ units,
+                 rcov  = ~ ar1(Column):ar1(Row),
+                 data  = nin89, 
+                 na.method.X = "include")
+
+summary(sp.asr)$varcomp[,c(2,3,5)]
+
+
+### Model 3 p.43   is equal to   Model 2b
+#########################################
+sp.asr <- asreml(fixed  = yield ~ Variety,
+                 random = ~ ar1v(Column):ar1(Row),
+                 data   = nin89, 
+                 na.method.X = "include")
+
+summary(sp.asr)$varcomp[,c(2,3,5)]
+
+
+# Model 3 again, but giving initial values
+##########################################
+# this may help if you have a hard to get
+# the model to converge.
+
+sp.asr <- asreml(fixed  = yield ~ Variety,
+                 random = ~ ar1v(Column, init=c(0.8, 45)):ar1(Row, init=c(0.9)),
+                 data   = nin89, 
+                 na.method.X = "include")
+
+
+
+
+# Extra funtions
+#################
+# AIC & BIC
+'getAIC' <- function(asremlmod)
+{
+  vc     <- data.table(summary(asremlmod)$varcomp)
+  loglik <- summary(asremlmod)$loglik
+  n.par  <- dim(vc[constraint!="Fixed" & constraint!="Constrained"])[1]
+  out <- data.frame(loglik   = loglik,
+                    m2loglik = -2 * loglik,
+                    n.par    = n.par,
+                    AIC      = -2 * loglik + 2 * n.par)
+  out
+}
+
+# Variance components with confidence interval (needs nadiv package)
+'getVC' <- function(asremlmod)
+{  
+  VC1 <- data.table(summary(asremlmod)$varcomp, keep.rownames="CovParm")
+  VC2 <- data.table(nadiv::aiCI(asremlmod),     keep.rownames="CovParm")
+  VC  <- VC2[VC1, .(CovParm, LCL, estimate, UCL, std.error, constraint), on="CovParm"]
+  return(VC)
+}

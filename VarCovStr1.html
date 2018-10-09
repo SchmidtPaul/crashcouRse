@@ -476,8 +476,8 @@ summary(asr.dg)$varcomp[,c(2,3,5)] # DG.vars</code></pre>
 </div>
 </div>
 </div>
-<div id="ar1---first-order-autoregressive" class="section level2">
-<h2>AR1 - first order autoregressive</h2>
+<div id="ar1-first-order-autoregressive" class="section level2">
+<h2>AR1: first order autoregressive</h2>
 <div class="row">
 <div class="col-md-6">
 <h3 id="nlme-2">nlme</h3>
@@ -549,6 +549,10 @@ summary(asr.un)$varcomp[, c(2,3,5)] # UN vars + cors</code></pre>
 </div>
 </div>
 </div>
+</div>
+<div id="komplexere-varianzsstrukturen" class="section level1">
+<h1>Komplexere Varianzsstrukturen</h1>
+<p>In <code>asreml</code>, nicht aber in <code>nlme</code>, ist es möglich komplexere Varianzsstrukturen zu erzeugen. So können bis zu 3 Varianzstrukturmatrizen mittels Kronecker-Produkt miteinander kombiniert werden. Siehe dazu Seite 11 der “asreml-R.pdf” package Dokumentation, sowie die Beispielcodes <a href="https://github.com/SchmidtPaul/useful/blob/master/nlmeVSasreml/VarCovStructures2.R">hier</a>.</p>
 </div>
 
 
