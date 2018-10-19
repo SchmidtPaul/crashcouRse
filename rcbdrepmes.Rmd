@@ -1,0 +1,132 @@
+---
+title: "Messwiederholungen"
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table)
+library(nlme)
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/sorghum repmes.rda")
+```
+
+```{r, eval=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(nlme)   # gemischtes Modell package 1
+library(asreml) # gemischtes Modell package 2 - benötigt R version 3.2.3. und Lizenz
+```
+
+# Datensatz
+
+In diesem Experiment wurde in einer randomisierten vollständigen Blockanlage (RCBD) mit 5 Wiederholungen der Blattflächenindex von 5 Sorghumsorten verglichen. Allerdings wurde der Blattflächenindex mehrfach, nämlich in 5 aufeinanderfolgenden Wochen, gemessen, sodass Messwiederholungen vorliegen. 
+
+> Dieses Beispiel basiert auf *Example 4* des `agriTutorial` packages und der dazugehörigen Veröffentlichung
+> <br />
+> Piepho, H. P., & Edmondson, R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science.
+
+Messwiederholungen werfen eine Neuerung gegenüber den vorangegangenen Beispielen auf: zum ersten Mal ist die kleinste Randomisationseinheit (=Parzelle) nicht gleichzeitig die Beobachtungseinheit, da wir mehrere Beobachtungen pro Parzelle haben. Der wichtige Punkt hier ist, dass der Faktor Woche nicht randomisiert werden kann. Statt der üblichen Annahme von unabhängigen Messwerten, sind Messwerte derselben Parzelle von aufeinanderfolgenden Wochen wahrscheinlich miteinander korreliert. Um dies zu modellieren, soll im ersten Schritt vorerst das Modell für die Analyse einer einzelnen Woche aufgestellt werden.   
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(repmes, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r}
+str(repmes, width=40, strict.width="cut")
+```
+</div> </div>
+
+# Analyse einer einzelnen Woche
+
+Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( [siehe Beispiel](1wayANOVA_rcbd.html) ).
+
+## Manuelle Analyse
+
+Dann müssen wir lediglich einen Teildatensatz mit den Daten von nur einer Woche erstellen und auswerten.
+
+```{r}
+repmes.wk1 <- repmes[week=="1"] # Nur Daten der ersten Woche
+mod.wk1 <- lm(y ~ gen + rep, data=repmes.wk1)
+anova(mod.wk1)
+```
+
+So erhalten wir also die Ergebnisse der Varianzanalyse für die erste Woche und könnten wie gewohnt fortfahren indem wir adjustierte Mittelwerte für den signifikanten Faktor Sorte berechnen. 
+
+## Analyse in einem Loop
+
+Anstatt die 5 Teildatensätze der 5 Wochen separat und manuell zu erstellen, können wir eine Schleife (*Loop*) schreiben, die automatisch eine Woche nach der anderen analysiert. Zusätzlich können wir in R eine *Liste* erstellen, in der die Ergebnisse aller durch den Loop generierten Varianzanalysen gespeichert werden.
+
+```{r}
+anova.liste <- list() # erstelle ein leeres Listenobjekt
+
+for (wochen.nr in c("1", "2", "3", "4", "5")){ # Loop Anfang
+  repmes.wkX <- repmes[week==wochen.nr]
+  mod.wkX <- lm(y ~ gen + rep, data=repmes.wkX)
+  anova.liste[[wochen.nr]] <- anova(mod.wkX)
+} # Loop Ende
+
+anova.liste[["1"]] # Zeige ANOVA der 1. Woche
+anova.liste[["5"]] # Zeige ANOVA der 5. Woche
+```
+
+# Analyse des gesamten Datensatzes
+
+<img src="images/fig6corerr.PNG" style="width:50%" align="right"> Der Nachteil der separaten Analyse einzelner Wochen wird besonders deutlich, wenn wir uns vorstellen, dass wir Messwerte von sehr viel mehr Wochen hätten, deren ANOVAs nicht immer die gleichen Signifikanzen zeigen: Es kann schwierig sein eine wochenübergreifende Antwort zu geben. Außerdem wurde durch das separate Analysieren auch immer nur ein Bruchteil der Informationen genutzt. Demnach ist es erstrebenswert den Datensatz als ganzes mit einem geeigneten Modell auszuwerten. Dafür müssen wir Korrelationen zwischen den Fehlertermen verschiedener Wochen erlauben. Die Grafik, die aus dem oben erwähnten Artikel stammt, soll dies verdeutlichen. 
+
+## Die AR1 Varianzstruktur
+
+Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (*independent and identically distributed*, kurz *IID*). Um also nun korrelierte Fehler zu modellieren kann man eine Varianzstruktur für die Fehler annehmen. Es gibt verschiedene Varianzstrukturen ( [siehe hier](VarCovStr1.html) ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen *first order autoregressive*, kurz *AR1* trägt.
+
+Um lineare Modelle anzupassen, die eine andere Varianzstruktur als *IID* annehmen, wird die *Verallgemeinerte Kleinste-Quadrat-Schätzung* (engl. *generalized least squares* kurz *GLS*) angewandt. Das `nlme` package hat dafür die Funktion `gls()`. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: `y ~ gen + rep`. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept $\mu$ angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, sollten wir jeden Effekt wochenspezifisch definieren: `y ~ week + week*gen + week*rep`. Wir erhalten nun also je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche. 
+
+```{r}
+mod.iid <- gls(y ~ week + week*gen + week*rep,
+               data = repmes)
+```
+
+Schließlich wollen wir noch dafür sorgen, dass die Fehler desselben Plots zwsichen den Wochen autokorreliert sind, was mit dem Argument `corr = corExp(form = ~ week|plot)` funktioniert.
+
+```{r}
+mod.ar1 <- gls(y ~ week + week*gen + week*rep,
+               corr = corExp(form = ~ week|plot),
+               data = repmes)
+```
+
+Wir können die geschätzten Fehlervarianz und -korrelation einsehen:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+mod.iid$sigma^2 # IID.var 
+```
+</div> <div class = "col-md-6">
+```{r}
+mod.ar1$sigma^2 # AR1.var 
+```
+</div> </div>
+```{r}
+as.numeric(exp(-1/coef(mod.ar1$modelStruct$corStruct, unconstrained=F))) # AR1.cor
+```
+
+Die Korrelation wurde also auf 0.78 geschätzt, was darauf hindeutet, dass diese Varianzstruktur in der Tat für die Modellierung der Daten geiignet ist. Um in solchen Fällen zu entscheiden ob das AR1-Modell tatsächlich dem IID-Modell vorzuziehen ist, können hier die AIC (*Akaike Information Criterion*) Werte verglichen werden. Dabei gilt, dass das Modell mit dem kleineren AIC-Wert das bessere ist. Zu beachten ist außerdem, dass nur Modelle, die die gleichen festen Effekte haben, mittels AIC-Wert verglichen werden sollten.
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+AIC(mod.iid)
+```
+</div> <div class = "col-md-6">
+```{r}
+AIC(mod.ar1)
+```
+</div> </div>
+
+Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit [anderen Varianzstrukturen](VarCovStr1.html) verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.
+
+Schließlich können wir wie gewohnt eine ANOVA durchführen um den F-Test für den Behandlungsfaktor durchzuführen - nur eben für das selektierte AR1-Modell.
+
+```{r}
+anova(mod.ar1)
+```
+
+
+
+
+
+

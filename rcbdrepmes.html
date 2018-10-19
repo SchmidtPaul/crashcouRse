@@ -11,7 +11,7 @@
 
 
 
-<title>Varianzstrukturen</title>
+<title>Messwiederholungen</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -335,7 +335,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Varianzstrukturen</h1>
+<h1 class="title toc-ignore">Messwiederholungen</h1>
 
 </div>
 
@@ -378,128 +378,108 @@ library(asreml) # gemischtes Modell package 2 - benötigt R version 3.2.3. und L
 </div>
 </div>
 </div>
-<div id="varianzstrukturen" class="section level1">
-<h1>Varianzstrukturen</h1>
-<p><img src="images/fig6corerr.PNG" style="width:50%" align="center"></p>
-<div id="nlme-asreml-r" class="section level2">
-<h2>nlme &amp; asreml-R</h2>
-<p>Wir werden hier die Modelle mit der <code>gls()</code> Funktion aus dem <code>nlme</code> package anpassen. Zu jedem Modell wird auch das Gegenstück in <code>asreml()</code> Syntax gezeigt, allerdings nicht ausgeführt. Das asreml-R version 3.0 package funktioniert nur mit älteren R-Version 3.2.3, die man <a href="https://cran.r-project.org/bin/windows/base/old/3.2.3/">hier</a> herunterladen kann. Außerdem muss man eine Lizenz besitzen. An der Universität Hohenheim gibt es diese im ILIAS und man muss auch nach der Installation mit dem Hohenheimer VPN verbunden sein, damit das package funktioniert. Der Code dieses Beispiels ist auch <a href="https://github.com/SchmidtPaul/useful/tree/master/nlmeVSasreml">hier</a> auf meinem GitHub verfügbar.</p>
+<div id="analyse-einer-einzelnen-woche" class="section level1">
+<h1>Analyse einer einzelnen Woche</h1>
+<p>Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( <a href="1wayANOVA_rcbd.html">siehe Beispiel</a> ).</p>
+<div id="manuelle-analyse" class="section level2">
+<h2>Manuelle Analyse</h2>
+<p>Dann müssen wir lediglich einen Teildatensatz mit den Daten von nur einer Woche erstellen und auswerten.</p>
+<pre class="r"><code>repmes.wk1 &lt;- repmes[week==&quot;1&quot;] # Nur Daten der ersten Woche
+mod.wk1 &lt;- lm(y ~ gen + rep, data=repmes.wk1)
+anova(mod.wk1)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen        3 2.7604 0.92012   46.59 6.918e-07 ***
+## rep        4 8.3190 2.07974  105.31 3.086e-09 ***
+## Residuals 12 0.2370 0.01975                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>So erhalten wir also die Ergebnisse der Varianzanalyse für die erste Woche und könnten wie gewohnt fortfahren indem wir adjustierte Mittelwerte für den signifikanten Faktor Sorte berechnen.</p>
 </div>
-<div id="id-unabhangige-homogene-varianzen" class="section level2">
-<h2>ID: unabhängige, homogene Varianzen</h2>
+<div id="analyse-in-einem-loop" class="section level2">
+<h2>Analyse in einem Loop</h2>
+<p>Anstatt die 5 Teildatensätze der 5 Wochen separat und manuell zu erstellen, können wir eine Schleife (<em>Loop</em>) schreiben, die automatisch eine Woche nach der anderen analysiert. Zusätzlich können wir in R eine <em>Liste</em> erstellen, in der die Ergebnisse aller durch den Loop generierten Varianzanalysen gespeichert werden.</p>
+<pre class="r"><code>anova.liste &lt;- list() # erstelle ein leeres Listenobjekt
+
+for (wochen.nr in c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;)){ # Loop Anfang
+  repmes.wkX &lt;- repmes[week==wochen.nr]
+  mod.wkX &lt;- lm(y ~ gen + rep, data=repmes.wkX)
+  anova.liste[[wochen.nr]] &lt;- anova(mod.wkX)
+} # Loop Ende
+
+anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen        3 2.7604 0.92012   46.59 6.918e-07 ***
+## rep        4 8.3190 2.07974  105.31 3.086e-09 ***
+## Residuals 12 0.2370 0.01975                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova.liste[[&quot;5&quot;]] # Zeige ANOVA der 5. Woche</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen        3 5.9977 1.99924  97.196 1.099e-08 ***
+## rep        4 4.3410 1.08526  52.762 1.619e-07 ***
+## Residuals 12 0.2468 0.02057                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div id="analyse-des-gesamten-datensatzes" class="section level1">
+<h1>Analyse des gesamten Datensatzes</h1>
+<p><img src="images/fig6corerr.PNG" style="width:50%" align="right"> Der Nachteil der separaten Analyse einzelner Wochen wird besonders deutlich, wenn wir uns vorstellen, dass wir Messwerte von sehr viel mehr Wochen hätten, deren ANOVAs nicht immer die gleichen Signifikanzen zeigen: Es kann schwierig sein eine wochenübergreifende Antwort zu geben. Außerdem wurde durch das separate Analysieren auch immer nur ein Bruchteil der Informationen genutzt. Demnach ist es erstrebenswert den Datensatz als ganzes mit einem geeigneten Modell auszuwerten. Dafür müssen wir Korrelationen zwischen den Fehlertermen verschiedener Wochen erlauben. Die Grafik, die aus dem oben erwähnten Artikel stammt, soll dies verdeutlichen.</p>
+<div id="die-ar1-varianzstruktur" class="section level2">
+<h2>Die AR1 Varianzstruktur</h2>
+<p>Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (<em>independent and identically distributed</em>, kurz <em>IID</em>). Um also nun korrelierte Fehler zu modellieren kann man eine Varianzstruktur für die Fehler annehmen. Es gibt verschiedene Varianzstrukturen ( <a href="VarCovStr1.html">siehe hier</a> ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen <em>first order autoregressive</em>, kurz <em>AR1</em> trägt.</p>
+<p>Um lineare Modelle anzupassen, die eine andere Varianzstruktur als <em>IID</em> annehmen, wird die <em>Verallgemeinerte Kleinste-Quadrat-Schätzung</em> (engl. <em>generalized least squares</em> kurz <em>GLS</em>) angewandt. Das <code>nlme</code> package hat dafür die Funktion <code>gls()</code>. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: <code>y ~ gen + rep</code>. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept <span class="math inline">\(\mu\)</span> angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, sollten wir jeden Effekt wochenspezifisch definieren: <code>y ~ week + week*gen + week*rep</code>. Wir erhalten nun also je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche.</p>
+<pre class="r"><code>mod.iid &lt;- gls(y ~ week + week*gen + week*rep,
+               data = repmes)</code></pre>
+<p>Schließlich wollen wir noch dafür sorgen, dass die Fehler desselben Plots zwsichen den Wochen autokorreliert sind, was mit dem Argument <code>corr = corExp(form = ~ week|plot)</code> funktioniert.</p>
+<pre class="r"><code>mod.ar1 &lt;- gls(y ~ week + week*gen + week*rep,
+               corr = corExp(form = ~ week|plot),
+               data = repmes)</code></pre>
+<p>Wir können die geschätzten Fehlervarianz und -korrelation einsehen:</p>
 <div class="row">
 <div class="col-md-6">
-<h3 id="nlme">nlme</h3>
-<pre class="r"><code>gls.id &lt;- gls(y ~ week + week*gen + week*rep,
-              data=repmes)
-gls.id$sigma^2 # ID.var</code></pre>
+<pre class="r"><code>mod.iid$sigma^2 # IID.var </code></pre>
 <pre><code>## [1] 0.02317583</code></pre>
 </div>
 <div class="col-md-6">
-<h3 id="asreml-r-v3">asreml-R v3</h3>
-<pre class="r"><code>asr.id &lt;- asreml(data  = repmes,
-                 fixed = y ~ week + week:gen + week:rep)
-summary(asr.id)$varcomp[,c(2,3,5)] # ID.var</code></pre>
-</div>
-</div>
-</div>
-<div id="diag-unabhangige-heterogene-varianzen" class="section level2">
-<h2>DIAG: unabhängige, heterogene Varianzen</h2>
-<div class="row">
-<div class="col-md-6">
-<h3 id="nlme-1">nlme</h3>
-<pre class="r"><code>gls.dg &lt;- gls(y ~ week + week*gen + week*rep,
-              weights = varIdent(form = ~ 1|week),
-              data=repmes)
-c(gls.dg$sigma^2, coef(gls.dg$modelStruct$varStruct, unconstrained=T)) # DG.vars</code></pre>
-<pre><code>## [1] 0.01974884 0.02025008 0.06080399 0.25204018 0.02035127</code></pre>
-</div>
-<div class="col-md-6">
-<h3 id="asreml-r-v3-1">asreml-R v3</h3>
-<pre class="r"><code>asr.dg &lt;- asreml(data  = repmes,
-                 fixed = y ~ week + week:gen + week:rep,
-                 rcov  = ~ at(week):plot)
-summary(asr.dg)$varcomp[,c(2,3,5)] # DG.vars</code></pre>
-</div>
-</div>
-</div>
-<div id="ar1-first-order-autoregressive" class="section level2">
-<h2>AR1: first order autoregressive</h2>
-<div class="row">
-<div class="col-md-6">
-<h3 id="nlme-2">nlme</h3>
-<pre class="r"><code>gls.ar &lt;- gls(y ~ week + week*gen + week*rep,
-              corr = corExp(form = ~ week|plot),
-              data=repmes)
-gls.ar$sigma^2 # AR1.var </code></pre>
+<pre class="r"><code>mod.ar1$sigma^2 # AR1.var </code></pre>
 <pre><code>## [1] 0.02317583</code></pre>
-<pre class="r"><code>as.numeric(exp(-1/coef(gls.ar$modelStruct$corStruct, unconstrained=F))) # AR1.cor</code></pre>
+</div>
+</div>
+<pre class="r"><code>as.numeric(exp(-1/coef(mod.ar1$modelStruct$corStruct, unconstrained=F))) # AR1.cor</code></pre>
 <pre><code>## [1] 0.7776763</code></pre>
-</div>
-<div class="col-md-6">
-<h3 id="asreml-r-v3-2">asreml-R v3</h3>
-<pre class="r"><code>asr.ar &lt;- asreml(data  = repmes,
-                 fixed = y ~ week + week:gen + week:rep,
-                 rcov  = ~ ar1(week):plot)
-summary(asr.ar)$varcomp[,c(2,3,5)] # AR var + cor</code></pre>
-</div>
-</div>
-</div>
-<div id="cs-compound-symmetry" class="section level2">
-<h2>CS: compound symmetry</h2>
+<p>Die Korrelation wurde also auf 0.78 geschätzt, was darauf hindeutet, dass diese Varianzstruktur in der Tat für die Modellierung der Daten geiignet ist. Um in solchen Fällen zu entscheiden ob das AR1-Modell tatsächlich dem IID-Modell vorzuziehen ist, können hier die AIC (<em>Akaike Information Criterion</em>) Werte verglichen werden. Dabei gilt, dass das Modell mit dem kleineren AIC-Wert das bessere ist. Zu beachten ist außerdem, dass nur Modelle, die die gleichen festen Effekte haben, mittels AIC-Wert verglichen werden sollten.</p>
 <div class="row">
 <div class="col-md-6">
-<h3 id="nlme-3">nlme</h3>
-<pre class="r"><code>gls.cs &lt;- gls(y ~ week + week*gen + week*rep,
-              corr  = corCompSymm(form = ~ week|plot),
-              data=repmes)
-gls.cs$sigma^2 # CS.var </code></pre>
-<pre><code>## [1] 0.02317584</code></pre>
-<pre class="r"><code>as.numeric(coef(gls.cs$modelStruct$corStruct, unconstrained=F)) # CS.cor</code></pre>
-<pre><code>## [1] 0.7007553</code></pre>
+<pre class="r"><code>AIC(mod.iid)</code></pre>
+<pre><code>## [1] 78.26137</code></pre>
 </div>
 <div class="col-md-6">
-<h3 id="asreml-r-v3-3">asreml-R v3</h3>
-<pre class="r"><code>asr.cs &lt;- asreml(data  = repmes,
-                 fixed = y ~ week + week:gen + week:rep,
-                 rcov  = ~ cor(week):plot)
-summary(asr.cs)$varcomp[,c(2,3,5)] # CS var + cor</code></pre>
+<pre class="r"><code>AIC(mod.ar1)</code></pre>
+<pre><code>## [1] 38.37925</code></pre>
 </div>
 </div>
+<p>Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit <a href="VarCovStr1.html">anderen Varianzstrukturen</a> verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.</p>
+<p>Schließlich können wir wie gewohnt eine ANOVA durchführen um den F-Test für den Behandlungsfaktor durchzuführen - nur eben für das selektierte AR1-Modell.</p>
+<pre class="r"><code>anova(mod.ar1)</code></pre>
+<pre><code>## Denom. DF: 60 
+##             numDF   F-value p-value
+## (Intercept)     1 21284.944  &lt;.0001
+## week            4   738.198  &lt;.0001
+## gen             3    88.053  &lt;.0001
+## rep             4    94.361  &lt;.0001
+## week:gen       12    14.975  &lt;.0001
+## week:rep       16     6.077  &lt;.0001</code></pre>
 </div>
-<div id="un-unstrukturiert" class="section level2">
-<h2>UN: unstrukturiert</h2>
-<div class="row">
-<div class="col-md-6">
-<h3 id="nlme-4">nlme</h3>
-<pre class="r"><code>gls.un &lt;- gls(y ~ week + week*gen + week*rep,
-              corr    =  corSymm(form = ~ 1|plot),
-              weights = varIdent(form = ~ 1|week),
-              data=repmes)
-c(gls.un$sigma^2, coef(gls.un$modelStruct$varStruct, unconstrained=T)) # UN.vars</code></pre>
-<pre><code>## [1] 0.01974917 0.02023972 0.06079313 0.25202976 0.02034033</code></pre>
-<pre class="r"><code>gls.un$modelStruct$corStruct # UN.cors</code></pre>
-<pre><code>## Correlation structure of class corSymm representing
-##  Correlation: 
-##   1     2     3     4    
-## 2 0.708                  
-## 3 0.644 0.634            
-## 4 0.748 0.744 0.934      
-## 5 0.534 0.549 0.718 0.776</code></pre>
-</div>
-<div class="col-md-6">
-<h3 id="asreml-r-v3-4">asreml-R v3</h3>
-<pre class="r"><code>asr.un &lt;- asreml(data  = repmes,
-                 fixed = y ~ week + week:gen + week:rep,
-                 rcov  = ~ us(week):plot)
-summary(asr.un)$varcomp[, c(2,3,5)] # UN vars + cors</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div id="komplexere-varianzsstrukturen" class="section level1">
-<h1>Komplexere Varianzsstrukturen</h1>
-<p>In <code>asreml</code>, nicht aber in <code>nlme</code>, ist es möglich komplexere Varianzsstrukturen zu erzeugen. So können bis zu 3 Varianzstrukturmatrizen mittels Kronecker-Produkt miteinander kombiniert werden. Siehe dazu Seite 11 der “asreml-R.pdf” package Dokumentation, sowie die Beispielcodes <a href="https://github.com/SchmidtPaul/useful/blob/master/nlmeVSasreml/VarCovStructures2.R">hier</a>.</p>
 </div>
 
 

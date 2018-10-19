@@ -1,0 +1,99 @@
+rm(list=ls())
+library(data.table) # better data handling
+library(asreml)     # linear mixed model package
+library(nlme)       # linear mixed model package
+
+### Repeated measures example ###
+#################################
+### For more info on repeated measures see ch. 7 of "Quantitative 
+### Methods in Biosciences", ch. 6 in "Mixed models for metric data"
+### and Example 4 of Piepho HP, Edmondson RN. A tutorial on the statistical 
+### analysis of factorial experiments with qualitative and quantitative 
+### treatment factor levels. J Agro Crop Sci. 2018;204:429-455.
+
+# load example dataset from github
+load(url("https://github.com/SchmidtPaul/useful/blob/master/nlmeVSasreml/sorghum%20repmes.rda?raw=true"))
+
+### gls() of nlme-package
+#########################
+
+# ID: independent, uncorrelated random plot error
+gls.id <- gls(data  = repmes, 
+              model = y ~ week + week*gen + week*rep)
+gls.id$sigma^2 # ID.var
+
+# DIAG: heterogeneous variances per week
+gls.dg <- gls(data  = repmes, 
+              model = y ~ week + week*gen + week*rep,
+              weights = varIdent(form = ~ 1|week))
+c(gls.dg$sigma^2, coef(gls.dg$modelStruct$varStruct, unconstrained=T)) # DG.vars
+
+# AR1: first-order autoregressive 
+gls.ar <- gls(data  = repmes, 
+              model = y ~ week + week*gen + week*rep,
+              corr  = corExp(form = ~ week|plot))
+gls.ar$sigma^2 # AR1.var 
+as.numeric(exp(-1/coef(gls.ar$modelStruct$corStruct, unconstrained=F))) # AR1.cor
+
+
+# CS: compound symmetry
+gls.cs <- gls(data  = repmes, 
+              model = y ~ week + week*gen + week*rep,
+              corr  = corCompSymm(form = ~ week|plot))
+gls.cs$sigma^2 # CS.var 
+coef(gls.cs$modelStruct$corStruct, unconstrained=F) # CS.cor
+
+
+# UN: Unstructured
+gls.un <- gls(data  = repmes, 
+              model = y ~ week + week*gen + week*rep,
+              corr  = corSymm(form = ~ 1|plot),
+              weights = varIdent(form = ~ 1|week))
+c(gls.un$sigma^2, coef(gls.un$modelStruct$varStruct, unconstrained=T)) # UN.vars
+gls.un$modelStruct$corStruct # UN.cors
+
+
+# AIC values
+AIC(gls.id)
+AIC(gls.dg)
+AIC(gls.ar)
+AIC(gls.cs)
+AIC(gls.un)
+
+### asreml() of asreml-package
+##############################
+repmes <- repmes[order(week)]   # data needs to be sorted correctly
+repmes <- as.data.frame(repmes) # data needs to be a data.frame
+
+# ID: independent, uncorrelated random plot error
+asr.id <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep)
+summary(asr.id)$varcomp[,c(2,3,5)] # ID.var
+
+
+# DIAG: heterogeneous variances per week
+asr.dg <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ at(week):plot)
+summary(asr.dg)$varcomp[,c(2,3,5)] # DG.vars
+
+
+# AR1: first-order autoregressive 
+asr.ar <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ ar1(week):plot)
+summary(asr.ar)$varcomp[,c(2,3,5)] # AR var + cor
+
+
+# CS: compound symmetry
+asr.cs <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ cor(week):plot)
+summary(asr.cs)$varcomp[,c(2,3,5)] # CS var + cor
+
+
+# UN: Unstructured
+asr.un <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ us(week):plot)
+summary(asr.un)$varcomp[, c(2,3,5)] # UN vars + cors

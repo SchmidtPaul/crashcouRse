@@ -34,42 +34,9 @@ str(repmes, width=40, strict.width="cut")
 ```
 </div> </div>
 
-# Analyse einer einzelnen Woche
+# Varianzstrukturen
 
-Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( [siehe Beispiel](1wayANOVA_rcbd.html) ).
-
-## Manuelle Analyse
-
-Dann müssen wir lediglich einen Teildatensatz mit den Daten von nur einer Woche erstellen und auswerten.
-
-```{r}
-repmes.wk1 <- repmes[week=="1"] # Nur Daten der ersten Woche
-mod.wk1 <- lm(y ~ gen + rep, data=repmes.wk1)
-anova(mod.wk1)
-```
-
-So erhalten wir also die Ergebnisse der Varianzanalyse für die erste Woche und könnten wie gewohnt fortfahren indem wir adjustierte Mittelwerte für den signifikanten Faktor Sorte berechnen. 
-
-## Analyse in einem Loop
-
-Anstatt die 5 Teildatensätze der 5 Wochen separat und manuell zu erstellen, können wir eine Schleife (*Loop*) schreiben, die automatisch eine Woche nach der anderen analysiert. Zusätzlich können wir in R eine *Liste* erstellen, in der die Ergebnisse aller durch den Loop generierten Varianzanalysen gespeichert werden.
-
-```{r}
-anova.liste <- list() # erstelle ein leeres Listenobjekt
-
-for (wochen.nr in c("1", "2", "3", "4", "5")){ # Loop Anfang
-  repmes.wkX <- repmes[week==wochen.nr]
-  mod.wkX <- lm(y ~ gen + rep, data=repmes.wkX)
-  anova.liste[[wochen.nr]] <- anova(mod.wkX)
-} # Loop Ende
-
-anova.liste[["1"]] # Zeige ANOVA der 1. Woche
-anova.liste[["5"]] # Zeige ANOVA der 5. Woche
-```
-
-# Analyse des gesamten Datensatzes
-
-<img src="images/fig6corerr.PNG" style="width:50%" align="right"> Der Nachteil der separaten Analyse einzelner Wochen wird besonders deutlich, wenn wir uns vorstellen, dass wir Messwerte von sehr viel mehr Wochen hätten, deren ANOVAs nicht immer die gleichen Signifikanzen zeigen: Es kann schwierig sein eine wochenübergreifende Antwort zu geben. Außerdem wurde durch das separate Analysieren auch immer nur ein Bruchteil der Informationen genutzt. Demnach ist es erstrebenswert den Datensatz als ganzes mit einem geeigneten Modell auszuwerten. Dafür müssen wir Korrelationen zwischen den Fehlertermen verschiedener Wochen erlauben. Die Grafik, die aus dem oben erwähnten Artikel stammt, soll dies verdeutlichen.
+<img src="images/fig6corerr.PNG" style="width:50%" align="center"> 
 
 ## nlme & asreml-R
 
