@@ -301,6 +301,9 @@ div.tocify {
     <li>
       <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
     </li>
+    <li>
+      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -341,48 +344,52 @@ div.tocify {
 
 
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
-library(nlme)   # gemischtes Modell package 1
-library(asreml) # gemischtes Modell package 2 - benötigt R version 3.2.3. und Lizenz</code></pre>
+library(nlme)    # generalisiertes Modell package
+library(emmeans) # adjustierte Mittelwerte
+library(ggplot2) # bessere Plots</code></pre>
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
 <p>In diesem Experiment wurde in einer randomisierten vollständigen Blockanlage (RCBD) mit 5 Wiederholungen der Blattflächenindex von 5 Sorghumsorten verglichen. Allerdings wurde der Blattflächenindex mehrfach, nämlich in 5 aufeinanderfolgenden Wochen, gemessen, sodass Messwiederholungen vorliegen.</p>
 <blockquote>
 <p>Dieses Beispiel basiert auf <em>Example 4</em> des <code>agriTutorial</code> packages und der dazugehörigen Veröffentlichung <br /> Piepho, H. P., &amp; Edmondson, R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science.</p>
 </blockquote>
+<p><img src="rcbdrepmes_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Messwiederholungen werfen eine Neuerung gegenüber den vorangegangenen Beispielen auf: zum ersten Mal ist die kleinste Randomisationseinheit (=Parzelle) nicht gleichzeitig die Beobachtungseinheit, da wir mehrere Beobachtungen pro Parzelle haben. Der wichtige Punkt hier ist, dass der Faktor Woche nicht randomisiert werden kann. Statt der üblichen Annahme von unabhängigen Messwerten, sind Messwerte derselben Parzelle von aufeinanderfolgenden Wochen wahrscheinlich miteinander korreliert. Um dies zu modellieren, soll im ersten Schritt vorerst das Modell für die Analyse einer einzelnen Woche aufgestellt werden.</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>print(repmes, nrows=10)</code></pre>
 <pre><code>##      week gen  rep   plot    y
 ##   1:    1   A rep1  plot1 5.00
-##   2:    2   A rep1  plot1 4.84
-##   3:    3   A rep1  plot1 4.02
-##   4:    4   A rep1  plot1 3.75
-##   5:    5   A rep1  plot1 3.13
+##   2:    1   D rep1  plot2 5.86
+##   3:    1   B rep1  plot3 5.82
+##   4:    1   C rep1  plot4 5.65
+##   5:    1   C rep2  plot5 5.39
 ##  ---                          
-##  96:    1   D rep5 plot20 3.96
-##  97:    2   D rep5 plot20 3.76
-##  98:    3   D rep5 plot20 3.56
-##  99:    4   D rep5 plot20 3.18
-## 100:    5   D rep5 plot20 2.96</code></pre>
+##  96:    5   B rep4 plot16 3.99
+##  97:    5   D rep5 plot17 2.96
+##  98:    5   C rep5 plot18 3.00
+##  99:    5   B rep5 plot19 2.95
+## 100:    5   A rep5 plot20 2.16</code></pre>
 </div>
 <div class="col-md-6">
-<pre class="r"><code>str(repmes, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre class="r"><code>str(repmes)</code></pre>
 <pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   100 obs. of  5 variables:
 ##  $ week: Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;&quot;..
 ##  $ gen : Factor w/ 4 levels &quot;A&quot;,&quot;B&quot;,&quot;&quot;..
 ##  $ rep : Factor w/ 5 levels &quot;rep1&quot;,&quot;r&quot;..
 ##  $ plot: Factor w/ 20 levels &quot;plot1&quot;,&quot;..
-##  $ y   : num  5 4.84 4.02 3.75 3.13 4...
-##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+##  $ y   : num  5 5.86 5.82 5.65 5.39 4...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..
+##  - attr(*, &quot;index&quot;)= int 
+##   ..- attr(*, &quot;__week&quot;)= int</code></pre>
 </div>
 </div>
 </div>
 <div id="analyse-einer-einzelnen-woche" class="section level1">
 <h1>Analyse einer einzelnen Woche</h1>
 <p>Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( <a href="1wayANOVA_rcbd.html">siehe Beispiel</a> ).</p>
-<div id="manuelle-analyse" class="section level2">
-<h2>Manuelle Analyse</h2>
+<div id="manuelles-wahlen-der-woche" class="section level2">
+<h2>Manuelles wählen der Woche</h2>
 <p>Dann müssen wir lediglich einen Teildatensatz mit den Daten von nur einer Woche erstellen und auswerten.</p>
 <pre class="r"><code>repmes.wk1 &lt;- repmes[week==&quot;1&quot;] # Nur Daten der ersten Woche
 mod.wk1 &lt;- lm(y ~ gen + rep, data=repmes.wk1)
@@ -437,11 +444,11 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 <div id="die-ar1-varianzstruktur" class="section level2">
 <h2>Die AR1 Varianzstruktur</h2>
 <p>Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (<em>independent and identically distributed</em>, kurz <em>IID</em>). Um also nun korrelierte Fehler zu modellieren kann man eine Varianzstruktur für die Fehler annehmen. Es gibt verschiedene Varianzstrukturen ( <a href="VarCovStr1.html">siehe hier</a> ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen <em>first order autoregressive</em>, kurz <em>AR1</em> trägt.</p>
-<p>Um lineare Modelle anzupassen, die eine andere Varianzstruktur als <em>IID</em> annehmen, wird die <em>Verallgemeinerte Kleinste-Quadrat-Schätzung</em> (engl. <em>generalized least squares</em> kurz <em>GLS</em>) angewandt. Das <code>nlme</code> package hat dafür die Funktion <code>gls()</code>. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: <code>y ~ gen + rep</code>. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept <span class="math inline">\(\mu\)</span> angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, sollten wir jeden Effekt wochenspezifisch definieren: <code>y ~ week + week*gen + week*rep</code>. Wir erhalten nun also je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche.</p>
-<pre class="r"><code>mod.iid &lt;- gls(y ~ week + week*gen + week*rep,
+<p>Um lineare Modelle anzupassen, die eine andere Varianzstruktur als <em>IID</em> annehmen, wird die <em>Verallgemeinerte Kleinste-Quadrat-Schätzung</em> (engl. <em>generalized least squares</em> kurz <em>GLS</em>) angewandt. Das <code>nlme</code> package hat dafür die Funktion <code>gls()</code>. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: <code>y ~ gen + rep</code>. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept <span class="math inline">\(\mu\)</span> angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, können wir jeden Effekt (also auch <span class="math inline">\(\mu\)</span>) zusätzlich wochenspezifisch definieren: <code>y ~ week + gen + week*gen + rep + week*rep</code>. Wir erhalten nun also zusätzlich je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche. Man kann die Syntax für dieses Modell wie folgt abkürzen und trotzdem dieselben Effekte anpassen lassen:</p>
+<pre class="r"><code>mod.iid &lt;- gls(y ~ week * (gen + rep),
                data = repmes)</code></pre>
 <p>Schließlich wollen wir noch dafür sorgen, dass die Fehler desselben Plots zwsichen den Wochen autokorreliert sind, was mit dem Argument <code>corr = corExp(form = ~ week|plot)</code> funktioniert.</p>
-<pre class="r"><code>mod.ar1 &lt;- gls(y ~ week + week*gen + week*rep,
+<pre class="r"><code>mod.ar1 &lt;- gls(y ~ week * (gen + rep),
                corr = corExp(form = ~ week|plot),
                data = repmes)</code></pre>
 <p>Wir können die geschätzten Fehlervarianz und -korrelation einsehen:</p>
@@ -469,7 +476,7 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 </div>
 </div>
 <p>Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit <a href="VarCovStr1.html">anderen Varianzstrukturen</a> verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.</p>
-<p>Schließlich können wir wie gewohnt eine ANOVA durchführen um den F-Test für den Behandlungsfaktor durchzuführen - nur eben für das selektierte AR1-Modell.</p>
+<p>Schließlich können wir wie gewohnt eine ANOVA durchführen um den F-Test für den Behandlungsfaktor durchzuführen - nur eben für das selektierte AR1-Modell. Residuenplots kann man für <code>gls()</code> Objekte z.B. vie <code>plot(mod.ar)</code> und <code>qqnorm(resid(mod.ar)); qqline(resid(mod.ar))</code> erhalten.</p>
 <pre class="r"><code>anova(mod.ar1)</code></pre>
 <pre><code>## Denom. DF: 60 
 ##             numDF   F-value p-value
@@ -479,7 +486,71 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 ## rep             4    94.361  &lt;.0001
 ## week:gen       12    14.975  &lt;.0001
 ## week:rep       16     6.077  &lt;.0001</code></pre>
+<p>Alle Effekte sind laut F-Test signifikant, relevant ist dabei aber vor allem <code>week:gen</code>. Analog zur Vorgehensweise bei einer signifikanten Wechselwirkung von zwei Behandlungseffekten (<a href="2wayANOVA_splitplot.html">siehe hier</a>) gilt auch hier, dass die adjustierten Mittelwerte für <code>week:gen</code> und nicht für <code>gen</code> berechnet werden sollten.</p>
 </div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<pre class="r"><code>means &lt;- emmeans(mod.ar1, pairwise ~ gen|week, adjust=&quot;tukey&quot;)
+means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
+means$emmeans # Sorten-Mittelwerte pro Woche</code></pre>
+<pre><code>## week = 1:
+##  gen emmean         SE df lower.CL upper.CL .group
+##  A    4.242 0.06808206 60 4.105816 4.378184  a    
+##  C    4.888 0.06808206 60 4.751816 5.024184   b   
+##  B    5.148 0.06808206 60 5.011816 5.284184    c  
+##  D    5.154 0.06808206 60 5.017816 5.290184    c  
+## 
+## week = 2:
+##  gen emmean         SE df lower.CL upper.CL .group
+##  A    4.046 0.06808206 60 3.909816 4.182184  a    
+##  D    4.944 0.06808206 60 4.807816 5.080184   b   
+##  B    4.980 0.06808206 60 4.843816 5.116184   b   
+##  C    5.074 0.06808206 60 4.937816 5.210184   b   
+## 
+## week = 3:
+##  gen emmean         SE df lower.CL upper.CL .group
+##  A    3.406 0.06808206 60 3.269816 3.542184  a    
+##  B    4.594 0.06808206 60 4.457816 4.730184   b   
+##  D    4.706 0.06808206 60 4.569816 4.842184   b   
+##  C    4.714 0.06808206 60 4.577816 4.850184   b   
+## 
+## week = 4:
+##  gen emmean         SE df lower.CL upper.CL .group
+##  A    3.086 0.06808206 60 2.949816 3.222184  a    
+##  B    4.220 0.06808206 60 4.083816 4.356184   b   
+##  D    4.388 0.06808206 60 4.251816 4.524184   bc  
+##  C    4.476 0.06808206 60 4.339816 4.612184    c  
+## 
+## week = 5:
+##  gen emmean         SE df lower.CL upper.CL .group
+##  A    2.700 0.06808206 60 2.563816 2.836184  a    
+##  D    3.834 0.06808206 60 3.697816 3.970184   b   
+##  B    4.008 0.06808206 60 3.871816 4.144184   b   
+##  C    4.018 0.06808206 60 3.881816 4.154184   b   
+## 
+## Results are averaged over the levels of: rep 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>Wie der im F-Test signifikante <code>week:gen</code> Effekt schon vermuten ließ, finden wir für die Sortenmittelwerte unterschiedliche Buchstabendarstellungen je Woche oder anders gesagt: Wochen-spezifische Unterschiede zwischen den Sorten. Allerdings sehen wir beispielsweise auch, dass Sorte A in jeder Woche signifikant schlechter ist als alle anderen Sorten.</p>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Analog zu <a href="2wayANOVA_splitplot.html">diesem Beispiel</a> können wir die Ergebnisse grafisch wie folgt aufbereiten:</p>
+<pre class="r"><code>means.plot &lt;- as.data.table(means$emmeans) # korrektes Format für ggplot
+
+ggplot(data=means.plot, aes(x=gen)) +
+  geom_bar(aes(y=emmean, fill=gen), stat=&quot;identity&quot;, width=0.8) + 
+  guides(fill=FALSE) + 
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=emmean*1.1, label=.group)) +
+  facet_wrap(~week) + # ein Plot pro Woche
+  theme_bw() +
+  labs(main=&quot;Adj. Sortenmittelwerte pro Woche&quot;,
+       y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;,
+       caption=&quot;Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="rcbdrepmes_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 
 

@@ -15,6 +15,8 @@ navbar:
           href: 1wayANOVA_alpha.html
         - text: "4) 2wANOVA split-plot"
           href: 2wayANOVA_splitplot.html
+        - text: "5) Messwiederholungen"
+          href: rcbdrepmes.html
     - text: "Appendix"
       menu:
         - text: "1) desplot package"

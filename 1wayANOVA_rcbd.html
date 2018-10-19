@@ -301,6 +301,9 @@ div.tocify {
     <li>
       <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
     </li>
+    <li>
+      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -372,14 +375,14 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1wayANOVA_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>str(rcbd, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre class="r"><code>str(rcbd)</code></pre>
 <pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  3 variables:
 ##  $ gen  : Factor w/ 24 levels &quot;G01&quot;,&quot;&quot;..
 ##  $ rep  : Factor w/ 3 levels &quot;Rep1&quot;,&quot;&quot;..
 ##  $ yield: num  4.12 4.45 5.88 4.58 4.6..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(rcbd)</code></pre>
@@ -392,7 +395,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ##  G06    : 3             Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
-<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -461,7 +464,7 @@ as.data.table(means$emmeans)[1:6,]</code></pre>
   theme_bw() +
   annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="1wayANOVA_rcbd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 
 

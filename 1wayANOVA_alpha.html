@@ -301,6 +301,9 @@ div.tocify {
     <li>
       <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
     </li>
+    <li>
+      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -374,15 +377,15 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu den vorangegangenen ‘1wayANOVA’ Beispielen erstellen wir diesmal auch einen komplexeren Boxplot via <code>boxplot()</code> für die unvollständigem Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>str(alpha, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre class="r"><code>str(alpha)
+plot(y=alpha$yield, x=alpha$gen)</code></pre>
 <pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  4 variables:
 ##  $ gen      : Factor w/ 24 levels &quot;G0&quot;..
 ##  $ rep      : Factor w/ 3 levels &quot;Rep&quot;..
 ##  $ inc.block: Factor w/ 6 levels &quot;B1&quot;&quot;..
 ##  $ yield    : num  4.12 4.45 5.88 4.58..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
-<pre class="r"><code>plot(y=alpha$yield, x=alpha$gen)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(alpha)</code></pre>
@@ -395,11 +398,11 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 ##  G06    : 3             B6:12     Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$rep)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
 <pre class="r"><code>boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="Anmerkung1" class="section level1">
 <h1>Schließende Statistik</h1>
@@ -457,7 +460,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
   theme_bw() +
   annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="1wayANOVA_alpha_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 
 

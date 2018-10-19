@@ -58,7 +58,11 @@ print(alpha, nrows=10)
 Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu den vorangegangenen '1wayANOVA' Beispielen erstellen wir diesmal auch einen komplexeren Boxplot via `boxplot()` für die unvollständigem Blöcke.
 
 <div class = "row"> <div class = "col-md-6">
-```{r, fig.height = 3, fig.width = 4, fig.align = "center"}
+```{r, eval=FALSE}
+str(alpha)
+plot(y=alpha$yield, x=alpha$gen)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
 str(alpha, width=40, strict.width="cut")
 plot(y=alpha$yield, x=alpha$gen)
 ```

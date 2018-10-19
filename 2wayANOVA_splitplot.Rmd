@@ -37,7 +37,10 @@ splitplot <- splitplot[,c("N", "G", "rep", "mainplot", "yield")]
 print(splitplot, nrows=10)
 ```
 </div> <div class = "col-md-6">
-```{r}
+```{r, eval=FALSE}
+str(splitplot)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
 str(splitplot, width=40, strict.width="cut")
 ```
 </div> </div>
@@ -76,7 +79,7 @@ Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zuallee
 Mit `emmeans()` können wir auch adjustierte Mittelwerte für Wechselwirkungseffekte berechnen. Das geht entweder mit `pairwise ~ N : G` oder `pairwise ~ N | G`. Im beiden Fällen werden wie erwartet Mittelwerte für alle Kombinationen errechnet. Der Unterschied besteht in der Anzahl der Differenzen zwischen den Mittelwerten, die berechnet werden. Im ersten Fall werden wie gewohnt alle Mittelwerte miteinander verglichen. Im zweiten Fall, werden nur N-Stufen innerhalb einer Sorte miteinander verglichen. Natürlich können 'N' und 'G' hier auch ausgetauscht werden. Es kommt auf die Versuchsfrage an, welche Mittelwertvergleiche von größerem Interesse sind. Wir wollen uns hier auf die Vergleiche der N-Mittelwerte getrennt pro Sorte fokussieren.
 
 ```{r}
-means <- emmeans(mod, pairwise ~ N | G,, adjust="tukey")
+means <- emmeans(mod, pairwise ~ N | G, adjust="tukey")
 means <- CLD(means$emmeans, details=TRUE, Letters=letters)
 means$emmeans # N-Mittelwerte pro Sorte
 means$comparisons # N-Mittelwertdifferenzen pro Sorte

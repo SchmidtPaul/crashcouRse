@@ -48,10 +48,16 @@ print(rcbd, nrows=10)
 Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel "1wayANOVA_crd" erstellen wir diesmal auch einen Boxplot für die Blöcke.
 
 <div class = "row"> <div class = "col-md-6">
-```{r, fig.height = 4, fig.width = 5, fig.align = "center"}
+```{r, eval=FALSE}
+str(rcbd)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
 str(rcbd, width=40, strict.width="cut")
+```
+```{r}
 plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung
 ```
+
 </div> <div class = "col-md-6">
 ```{r}
 summary(rcbd)

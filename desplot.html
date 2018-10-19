@@ -301,6 +301,9 @@ div.tocify {
     <li>
       <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
     </li>
+    <li>
+      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -505,7 +508,7 @@ nuts$res &lt;- resid(mod)</code></pre>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>desplot(data=nuts, form= res ~ col+row,
-        text=gen, cex=0.8,
+        text=res, cex=0.8, shorten=&quot;no&quot;,
         show.key=F,
         main=&quot;Residuen des RCBD Modells&quot;)</code></pre>
 <p><img src="desplot_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" /></p>

@@ -301,6 +301,9 @@ div.tocify {
     <li>
       <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
     </li>
+    <li>
+      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -366,7 +369,7 @@ library(RColorBrewer) # bessere Farben</code></pre>
 ## 72: N5 D rep3     mp18  2856</code></pre>
 </div>
 <div class="col-md-6">
-<pre class="r"><code>str(splitplot, width=40, strict.width=&quot;cut&quot;)</code></pre>
+<pre class="r"><code>str(splitplot)</code></pre>
 <pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  5 variables:
 ##  $ N       : Factor w/ 6 levels &quot;N1&quot;,&quot;..
 ##  $ G       : Factor w/ 4 levels &quot;A&quot;,&quot;&quot;..
@@ -381,7 +384,7 @@ library(RColorBrewer) # bessere Farben</code></pre>
 <h1>Deskriptive Statistik</h1>
 <p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des <code>col=</code> statements der <code>boxplot()</code> Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - <a href="desplot.html">mehr Infos dazu hier</a>.</p>
 <pre class="r"><code>boxplot(yield ~ N*G, col=brewer.pal(6, &quot;Dark2&quot;), data=splitplot, las=2)</code></pre>
-<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Es fällt auf, dass sich das Muster der Werte der verschiedenen N-Stufen für Sorte D deutlich von denen der anderen 3 Sorten unterscheiden. Dies deutet auf Wechselwirkungen zwischen den beiden Behandlungsfaktoren hin.</p>
 </div>
 <div id="schlieende-statistik" class="section level1">
@@ -411,7 +414,7 @@ library(RColorBrewer) # bessere Farben</code></pre>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
 <p>Mit <code>emmeans()</code> können wir auch adjustierte Mittelwerte für Wechselwirkungseffekte berechnen. Das geht entweder mit <code>pairwise ~ N : G</code> oder <code>pairwise ~ N | G</code>. Im beiden Fällen werden wie erwartet Mittelwerte für alle Kombinationen errechnet. Der Unterschied besteht in der Anzahl der Differenzen zwischen den Mittelwerten, die berechnet werden. Im ersten Fall werden wie gewohnt alle Mittelwerte miteinander verglichen. Im zweiten Fall, werden nur N-Stufen innerhalb einer Sorte miteinander verglichen. Natürlich können ‘N’ und ‘G’ hier auch ausgetauscht werden. Es kommt auf die Versuchsfrage an, welche Mittelwertvergleiche von größerem Interesse sind. Wir wollen uns hier auf die Vergleiche der N-Mittelwerte getrennt pro Sorte fokussieren.</p>
-<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ N | G,, adjust=&quot;tukey&quot;)
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ N | G, adjust=&quot;tukey&quot;)
 means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
 means$emmeans # N-Mittelwerte pro Sorte</code></pre>
 <pre><code>## G = A:
@@ -560,7 +563,7 @@ print(means.plot, nrows=2)</code></pre>
   labs(main=&quot;Adj. N-Mittelwerte pro Sorte&quot;,
        y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;N-Dünger&quot;,
        caption=&quot;Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 
 
