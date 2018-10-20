@@ -17,6 +17,8 @@ navbar:
           href: 2wayANOVA_splitplot.html
         - text: "5) Messwiederholungen"
           href: rcbdrepmes.html
+        - text: "6) Prozentwerte"
+          href: GLMbinomial.html
     - text: "Appendix"
       menu:
         - text: "1) desplot package"
@@ -25,6 +27,8 @@ navbar:
           href: DesignList.html
         - text: "3) Varianzstrukturen"
           href: VarCovStr1.html
+        - text: "4) Nicht-Normalverteilte Daten"
+          href: NichtNormalvertelt.html
   right:
     - text: "Kontakt"
       href: Kontakt.html

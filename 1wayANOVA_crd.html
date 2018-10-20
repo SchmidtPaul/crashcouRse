@@ -304,6 +304,9 @@ div.tocify {
     <li>
       <a href="rcbdrepmes.html">5) Messwiederholungen</a>
     </li>
+    <li>
+      <a href="GLMbinomial.html">6) Prozentwerte</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -321,6 +324,9 @@ div.tocify {
     </li>
     <li>
       <a href="VarCovStr1.html">3) Varianzstrukturen</a>
+    </li>
+    <li>
+      <a href="NichtNormalvertelt.html">4) Nicht-Normalverteilte Daten</a>
     </li>
   </ul>
 </li>
@@ -428,8 +434,8 @@ means$emmeans # Mittelwerte </code></pre>
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
-<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
-means$emmeans</code></pre>
+<pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)
+means</code></pre>
 <pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
 ##  G03 3.343067 0.3023478  6 2.603248 4.082885  a    
 ##  G02 4.514200 0.3023478  6 3.774382 5.254018  ab   
@@ -443,14 +449,28 @@ means$emmeans</code></pre>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">
 <h1>Ergebnisaufbereitung</h1>
-<p>Schließlich kann man die Ergebnisse final in einem Plot darstellen. Dafür eignet sich beispielsweise ein Balkendiagramm.</p>
-<pre class="r"><code>ggplot(data=means$emmeans, aes(x=gen)) +
+<p>Schließlich kann man die Ergebnisse final in einem Plot darstellen. Gängig ist dafür ein Balkendiagramm:</p>
+<pre class="r"><code>ggplot(data=means, aes(x=gen)) +
   geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
   geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.4) +
   geom_text(aes(y=(emmean+SE)*1.1, label=.group)) +
   labs(y=&quot;Adjustierter Ertragsmittelwert ± Standardfehler&quot;, x=&quot;Sorte&quot;, 
       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
 <p><img src="1wayANOVA_crd_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a”, “ab” und &quot; b“. Wir werden also auch diese Leerzeichen entfernen.</p>
+<pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Leerzeichen entfernen
+
+ggplot() + theme_classic() +
+  # Rohdaten (crd)
+geom_boxplot(data=crd, aes(x=gen, y=yield), outlier.shape=NA, width=0.6) +
+geom_jitter(data=crd, aes(x=gen, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+geom_point(data=means, aes(x=as.numeric(gen)+0.4, y=emmean), col=&quot;red&quot;, shape=16, size=2) +
+geom_errorbar(data=means, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col=&quot;red&quot;, width=0.1) +
+geom_text(data=means, aes(x=as.numeric(gen)+0.5, y=emmean, label =.group), col=&quot;red&quot;) + 
+labs(y=&quot;Schwarz: Ertrag\nRot: Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;, 
+      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1wayANOVA_crd_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 
 

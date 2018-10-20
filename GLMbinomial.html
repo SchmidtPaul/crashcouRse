@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>One-Factor ANOVA - RCBD - Binomial Response</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Kapitel
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1wayANOVA_crd.html">1) 1wANOVA crd</a>
+    </li>
+    <li>
+      <a href="1wayANOVA_rcbd.html">2) 1wANOVA rcbd</a>
+    </li>
+    <li>
+      <a href="1wayANOVA_alpha.html">3) 1wANOVA alpha</a>
+    </li>
+    <li>
+      <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
+    </li>
+    <li>
+      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="GLMbinomial.html">6) Prozentwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="desplot.html">1) desplot package</a>
+    </li>
+    <li>
+      <a href="DesignList.html">2) Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="VarCovStr1.html">3) Varianzstrukturen</a>
+    </li>
+    <li>
+      <a href="NichtNormalvertelt.html">4) Nicht-Normalverteilte Daten</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="Kontakt.html">Kontakt</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">One-Factor ANOVA - RCBD - Binomial Response</h1>
+
+</div>
+
+
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte</code></pre>
+<p>In diesem Beispiel wurden 16 Weizensorten in einer randomisierten vollständigen Blockanlage mit 4 Wiederholungen geprüft.</p>
+<blockquote>
+<p>Die Auswertung dieses Datensatzes ist auch <a href="https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_glimmix_sect013.htm">hier</a> in der <code>PROC GLIMMIX</code> SAS Dokumentation beschrieben.</p>
+</blockquote>
+<p><img src="GLMbinomial_files/figure-html/unnamed-chunk-3-1.png" width="288" style="display: block; margin: auto;" /></p>
+<p>Allerdings wurde nicht wie so oft in den vorangegangenen Beispiel der Ertrag gemessen, sondern die Anfälligkeit gegen die Hessenfliege (<em>Mayetiola destructor</em>). Dies geschah indem in jeder Parzelle die Gesamtzahl an Pflanzen (<code>n</code>), sowie die Anzahl derer Pflanzen, die befallen waren (<code>y</code>) bestimmt wurden. Demnach repräsentiert der Anteil <code>y/n</code> die Anfälligkeit gegen die Hessenfliege und kann in % angegeben werden. Wir können eine neue Spalte erstellen, die diesen Anteil angibt.</p>
+<pre class="r"><code>wheat[, anteil := y/n] # erstelle Spalte &quot;anteil&quot;</code></pre>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>print(wheat, nrows=10)</code></pre>
+<pre><code>##     block gen  y  n    anteil
+##  1:    B1 G14  2  8 0.2500000
+##  2:    B1 G16  1  9 0.1111111
+##  3:    B1 G07  9 13 0.6923077
+##  4:    B1 G06  9  9 1.0000000
+##  5:    B1 G13  2  9 0.2222222
+## ---                          
+## 60:    B4 G10  6  6 1.0000000
+## 61:    B4 G02  8 12 0.6666667
+## 62:    B4 G11  7  9 0.7777778
+## 63:    B4 G05 10 11 0.9090909
+## 64:    B4 G16  7 15 0.4666667</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(wheat)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   64 obs. of  5 variables:
+##  $ block : Factor w/ 4 levels &quot;B1&quot;,&quot;B&quot;..
+##  $ gen   : Factor w/ 16 levels &quot;G01&quot;,&quot;..
+##  $ y     : int  2 1 9 9 2 7 6 8 7 8 ...
+##  $ n     : int  8 9 13 9 9 14 8 11 12 ..
+##  $ anteil: num  0.25 0.111 0.692 1 0.2..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor <code>genfarben</code> gespeichert - <a href="desplot.html">mehr Infos dazu hier</a>.</p>
+<pre class="r"><code>boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2)</code></pre>
+<p><img src="GLMbinomial_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /> # Schließende Statistik ## Generalisiertes Modell</p>
+<p>Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (<em>i.e.</em> 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen (<a href="NichtNormalverteilt.html">mehr dazu hier</a>). Dies geht z.B. mit der <code>glm()</code> Funktion. Bezüglich der Effekte im Modell verfahren wir bei einer <a href="1wayANOVA_rcbd.html">einfaktoriellen ANOVA in einem RCBD</a>.</p>
+<pre class="r"><code>mod &lt;- glm(y/n ~ block + gen, family=quasibinomial(link=&quot;logit&quot;), data=wheat)</code></pre>
+<p>Wie man sehen kann, wäre das vorige Berechnen der <code>anteil</code>-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt <code>y/n</code> als Zielvariable schreiben können. Als erwartete Verteilung schreiben wir hier <code>family=quasibinomial</code>, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt (<a href="NichtNormalverteilt.html">mehr dazu hier</a>). Der Zusatz <code>(link=&quot;logit&quot;)</code> ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da <code>glm()</code> eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der <code>autoplot()</code> Funktion des <code>ggfortify</code> packages betrachtet werden:</p>
+<pre class="r"><code>autoplot(mod) # Residuenplots</code></pre>
+<p><img src="GLMbinomial_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div id="test-der-festen-effekte" class="section level2">
+<h2>Test der festen Effekte</h2>
+<pre class="r"><code>anova(mod, test=&quot;F&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: quasibinomial, link: logit
+## 
+## Response: y/n
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##       Df Deviance Resid. Df Resid. Dev      F    Pr(&gt;F)    
+## NULL                     63     28.023                     
+## block  3   0.4936        60     27.529 0.6870    0.5647    
+## gen   15  15.0629        45     12.466 4.1929 9.285e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (<em>i.e.</em> Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x">Piepho (1999)</a>). Dennoch kann die <code>anova()</code> Funktion in R auch für Modell-Objekte aus der <code>glm()</code> Funktion angewendet werden, da in diesem Fall eine andere Berechnung (<em>i.e.</em> Analysis of Deviance) durchgeführt wird (siehe <code>?anova.glm</code> für Details). Um allerdings wie gewohnt p-Werte (eines F-Tests) für die festen Effekte zu erhalten, muss hier noch ein <code>test=</code> statement hinzugefügt werden.</p>
+<p>Der p-Wert für den Sorteneffekt weist in diesem Fall deutlich auf unterschiedliche Anfälligkeiten der Sorten hin.</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Auch für generalisierte lineare Modelle eignet sich das <code>emmeans()</code> package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich <code>type=&quot;response&quot;</code> hinzugefügt werden.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, type=&quot;response&quot;)
+means &lt;- CLD(means$emmeans, Letters = letters)
+means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE)
+means</code></pre>
+<pre><code>##  gen       prob         SE  df  asymp.LCL asymp.UCL .group
+##  G13 0.09232419 0.07042474 Inf 0.01921413 0.3455961 a     
+##  G16 0.15883240 0.08924694 Inf 0.04851352 0.4115165 ab    
+##  G14 0.24761042 0.10578557 Inf 0.09758816 0.5003799 abc   
+##  G15 0.31114077 0.11369199 Inf 0.13770905 0.5609126 abc   
+##  G08 0.48040068 0.12301746 Inf 0.26030945 0.7083711 abc   
+##  G11 0.49635787 0.12311529 Inf 0.27292629 0.7212536 abc   
+##  G12 0.50007079 0.12311946 Inf 0.27588708 0.7242260 abc   
+##  G09 0.52370763 0.12298144 Inf 0.29495734 0.7429257 abc   
+##  G04 0.53762746 0.12276673 Inf 0.30636676 0.7537568 abc   
+##  G06 0.62954659 0.11880583 Inf 0.38504869 0.8218186 abc   
+##  G03 0.74435728 0.10700694 Inf 0.49164552 0.8976059 abc   
+##  G10 0.74537169 0.10686342 Inf 0.49262904 0.8982237 abc   
+##  G07 0.75877609 0.10489325 Inf 0.50569210 0.9062933 abc   
+##  G02 0.80658935 0.09664663 Inf 0.55323900 0.9335306 bc    
+##  G05 0.80734618 0.09649923 Inf 0.55400229 0.9339407 bc    
+##  G01 0.85179601 0.08674138 Inf 0.59917588 0.9567060 c     
+## 
+## Results are averaged over the levels of: block 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## P value adjustment: tukey method for comparing a family of 16 estimates 
+## Tests are performed on the log odds ratio scale 
+## significance level used: alpha = 0.05</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<pre class="r"><code>ggplot() + theme_classic() +
+   # Rohdaten (wheat)
+   geom_point(data=wheat, aes(x=gen, y=anteil), shape=1, size=1) +
+   # Ergebnisse (means)
+   geom_point(data=means, aes(x=gen, y=prob), col=&quot;red&quot;, shape=16, size=2) +
+   geom_errorbar(data=means, aes(x=gen, ymin=asymp.LCL, ymax=asymp.UCL), col=&quot;red&quot;, width=0.1) +
+   geom_text(data=means, aes(x=gen, y=1.05, label =.group), col=&quot;red&quot;) +
+  labs(y=&quot;Schwarz: Beobachtete Anfälligkeit\nRot: Rücktransformierter, adjustierter Mittelwert für die \nAnfälligkeit ± 95% asympt. Konfidenzintervall&quot;, x=&quot;Sorte&quot;,
+       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test auf der Logit-Skala nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="GLMbinomial_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
