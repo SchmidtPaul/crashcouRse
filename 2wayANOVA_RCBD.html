@@ -11,7 +11,7 @@
 
 
 
-<title>1 Trt Factor - Split-Plot Design</title>
+<title>2 Trt Factor - RCBD</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -353,7 +353,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">1 Trt Factor - Split-Plot Design</h1>
+<h1 class="title toc-ignore">2 Trt Factor - RCBD</h1>
 
 </div>
 
@@ -365,32 +365,31 @@ library(ggplot2) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte
 library(lme4); library(lmerTest) # gemischtes Modell
 library(RColorBrewer) # bessere Farben</code></pre>
-<p>In diesem Experiment wurden die Auswirkungen von 6 Stickstoffdüngern (N) auf den Ertrag von 4 Reissorten (G) untersucht. Demnach gab es zwei Behandlungsfaktoren mit insgesamt 6x4=24 Behandlungsstufenkombinationen. Diese 24 Kombinationen wurden 3 mal in vollständigen Blöcken wiederholt. Innerhalb der vollständigen Blöcke wurden die Kombinationen allerdings nicht wie bei einem RCBD vollständig randomisiert. Grund hierfür war, dass es beim Anlegen des Feldversuchs und speziell beim ausbringen der Dünger praktisch einfacher ist, wenn die Parzellen mit demselben Dünger in einer Linie liegen. Deshalb wurden die vollständigen Blöcke erst in 6 Spalten (=<em>main plots</em>) unterteilt, auf welche die 6 N-Stufen randomisert wurden. Erst dann, wurden die 4 Sorten den 4 Zeilen innerhalb jeder Spalte (=<em>sub-plot</em>) zufällig zugeordnet. Solch eine Versuchsanlage nennt man <strong>split-plot design</strong>. <a href="DesignList.html">Hier mehr Infos zu Versuchsdesigns</a></p>
-<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>In diesem Experiment wurden die Auswirkungen von 6 Stickstoffdüngern (N) auf den Ertrag von 4 Reissorten (G) untersucht. Demnach gab es zwei Behandlungsfaktoren mit insgesamt 6x4=24 Behandlungsstufenkombinationen. Diese 24 Kombinationen wurden 3 mal in vollständigen Blöcken wiederholt - wir haben also ein RCBD. <a href="DesignList.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<p><img src="2wayANOVA_RCBD_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" /></p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>print(splitplot, nrows=10)</code></pre>
-<pre><code>##      N G  rep mainplot yield
-##  1: N1 A rep1      mp1  4520
-##  2: N2 A rep1      mp2  5598
-##  3: N4 A rep1      mp3  6192
-##  4: N6 A rep1      mp4  8542
-##  5: N3 A rep1      mp5  5806
-## ---                         
-## 68: N6 D rep3     mp14  1744
-## 69: N3 D rep3     mp15  4236
-## 70: N1 D rep3     mp16  5016
-## 71: N2 D rep3     mp17  4382
-## 72: N5 D rep3     mp18  2856</code></pre>
+<pre class="r"><code>print(riceRCBD, nrows=10)</code></pre>
+<pre><code>##      N G  rep yield
+##  1: N1 A rep1  4520
+##  2: N2 A rep1  5598
+##  3: N4 A rep1  6192
+##  4: N6 A rep1  8542
+##  5: N3 A rep1  5806
+## ---                
+## 68: N6 D rep3  1744
+## 69: N3 D rep3  4236
+## 70: N1 D rep3  5016
+## 71: N2 D rep3  4382
+## 72: N5 D rep3  2856</code></pre>
 </div>
 <div class="col-md-6">
-<pre class="r"><code>str(splitplot)</code></pre>
-<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  5 variables:
-##  $ N       : Factor w/ 6 levels &quot;N1&quot;,&quot;..
-##  $ G       : Factor w/ 4 levels &quot;A&quot;,&quot;&quot;..
-##  $ rep     : Factor w/ 3 levels &quot;rep1&quot;..
-##  $ mainplot: Factor w/ 18 levels &quot;mp1&quot;..
-##  $ yield   : int  4520 5598 6192 8542 ..
+<pre class="r"><code>str(riceRCBD)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  4 variables:
+##  $ N    : Factor w/ 6 levels &quot;N1&quot;,&quot;N2&quot;..
+##  $ G    : Factor w/ 4 levels &quot;A&quot;,&quot;B&quot;,&quot;..
+##  $ rep  : Factor w/ 3 levels &quot;rep1&quot;,&quot;&quot;..
+##  $ yield: int  4520 5598 6192 8542 580..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 </div>
 </div>
@@ -398,176 +397,101 @@ library(RColorBrewer) # bessere Farben</code></pre>
 <div id="deskriptive-statistik" class="section level1">
 <h1>Deskriptive Statistik</h1>
 <p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des <code>col=</code> statements der <code>boxplot()</code> Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - <a href="desplot.html">mehr Infos dazu hier</a>.</p>
-<pre class="r"><code>boxplot(yield ~ N*G, col=brewer.pal(6, &quot;Dark2&quot;), data=splitplot, las=2)</code></pre>
-<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>Es fällt auf, dass sich das Muster der Werte der verschiedenen N-Stufen für Sorte D deutlich von denen der anderen 3 Sorten unterscheiden. Dies deutet auf Wechselwirkungen zwischen den beiden Behandlungsfaktoren hin.</p>
+<pre class="r"><code>boxplot(yield ~ N*G, col=brewer.pal(6, &quot;Dark2&quot;), data=riceRCBD, las=2)</code></pre>
+<p><img src="2wayANOVA_RCBD_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Es fällt auf, dass sich das Muster der Werte der verschiedenen N-Stufen für Sorte D deutlich von denen der anderen 3 Sorten unterscheiden. Dies deutet auf Wechselwirkungen zwischen den beiden Behandlungsfaktoren hin ( <a href="Interaktionen.html">mehr Infos dazu hier</a>).</p>
 </div>
 <div id="schlieende-statistik" class="section level1">
 <h1>Schließende Statistik</h1>
-<div id="gemischtes-modell" class="section level2">
-<h2>Gemischtes Modell</h2>
-<p>Wir können uns nun entschließen die Daten mittels eines Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘G’ und ‘N’ sind beides qualitative Behandlungsfaktoren. Um eine möglich Wechselwirkung der beiden zu modellieren, ergibt sich der <em>treament part</em> des Modell als <code>G + N + G*N</code>. Für die vollständigen Blöcke haben wir den festen Effekt ‘rep’ im Modell. Desweiteren müssen wir zufällige Effekte für die main plots ins Modell aufnehmen, da diese als zusätzliche Randomisationseinheit fungierten. Die andere, kleinste Randomisationseinheit des sub-plots (=Parzelle) wird durch den üblichen Fehlerterm abgebildet. Der <em>design part</em> des Modells ist also <code>rep + (1|rep:mainplot)</code>. Somit haben wir gleichzeitig feste und zufällige Effekte im Modell und demnach ein gemischtes Modell, welches wir wieder mit <code>lmer()</code> aus dem <code>lme4</code> package modellieren.</p>
-<pre class="r"><code>mod &lt;- lmer(yield ~ G + N + G*N + rep + (1|rep:mainplot), data=splitplot)</code></pre>
-<p>Zunächst sollten nun die Residuenplots evaluiert werden - beispielsweise mit <code>plot(mod)</code> und <code>qqnorm(resid(mod)); qqline(resid(mod))</code> funktioniert. Erst danach ist eine Varianzanalyse zulässig.</p>
-<blockquote>
-<p>Die Spalte ‘mainplot’ ist in diesem Beispiel übrigens prinzipiell überflüssig. Das liegt daran, dass man die 3x6 main plots anstatt mit ‘rep:mainplot’ auch mit ‘rep:N’ hätte modellieren können, da ein main plot immer einer N-Stufe entspricht (siehe Feldplan oben). Um es aber leichter verständlich zu machen, nutzen wir hier eine extra ‘mainplot’ Spalte. Siehe außerdem die Anmerkung aus <a href="1wayANOVA_alpha.html">dem vorigen Beispiel</a>.</p>
-</blockquote>
+<div id="lineares-modell" class="section level2">
+<h2>Lineares Modell</h2>
+<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Das Modell ist dem aus dem <a href="1wayANOVA_rcbd.html">vorangegangen Beispiel mit RCBD</a> ähnlich, muss jedoch aufgrund des zweiten Behandlungsfaktors erweitert werden. Wir beginnen mit dem vollen Modell um die <em>backward elimination</em> anzuwenden ( <a href="Interaktionen.html">mehr Infos dazu hier</a>).</p>
+<pre class="r"><code>mod &lt;- lm(yield ~ N + G + N:G + rep, data=riceRCBD)</code></pre>
+<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
 </div>
 <div id="varianzanalyse" class="section level2">
 <h2>Varianzanalyse</h2>
 <pre class="r"><code>anova(mod)</code></pre>
-<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
-##       Sum Sq  Mean Sq NumDF DenDF F value    Pr(&gt;F)    
-## G   89885075 29961692     3    36 85.7416 &lt; 2.2e-16 ***
-## N   19192886  3838577     5    10 10.9849 0.0008277 ***
-## rep   683088   341544     2    10  0.9774 0.4095330    
-## G:N 69378044  4625203    15    36 13.2360 2.078e-10 ***
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##           Df   Sum Sq  Mean Sq F value    Pr(&gt;F)    
+## N          5 30480453  6096091 15.4677 6.509e-09 ***
+## G          3 89885035 29961678 76.0221 &lt; 2.2e-16 ***
+## rep        2  1084820   542410  1.3763    0.2627    
+## N:G       15 69378044  4625203 11.7356 4.472e-11 ***
+## Residuals 46 18129432   394118                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung (mehr Infos <a href="Interaktionen.html">hier</a>). Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
+<p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
 <p>Mit <code>emmeans()</code> können wir auch adjustierte Mittelwerte für Wechselwirkungseffekte berechnen. Das geht entweder mit <code>pairwise ~ N : G</code> oder <code>pairwise ~ N | G</code>. Im beiden Fällen werden wie erwartet Mittelwerte für alle Kombinationen errechnet. Der Unterschied besteht in der Anzahl der Differenzen zwischen den Mittelwerten, die berechnet werden. Im ersten Fall werden wie gewohnt alle Mittelwerte miteinander verglichen. Im zweiten Fall, werden nur N-Stufen innerhalb einer Sorte miteinander verglichen. Natürlich können ‘N’ und ‘G’ hier auch ausgetauscht werden. Es kommt auf die Versuchsfrage an, welche Mittelwertvergleiche von größerem Interesse sind. Wir wollen uns hier auf die Vergleiche der N-Mittelwerte getrennt pro Sorte fokussieren.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ N | G, adjust=&quot;tukey&quot;)
-means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
-means$emmeans # N-Mittelwerte pro Sorte</code></pre>
+means &lt;- CLD(means$emmeans, Letters=letters)
+means</code></pre>
 <pre><code>## G = A:
-##  N    emmean       SE    df lower.CL upper.CL .group
-##  N1 4252.667 365.5222 41.92 3514.969 4990.364  a    
-##  N2 5672.000 365.5222 41.92 4934.303 6409.697  ab   
-##  N3 6400.000 365.5222 41.92 5662.303 7137.697   bc  
-##  N4 6732.667 365.5222 41.92 5994.969 7470.364   bc  
-##  N5 7563.333 365.5222 41.92 6825.636 8301.031    cd 
-##  N6 8700.667 365.5222 41.92 7962.969 9438.364     d 
+##  N    emmean       SE df lower.CL upper.CL .group
+##  N1 4252.667 362.4537 46 3523.085 4982.248  a    
+##  N2 5672.000 362.4537 46 4942.419 6401.581  ab   
+##  N3 6400.000 362.4537 46 5670.419 7129.581   bc  
+##  N4 6732.667 362.4537 46 6003.085 7462.248   bc  
+##  N5 7563.333 362.4537 46 6833.752 8292.915    cd 
+##  N6 8700.667 362.4537 46 7971.085 9430.248     d 
 ## 
 ## G = B:
-##  N    emmean       SE    df lower.CL upper.CL .group
-##  N1 4306.000 365.5222 41.92 3568.303 5043.697  a    
-##  N2 5982.000 365.5222 41.92 5244.303 6719.697   b   
-##  N3 6259.000 365.5222 41.92 5521.303 6996.697   b   
-##  N6 6540.333 365.5222 41.92 5802.636 7278.031   b   
-##  N4 6895.000 365.5222 41.92 6157.303 7632.697   b   
-##  N5 6950.667 365.5222 41.92 6212.969 7688.364   b   
+##  N    emmean       SE df lower.CL upper.CL .group
+##  N1 4306.000 362.4537 46 3576.419 5035.581  a    
+##  N2 5982.000 362.4537 46 5252.419 6711.581   b   
+##  N3 6259.000 362.4537 46 5529.419 6988.581   b   
+##  N6 6540.333 362.4537 46 5810.752 7269.915   b   
+##  N4 6895.000 362.4537 46 6165.419 7624.581   b   
+##  N5 6950.667 362.4537 46 6221.085 7680.248   b   
 ## 
 ## G = C:
-##  N    emmean       SE    df lower.CL upper.CL .group
-##  N1 3177.333 365.5222 41.92 2439.636 3915.031  a    
-##  N2 5442.667 365.5222 41.92 4704.969 6180.364   b   
-##  N3 5994.000 365.5222 41.92 5256.303 6731.697   b   
-##  N4 6014.000 365.5222 41.92 5276.303 6751.697   b   
-##  N6 6065.333 365.5222 41.92 5327.636 6803.031   b   
-##  N5 6687.333 365.5222 41.92 5949.636 7425.031   b   
+##  N    emmean       SE df lower.CL upper.CL .group
+##  N1 3177.333 362.4537 46 2447.752 3906.915  a    
+##  N2 5442.667 362.4537 46 4713.085 6172.248   b   
+##  N3 5994.000 362.4537 46 5264.419 6723.581   b   
+##  N4 6014.000 362.4537 46 5284.419 6743.581   b   
+##  N6 6065.333 362.4537 46 5335.752 6794.915   b   
+##  N5 6687.333 362.4537 46 5957.752 7416.915   b   
 ## 
 ## G = D:
-##  N    emmean       SE    df lower.CL upper.CL .group
-##  N6 1880.667 365.5222 41.92 1142.969 2618.364  a    
-##  N5 2046.667 365.5222 41.92 1308.969 2784.364  a    
-##  N4 3816.000 365.5222 41.92 3078.303 4553.697   b   
-##  N1 4481.333 365.5222 41.92 3743.636 5219.031   b   
-##  N3 4812.000 365.5222 41.92 4074.303 5549.697   b   
-##  N2 4816.000 365.5222 41.92 4078.303 5553.697   b   
+##  N    emmean       SE df lower.CL upper.CL .group
+##  N6 1880.667 362.4537 46 1151.085 2610.248  a    
+##  N5 2046.667 362.4537 46 1317.085 2776.248  a    
+##  N4 3816.000 362.4537 46 3086.419 4545.581   b   
+##  N1 4481.333 362.4537 46 3751.752 5210.915   b   
+##  N3 4812.000 362.4537 46 4082.419 5541.581   b   
+##  N2 4816.000 362.4537 46 4086.419 5545.581   b   
 ## 
 ## Results are averaged over the levels of: rep 
-## Degrees-of-freedom method: kenward-roger 
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 6 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<pre class="r"><code>means$comparisons # N-Mittelwertdifferenzen pro Sorte</code></pre>
-<pre><code>## G = A:
-##  contrast   estimate       SE    df t.ratio p.value
-##  N2 - N1  1419.33333 516.9265 41.92   2.746  0.0873
-##  N3 - N1  2147.33333 516.9265 41.92   4.154  0.0020
-##  N3 - N2   728.00000 516.9265 41.92   1.408  0.7218
-##  N4 - N1  2480.00000 516.9265 41.92   4.798  0.0003
-##  N4 - N2  1060.66667 516.9265 41.92   2.052  0.3317
-##  N4 - N3   332.66667 516.9265 41.92   0.644  0.9869
-##  N5 - N1  3310.66667 516.9265 41.92   6.405  &lt;.0001
-##  N5 - N2  1891.33333 516.9265 41.92   3.659  0.0086
-##  N5 - N3  1163.33333 516.9265 41.92   2.250  0.2373
-##  N5 - N4   830.66667 516.9265 41.92   1.607  0.5987
-##  N6 - N1  4448.00000 516.9265 41.92   8.605  &lt;.0001
-##  N6 - N2  3028.66667 516.9265 41.92   5.859  &lt;.0001
-##  N6 - N3  2300.66667 516.9265 41.92   4.451  0.0008
-##  N6 - N4  1968.00000 516.9265 41.92   3.807  0.0057
-##  N6 - N5  1137.33333 516.9265 41.92   2.200  0.2593
-## 
-## G = B:
-##  contrast   estimate       SE    df t.ratio p.value
-##  N2 - N1  1676.00000 516.9265 41.92   3.242  0.0264
-##  N3 - N1  1953.00000 516.9265 41.92   3.778  0.0061
-##  N3 - N2   277.00000 516.9265 41.92   0.536  0.9943
-##  N4 - N1  2234.33333 516.9265 41.92   4.322  0.0012
-##  N4 - N2   558.33333 516.9265 41.92   1.080  0.8865
-##  N4 - N3   281.33333 516.9265 41.92   0.544  0.9939
-##  N5 - N1  2589.00000 516.9265 41.92   5.008  0.0001
-##  N5 - N2   913.00000 516.9265 41.92   1.766  0.4977
-##  N5 - N3   636.00000 516.9265 41.92   1.230  0.8195
-##  N5 - N4   354.66667 516.9265 41.92   0.686  0.9825
-##  N6 - N1  2644.66667 516.9265 41.92   5.116  0.0001
-##  N6 - N2   968.66667 516.9265 41.92   1.874  0.4319
-##  N6 - N3   691.66667 516.9265 41.92   1.338  0.7624
-##  N6 - N4   410.33333 516.9265 41.92   0.794  0.9671
-##  N6 - N5    55.66667 516.9265 41.92   0.108  1.0000
-## 
-## G = C:
-##  contrast   estimate       SE    df t.ratio p.value
-##  N2 - N1  2265.33333 516.9265 41.92   4.382  0.0010
-##  N3 - N1  2816.66667 516.9265 41.92   5.449  &lt;.0001
-##  N3 - N2   551.33333 516.9265 41.92   1.067  0.8917
-##  N4 - N1  2836.66667 516.9265 41.92   5.488  &lt;.0001
-##  N4 - N2   571.33333 516.9265 41.92   1.105  0.8765
-##  N4 - N3    20.00000 516.9265 41.92   0.039  1.0000
-##  N5 - N1  2888.00000 516.9265 41.92   5.587  &lt;.0001
-##  N5 - N2   622.66667 516.9265 41.92   1.205  0.8322
-##  N5 - N3    71.33333 516.9265 41.92   0.138  1.0000
-##  N5 - N4    51.33333 516.9265 41.92   0.099  1.0000
-##  N6 - N1  3510.00000 516.9265 41.92   6.790  &lt;.0001
-##  N6 - N2  1244.66667 516.9265 41.92   2.408  0.1769
-##  N6 - N3   693.33333 516.9265 41.92   1.341  0.7606
-##  N6 - N4   673.33333 516.9265 41.92   1.303  0.7819
-##  N6 - N5   622.00000 516.9265 41.92   1.203  0.8328
-## 
-## G = D:
-##  contrast   estimate       SE    df t.ratio p.value
-##  N2 - N1   166.00000 516.9265 41.92   0.321  0.9995
-##  N3 - N1  1935.33333 516.9265 41.92   3.744  0.0068
-##  N3 - N2  1769.33333 516.9265 41.92   3.423  0.0164
-##  N4 - N1  2600.66667 516.9265 41.92   5.031  0.0001
-##  N4 - N2  2434.66667 516.9265 41.92   4.710  0.0004
-##  N4 - N3   665.33333 516.9265 41.92   1.287  0.7903
-##  N5 - N1  2931.33333 516.9265 41.92   5.671  &lt;.0001
-##  N5 - N2  2765.33333 516.9265 41.92   5.350  &lt;.0001
-##  N5 - N3   996.00000 516.9265 41.92   1.927  0.4008
-##  N5 - N4   330.66667 516.9265 41.92   0.640  0.9872
-##  N6 - N1  2935.33333 516.9265 41.92   5.678  &lt;.0001
-##  N6 - N2  2769.33333 516.9265 41.92   5.357  &lt;.0001
-##  N6 - N3  1000.00000 516.9265 41.92   1.935  0.3963
-##  N6 - N4   334.66667 516.9265 41.92   0.647  0.9865
-##  N6 - N5     4.00000 516.9265 41.92   0.008  1.0000
-## 
-## Results are averaged over the levels of: rep 
-## P value adjustment: tukey method for comparing a family of 6 estimates</code></pre>
 </div>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">
 <h1>Ergebnisaufbereitung</h1>
 <p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Weil wir unser aber die N-Vergleiche isoliert pro Sorte konzentrieren wollen, können wir uns entscheiden ein Balkendiagramm pro Sorte zu erstellen. In solch einer Situation kann in der <code>ggplot()</code> Funktion das <code>facet_wrap()</code> statement genutzt werden.</p>
 <p>Außerdem wollen wir die Balken wieder mit denselben Farben versehen, die die N-Stufen bereits im Feldplan und dem Boxplot hatten. Dazu fügen wir zuerst dem <code>geom_bar()</code> statement <code>fill=N</code> hinzu. Nun bekommt jede N-Stufe eine andere Farbe. Um nicht die default Farben zu nehmen, sondern selbst zu bestimmen welche Farben es sein sollen, schreiben wir zusätzlich noch <code>scale_fill_manual(values=...)</code> in die Funktion. Um die dann automatisch generierte Legende zu unterdrücken (weil sie in diesem Fall keine zusätzlichen Informationen bringt), fügen wir außerdem <code>guides(fill=FALSE)</code> hinzu.</p>
-<pre class="r"><code>means.plot &lt;- as.data.table(means$emmeans) # korrektes Format für ggplot
+<pre class="r"><code>means.plot &lt;- as.data.table(means) # korrektes Format für ggplot
+means.plot$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means.plot$.group, fixed = TRUE) # Entferne Leerzeichen
 print(means.plot, nrows=2)</code></pre>
-<pre><code>##      N G   emmean       SE       df lower.CL upper.CL .group
-##  1: N1 A 4252.667 365.5222 41.91628 3514.969 4990.364   a   
-##  2: N2 A 5672.000 365.5222 41.91628 4934.303 6409.697   ab  
-##  3: N3 A 6400.000 365.5222 41.91628 5662.303 7137.697    bc 
-##  4: N4 A 6732.667 365.5222 41.91628 5994.969 7470.364    bc 
-##  5: N5 A 7563.333 365.5222 41.91628 6825.636 8301.031     cd
-## ---                                                         
-## 20: N5 D 2046.667 365.5222 41.91628 1308.969 2784.364     a 
-## 21: N4 D 3816.000 365.5222 41.91628 3078.303 4553.697      b
-## 22: N1 D 4481.333 365.5222 41.91628 3743.636 5219.031      b
-## 23: N3 D 4812.000 365.5222 41.91628 4074.303 5549.697      b
-## 24: N2 D 4816.000 365.5222 41.91628 4078.303 5553.697      b</code></pre>
+<pre><code>##      N G   emmean       SE df lower.CL upper.CL .group
+##  1: N1 A 4252.667 362.4537 46 3523.085 4982.248      a
+##  2: N2 A 5672.000 362.4537 46 4942.419 6401.581     ab
+##  3: N3 A 6400.000 362.4537 46 5670.419 7129.581     bc
+##  4: N4 A 6732.667 362.4537 46 6003.085 7462.248     bc
+##  5: N5 A 7563.333 362.4537 46 6833.752 8292.915     cd
+## ---                                                   
+## 20: N5 D 2046.667 362.4537 46 1317.085 2776.248      a
+## 21: N4 D 3816.000 362.4537 46 3086.419 4545.581      b
+## 22: N1 D 4481.333 362.4537 46 3751.752 5210.915      b
+## 23: N3 D 4812.000 362.4537 46 4082.419 5541.581      b
+## 24: N2 D 4816.000 362.4537 46 4086.419 5545.581      b</code></pre>
 <pre class="r"><code>ggplot(data=means.plot, aes(x=N)) +
   geom_bar(aes(y=emmean, fill=N), stat=&quot;identity&quot;, width=0.8) +
     scale_fill_manual(values=brewer.pal(6, &quot;Dark2&quot;)) + guides(fill=FALSE) +
@@ -578,7 +502,22 @@ print(means.plot, nrows=2)</code></pre>
   labs(main=&quot;Adj. N-Mittelwerte pro Sorte&quot;,
        y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;N-Dünger&quot;,
        caption=&quot;Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="2wayANOVA_RCBD_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>oder alternativ</p>
+<pre class="r"><code>ggplot() + theme_bw() +
+  # Rohdaten (crd)
+  geom_boxplot(data=riceRCBD, aes(x=N, y=yield), outlier.shape=NA, width=0.6) +
+  geom_jitter(data=riceRCBD, aes(x=N, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+  geom_point(data=means.plot, aes(x=as.numeric(N)+0.4, y=emmean), col=&quot;red&quot;, shape=16, size=2) +
+  geom_errorbar(data=means.plot, aes(x=as.numeric(N)+0.4, ymin=lower.CL, ymax=upper.CL), col=&quot;red&quot;, width=0.1) +  
+  geom_text(data=means.plot, aes(x=N, y=9600, label=.group), col=&quot;red&quot;) +
+  facet_wrap(~G) + # ein plot pro Sorte
+  ylim(0, 10000) +
+  labs(main=&quot;Adj. N-Mittelwerte pro Sorte&quot;,
+       y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;N-Dünger&quot;,
+       caption=&quot;Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="2wayANOVA_RCBD_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 
 

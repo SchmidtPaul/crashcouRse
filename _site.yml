@@ -13,13 +13,15 @@ navbar:
           href: 1wayANOVA_rcbd.html
         - text: "3) 1F alpha"
           href: 1wayANOVA_alpha.html
-        - text: "4) 2F split-plot"
+        - text: "4) 2F rcbd"
+          href: 2wayANOVA_rcbd.html
+        - text: "5) 2F split-plot"
           href: 2wayANOVA_splitplot.html
-        - text: "5) 1F rcbd Messwiederholungen"
+        - text: "6) 1F rcbd Messwiederholungen"
           href: rcbdrepmes.html
-        - text: "6) 1F crd Prozentwerte"
+        - text: "7) 1F crd Prozentwerte"
           href: GLMbinomial.html
-        - text: "7) 1F lat square Zählwerte"
+        - text: "8) 1F lat square Zählwerte"
           href: GLMpoisson.html
     - text: "Appendix"
       menu:

@@ -7,6 +7,13 @@ library(data.table)
 library(desplot) # plotte Feldplan
 library(RColorBrewer) # Farben für Feldplan
 load("D:/RKurse/Dokumentation/crashcouRse/datasets/rice split plot.rda")
+
+# Mehr Infos
+# Split Plot: 
+#   Bailey (2008) 8.3 + 8.4
+#   Dean & Voss (1998) 2.44 + 19
+#   Quinn & Keough (2002) 11.1
+
 ```
 
 # Datensatz
@@ -107,10 +114,4 @@ ggplot(data=means.plot, aes(x=N)) +
        caption="Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
 ```
 
-
-# Mehr Infos
-# Split Plot: 
-#   Bailey (2008) 8.3 + 8.4
-#   Dean & Voss (1998) 2.44 + 19
-#   Quinn & Keough (2002) 11.1
 
