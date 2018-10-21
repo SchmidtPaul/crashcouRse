@@ -1,5 +1,5 @@
 ---
-title: "One-Factor ANOVA - RCBD - Binomial Response"
+title: "1 Trt Factor - RCBD - Binomial Response"
 ---
 
 # Datensatz
@@ -68,11 +68,9 @@ mod <- glm(y/n ~ block + gen, family=quasibinomial(link="logit"), data=wheat)
 
 Wie man sehen kann, wäre das vorige Berechnen der `anteil`-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt `y/n` als Zielvariable schreiben können. Als erwartete Verteilung schreiben wir hier `family=quasibinomial`, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt ([mehr dazu hier](NichtNormalverteilt.html)). Der Zusatz `(link="logit")` ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da `glm()` eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der `autoplot()` Funktion des `ggfortify` packages betrachtet werden:
 
-```{r, fig.height = 5, fig.width = 5, fig.align = "center"}
+```{r, fig.height = 4, fig.width = 4, fig.align = "center"}
 autoplot(mod) # Residuenplots
 ```
-
-
 ## Test der festen Effekte
 
 ```{r}
@@ -88,9 +86,9 @@ Der p-Wert für den Sorteneffekt weist in diesem Fall deutlich auf unterschiedli
 Auch für generalisierte lineare Modelle eignet sich das `emmeans()` package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich `type="response"` hinzugefügt werden.
 
 ```{r}
-means <- emmeans(mod, pairwise ~ gen, type="response")
-means <- CLD(means$emmeans, Letters = letters)
-means$.group <- gsub(" ", "", means$.group, fixed = TRUE)
+means <- emmeans(mod, pairwise ~ gen, type="response") # Mittelwertvergleiche
+means <- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group <- gsub(" ", "", means$.group, fixed = TRUE) # Entferne Leerzeichen
 means
 ```
 

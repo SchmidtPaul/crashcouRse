@@ -1,5 +1,5 @@
 ---
-title: "One-Factor ANOVA - alpha-design"
+title: "1 Trt Factor - Alpha-Design"
 ---
 
 # Datensatz

@@ -16,7 +16,7 @@ Link | Behandlungseffekt | Design | Besonderheit | Funktion
 [Kapitel 4](2wayANOVA_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
 [Kapitel 5](rcbdrepmes.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
 [Kapitel 6](GLMbinomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
-[Kapitel 7](index.html) | ... | ... | Zählwerte | `glm()`
+[Kapitel 7](GLMpoisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
 
 
 Appendix | Beschreibung | Funktion

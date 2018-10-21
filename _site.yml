@@ -7,18 +7,20 @@ navbar:
       href: index.html
     - text: "Kapitel"
       menu:
-        - text: "1) 1wANOVA crd"
+        - text: "1) 1F crd"
           href: 1wayANOVA_crd.html
-        - text: "2) 1wANOVA rcbd"
+        - text: "2) 1F rcbd"
           href: 1wayANOVA_rcbd.html
-        - text: "3) 1wANOVA alpha"
+        - text: "3) 1F alpha"
           href: 1wayANOVA_alpha.html
-        - text: "4) 2wANOVA split-plot"
+        - text: "4) 2F split-plot"
           href: 2wayANOVA_splitplot.html
-        - text: "5) Messwiederholungen"
+        - text: "5) 1F rcbd Messwiederholungen"
           href: rcbdrepmes.html
-        - text: "6) Prozentwerte"
+        - text: "6) 1F crd Prozentwerte"
           href: GLMbinomial.html
+        - text: "7) 1F lat square Zählwerte"
+          href: GLMpoisson.html
     - text: "Appendix"
       menu:
         - text: "1) desplot package"
@@ -28,7 +30,7 @@ navbar:
         - text: "3) Varianzstrukturen"
           href: VarCovStr1.html
         - text: "4) Nicht-Normalverteilte Daten"
-          href: NichtNormalvertelt.html
+          href: NichtNormalverteilt.html
   right:
     - text: "Kontakt"
       href: Kontakt.html

@@ -1,5 +1,5 @@
 ---
-title: "Two-Factor ANOVA - split-plot design"
+title: "1 Trt Factor - Split-Plot Design"
 ---
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}

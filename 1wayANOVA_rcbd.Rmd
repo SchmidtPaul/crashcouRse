@@ -1,5 +1,5 @@
 ---
-title: "One-Factor ANOVA - RCBD"
+title: "1 Trt Factor - RCBD"
 ---
 
 # Datensatz

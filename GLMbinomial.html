@@ -11,7 +11,7 @@
 
 
 
-<title>One-Factor ANOVA - RCBD - Binomial Response</title>
+<title>1 Trt Factor - RCBD - Binomial Response</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -290,22 +290,25 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="1wayANOVA_crd.html">1) 1wANOVA crd</a>
+      <a href="1wayANOVA_crd.html">1) 1F crd</a>
     </li>
     <li>
-      <a href="1wayANOVA_rcbd.html">2) 1wANOVA rcbd</a>
+      <a href="1wayANOVA_rcbd.html">2) 1F rcbd</a>
     </li>
     <li>
-      <a href="1wayANOVA_alpha.html">3) 1wANOVA alpha</a>
+      <a href="1wayANOVA_alpha.html">3) 1F alpha</a>
     </li>
     <li>
-      <a href="2wayANOVA_splitplot.html">4) 2wANOVA split-plot</a>
+      <a href="2wayANOVA_splitplot.html">4) 2F split-plot</a>
     </li>
     <li>
-      <a href="rcbdrepmes.html">5) Messwiederholungen</a>
+      <a href="rcbdrepmes.html">5) 1F rcbd Messwiederholungen</a>
     </li>
     <li>
-      <a href="GLMbinomial.html">6) Prozentwerte</a>
+      <a href="GLMbinomial.html">6) 1F crd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="GLMpoisson.html">7) 1F lat square Zählwerte</a>
     </li>
   </ul>
 </li>
@@ -326,7 +329,7 @@ div.tocify {
       <a href="VarCovStr1.html">3) Varianzstrukturen</a>
     </li>
     <li>
-      <a href="NichtNormalvertelt.html">4) Nicht-Normalverteilte Daten</a>
+      <a href="NichtNormalverteilt.html">4) Nicht-Normalverteilte Daten</a>
     </li>
   </ul>
 </li>
@@ -344,7 +347,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">One-Factor ANOVA - RCBD - Binomial Response</h1>
+<h1 class="title toc-ignore">1 Trt Factor - RCBD - Binomial Response</h1>
 
 </div>
 
@@ -398,9 +401,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <pre class="r"><code>mod &lt;- glm(y/n ~ block + gen, family=quasibinomial(link=&quot;logit&quot;), data=wheat)</code></pre>
 <p>Wie man sehen kann, wäre das vorige Berechnen der <code>anteil</code>-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt <code>y/n</code> als Zielvariable schreiben können. Als erwartete Verteilung schreiben wir hier <code>family=quasibinomial</code>, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt (<a href="NichtNormalverteilt.html">mehr dazu hier</a>). Der Zusatz <code>(link=&quot;logit&quot;)</code> ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da <code>glm()</code> eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der <code>autoplot()</code> Funktion des <code>ggfortify</code> packages betrachtet werden:</p>
 <pre class="r"><code>autoplot(mod) # Residuenplots</code></pre>
-<p><img src="GLMbinomial_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" /></p>
-<div id="test-der-festen-effekte" class="section level2">
-<h2>Test der festen Effekte</h2>
+<p><img src="GLMbinomial_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /> ## Test der festen Effekte</p>
 <pre class="r"><code>anova(mod, test=&quot;F&quot;)</code></pre>
 <pre><code>## Analysis of Deviance Table
 ## 
@@ -419,13 +420,12 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (<em>i.e.</em> Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x">Piepho (1999)</a>). Dennoch kann die <code>anova()</code> Funktion in R auch für Modell-Objekte aus der <code>glm()</code> Funktion angewendet werden, da in diesem Fall eine andere Berechnung (<em>i.e.</em> Analysis of Deviance) durchgeführt wird (siehe <code>?anova.glm</code> für Details). Um allerdings wie gewohnt p-Werte (eines F-Tests) für die festen Effekte zu erhalten, muss hier noch ein <code>test=</code> statement hinzugefügt werden.</p>
 <p>Der p-Wert für den Sorteneffekt weist in diesem Fall deutlich auf unterschiedliche Anfälligkeiten der Sorten hin.</p>
-</div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
 <p>Auch für generalisierte lineare Modelle eignet sich das <code>emmeans()</code> package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich <code>type=&quot;response&quot;</code> hinzugefügt werden.</p>
-<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, type=&quot;response&quot;)
-means &lt;- CLD(means$emmeans, Letters = letters)
-means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE)
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, type=&quot;response&quot;) # Mittelwertvergleiche
+means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
 means</code></pre>
 <pre><code>##  gen       prob         SE  df  asymp.LCL asymp.UCL .group
 ##  G13 0.09232419 0.07042474 Inf 0.01921413 0.3455961 a     
