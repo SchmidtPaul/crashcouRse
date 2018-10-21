@@ -24,9 +24,10 @@ Appendix | Beschreibung | Funktion
 ---------|--------------|---------
 [Appendix 1](desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
 [Appendix 2](DesignList.html) | Vergleich Versuchsdesigns | -
-[Appendix 3](Interaktionen.html) | Behandlungsinteraktionen | -
-[Appendix 4](VarCovStr1.html) | Varianzstrukturen | `gls()` & `asreml()`
-[Appendix 5](NichtNormalverteil.html) | Binomial- und Poissonverteilte Daten | `glm()`
+[Appendix 3](posthoc.html) | Post Hoc Tests | -
+[Appendix 4](Interaktionen.html) | Behandlungsinteraktionen | -
+[Appendix 5](VarCovStr1.html) | Varianzstrukturen | `gls()` & `asreml()`
+[Appendix 6](NichtNormalverteil.html) | Binomial- und Poissonverteilte Daten | `glm()`
 
 ### Andere Quellen
 Ich empfehle die ["Statistics" Playlist](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr) auf dem Youtube-Kanal "CrashCourse".

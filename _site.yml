@@ -29,11 +29,13 @@ navbar:
           href: desplot.html
         - text: "2) Versuchsdesigns"
           href: DesignList.html
-        - text: "3) Interaktionen"
+        - text: "3) ANOVA & Post Hoc"
+          href: posthoc.html
+        - text: "4) Interaktionen"
           href: Interaktionen.html
-        - text: "4) Varianzstrukturen"
+        - text: "5) Varianzstrukturen"
           href: VarCovStr1.html
-        - text: "5) Nicht-Normalverteilte Daten"
+        - text: "6) Nicht-Normalverteilte Daten"
           href: NichtNormalverteilt.html
   right:
     - text: "Kontakt"
