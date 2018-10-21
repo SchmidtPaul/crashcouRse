@@ -8,8 +8,8 @@ Weitere Codes finden sich hier: [https://github.com/SchmidtPaul/R-SAS.Introducto
 
 ### Inhaltsverzeichnis
 
-Link | Behandlungseffekt | Design | Besonderheit | Funktion
------|-------------------|--------|--------------|----------
+Kapitel | Behandlungseffekt | Design | Besonderheit | Funktion
+--------|-------------------|--------|--------------|----------
 [Kapitel 1](1wayANOVA_crd.html) | 1 Faktor | CRD | | `lm()`
 [Kapitel 2](1wayANOVA_rcbd.html) | 1 Faktor | RCBD | | `lm()`
 [Kapitel 3](1wayANOVA_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
@@ -23,8 +23,9 @@ Appendix | Beschreibung | Funktion
 ---------|--------------|---------
 [Appendix 1](desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
 [Appendix 2](DesignList.html) | Vergleich Versuchsdesigns | -
-[Appendix 3](VarCovStr1.html) | Varianzstrukturen | `gls()` & `asreml()`
-[Appendix 4](NichtNormalverteil.html) | Binomial- und Poissonverteilte Daten | `glm()`
+[Appendix 3](Interaktionen.html) | Behandlungsinteraktionen | -
+[Appendix 4](VarCovStr1.html) | Varianzstrukturen | `gls()` & `asreml()`
+[Appendix 5](NichtNormalverteil.html) | Binomial- und Poissonverteilte Daten | `glm()`
 
 ### Andere Quellen
 Ich empfehle die ["Statistics" Playlist](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr) auf dem Youtube-Kanal "CrashCourse".

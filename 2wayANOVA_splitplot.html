@@ -326,10 +326,13 @@ div.tocify {
       <a href="DesignList.html">2) Versuchsdesigns</a>
     </li>
     <li>
-      <a href="VarCovStr1.html">3) Varianzstrukturen</a>
+      <a href="Interaktionen.html">3) Interaktionen</a>
     </li>
     <li>
-      <a href="NichtNormalverteilt.html">4) Nicht-Normalverteilte Daten</a>
+      <a href="VarCovStr1.html">4) Varianzstrukturen</a>
+    </li>
+    <li>
+      <a href="NichtNormalverteilt.html">5) Nicht-Normalverteilte Daten</a>
     </li>
   </ul>
 </li>
@@ -418,7 +421,7 @@ library(RColorBrewer) # bessere Farben</code></pre>
 ## G:N 69378044  4625203    15    36 13.2360 2.078e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
+<p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung (mehr Infos <a href="Interaktionen.html">hier</a>). Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
@@ -573,6 +576,21 @@ print(means.plot, nrows=2)</code></pre>
        y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;N-Dünger&quot;,
        caption=&quot;Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
 <p><img src="2wayANOVA_splitplot_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="mehr-infos" class="section level1">
+<h1>Mehr Infos</h1>
+</div>
+<div id="split-plot" class="section level1">
+<h1>Split Plot:</h1>
+</div>
+<div id="bailey-2008-8.3-8.4" class="section level1">
+<h1>Bailey (2008) 8.3 + 8.4</h1>
+</div>
+<div id="dean-voss-1998-2.44-19" class="section level1">
+<h1>Dean &amp; Voss (1998) 2.44 + 19</h1>
+</div>
+<div id="quinn-keough-2002-11.1" class="section level1">
+<h1>Quinn &amp; Keough (2002) 11.1</h1>
 </div>
 
 

@@ -27,9 +27,11 @@ navbar:
           href: desplot.html
         - text: "2) Versuchsdesigns"
           href: DesignList.html
-        - text: "3) Varianzstrukturen"
+        - text: "3) Interaktionen"
+          href: Interaktionen.html
+        - text: "4) Varianzstrukturen"
           href: VarCovStr1.html
-        - text: "4) Nicht-Normalverteilte Daten"
+        - text: "5) Nicht-Normalverteilte Daten"
           href: NichtNormalverteilt.html
   right:
     - text: "Kontakt"

@@ -3,9 +3,3 @@ library("rmarkdown")
 
 rmarkdown::clean_site()  # delete old files
 rmarkdown::render_site(encoding="UTF-8") # render all files new; UTF-8 for ä, ö, ü, ß
-
-# Mehr Infos
-# Split Plot: 
-#   Bailey (2008) 8.3 + 8.4
-#   Dean & Voss (1998) 2.44 + 19
-#   Quinn & Keough (2002) 11.1

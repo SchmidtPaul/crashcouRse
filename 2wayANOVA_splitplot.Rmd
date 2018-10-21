@@ -72,7 +72,7 @@ Zunächst sollten nun die Residuenplots evaluiert werden - beispielsweise mit `p
 ```{r}
 anova(mod)
 ```
-Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von `G:N` deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und *nicht* die der beiden Haupteffekte.
+Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung (mehr Infos [hier](Interaktionen.html)). Der signifikante p-Wert von `G:N` deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und *nicht* die der beiden Haupteffekte.
 
 ## Multipler Mittelwertvergleich
 
@@ -108,5 +108,9 @@ ggplot(data=means.plot, aes(x=N)) +
 ```
 
 
-
+# Mehr Infos
+# Split Plot: 
+#   Bailey (2008) 8.3 + 8.4
+#   Dean & Voss (1998) 2.44 + 19
+#   Quinn & Keough (2002) 11.1
 

@@ -11,7 +11,7 @@
 
 
 
-<title>1 Trt Factor - CRD</title>
+<title>Wechselwirkungen von Behandlungsfaktoren</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -350,133 +350,104 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">1 Trt Factor - CRD</h1>
+<h1 class="title toc-ignore">Wechselwirkungen von Behandlungsfaktoren</h1>
 
 </div>
 
 
-<div id="datensatz" class="section level1">
-<h1>Datensatz</h1>
-<pre class="r"><code>library(data.table) # bessere Datenmanipulation
-library(ggplot2); library(ggfortify) # bessere Plots
-library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Wir haben einen Datensatz aus einem Feldversuch, in welchem der Ertrag von 3 Sorten geprüft wurde. Der Versuch hatte 3 Wiederholungen und wurde als <strong>vollständig randomisierte Anlage</strong> (=<strong>C</strong>ompletely <strong>R</strong>andomized <strong>D</strong>esign) angelegt. <a href="DesignList.html">Hier mehr Infos zu Versuchsdesigns</a></p>
-<div class="row">
-<div class="col-md-6">
-<p><img src="1wayANOVA_crd_files/figure-html/unnamed-chunk-3-1.png" width="288" style="display: block; margin: auto;" /></p>
+<p>In einem Experiment, in dem mehrere Behandlungsfaktoren geprüft werden, kann es sein, dass es Wechselwirkungen zwischen den Behandlungen gibt. Folgendes Beispiel soll demonstrieren was damit gemeint ist.</p>
+<div id="zwei-behandlungsfaktoren" class="section level1">
+<h1>Zwei Behandlungsfaktoren</h1>
+<p>In einem Experiment (egal welches Design) wird der Ertrag von zwei Sorten und zwei Stickstoffdüngern miteinander verglichen. Demnach haben wir zwei Behandlungsfaktoren (<em>Sorte</em> &amp; <em>N</em>) mit jeweils zwei Stufen (Sorten <em>A</em> &amp; <em>B</em>, Dünger <em>N1</em> &amp; <em>N2</em>), sodass es vier Stufenkombinationen gibt (<em>A-N1</em>, <em>A-N2</em>, <em>B-N1</em> &amp; <em>B-N2</em>). Vor dem Experiment ist natürlich nicht klar wie der Ertrag von den Behandlungen beeinflusst wird. Folgender Plot soll zeigen welche prinzipiellen Effekte die Behandlungen auf den Ertrag haben könnten:</p>
+<p><img src="Interaktionen_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Es muss klar sein, dass natürlich auch die andere Sorte bzw. der andere Stickstoff einen höheren Ertrag zeigen kann - das ist aber nicht Ziel dieses Plots. Was de verschiedenen Plots stattdessen zeigen ist beginnnend von oben links:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Keine</strong>: Alle 4 Stufenkombinationen zeigen gleiche durchschnittliche Erträge. Das bedeutet, dass es weder zwischen den Sorten, noch zwischen den Düngern Unterschiede im Ertrag gibt. Wir finden also weder einen Sorten-, noch einen Düngereffekt. Der Ertrag ist schlichtweg immer 4.</li>
+<li><strong>Sorte</strong>: Die durchschnittlichen Erträge der Sorte B sind höher als die der Sorte A. Die Wahl des Düngers macht hierbei keinen Unterschied. Wir finden also einen Sorteneffekt, aber keinen Düngereffekt.</li>
+<li><strong>Dünger</strong>: Analog zum vorherigen Punkt können wir natürlich auch umgekehrt herausfinden, dass es einen Düngereffekt, jedoch keinen Sorteneffekt gibt. So zum Beispiel, dass Dünger N2 mehr Ertrag liefert als Dünger N1, die Wahl der Sorte dabei aber keinen Einfluss hat.</li>
+<li><strong>Sorte &amp; Dünger (additiv)</strong>: In diesem Fall gibt es sowohl einen Sorten-, als auch einen Düngereffekt, die additiv wirken. Das bedeutet, dass z.B. hier Sorte B und Dünger N2 immern den höheren Ertrag liefern, sodass dementsprechend die beste Kombination B-N2 und die schlechteste Kombination A-N1 ist.</li>
+<li><strong>Sorte &amp; Dünger (Interaktion)</strong>: Schließlich kann es auch sein, dass zwar wieder sowohl die Sorten-, als auch die Düngerwahl zu unterschiedlichen Erträgen führen, dies allerdings nicht rein additiv funktioniert, sondern bestimmte Sorten-Dünger-Kombinationen höhere/niederigere Erträge liefern als erwartet. Das Beispiel im Plot ist dabei ein besonders offensichtlicher Fall, da je nach Dünger eine andere Sorte den höheren Ertrag hat (<em>i.e.</em> die Linien kreuzen sich). Man spricht aber schon dann von einer Interaktion, wenn die Linien nicht parallel sind.</li>
+</ol>
 </div>
-<div class="col-md-6">
-<pre class="r"><code>crd</code></pre>
-<pre><code>##    gen  yield
-## 1: G02 4.3350
-## 2: G03 3.3420
-## 3: G01 5.1202
-## 4: G03 3.7999
-## 5: G01 5.7161
-## 6: G02 5.1566
-## 7: G01 4.6512
-## 8: G02 4.0510
-## 9: G03 2.8873</code></pre>
+<div id="backward-elimination" class="section level1">
+<h1>Backward Elimination</h1>
+<p>Wie gesagt ist vor dem Versuch nicht klar welche Behandlungseffekte es gibt. Um dies herauszufinden kann eine sogenannte <em>backward elimination</em> durchgeführt werden. Bei diesem Verfahren stellt man das <em>volle Modell</em> auf und eliminiert dann Schritt für Schritt die Einflussvariablen. Das <em>volle Modell</em> bezieht sich dabei auf den <em>treatment</em> Teil des Modells. Das bedeutet, dass also noch die <em>design</em> Effekte (z.B. <code>block</code>) des entsprechenden Versuchsdesigns dazukommen. <em>Voll</em> ist das Modell, da man vom untersten Plott, also von Wechselwirkungen der Effekte ausgeht:</p>
+<ul>
+<li><strong>Volles Modell</strong> <code>y = Sorte + Dünger + Sorte:Dünger</code></li>
+</ul>
+<p>Dann führt man eine ANOVA für das volle Modelle durch und betrachtet zuerst den “komplexesten” Term, also hier die Wechselwirkung <code>Sorte:Dünger</code>. Ist diese signifikant, so wird kein Term eliminiert und man hat das finale Modell gefunden. Ist der Term allerdings nicht signifikant, so eliminiert man ihn. Dann passt man im nächsten Schritt das reduzierte Modell an und schaut wieder auf die ANOVA. Dies führt man so lange durch, bis nur noch signifikante <em>treatment</em> Effekte im Modell sind - man eliminiert also alle nicht-signifikanten Effekte aus dem vollen Modell. Je nachdem welche Effekte eliminiert werden, endet man bei einem der Fälle aus dem Plot oben. Wichtig ist wie gesagt, dass man mit dem “komplexesten” Term beginnen muss. Wenn mehrere Terme der gleichen Komplexiztität vorhanden sind, wie bei uns in einem zweiten Schritt <code>Sorte</code> und <code>Dünger</code>, dann wird zuerst der Term mit dem höheren (=weniger signifikanten) p-Wert eliminiert. Hier ist eine Übersicht der Modelle, die den Plots oben entsprechen.</p>
+<table style="width:64%;">
+<colgroup>
+<col width="8%" />
+<col width="12%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Plot</th>
+<th>Syntax</th>
+<th>Formel (für CRD)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Keine</strong></td>
+<td><code>y =</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + e_{ijk}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Sorte</strong></td>
+<td><code>y = Sorte</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + S_i + e_{ijk}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Dünger</strong></td>
+<td><code>y = Dünger</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + D_j + e_{ijk}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Sorte &amp; Dünger (additiv)</strong></td>
+<td><code>y = Sorte + Dünger</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + S_i + D_j + e_{ijk}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Sorte &amp; Dünger (Interaktion)</strong></td>
+<td><code>y = Sorte + Dünger + Sorte:Dünger</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + S_i + D_j + (SD)_{ij} + e_{ijk}\)</span></td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-</div>
-<div id="deskriptive-statistik" class="section level1">
-<h1>Deskriptive Statistik</h1>
-<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie einen Plot.</p>
-<div class="row">
-<div class="col-md-6">
-<pre class="r"><code>summary(crd)</code></pre>
-<pre><code>##   gen        yield      
-##  G01:3   Min.   :2.887  
-##  G02:3   1st Qu.:3.800  
-##  G03:3   Median :4.335  
-##          Mean   :4.340  
-##          3rd Qu.:5.120  
-##          Max.   :5.716</code></pre>
-</div>
-<div class="col-md-6">
-<pre class="r"><code>plot(y=crd$yield, x=crd$gen)</code></pre>
-<p><img src="1wayANOVA_crd_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-</div>
-</div>
-</div>
-<div id="schlieende-statistik" class="section level1">
-<h1>Schließende Statistik</h1>
-<div id="lineares-modell" class="section level2">
-<h2>Lineares Modell</h2>
-<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor.</p>
-<pre class="r"><code>mod &lt;- lm(yield ~ gen, data=crd)</code></pre>
-<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
-</div>
-<div id="varianzanalyse" class="section level2">
-<h2>Varianzanalyse</h2>
-<pre class="r"><code>anova(mod)</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: yield
-##           Df Sum Sq Mean Sq F value Pr(&gt;F)  
-## gen        2 5.1022 2.55109  9.3023 0.0145 *
-## Residuals  6 1.6455 0.27424                 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
-</div>
-<div id="multipler-mittelwertvergleich" class="section level2">
-<h2>Multipler Mittelwertvergleich</h2>
-<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
-<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)
-means$emmeans # Mittelwerte </code></pre>
-<pre><code>##  gen   emmean        SE df lower.CL upper.CL
-##  G01 5.162500 0.3023478  6 4.422682 5.902318
-##  G02 4.514200 0.3023478  6 3.774382 5.254018
-##  G03 3.343067 0.3023478  6 2.603248 4.082885
-## 
-## Confidence level used: 0.95</code></pre>
-<pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
-<pre><code>##  contrast  estimate        SE df t.ratio p.value
-##  G01 - G02 0.648300 0.4275844  6   1.516  0.3488
-##  G01 - G03 1.819433 0.4275844  6   4.255  0.0127
-##  G02 - G03 1.171133 0.4275844  6   2.739  0.0754
-## 
-## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
-<p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
-<pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)
-means</code></pre>
-<pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
-##  G03 3.343067 0.3023478  6 2.603248 4.082885  a    
-##  G02 4.514200 0.3023478  6 3.774382 5.254018  ab   
-##  G01 5.162500 0.3023478  6 4.422682 5.902318   b   
-## 
-## Confidence level used: 0.95 
-## P value adjustment: tukey method for comparing a family of 3 estimates 
-## significance level used: alpha = 0.05</code></pre>
-<p>Das <code>CLD()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> sich signifikant voneinander unterscheiden.</p>
-</div>
-</div>
-<div id="ergebnisaufbereitung" class="section level1">
-<h1>Ergebnisaufbereitung</h1>
-<p>Schließlich kann man die Ergebnisse final in einem Plot darstellen. Gängig ist dafür ein Balkendiagramm:</p>
-<pre class="r"><code>ggplot(data=means, aes(x=gen)) +
-  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
-  geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.4) +
-  geom_text(aes(y=(emmean+SE)*1.1, label=.group)) +
-  labs(y=&quot;Adjustierter Ertragsmittelwert ± Standardfehler&quot;, x=&quot;Sorte&quot;, 
-      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_crd_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a”, “ab” und &quot; b“. Wir werden also auch diese Leerzeichen entfernen.</p>
-<pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Leerzeichen entfernen
-
-ggplot() + theme_classic() +
-  # Rohdaten (crd)
-geom_boxplot(data=crd, aes(x=gen, y=yield), outlier.shape=NA, width=0.6) +
-geom_jitter(data=crd, aes(x=gen, y=yield), width=0.25, height=0, shape=1) +
-  # Ergebnisse (means)
-geom_point(data=means, aes(x=as.numeric(gen)+0.4, y=emmean), col=&quot;red&quot;, shape=16, size=2) +
-geom_errorbar(data=means, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col=&quot;red&quot;, width=0.1) +
-geom_text(data=means, aes(x=as.numeric(gen)+0.5, y=emmean, label =.group), col=&quot;red&quot;) + 
-labs(y=&quot;Schwarz: Ertrag\nRot: Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;, 
-      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1wayANOVA_crd_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div id="mehr-als-zwei-behandlungsfaktoren" class="section level1">
+<h1>Mehr als zwei Behandlungsfaktoren</h1>
+<p>Wenn mehr als zwei Behandlungsfaktoren geprüft werden, gibt es auch mehr als eine potentielle Wechselwirkung:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Anzahl</th>
+<th>Name</th>
+<th>Modell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2 Faktoren</td>
+<td><code>A</code> &amp; <code>B</code></td>
+<td><code>A + B + A:B</code></td>
+</tr>
+<tr class="even">
+<td>3 Faktoren</td>
+<td><code>A</code>, <code>B</code> &amp; <code>C</code></td>
+<td><code>A + B + C + A:B + A:C + B:C + A:B:C</code></td>
+</tr>
+<tr class="odd">
+<td>4 Faktoren</td>
+<td><code>A</code>, <code>B</code>, <code>C</code> &amp; <code>D</code></td>
+<td><code>A + B + C + D + A:B +</code> … <code>+ B:C:D + A:B:C:D</code></td>
+</tr>
+</tbody>
+</table>
+<p>Die backward elimination funktioniert aber genau so wie oben beschrieben. Alternativ zum backward elimination Verfahren kann beispielsweise auch das <em>forward selection</em> Verfahren angewendet werden, bei dem vom leeren Modell ausgegangen wird und Schritt für Schritt ein signifikanter Termin hinzugefügt wird.</p>
 </div>
 
 
