@@ -14,7 +14,7 @@ navbar:
         - text: "3) 1F alpha"
           href: 1wayANOVA_alpha.html
         - text: "4) 2F rcbd"
-          href: 2wayANOVA_rcbd.html
+          href: 2wayANOVA_RCBD.html
         - text: "5) 2F split-plot"
           href: 2wayANOVA_splitplot.html
         - text: "6) 1F rcbd Messwiederholungen"

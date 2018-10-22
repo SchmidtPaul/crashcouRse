@@ -13,7 +13,7 @@ Kapitel | Behandlungseffekt | Design | Besonderheit | Funktion
 [Kapitel 1](1wayANOVA_crd.html) | 1 Faktor | CRD | | `lm()`
 [Kapitel 2](1wayANOVA_rcbd.html) | 1 Faktor | RCBD | | `lm()`
 [Kapitel 3](1wayANOVA_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
-[Kapitel 4](2wayANOVA_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
+[Kapitel 4](2wayANOVA_RCBD.html) | 2 Faktoren | RCBD | | `lm()`
 [Kapitel 5](2wayANOVA_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
 [Kapitel 6](rcbdrepmes.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
 [Kapitel 7](GLMbinomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
