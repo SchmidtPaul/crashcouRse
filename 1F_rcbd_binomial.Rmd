@@ -1,0 +1,109 @@
+---
+title: "1 Beh.faktor - RCBD - Binomiale Daten"
+---
+
+# Datensatz
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table)
+library(desplot) # plotte Feldplan
+library(RColorBrewer) # Farben für Feldplan
+genfarben <- c(brewer.pal(8, "YlOrRd"), brewer.pal(8, "GnBu"))
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/wheat binomial.rda")
+```
+
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte
+```
+
+In diesem Beispiel wurden 16 Weizensorten in einer randomisierten vollständigen Blockanlage mit 4 Wiederholungen geprüft.
+
+> Die Auswertung dieses Datensatzes ist auch [hier](https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_glimmix_sect013.htm) in der `PROC GLIMMIX` SAS Dokumentation beschrieben. 
+
+```{r, echo=F, fig.height = 3, fig.width = 3, fig.align = "center"}
+desplot(data=wheat.binom, form= gen ~ col+row,
+        col.regions=genfarben,
+        text=gen, shorten="no", cex=0.8,
+        out1=block, aspect=1,
+        main="", show.key=F)
+wheat <- wheat.binom[, c("block", "gen", "y", "n")]
+```
+
+Allerdings wurde nicht wie so oft in den vorangegangenen Beispiel der Ertrag gemessen, sondern die Anfälligkeit gegen die Hessenfliege (*Mayetiola destructor*). Dies geschah indem in jeder Parzelle die Gesamtzahl an Pflanzen (`n`), sowie die Anzahl derer Pflanzen, die befallen waren (`y`) bestimmt wurden. Demnach repräsentiert der Anteil `y/n` die Anfälligkeit gegen die Hessenfliege und kann in % angegeben werden. Wir können eine neue Spalte erstellen, die diesen Anteil angibt.
+
+```{r}
+wheat[, anteil := y/n] # erstelle Spalte "anteil"
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(wheat, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r, eval=FALSE}
+str(wheat)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(wheat, width=40, strict.width="cut")
+```
+</div> </div>
+
+# Deskriptive Statistik
+
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor `genfarben` gespeichert - [mehr Infos dazu hier](appendix_desplot.html). 
+
+```{r, fig.height = 4, fig.width = 5, fig.align = "center"}
+boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2) # las=2 dreht die Achsenbeschriftung
+```
+
+# Schließende Statistik
+
+## Generalisiertes Modell
+
+Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (*i.e.* 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Dies geht z.B. mit der `glm()` Funktion. Bezüglich der Effekte im Modell verfahren wir wie bei einer [einfaktoriellen ANOVA in einem RCBD](1F_rcbd.html). 
+
+```{r}
+mod <- glm(y/n ~ block + gen, family=quasibinomial(link="logit"), data=wheat)
+```
+
+Wie man sehen kann, wäre das vorige Berechnen der `anteil`-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt `y/n` als Zielvariable schreiben können. Als erwartete Verteilung schreiben wir hier `family=quasibinomial`, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Der Zusatz `(link="logit")` ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da `glm()` eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der `autoplot()` Funktion des `ggfortify` packages betrachtet werden:
+
+```{r, fig.height = 4, fig.width = 4, fig.align = "center"}
+autoplot(mod) # Residuenplots
+```
+## Test der festen Effekte
+
+```{r}
+anova(mod, test="F")
+```
+
+Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (*i.e.* Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in [Piepho (1999)](https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x)). Dennoch kann die `anova()` Funktion in R auch für Modell-Objekte aus der `glm()` Funktion angewendet werden, da in diesem Fall eine andere Berechnung (*i.e.* Analysis of Deviance) durchgeführt wird (siehe `?anova.glm` für Details). Um allerdings wie gewohnt p-Werte (eines F-Tests) für die festen Effekte zu erhalten, muss hier noch ein `test=` statement hinzugefügt werden.
+
+Der p-Wert für den Sorteneffekt weist in diesem Fall deutlich auf unterschiedliche Anfälligkeiten der Sorten hin.
+
+## Multipler Mittelwertvergleich
+
+Auch für generalisierte lineare Modelle eignet sich das `emmeans()` package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich `type="response"` hinzugefügt werden.
+
+```{r}
+means <- emmeans(mod, pairwise ~ gen, type="response") # Mittelwertvergleiche
+means <- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group <- gsub(" ", "", means$.group, fixed = TRUE) # Entferne Leerzeichen
+means
+```
+
+# Ergebnisaufbereitung
+
+```{r}
+ggplot() + theme_classic() +
+   # Rohdaten (wheat)
+   geom_point(data=wheat, aes(x=gen, y=anteil), shape=1, size=1) +
+   # Ergebnisse (means)
+   geom_point(data=means, aes(x=gen, y=prob), col="red", shape=16, size=2) +
+   geom_errorbar(data=means, aes(x=gen, ymin=asymp.LCL, ymax=asymp.UCL), col="red", width=0.1) +
+   geom_text(data=means, aes(x=gen, y=1.05, label =.group), col="red") +
+  labs(y="Schwarz: Beobachtete Anfälligkeit\nRot: Rücktransformierter, adjustierter Mittelwert für die \nAnfälligkeit ± 95% asympt. Konfidenzintervall", x="Sorte",
+       caption="Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test auf der Logit-Skala nicht signifikant voneinander verschieden.")
+```

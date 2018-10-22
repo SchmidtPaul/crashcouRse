@@ -11,7 +11,7 @@
 
 
 
-<title>R im Versuchswesen</title>
+<title>Nicht-normalverteilte Daten</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -356,129 +356,21 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R im Versuchswesen</h1>
+<h1 class="title toc-ignore">Nicht-normalverteilte Daten</h1>
 
 </div>
 
 
-<p>Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus.</p>
-<p>Weitere Codes finden sich hier: <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses" class="uri">https://github.com/SchmidtPaul/R-SAS.Introductory.Courses</a></p>
-<div id="inhaltsverzeichnis" class="section level3">
-<h3>Inhaltsverzeichnis</h3>
-<table>
-<thead>
-<tr class="header">
-<th>Kapitel</th>
-<th>Behandlungseffekt</th>
-<th>Design</th>
-<th>Besonderheit</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="1F_crd.html">Kapitel 1</a></td>
-<td>1 Faktor</td>
-<td>CRD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd.html">Kapitel 2</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_alpha.html">Kapitel 3</a></td>
-<td>1 Faktor</td>
-<td><span class="math inline">\(\alpha\)</span>-lattice</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="2F_rcbd.html">Kapitel 4</a></td>
-<td>2 Faktoren</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="2F_splitplot.html">Kapitel 5</a></td>
-<td>2 Faktoren</td>
-<td>split-plot</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd_messwdh.html">Kapitel 6</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Messwiederholung</td>
-<td><code>gls()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_rcbd_binomial.html">Kapitel 7</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Prozentwerte</td>
-<td><code>glm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_latsq_poisson.html">Kapitel 8</a></td>
-<td>1 Faktor</td>
-<td>Lat. Quadrat</td>
-<td>Zählwerte</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>Appendix</th>
-<th>Beschreibung</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="appendix_desplot.html">Appendix 1</a></td>
-<td>Ersellen von Feldplanabbildungen</td>
-<td><code>desplot()</code></td>
-</tr>
-<tr class="even">
-<td><a href="appendix_designs.html">Appendix 2</a></td>
-<td>Vergleich Versuchsdesigns</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_posthoc.html">Appendix 3</a></td>
-<td>Post Hoc Tests</td>
-<td>-</td>
-</tr>
-<tr class="even">
-<td><a href="appendix_interaktionen.html">Appendix 4</a></td>
-<td>Behandlungsinteraktionen</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_kovarstrukt.html">Appendix 5</a></td>
-<td>Kovarianzstrukturen</td>
-<td><code>gls()</code> &amp; <code>asreml()</code></td>
-</tr>
-<tr class="even">
-<td><a href="NichtNormalverteil.html">Appendix 6</a></td>
-<td>Binomial- und Poissonverteilte Daten</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
+<p>Neben normalverteilten Daten wie z.B. dem Ertrag als Zielvariable, gibt es auch z.B. binomial- oder poissonverteilte Daten. Der wichtigste Unterschied hier besteht darin, dass wir bei der Modellierung nicht davon ausgehen können, dass die Fehler normalverteilt sind. Die einfachen linearen Modelle und übrigens auch lineare gemischte Modelle nehmen allerdings normalverteilte Fehler an und um diese Vorraussetzung zu prüfen betrachten wir schließlich die Residuenplots. Wenn nun also ein Modell für solche Daten angepasst wird, der QQ-Plot aber schlichtweg nicht auf normalverteilte Fehler schließen lässt, sollte nicht mit dem zugehörigen Modell fortgefahren werden.</p>
+<div id="datentransformation" class="section level2">
+<h2>Datentransformation</h2>
+<p>In solchen Fällen kann versucht werden die Daten (<em>i.e.</em> die Zielvariable) zu transformieren und das Modell erneut anzupassen. Wenn sich der QQ-Plot auf diese Weise verbessert, können so schlichtweg die transformierten Daten mit dem einfachen linearen (gemischten) Modell ausgewertet werden. Gängige Transformationen sind die log- und Wurzel-Transformation. Praktisch bedeutet das tatsächlich, dass man nicht <code>y</code>, sondern <code>log(y)</code> oder <code>sqrt(y)</code> modelliert. Dementsprechend liefert am Ende <code>emmeans()</code> auch adjustierte Mittelwerte für die Wurzel aus dem Ertrag beispielsweise. Das scheint nicht zielführend zu sein, jedoch ist es eben doch genau das, da auch so signifikante Behandlungseffekte mittels ANOVA gefunden werden. Desweiteren können auch die paarweisen Mittelwertvergleiche durchgeführt werden. Schließlich können die Mittelwerte am Ende auch einfach rücktransformiert werden, also bei z.B. die <code>sqrt(y)</code> Mittelwerte quadriert werden. Wichtig ist eben, dass die Modellvoraussetzunge erfüllt sind.</p>
 </div>
-<div id="andere-quellen" class="section level3">
-<h3>Andere Quellen</h3>
-<p>Ich empfehle die <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr">“Statistics” Playlist</a> auf dem Youtube-Kanal “CrashCourse”.</p>
+<div id="generalisierte-lineare-gemischte-modelle" class="section level2">
+<h2>Generalisierte lineare (gemischte) Modelle</h2>
+<p>Sollte man keine Datentransformation finden, die die gewünschten Modellvoraussetzungen erfüllt, können auch <strong>generalisierte lineare Modelle</strong> verwendet werden. Diese Modelle sind flexibler, da sie auch andere Verteilungen als die Normalverteilung, sowie Varianzheterogenität zulassen. Demnach kann man sich voll auf die Erzielung der Linearität/Additivität konzentrieren. In die Klasse der GLMs fallen eine ganze Reihe gängiger Modelle, z.B. die Logit- und Probit-Regression für binomialverteilte Daten oder die loglinearen Modelle für poissonverteilte Daten. Die für uns “normalen” Modelle sind also ein Sonderfall der generalisierten Modelle, die normalverteilte Fehler mit homogener Varianz annehmen.</p>
+<p>Es soll gesagt sein, dass in der Praxis die oben beschrieben Schritte manchmal auch übersprungen werden und einfach direkt ein generalisiertes lineares Modell für bestimmte Datentypen angepasst wird. So z.B. für <strong>Prozentwerte (binomialverteilt)</strong> oder <strong>nach oben offene Zähldaten (poissonverteilt)</strong>.</p>
+<p>Für eine kompakte Beschreibung der zugrundeliegenden Theorie siehe Prof. <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses/blob/master/Lecture%20Notes%20Piepho%20et%20al/2%20Biometrie%20%5Bger%5D.pdf">Piephos Biometrieskript</a> Kapitel 7.4.</p>
 </div>
 
 

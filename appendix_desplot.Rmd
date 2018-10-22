@@ -1,0 +1,189 @@
+---
+title: "Feldpläne mit dem desplot package"
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(agridat) # agrarwissenschaftliche Beispieldatensätze
+library(data.table)
+library(desplot) # plotte Feldplan
+library(RColorBrewer) # Farben für Feldplan
+alpha <- data.table(john.alpha)
+alpha$yield <- alpha$yield*10
+alpha$row <- rep(4:1)
+alpha$col <- sort(rep(seq(18:1),4))
+alpha$inc.block <- paste0(alpha$rep,"-",alpha$block)
+alpha <- alpha[,c("row", "col", "rep", "gen", "inc.block", "yield")]
+```
+
+Die Feldpläne, die das Versuchsdesign in den verschiedenen Kapiteln dieser Website grafisch darstellen, wurden mit dem `desplot` package erstellt. Hier sind beispielhaft ein paar Codes aufgeführt. Für detaillierte Informationen zu den einzelnen Argumenten der Funktion siehe `?desplot`.
+
+```{r}
+library(desplot)
+```
+
+# Beispiel 1
+Bei diesem Datensatz handelt es sich um ein $\alpha$-Design mit 3 vollständigen Blöcken, die jeweils 6 unvollständige Blöcke a 4 Parzellen enthalten. Es wurden 24 Sorten geprüft. 
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+head(alpha)
+```
+</div> <div class = "col-md-6">
+```{r}
+str(alpha, width=40, strict.width="cut")
+```
+</div> </div>
+
+<div class = "row"> <div class = "col-md-6">
+## Sorte je Parzelle
+
+Die Variable, die im `form=` Argument links der Tilde steht, bestimmt die Färbung der Parzelle. Desweiteren können wir mit dem `text=` Argument die Parzellenbeschriftung bestimmen.
+
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+desplot(data=alpha, form= gen ~ col+row, 
+        text=gen, shorten="no",
+        main="", show.key=F)
+```
+</div> <div class = "col-md-6">
+
+## Ertrag je Parzelle
+
+Im `form=` Argument kann auch eine numerische Variable, wie z.B. der Ertrag eingfügt werden. Dann sollte statt des `text=` Arguments das `num=` Argument genutzt werden. 
+
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+desplot(data=alpha, form= yield ~ col+row, 
+        num=yield, 
+        main="", show.key=F)
+```
+</div> </div>
+
+
+## Blöcke umranden
+
+Mit den `out1 =` und `out2=` Argumenten kann angegeben werden um welche Gruppen von Parzellen Linien gezogen werden sollen. Dies ist z.B. für Blöcke sinnvoll. 
+
+<div class = "row"> <div class = "col-md-6">
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+desplot(data=alpha, form= rep ~ col+row, 
+        text=gen, shorten="no",
+        out1=rep,
+        main="", 
+        show.key=F)
+
+```
+</div> <div class = "col-md-6">
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+desplot(data=alpha, form= inc.block ~ col+row,
+        text=gen, shorten="no",
+        out1=rep, out2=inc.block, 
+        out2.gpar=list(col="black"),
+        main="", show.key=F)
+```
+</div> </div>
+
+## Manuelle Farbwahl
+Außerdem können sämtliche Farben des Plots selbst ausgesucht werden. Die Farbwahl in R ist generell [sehr groß](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf). Wer nicht jede Farbe einzeln aussuchen möchte, kann das package `RColorBrewer` nutzen. So können wir für die unvollständigen Blöcke mit dem `brewer.pal()` Statement je 6 blau-, rot- und grün-Töne pro vollständigem Block auswählen um die Eigenschaften des Designs noch klarer hervorzuheben.
+
+<div class = "row"> <div class = "col-md-6">
+```{r, eval=FALSE}
+library(RColorBrewer)
+
+mycolors <- c(brewer.pal(6, "Blues"), 
+              brewer.pal(6, "Reds"), 
+              brewer.pal(6, "Greens"))
+
+desplot(data=alpha, form= inc.block ~ col+row,
+        col.regions=mycolors,
+        text=gen, shorten="no",
+        out1=rep,
+        out2=inc.block, 
+        out2.gpar=list(col="black"),
+        main="", show.key=F)
+```
+</div> <div class = "col-md-6">
+```{r, echo=FALSE, fig.height = 2, fig.width = 4, fig.align = "center"}
+mycolors <- c(brewer.pal(6, "Blues"), 
+              brewer.pal(6, "Reds"), 
+              brewer.pal(6, "Greens"))
+
+desplot(data=alpha, form= inc.block ~ col+row,
+        col.regions=mycolors,
+        text=gen, shorten="no",
+        out1=rep, out2=inc.block, 
+        out2.gpar=list(col="black"),
+        main="", show.key=F)
+```
+</div> </div>
+
+# Beispiel 2
+
+In diesem Beispiel gibt es neben den Faktor *Sorte* (3 Stufen) einen zweiten Faktor *Nitro* (4 Stufen) und somit 12 Faktorkombinationen. Der Versuch wurde als Split-Plot design angelegt: Es gibt 6 vollständige Blöcke, in denen die 3 Sorten jeweils in 4 Parzellen gruppiert (= *Main Plot*) vorkommen. Es wurden also im ersten Schritt den Main Plots zufällig Sorten zugewiesen und im zweiten Schritt die Nitro-Stufen innerhalb jedes Main Plots randomisiert.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+oats <- data.table(yates.oats)
+oats <- oats[,c("row", "col", "block", "gen", "nitro", "yield")]
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+head(oats)
+```
+</div> <div class = "col-md-6">
+```{r}
+str(oats, width=40, strict.width="cut")
+```
+</div> </div>
+
+Um auch den zweiten Faktor farblich hervorheben zu können, kann man mit dem `col=` statement zusätzlich die Beschriftung der Parzellen einfärben. In Beispiel 1 hatten wir zum einen mit dem `show.key=F` statement das Anzeigen einer Legende unterdrückt, zum anderen mit dem `shorten="no"` statement das Kürzen der Sortennamen verboten. Hier ist beides jedoch sehr hilfreich. 
+
+```{r}
+desplot(data=oats, form=block ~ col+row, 
+        text=gen, cex=1, col=nitro, 
+        out1=block,
+        out2=gen, out2.gpar=list(col="gray50"),
+        main="")
+```
+
+# Beispiel 3
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+nuts <- data.table(ryder.groundnut)
+nuts <- nuts[,c("row", "col", "block", "gen", "dry")]
+```
+
+Hier handelt es sich um einem Versuch in dem der Trockenmasseertrag von 6 Erdnusssorten verglichen wurde. Der Versuch ist als randomisierte vollständige Blockanlage (RCBD) angelegt. 
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+head(nuts)
+```
+</div> <div class = "col-md-6">
+```{r}
+str(nuts, width=40, strict.width="cut")
+```
+</div> </div>
+
+In diesem Beispiel wollen wir einen zusätzlichen Plot erstellen. Im Gegensatz zu den vorangegangenen Plots soll hier der Fokus weder auf dem Versuchsdesign, noch den Messwerten liegen. Stattdessen sollen die Daten erst modelliert werden und dann die Residuen dargestellt werden.
+
+```{r}
+mod <- lm(data=nuts, formula= dry ~ block + gen)
+nuts$res <- round(resid(mod),2)
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+desplot(data=nuts, form= block ~ col+row,
+        text=gen, cex=0.8,
+        out1=block, show.key=F, 
+        main="rand. compl. block design")
+```
+</div> <div class = "col-md-6">
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+desplot(data=nuts, form= res ~ col+row,
+        text=res, cex=0.8, shorten="none",
+        show.key=F,
+        main="Residuen des RCBD Modells")
+```
+</div> </div>
+
+So fällt hier auf, dass das größte und kleinste Residuum direkt nebeneinander vorkommen. Ein Grund dafür könnte sein, dass die Ertragswerte dieser beiden Parzellen versehentlich vertauscht wurden. 

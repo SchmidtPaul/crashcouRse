@@ -8,38 +8,38 @@ navbar:
     - text: "Kapitel"
       menu:
         - text: "1) 1F crd"
-          href: 1wayANOVA_crd.html
+          href: 1F_crd.html
         - text: "2) 1F rcbd"
-          href: 1wayANOVA_rcbd.html
+          href: 1F_rcbd.html
         - text: "3) 1F alpha"
-          href: 1wayANOVA_alpha.html
+          href: 1F_alpha.html
         - text: "4) 2F rcbd"
-          href: 2wayANOVA_RCBD.html
+          href: 2F_rcbd.html
         - text: "5) 2F split-plot"
-          href: 2wayANOVA_splitplot.html
+          href: 2F_splitplot.html
         - text: "6) 1F rcbd Messwiederholungen"
-          href: rcbdrepmes.html
+          href: 1F_rcbd_messwdh.html
         - text: "7) 1F crd Prozentwerte"
-          href: GLMbinomial.html
+          href: 1F_rcbd_binomial.html
         - text: "8) 1F lat square Zählwerte"
-          href: GLMpoisson.html
+          href: 1F_latsq_poisson.html
     - text: "Appendix"
       menu:
         - text: "1) desplot package"
-          href: desplot.html
+          href: appendix_desplot.html
         - text: "2) Versuchsdesigns"
-          href: DesignList.html
+          href: appendix_designs.html
         - text: "3) ANOVA & Post Hoc"
-          href: posthoc.html
+          href: appendix_posthoc.html
         - text: "4) Interaktionen"
-          href: Interaktionen.html
-        - text: "5) Varianzstrukturen"
-          href: VarCovStr1.html
+          href: appendix_interaktionen.html
+        - text: "5) Kovarianzstrukturen"
+          href: appendix_kovarstrukt.html
         - text: "6) Nicht-Normalverteilte Daten"
-          href: NichtNormalverteilt.html
+          href: appendix_nichtnormalverteilt.html
   right:
     - text: "Kontakt"
-      href: Kontakt.html
+      href: kontakt.html
 output:
   html_document:
     theme: lumen

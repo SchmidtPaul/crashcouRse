@@ -11,7 +11,7 @@
 
 
 
-<title>R im Versuchswesen</title>
+<title>Wechselwirkungen von Behandlungsfaktoren</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -356,129 +356,104 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R im Versuchswesen</h1>
+<h1 class="title toc-ignore">Wechselwirkungen von Behandlungsfaktoren</h1>
 
 </div>
 
 
-<p>Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus.</p>
-<p>Weitere Codes finden sich hier: <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses" class="uri">https://github.com/SchmidtPaul/R-SAS.Introductory.Courses</a></p>
-<div id="inhaltsverzeichnis" class="section level3">
-<h3>Inhaltsverzeichnis</h3>
-<table>
+<p>In einem Experiment, in dem mehrere Behandlungsfaktoren geprüft werden, kann es sein, dass es Wechselwirkungen zwischen den Behandlungen gibt. Folgendes Beispiel soll demonstrieren was damit gemeint ist.</p>
+<div id="zwei-behandlungsfaktoren" class="section level1">
+<h1>Zwei Behandlungsfaktoren</h1>
+<p>In einem Experiment (egal welches Design) wird der Ertrag von zwei Sorten und zwei Stickstoffdüngern miteinander verglichen. Demnach haben wir zwei Behandlungsfaktoren (<em>Sorte</em> &amp; <em>N</em>) mit jeweils zwei Stufen (Sorten <em>A</em> &amp; <em>B</em>, Dünger <em>N1</em> &amp; <em>N2</em>), sodass es vier Stufenkombinationen gibt (<em>A-N1</em>, <em>A-N2</em>, <em>B-N1</em> &amp; <em>B-N2</em>). Vor dem Experiment ist natürlich nicht klar wie der Ertrag von den Behandlungen beeinflusst wird. Folgender Plot soll zeigen welche prinzipiellen Effekte die Behandlungen auf den Ertrag haben könnten:</p>
+<p><img src="appendix_interaktionen_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Es muss klar sein, dass natürlich auch die andere Sorte bzw. der andere Stickstoff einen höheren Ertrag zeigen kann - das ist aber nicht Ziel dieses Plots. Was de verschiedenen Plots stattdessen zeigen ist beginnnend von oben links:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Keine</strong>: Alle 4 Stufenkombinationen zeigen gleiche durchschnittliche Erträge. Das bedeutet, dass es weder zwischen den Sorten, noch zwischen den Düngern Unterschiede im Ertrag gibt. Wir finden also weder einen Sorten-, noch einen Düngereffekt. Der Ertrag ist schlichtweg immer 4.</li>
+<li><strong>Sorte</strong>: Die durchschnittlichen Erträge der Sorte B sind höher als die der Sorte A. Die Wahl des Düngers macht hierbei keinen Unterschied. Wir finden also einen Sorteneffekt, aber keinen Düngereffekt.</li>
+<li><strong>Dünger</strong>: Analog zum vorherigen Punkt können wir natürlich auch umgekehrt herausfinden, dass es einen Düngereffekt, jedoch keinen Sorteneffekt gibt. So zum Beispiel, dass Dünger N2 mehr Ertrag liefert als Dünger N1, die Wahl der Sorte dabei aber keinen Einfluss hat.</li>
+<li><strong>Sorte &amp; Dünger (additiv)</strong>: In diesem Fall gibt es sowohl einen Sorten-, als auch einen Düngereffekt, die additiv wirken. Das bedeutet, dass z.B. hier Sorte B und Dünger N2 immern den höheren Ertrag liefern, sodass dementsprechend die beste Kombination B-N2 und die schlechteste Kombination A-N1 ist.</li>
+<li><strong>Sorte &amp; Dünger (Interaktion)</strong>: Schließlich kann es auch sein, dass zwar wieder sowohl die Sorten-, als auch die Düngerwahl zu unterschiedlichen Erträgen führen, dies allerdings nicht rein additiv funktioniert, sondern bestimmte Sorten-Dünger-Kombinationen höhere/niederigere Erträge liefern als erwartet. Das Beispiel im Plot ist dabei ein besonders offensichtlicher Fall, da je nach Dünger eine andere Sorte den höheren Ertrag hat (<em>i.e.</em> die Linien kreuzen sich). Man spricht aber schon dann von einer Interaktion, wenn die Linien nicht parallel sind.</li>
+</ol>
+</div>
+<div id="backward-elimination" class="section level1">
+<h1>Backward Elimination</h1>
+<p>Wie gesagt ist vor dem Versuch nicht klar welche Behandlungseffekte es gibt. Um dies herauszufinden kann eine sogenannte <em>backward elimination</em> durchgeführt werden. Bei diesem Verfahren stellt man das <em>volle Modell</em> auf und eliminiert dann Schritt für Schritt die Einflussvariablen. Das <em>volle Modell</em> bezieht sich dabei auf den <em>treatment</em> Teil des Modells. Das bedeutet, dass also noch die <em>design</em> Effekte (z.B. <code>block</code>) des entsprechenden Versuchsdesigns dazukommen. <em>Voll</em> ist das Modell, da man vom untersten Plott, also von Wechselwirkungen der Effekte ausgeht:</p>
+<ul>
+<li><strong>Volles Modell</strong> <code>y = Sorte + Dünger + Sorte:Dünger</code></li>
+</ul>
+<p>Dann führt man eine ANOVA für das volle Modelle durch und betrachtet zuerst den “komplexesten” Term, also hier die Wechselwirkung <code>Sorte:Dünger</code>. Ist diese signifikant, so wird kein Term eliminiert und man hat das finale Modell gefunden. Ist der Term allerdings nicht signifikant, so eliminiert man ihn. Dann passt man im nächsten Schritt das reduzierte Modell an und schaut wieder auf die ANOVA. Dies führt man so lange durch, bis nur noch signifikante <em>treatment</em> Effekte im Modell sind - man eliminiert also alle nicht-signifikanten Effekte aus dem vollen Modell. Je nachdem welche Effekte eliminiert werden, endet man bei einem der Fälle aus dem Plot oben. Wichtig ist wie gesagt, dass man mit dem “komplexesten” Term beginnen muss. Wenn mehrere Terme der gleichen Komplexiztität vorhanden sind, wie bei uns in einem zweiten Schritt <code>Sorte</code> und <code>Dünger</code>, dann wird zuerst der Term mit dem höheren (=weniger signifikanten) p-Wert eliminiert. Hier ist eine Übersicht der Modelle, die den Plots oben entsprechen.</p>
+<table style="width:64%;">
+<colgroup>
+<col width="8%" />
+<col width="12%" />
+<col width="43%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th>Kapitel</th>
-<th>Behandlungseffekt</th>
-<th>Design</th>
-<th>Besonderheit</th>
-<th>Funktion</th>
+<th>Plot</th>
+<th>Syntax</th>
+<th>Formel (für CRD)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="1F_crd.html">Kapitel 1</a></td>
-<td>1 Faktor</td>
-<td>CRD</td>
-<td></td>
-<td><code>lm()</code></td>
+<td><strong>Keine</strong></td>
+<td><code>y =</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + e_{ijk}\)</span></td>
 </tr>
 <tr class="even">
-<td><a href="1F_rcbd.html">Kapitel 2</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
+<td><strong>Sorte</strong></td>
+<td><code>y = Sorte</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + S_i + e_{ijk}\)</span></td>
 </tr>
 <tr class="odd">
-<td><a href="1F_alpha.html">Kapitel 3</a></td>
-<td>1 Faktor</td>
-<td><span class="math inline">\(\alpha\)</span>-lattice</td>
-<td></td>
-<td><code>lmer()</code></td>
+<td><strong>Dünger</strong></td>
+<td><code>y = Dünger</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + D_j + e_{ijk}\)</span></td>
 </tr>
 <tr class="even">
-<td><a href="2F_rcbd.html">Kapitel 4</a></td>
-<td>2 Faktoren</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
+<td><strong>Sorte &amp; Dünger (additiv)</strong></td>
+<td><code>y = Sorte + Dünger</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + S_i + D_j + e_{ijk}\)</span></td>
 </tr>
 <tr class="odd">
-<td><a href="2F_splitplot.html">Kapitel 5</a></td>
-<td>2 Faktoren</td>
-<td>split-plot</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd_messwdh.html">Kapitel 6</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Messwiederholung</td>
-<td><code>gls()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_rcbd_binomial.html">Kapitel 7</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Prozentwerte</td>
-<td><code>glm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_latsq_poisson.html">Kapitel 8</a></td>
-<td>1 Faktor</td>
-<td>Lat. Quadrat</td>
-<td>Zählwerte</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>Appendix</th>
-<th>Beschreibung</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="appendix_desplot.html">Appendix 1</a></td>
-<td>Ersellen von Feldplanabbildungen</td>
-<td><code>desplot()</code></td>
-</tr>
-<tr class="even">
-<td><a href="appendix_designs.html">Appendix 2</a></td>
-<td>Vergleich Versuchsdesigns</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_posthoc.html">Appendix 3</a></td>
-<td>Post Hoc Tests</td>
-<td>-</td>
-</tr>
-<tr class="even">
-<td><a href="appendix_interaktionen.html">Appendix 4</a></td>
-<td>Behandlungsinteraktionen</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_kovarstrukt.html">Appendix 5</a></td>
-<td>Kovarianzstrukturen</td>
-<td><code>gls()</code> &amp; <code>asreml()</code></td>
-</tr>
-<tr class="even">
-<td><a href="NichtNormalverteil.html">Appendix 6</a></td>
-<td>Binomial- und Poissonverteilte Daten</td>
-<td><code>glm()</code></td>
+<td><strong>Sorte &amp; Dünger (Interaktion)</strong></td>
+<td><code>y = Sorte + Dünger + Sorte:Dünger</code></td>
+<td><span class="math inline">\(y_{ijk} = \mu + S_i + D_j + (SD)_{ij} + e_{ijk}\)</span></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="andere-quellen" class="section level3">
-<h3>Andere Quellen</h3>
-<p>Ich empfehle die <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr">“Statistics” Playlist</a> auf dem Youtube-Kanal “CrashCourse”.</p>
+<div id="mehr-als-zwei-behandlungsfaktoren" class="section level1">
+<h1>Mehr als zwei Behandlungsfaktoren</h1>
+<p>Wenn mehr als zwei Behandlungsfaktoren geprüft werden, gibt es auch mehr als eine potentielle Wechselwirkung:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Anzahl</th>
+<th>Name</th>
+<th>Modell</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2 Faktoren</td>
+<td><code>A</code> &amp; <code>B</code></td>
+<td><code>A + B + A:B</code></td>
+</tr>
+<tr class="even">
+<td>3 Faktoren</td>
+<td><code>A</code>, <code>B</code> &amp; <code>C</code></td>
+<td><code>A + B + C + A:B + A:C + B:C + A:B:C</code></td>
+</tr>
+<tr class="odd">
+<td>4 Faktoren</td>
+<td><code>A</code>, <code>B</code>, <code>C</code> &amp; <code>D</code></td>
+<td><code>A + B + C + D + A:B +</code> … <code>+ B:C:D + A:B:C:D</code></td>
+</tr>
+</tbody>
+</table>
+<p>Die backward elimination funktioniert aber genau so wie oben beschrieben. Alternativ zum backward elimination Verfahren kann beispielsweise auch das <em>forward selection</em> Verfahren angewendet werden, bei dem vom leeren Modell ausgegangen wird und Schritt für Schritt ein signifikanter Termin hinzugefügt wird.</p>
 </div>
 
 

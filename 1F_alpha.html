@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>1 Beh.faktor - Alpha-Design</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Kapitel
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1F_crd.html">1) 1F crd</a>
+    </li>
+    <li>
+      <a href="1F_rcbd.html">2) 1F rcbd</a>
+    </li>
+    <li>
+      <a href="1F_alpha.html">3) 1F alpha</a>
+    </li>
+    <li>
+      <a href="2F_rcbd.html">4) 2F rcbd</a>
+    </li>
+    <li>
+      <a href="2F_splitplot.html">5) 2F split-plot</a>
+    </li>
+    <li>
+      <a href="1F_rcbd_messwdh.html">6) 1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1F_rcbd_binomial.html">7) 1F crd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1F_latsq_poisson.html">8) 1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="appendix_desplot.html">1) desplot package</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">2) Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">3) ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">4) Interaktionen</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
+    </li>
+    <li>
+      <a href="appendix_nichtnormalverteilt.html">6) Nicht-Normalverteilte Daten</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="kontakt.html">Kontakt</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">1 Beh.faktor - Alpha-Design</h1>
+
+</div>
+
+
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte
+library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
+<p>Dieses Beispiel ist den Beispielen “1F_crd” und vor allem “1F_rcbd” sehr ähnlich und baut darauf auf. Tatsächlich handelt es sich um den gleichen Datensatz wie in “1F_rcbd”. Es ist ein Beispieldatensatz mit dem Namen <code>john.alpha</code> aus dem <code>agridat</code> package.</p>
+<p>Dieses Experiment wurde als ein <span class="math inline">\(\alpha\)</span>-lattice angelegt. Dies wurde im letzten Beispiel verschwiegen und stattdessen behauptet, es wäre eine randomisierte vollständige Blockanlage. In der Tat besitzt das eigentliche Experiment dieselben vollständigen Blöcke, allerdings gibt es innerhalb dieser noch jeweils 6 unvollständige Blöcke. Die ‘rep’ Spalte steht also weiterhin für die vollständigen Blöcke, zusätzlich gibt es jedoch noch eine ‘inc.block’ (<em>incomplete block</em>) Spalte für die unvollständigen Blöcke. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<div class="row">
+<div class="col-md-6">
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_alpha_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>print(alpha, nrows=10)</code></pre>
+<pre><code>##     gen  rep inc.block  yield
+##  1: G11 Rep1        B1 4.1172
+##  2: G04 Rep1        B1 4.4461
+##  3: G05 Rep1        B1 5.8757
+##  4: G22 Rep1        B1 4.5784
+##  5: G21 Rep1        B2 4.6540
+## ---                          
+## 68: G24 Rep3        B5 3.5655
+## 69: G03 Rep3        B6 2.8873
+## 70: G05 Rep3        B6 4.1972
+## 71: G20 Rep3        B6 3.7349
+## 72: G07 Rep3        B6 3.6096</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu den vorangegangenen ‘1wayANOVA’ Beispielen erstellen wir diesmal auch einen komplexeren Boxplot via <code>boxplot()</code> für die unvollständigem Blöcke.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>str(alpha)
+plot(y=alpha$yield, x=alpha$gen)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  4 variables:
+##  $ gen      : Factor w/ 24 levels &quot;G0&quot;..
+##  $ rep      : Factor w/ 3 levels &quot;Rep&quot;..
+##  $ inc.block: Factor w/ 6 levels &quot;B1&quot;&quot;..
+##  $ yield    : num  4.12 4.45 5.88 4.58..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>summary(alpha)</code></pre>
+<pre><code>##       gen       rep     inc.block     yield      
+##  G01    : 3   Rep1:24   B1:12     Min.   :2.887  
+##  G02    : 3   Rep2:24   B2:12     1st Qu.:4.110  
+##  G03    : 3   Rep3:24   B3:12     Median :4.404  
+##  G04    : 3             B4:12     Mean   :4.480  
+##  G05    : 3             B5:12     3rd Qu.:4.968  
+##  G06    : 3             B6:12     Max.   :5.876  
+##  (Other):54</code></pre>
+<pre class="r"><code>plot(y=alpha$yield, x=alpha$rep)</code></pre>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<pre class="r"><code>boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung</code></pre>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="Anmerkung1" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="gemischtes-modell" class="section level2">
+<h2>Gemischtes Modell</h2>
+<p>Wir können uns nun entschließen die Daten mittels eines Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. Außerdem haben wir den qualitativen Faktor ‘rep’ im Modell. Im Gegensatz zu den vorangegangenen 1wayANOVA Beispielen müssen wir diesmal auch Effekte für die unvollständigen Blöcke modellieren. Diese sind ebenso qualitativ, sollten aber in diesem Fall als zufällige Effekte genommen werden. Somit haben wir gleichzeitig feste und zufällige Effekte im Modell und demnach ein gemischtes Modell. Die Funktion <code>lm()</code> ist nicht in der Lage gemischte Modelle anzupassen, sodass wir in diesem Beispiel zu <code>lmer()</code> aus dem <code>lme4</code> package wechseln, welches immer zusammen mit dem <code>lmerTest()</code> package geladen werden sollte. Die Syntax ist dem von <code>lm()</code> recht ähnlich, mit dem Unterschied, dass zufällige Effekte generell wie folgt codiert werden:</p>
+<pre class="r"><code>mod &lt;- lmer(yield ~ gen + rep + (1|rep:inc.block), data=alpha)</code></pre>
+<p>Zunächst sollten nun die Residuenplots evaluiert werden, was bei einem <code>lmer()</code> Objekt nicht mit <code>autoplot(mod)</code>, sondern beispielsweise mit <code>plot(mod)</code> und <code>qqnorm(resid(mod)); qqline(resid(mod))</code> funktioniert. Erst danach ist eine Varianzanalyse zulässig.</p>
+<blockquote>
+<p>Es fällt auf, dass wir den zufälligen Effekt für die unvollständigen Blöcke zusammen mit ‘rep’ und getrennt durch einen Doppelpunkt geschrieben haben. Das liegt daran wie die ‘inc.block’ Spalte in diesem Datensatz angelegt wurde. Sie enthält lediglich die 6 verschiedenen Einträge B1-B6. Es gab allerdings in jedem vollständigem Block 6, also insgesamt 18 unvollständige Blöcke. Ähnlich wie bei dem Boxplot oben muss also die Kombination aus ‘rep’ und ‘inc.block’ angegeben werden um im Modell die korrekten 18 zufälligen Effekte für die unvollständigen Blöcke anzupassen. Als Alternative hätte man auch direkt B1-B18 in die ‘inc.block’ Spalte und demnach <code>(1|inc.block)</code> ins Modell schreiben können. In den hier präsentierten Beispielen, werden wir solche Effekte allerdings immer so darstellen wie im Modell oben, da dies verdeutlicht, dass die unvollständigen Blöcke geschachtelt innerhalb der vollständigen Blöcke vorkommen. Hätte man außerdem fälschlicherweise <code>(1|inc.block)</code> ins Modell geschrieben obwohl ‘inc.block’ nur B1-B6 enthält, so wären nur 6 Effekte modelliert worden. B1 z.B. wäre dann ein Effekt über alle drei der jeweils ersten Spalte von links in den drei vollständigen Blöcken. <code>lmer</code> würde keine Fehlermeldung ausgeben, sondern mit dem falschen Modell falsche Ergebnisse ausgeben.</p>
+</blockquote>
+</div>
+<div id="varianzanalyse" class="section level2">
+<h2>Varianzanalyse</h2>
+<pre class="r"><code>anova(mod)</code></pre>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##      Sum Sq Mean Sq NumDF  DenDF F value    Pr(&gt;F)    
+## gen 10.6786 0.46429    23 34.736  5.4478 4.376e-06 ***
+## rep  1.5703 0.78513     2 10.394  9.2124  0.004992 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Obwohl der Befehl <code>anova(mod)</code> exakt derselbe scheint wie in den vorangegangenen 1wayANOVA Beispielen, wird er nun durch das <code>lmerTest</code> package durchgeführt, sodass andere Berechnungen durchgeführt werden, die besser für Varianzanalysen von gemischten Modellen geeignet sind. Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten. Es ist sehr praktisch, dass das <code>emmeans</code> package nicht nur <code>lm()</code> Objekte, sondern auch <code>lmer()</code> Objekte, also gemischte Modelle, als Grundlage für die adjustierte Mittelwertschätzung verwenden kann. Auch die Buchstabendarstellung erhalten wir mit dem selben Code wie im letzten Beispiel.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;)  # adjust=&quot;none&quot; für t-test
+means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
+as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
+<pre><code>##    gen   emmean        SE       df lower.CL upper.CL .group
+## 1: G03 3.499200 0.1990122 44.32700 3.098200 3.900199   ab  
+## 2: G09 3.502181 0.1989050 44.28463 3.101387 3.902975   a c 
+## 3: G20 4.039985 0.1989050 44.28463 3.639191 4.440779   abcd
+## 4: G07 4.111136 0.1990122 44.32700 3.710137 4.512135   abcd
+## 5: G24 4.153874 0.1990122 44.32700 3.752875 4.554873   abcd
+## 6: G23 4.252449 0.1989050 44.28463 3.851655 4.653243   abcd</code></pre>
+<pre class="r"><code>as.data.table(means$comparisons)[1:6,] # 6 der 276 Differenzen</code></pre>
+<pre><code>##     contrast    estimate        SE       df    t.ratio   p.value
+## 1: G09 - G03 0.002981402 0.2738997 38.45149 0.01088501 1.0000000
+## 2: G20 - G03 0.540785462 0.2623921 36.34639 2.06098244 0.9049638
+## 3: G20 - G09 0.537804060 0.2739783 38.49400 1.96294378 0.9376900
+## 4: G07 - G03 0.611936515 0.2615688 36.07237 2.33948615 0.7700973
+## 5: G07 - G09 0.608955113 0.2740696 38.54725 2.22189988 0.8358363
+## 6: G07 - G20 0.071151053 0.2634683 36.76920 0.27005548 1.0000000</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen.</p>
+<pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
+  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle=90)) +
+  labs(y=&quot;Adjustierter Ertragsmittelwert mit 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
+  theme_bw() +
+  annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
+  label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

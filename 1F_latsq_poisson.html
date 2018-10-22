@@ -11,7 +11,7 @@
 
 
 
-<title>R im Versuchswesen</title>
+<title>1 Beh.faktor - Lat.Quadrat - Poissondaten</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -356,129 +356,124 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R im Versuchswesen</h1>
+<h1 class="title toc-ignore">1 Beh.faktor - Lat.Quadrat - Poissondaten</h1>
 
 </div>
 
 
-<p>Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus.</p>
-<p>Weitere Codes finden sich hier: <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses" class="uri">https://github.com/SchmidtPaul/R-SAS.Introductory.Courses</a></p>
-<div id="inhaltsverzeichnis" class="section level3">
-<h3>Inhaltsverzeichnis</h3>
-<table>
-<thead>
-<tr class="header">
-<th>Kapitel</th>
-<th>Behandlungseffekt</th>
-<th>Design</th>
-<th>Besonderheit</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="1F_crd.html">Kapitel 1</a></td>
-<td>1 Faktor</td>
-<td>CRD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd.html">Kapitel 2</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_alpha.html">Kapitel 3</a></td>
-<td>1 Faktor</td>
-<td><span class="math inline">\(\alpha\)</span>-lattice</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="2F_rcbd.html">Kapitel 4</a></td>
-<td>2 Faktoren</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="2F_splitplot.html">Kapitel 5</a></td>
-<td>2 Faktoren</td>
-<td>split-plot</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd_messwdh.html">Kapitel 6</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Messwiederholung</td>
-<td><code>gls()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_rcbd_binomial.html">Kapitel 7</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Prozentwerte</td>
-<td><code>glm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_latsq_poisson.html">Kapitel 8</a></td>
-<td>1 Faktor</td>
-<td>Lat. Quadrat</td>
-<td>Zählwerte</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>Appendix</th>
-<th>Beschreibung</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="appendix_desplot.html">Appendix 1</a></td>
-<td>Ersellen von Feldplanabbildungen</td>
-<td><code>desplot()</code></td>
-</tr>
-<tr class="even">
-<td><a href="appendix_designs.html">Appendix 2</a></td>
-<td>Vergleich Versuchsdesigns</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_posthoc.html">Appendix 3</a></td>
-<td>Post Hoc Tests</td>
-<td>-</td>
-</tr>
-<tr class="even">
-<td><a href="appendix_interaktionen.html">Appendix 4</a></td>
-<td>Behandlungsinteraktionen</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_kovarstrukt.html">Appendix 5</a></td>
-<td>Kovarianzstrukturen</td>
-<td><code>gls()</code> &amp; <code>asreml()</code></td>
-</tr>
-<tr class="even">
-<td><a href="NichtNormalverteil.html">Appendix 6</a></td>
-<td>Binomial- und Poissonverteilte Daten</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte</code></pre>
+<p>In diesem Beispiel wurden 5 verschiedene Begasungsbehandlungen für Schnellkäfer (<em>Elateridae</em>) mit 5 Wiederholungen getestet. Das Versuchsdesign war ein lateinisches Quadrat - sowohl die Spalten als auch die Zeilen sind also vollständige Blöcke. In jeder Parzelle wurden im Jahr nach der Behandlung die Schnellkäferlarven gezählt.</p>
+<div class="row">
+<div class="col-md-6">
+<p><img src="1F_latsq_poisson_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
-<div id="andere-quellen" class="section level3">
-<h3>Andere Quellen</h3>
-<p>Ich empfehle die <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr">“Statistics” Playlist</a> auf dem Youtube-Kanal “CrashCourse”.</p>
+<div class="col-md-6">
+<p><img src="1F_latsq_poisson_files/figure-html/unnamed-chunk-4-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>print(bugs, nrows=10)</code></pre>
+<pre><code>##     trt row col bugs
+##  1:   P   1   1    3
+##  2:   M   2   1    6
+##  3:   O   3   1    4
+##  4:   N   4   1   17
+##  5:   K   5   1    4
+## ---                 
+## 21:   M   1   5    4
+## 22:   P   2   5    4
+## 23:   N   3   5    5
+## 24:   K   4   5    0
+## 25:   O   5   5    8</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(bugs)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   25 obs. of  4 variables:
+##  $ trt : Factor w/ 5 levels &quot;K&quot;,&quot;M&quot;,&quot;&quot;..
+##  $ row : Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;&quot;..
+##  $ col : Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;&quot;..
+##  $ bugs: int  3 6 4 17 4 2 0 9 8 4 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anzahl gefundener Larven pro Behandlung. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor <code>trtfarben</code> gespeichert - <a href="appendix_desplot.html">mehr Infos dazu hier</a>.</p>
+<pre class="r"><code>boxplot(bugs ~ trt, col=trtfarben, data=bugs, las=2) # las=2 dreht die Achsenbeschriftung</code></pre>
+<p><img src="1F_latsq_poisson_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div id="schlieende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="generalisiertes-modell" class="section level2">
+<h2>Generalisiertes Modell</h2>
+<p>Wie zu erkennen, ist das Auftreten der Larven ein relativ seltenes Ereignis, sodass die meisten Werte nahe 0 liegen. Wir haben also <em>Zählwerte ohne feste Beschränkung nach oben</em> und können uns entscheiden eine Poissonverteilung für diese Daten anzunehmen und ein entsprechendes generalisiertes lineares Modell anpassen (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>).Bezüglich der Effekte im Modell verfahren wir ähnlich einer <a href="1F_rcbd.html">einfaktoriellen ANOVA in einem RCBD</a>, allerdings mit noch einem zweiten vollständigen Block Effekt, sodass wir Effekte für Zeilen und Spalten haben.</p>
+<pre class="r"><code>mod &lt;- glm(bugs ~ trt + row + col, family=quasipoisson(link=&quot;log&quot;), data=bugs)</code></pre>
+<p>Wie im <a href="1F_rcbd_binomial.html">vorangegangenen Beispiel</a>, legen wir die erwartete Verteileung mit dem <code>family=</code> statement fest. Ebenso entscheiden wir uns direkt für <code>quasipoisson</code> anstelle der einfacheren <code>poisson</code> Verteilung, da diese in gewisser Hinischt flexibler/robuster ist (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Auch hier ist der Zusatz <code>(link=&quot;log&quot;)</code> eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für poissonverteilte Daten ist. Sie wird hier aber zur Verdeutlichung mit ins Modell geschrieben.</p>
+<pre class="r"><code>autoplot(mod) # Residuenplots</code></pre>
+<p><img src="1F_latsq_poisson_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div id="test-der-festen-effekte" class="section level2">
+<h2>Test der festen Effekte</h2>
+<pre class="r"><code>anova(mod, test=&quot;F&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: quasipoisson, link: log
+## 
+## Response: bugs
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##      Df Deviance Resid. Df Resid. Dev      F  Pr(&gt;F)  
+## NULL                    24     64.555                 
+## trt   4  26.5294        20     38.026 4.4190 0.02000 *
+## row   4  15.6955        16     22.331 2.6144 0.08831 .
+## col   4   2.8225        12     19.508 0.4701 0.75686  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Der p-Wert für den Behandlungseffekt weist in diesem Fall deutlich auf unterschiedliche Häufigkeiten der gefundenen Larven hin.</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Mittels des <code>emmeans()</code> package lassen wir uns <a href="1F_rcbd_binomial.html">wie im vorigen Beispiel</a> direkt die rücktransformierten Mittelwerte schätzen. Dazu muss lediglich <code>type=&quot;response&quot;</code> hinzugefügt werden.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ trt, type=&quot;response&quot;) # Mittelwertvergleiche
+means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
+means</code></pre>
+<pre><code>##  trt     rate        SE  df asymp.LCL asymp.UCL .group
+##  K   1.116262 0.5634313 Inf 0.4150721  3.001986 a     
+##  P   4.435874 1.1504576 Inf 2.6681940  7.374642 ab    
+##  O   5.419780 1.2711275 Inf 3.4225134  8.582585 b     
+##  M   5.934068 1.3345778 Inf 3.8187075  9.221224 b     
+##  N   6.184781 1.3733085 Inf 4.0023773  9.557198 b     
+## 
+## Results are averaged over the levels of: row, col 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the log scale 
+## P value adjustment: tukey method for comparing a family of 5 estimates 
+## Tests are performed on the log scale 
+## significance level used: alpha = 0.05</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<pre class="r"><code>ggplot() + theme_classic() +
+   # Rohdaten (bugs)
+   geom_boxplot(data=bugs, aes(x=trt, y=bugs), outlier.shape=NA, width=0.6, fill=trtfarben) +
+   geom_jitter(data=bugs, aes(x=trt, y=bugs), width=0.1, shape=1, size=2) +
+   # Ergebnisse (means)
+   geom_point(data=means, aes(x=as.numeric(trt)+0.4, y=rate), col=&quot;red&quot;, shape=16, size=2) +
+   geom_errorbar(data=means, aes(x=as.numeric(trt)+0.4, ymin=asymp.LCL, ymax=asymp.UCL), col=&quot;red&quot;, width=0.1) +
+   geom_text(data=means, aes(x=trt, y=11, label =.group), col=&quot;red&quot;) +
+  labs(y=&quot;Schwarz: Beobachtete Anzahl Larven\nRot: Rücktransformierter, adjustierter Mittelwert für die \nHäufigkeit ± 95% asympt. Konfidenzintervall&quot;, x=&quot;Behandlung&quot;,
+       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test auf der Log-Skala nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1F_latsq_poisson_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 
 

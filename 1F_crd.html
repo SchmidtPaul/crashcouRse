@@ -11,7 +11,7 @@
 
 
 
-<title>R im Versuchswesen</title>
+<title>1 Beh.faktor - CRD</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -356,129 +356,133 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R im Versuchswesen</h1>
+<h1 class="title toc-ignore">1 Beh.faktor - CRD</h1>
 
 </div>
 
 
-<p>Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus.</p>
-<p>Weitere Codes finden sich hier: <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses" class="uri">https://github.com/SchmidtPaul/R-SAS.Introductory.Courses</a></p>
-<div id="inhaltsverzeichnis" class="section level3">
-<h3>Inhaltsverzeichnis</h3>
-<table>
-<thead>
-<tr class="header">
-<th>Kapitel</th>
-<th>Behandlungseffekt</th>
-<th>Design</th>
-<th>Besonderheit</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="1F_crd.html">Kapitel 1</a></td>
-<td>1 Faktor</td>
-<td>CRD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd.html">Kapitel 2</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_alpha.html">Kapitel 3</a></td>
-<td>1 Faktor</td>
-<td><span class="math inline">\(\alpha\)</span>-lattice</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="2F_rcbd.html">Kapitel 4</a></td>
-<td>2 Faktoren</td>
-<td>RCBD</td>
-<td></td>
-<td><code>lm()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="2F_splitplot.html">Kapitel 5</a></td>
-<td>2 Faktoren</td>
-<td>split-plot</td>
-<td></td>
-<td><code>lmer()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_rcbd_messwdh.html">Kapitel 6</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Messwiederholung</td>
-<td><code>gls()</code></td>
-</tr>
-<tr class="odd">
-<td><a href="1F_rcbd_binomial.html">Kapitel 7</a></td>
-<td>1 Faktor</td>
-<td>RCBD</td>
-<td>Prozentwerte</td>
-<td><code>glm()</code></td>
-</tr>
-<tr class="even">
-<td><a href="1F_latsq_poisson.html">Kapitel 8</a></td>
-<td>1 Faktor</td>
-<td>Lat. Quadrat</td>
-<td>Zählwerte</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>Appendix</th>
-<th>Beschreibung</th>
-<th>Funktion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="appendix_desplot.html">Appendix 1</a></td>
-<td>Ersellen von Feldplanabbildungen</td>
-<td><code>desplot()</code></td>
-</tr>
-<tr class="even">
-<td><a href="appendix_designs.html">Appendix 2</a></td>
-<td>Vergleich Versuchsdesigns</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_posthoc.html">Appendix 3</a></td>
-<td>Post Hoc Tests</td>
-<td>-</td>
-</tr>
-<tr class="even">
-<td><a href="appendix_interaktionen.html">Appendix 4</a></td>
-<td>Behandlungsinteraktionen</td>
-<td>-</td>
-</tr>
-<tr class="odd">
-<td><a href="appendix_kovarstrukt.html">Appendix 5</a></td>
-<td>Kovarianzstrukturen</td>
-<td><code>gls()</code> &amp; <code>asreml()</code></td>
-</tr>
-<tr class="even">
-<td><a href="NichtNormalverteil.html">Appendix 6</a></td>
-<td>Binomial- und Poissonverteilte Daten</td>
-<td><code>glm()</code></td>
-</tr>
-</tbody>
-</table>
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte</code></pre>
+<p>Wir haben einen Datensatz aus einem Feldversuch, in welchem der Ertrag von 3 Sorten geprüft wurde. Der Versuch hatte 3 Wiederholungen und wurde als <strong>vollständig randomisierte Anlage</strong> (=<strong>C</strong>ompletely <strong>R</strong>andomized <strong>D</strong>esign) angelegt. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<div class="row">
+<div class="col-md-6">
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-3-1.png" width="288" style="display: block; margin: auto;" /></p>
 </div>
-<div id="andere-quellen" class="section level3">
-<h3>Andere Quellen</h3>
-<p>Ich empfehle die <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr">“Statistics” Playlist</a> auf dem Youtube-Kanal “CrashCourse”.</p>
+<div class="col-md-6">
+<pre class="r"><code>crd</code></pre>
+<pre><code>##    gen  yield
+## 1: G02 4.3350
+## 2: G03 3.3420
+## 3: G01 5.1202
+## 4: G03 3.7999
+## 5: G01 5.7161
+## 6: G02 5.1566
+## 7: G01 4.6512
+## 8: G02 4.0510
+## 9: G03 2.8873</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie einen Plot.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>summary(crd)</code></pre>
+<pre><code>##   gen        yield      
+##  G01:3   Min.   :2.887  
+##  G02:3   1st Qu.:3.800  
+##  G03:3   Median :4.335  
+##          Mean   :4.340  
+##          3rd Qu.:5.120  
+##          Max.   :5.716</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>plot(y=crd$yield, x=crd$gen)</code></pre>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="schlieende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="lineares-modell" class="section level2">
+<h2>Lineares Modell</h2>
+<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor.</p>
+<pre class="r"><code>mod &lt;- lm(yield ~ gen, data=crd)</code></pre>
+<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
+</div>
+<div id="varianzanalyse" class="section level2">
+<h2>Varianzanalyse</h2>
+<pre class="r"><code>anova(mod)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## gen        2 5.1022 2.55109  9.3023 0.0145 *
+## Residuals  6 1.6455 0.27424                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
+means$emmeans # Mittelwerte </code></pre>
+<pre><code>##  gen   emmean        SE df lower.CL upper.CL
+##  G01 5.162500 0.3023478  6 4.422682 5.902318
+##  G02 4.514200 0.3023478  6 3.774382 5.254018
+##  G03 3.343067 0.3023478  6 2.603248 4.082885
+## 
+## Confidence level used: 0.95</code></pre>
+<pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
+<pre><code>##  contrast  estimate        SE df t.ratio p.value
+##  G01 - G02 0.648300 0.4275844  6   1.516  0.3488
+##  G01 - G03 1.819433 0.4275844  6   4.255  0.0127
+##  G02 - G03 1.171133 0.4275844  6   2.739  0.0754
+## 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
+<pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)
+means</code></pre>
+<pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
+##  G03 3.343067 0.3023478  6 2.603248 4.082885  a    
+##  G02 4.514200 0.3023478  6 3.774382 5.254018  ab   
+##  G01 5.162500 0.3023478  6 4.422682 5.902318   b   
+## 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 3 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>Das <code>CLD()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> sich signifikant voneinander unterscheiden.</p>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Schließlich kann man die Ergebnisse final in einem Plot darstellen. Gängig ist dafür ein Balkendiagramm:</p>
+<pre class="r"><code>ggplot(data=means, aes(x=gen)) +
+  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
+  geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.4) +
+  geom_text(aes(y=(emmean+SE)*1.1, label=.group)) +
+  labs(y=&quot;Adjustierter Ertragsmittelwert ± Standardfehler&quot;, x=&quot;Sorte&quot;, 
+      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a”, “ab” und &quot; b“. Wir werden also auch diese Leerzeichen entfernen.</p>
+<pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Leerzeichen entfernen
+
+ggplot() + theme_classic() +
+  # Rohdaten (crd)
+geom_boxplot(data=crd, aes(x=gen, y=yield), outlier.shape=NA, width=0.6) +
+geom_jitter(data=crd, aes(x=gen, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+geom_point(data=means, aes(x=as.numeric(gen)+0.4, y=emmean), col=&quot;red&quot;, shape=16, size=2) +
+geom_errorbar(data=means, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col=&quot;red&quot;, width=0.1) +
+geom_text(data=means, aes(x=as.numeric(gen)+0.5, y=emmean, label =.group), col=&quot;red&quot;) + 
+labs(y=&quot;Schwarz: Ertrag\nRot: Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;, 
+      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 
 

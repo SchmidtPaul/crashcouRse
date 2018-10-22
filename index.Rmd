@@ -10,23 +10,23 @@ Weitere Codes finden sich hier: [https://github.com/SchmidtPaul/R-SAS.Introducto
 
 Kapitel | Behandlungseffekt | Design | Besonderheit | Funktion
 --------|-------------------|--------|--------------|----------
-[Kapitel 1](1wayANOVA_crd.html) | 1 Faktor | CRD | | `lm()`
-[Kapitel 2](1wayANOVA_rcbd.html) | 1 Faktor | RCBD | | `lm()`
-[Kapitel 3](1wayANOVA_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
-[Kapitel 4](2wayANOVA_RCBD.html) | 2 Faktoren | RCBD | | `lm()`
-[Kapitel 5](2wayANOVA_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
-[Kapitel 6](rcbdrepmes.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
-[Kapitel 7](GLMbinomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
-[Kapitel 8](GLMpoisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
+[Kapitel 1](1F_crd.html) | 1 Faktor | CRD | | `lm()`
+[Kapitel 2](1F_rcbd.html) | 1 Faktor | RCBD | | `lm()`
+[Kapitel 3](1F_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
+[Kapitel 4](2F_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
+[Kapitel 5](2F_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
+[Kapitel 6](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
+[Kapitel 7](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
+[Kapitel 8](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
 
 
 Appendix | Beschreibung | Funktion
 ---------|--------------|---------
-[Appendix 1](desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
-[Appendix 2](DesignList.html) | Vergleich Versuchsdesigns | -
-[Appendix 3](posthoc.html) | Post Hoc Tests | -
-[Appendix 4](Interaktionen.html) | Behandlungsinteraktionen | -
-[Appendix 5](VarCovStr1.html) | Varianzstrukturen | `gls()` & `asreml()`
+[Appendix 1](appendix_desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
+[Appendix 2](appendix_designs.html) | Vergleich Versuchsdesigns | -
+[Appendix 3](appendix_posthoc.html) | Post Hoc Tests | -
+[Appendix 4](appendix_interaktionen.html) | Behandlungsinteraktionen | -
+[Appendix 5](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
 [Appendix 6](NichtNormalverteil.html) | Binomial- und Poissonverteilte Daten | `glm()`
 
 ### Andere Quellen

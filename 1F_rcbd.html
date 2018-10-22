@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>1 Beh.faktor - RCBD</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Kapitel
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1F_crd.html">1) 1F crd</a>
+    </li>
+    <li>
+      <a href="1F_rcbd.html">2) 1F rcbd</a>
+    </li>
+    <li>
+      <a href="1F_alpha.html">3) 1F alpha</a>
+    </li>
+    <li>
+      <a href="2F_rcbd.html">4) 2F rcbd</a>
+    </li>
+    <li>
+      <a href="2F_splitplot.html">5) 2F split-plot</a>
+    </li>
+    <li>
+      <a href="1F_rcbd_messwdh.html">6) 1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1F_rcbd_binomial.html">7) 1F crd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1F_latsq_poisson.html">8) 1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Appendix
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="appendix_desplot.html">1) desplot package</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">2) Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">3) ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">4) Interaktionen</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
+    </li>
+    <li>
+      <a href="appendix_nichtnormalverteilt.html">6) Nicht-Normalverteilte Daten</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="kontakt.html">Kontakt</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">1 Beh.faktor - RCBD</h1>
+
+</div>
+
+
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte</code></pre>
+<p>Dieses Beispiel ist dem Beispiel “1F_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<div class="row">
+<div class="col-md-6">
+<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>print(rcbd, nrows=10)</code></pre>
+<pre><code>##     gen  rep  yield
+##  1: G11 Rep1 4.1172
+##  2: G04 Rep1 4.4461
+##  3: G05 Rep1 5.8757
+##  4: G22 Rep1 4.5784
+##  5: G21 Rep1 4.6540
+## ---                
+## 68: G24 Rep3 3.5655
+## 69: G03 Rep3 2.8873
+## 70: G05 Rep3 4.1972
+## 71: G20 Rep3 3.7349
+## 72: G07 Rep3 3.6096</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1F_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>str(rcbd)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  3 variables:
+##  $ gen  : Factor w/ 24 levels &quot;G01&quot;,&quot;&quot;..
+##  $ rep  : Factor w/ 3 levels &quot;Rep1&quot;,&quot;&quot;..
+##  $ yield: num  4.12 4.45 5.88 4.58 4.6..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
+<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>summary(rcbd)</code></pre>
+<pre><code>##       gen       rep         yield      
+##  G01    : 3   Rep1:24   Min.   :2.887  
+##  G02    : 3   Rep2:24   1st Qu.:4.110  
+##  G03    : 3   Rep3:24   Median :4.404  
+##  G04    : 3             Mean   :4.480  
+##  G05    : 3             3rd Qu.:4.968  
+##  G06    : 3             Max.   :5.876  
+##  (Other):54</code></pre>
+<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
+<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="schlieende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="lineares-modell" class="section level2">
+<h2>Lineares Modell</h2>
+<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. Außerdem haben wir den nun noch den qualitativen Faktor ‘rep’ im Modell.</p>
+<pre class="r"><code>mod &lt;- lm(yield ~ gen + rep, data=rcbd)</code></pre>
+<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
+</div>
+<div id="varianzanalyse" class="section level2">
+<h2>Varianzanalyse</h2>
+<pre class="r"><code>anova(mod)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen       23 14.0765 0.61202  4.5475 6.259e-06 ***
+## rep        2  6.1355 3.06774 22.7939 1.322e-07 ***
+## Residuals 46  6.1910 0.13459                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
+as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
+<pre><code>##    gen   emmean        SE df lower.CL upper.CL
+## 1: G01 5.162500 0.2118065 46 4.736156 5.588844
+## 2: G02 4.514200 0.2118065 46 4.087856 4.940544
+## 3: G03 3.343067 0.2118065 46 2.916722 3.769411
+## 4: G04 4.400667 0.2118065 46 3.974322 4.827011
+## 5: G05 5.064367 0.2118065 46 4.638022 5.490711
+## 6: G06 4.710333 0.2118065 46 4.283989 5.136678</code></pre>
+<pre class="r"><code>as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen</code></pre>
+<pre><code>##     contrast   estimate        SE df   t.ratio      p.value
+## 1: G01 - G02 0.64830000 0.2995396 46 2.1643215 8.669495e-01
+## 2: G01 - G03 1.81943333 0.2995396 46 6.0740994 5.296688e-05
+## 3: G01 - G04 0.76183333 0.2995396 46 2.5433476 6.406025e-01
+## 4: G01 - G05 0.09813333 0.2995396 46 0.3276139 1.000000e+00
+## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
+## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
+<p>Im Vergleich zum Beispiel “1F_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
+<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
+as.data.table(means$emmeans)[1:6,]</code></pre>
+<pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
+## 1: G03 3.343067 0.2118065 46 2.916722 3.769411   a   
+## 2: G09 3.611600 0.2118065 46 3.185256 4.037944   ab  
+## 3: G20 3.784867 0.2118065 46 3.358522 4.211211   abc 
+## 4: G07 4.129933 0.2118065 46 3.703589 4.556278   abcd
+## 5: G23 4.136200 0.2118065 46 3.709856 4.562544   abcd
+## 6: G24 4.142367 0.2118065 46 3.716022 4.568711   abcd</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1F_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
+<pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
+  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle=90)) +
+  labs(y=&quot;Adjustierter Ertragsmittelwert mit 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
+  theme_bw() +
+  annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
+  label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
