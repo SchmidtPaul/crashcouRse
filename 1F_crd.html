@@ -367,9 +367,14 @@ div.tocify {
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Wir haben einen Datensatz aus einem Feldversuch, in welchem der Ertrag von 3 Sorten geprüft wurde. Der Versuch hatte 3 Wiederholungen und wurde als <strong>vollständig randomisierte Anlage</strong> (=<strong>C</strong>ompletely <strong>R</strong>andomized <strong>D</strong>esign) angelegt. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
 <div class="row">
 <div class="col-md-6">
-<p><img src="1F_crd_files/figure-html/unnamed-chunk-3-1.png" width="288" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>str(crd)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   9 obs. of  2 variables:
+##  $ gen  : Factor w/ 3 levels &quot;G01&quot;,&quot;G&quot;..
+##  $ yield: num  4.33 3.34 5.12 3.8 5.72..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>crd</code></pre>
@@ -402,7 +407,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>plot(y=crd$yield, x=crd$gen)</code></pre>
-<p><img src="1F_crd_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -425,7 +430,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ## Residuals  6 1.6455 0.27424                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
+<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test; <a href="appendix_posthoc.html">mehr Infos zu <em>post hoc</em> Tests hier</a>).</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
@@ -456,7 +461,7 @@ means</code></pre>
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<p>Das <code>CLD()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> sich signifikant voneinander unterscheiden.</p>
+<p>Das <code>CLD()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> signifikant voneinander unterscheiden.</p>
 </div>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">
@@ -468,8 +473,8 @@ means</code></pre>
   geom_text(aes(y=(emmean+SE)*1.1, label=.group)) +
   labs(y=&quot;Adjustierter Ertragsmittelwert ± Standardfehler&quot;, x=&quot;Sorte&quot;, 
       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1F_crd_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a”, “ab” und &quot; b“. Wir werden also auch diese Leerzeichen entfernen.</p>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a_”, “ab” und “_b“. Wir werden also auch diese Leerzeichen entfernen.</p>
 <pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Leerzeichen entfernen
 
 ggplot() + theme_classic() +
@@ -482,7 +487,7 @@ geom_errorbar(data=means, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.C
 geom_text(data=means, aes(x=as.numeric(gen)+0.5, y=emmean, label =.group), col=&quot;red&quot;) + 
 labs(y=&quot;Schwarz: Ertrag\nRot: Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;, 
       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1F_crd_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="1F_crd_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 
 

@@ -15,7 +15,7 @@ In den Beispielen dieser Seite folgen wir immer der Standardprozedur:
 Schritt 3 wird als logischer nächster Schritt angesehen, da wir nach der ANOVA lediglich wissen, **dass** es signifikante Unterschiede zwischen Behandlungen gibt. Wir wissen dadurch aber noch nicht, **welche** Behandlungen sich unterscheiden. Ob Schritt 3 tatsächlich nur auf Signifikanzen in Schritt 2 folgen darf, hängt sowohl von den Daten/dem Modell/der Testmethode ab, als auch von den Ansichten des Statistikers, der die Analyse durchführt. 
 
 > Wenn der F-Test einer Behandlung in der ANOVA signifikant sein **muss**, bevor man einen t-test durchführen **darf**, spricht man auch vom
-*protected LSD test*. Wenn man paarweise Mittelwerte auch unabhängig vom Ergebnis des F-Tests mittels t-test Vergleich, spricht man
+*protected LSD test*. Wenn man paarweise Mittelwerte auch unabhängig vom Ergebnis des F-Tests mittels t-test Vergleich durchführen darf, spricht man
 dementsprechend auch vom *Unprotected LSD test*.
 
 # *Post hoc*: t-test, Tukey Test ...?
@@ -42,7 +42,7 @@ Beide Tests berechnen eine *Grenzdifferenz*, an der dann die Differenzen zwische
 
 Was ist also der Unterschied zwischen mutliplem t-test und Tukey Test? Der Unterschied liegt in ihrer Umgangsweise mit dem *Fehler 1. Art*, auch $\alpha$𝛼-Fehler genannt (siehe dazu Kapitel 3.13 Statistikskript). Als kurze Zusammenfassung: Statistische Tests sind nie perfekt und es können Fehler passieren, sodass das Ergebnis des Tests eventuell nicht die Wahrheit abbildet. Es gibt zwei Arten von Fehlern, die passieren können: Die Nullhypothese ist eigentlich wahr, wird aber vom Test fälschlicherweise verworfen (Fehler 1. Art) oder die Nullhypothese ist eigentlich falsch, wird aber vom Test fälschlicherweise beibehalten (Fehler 2. Art) – siehe dazu die Tabelle. 
 
-<img src="images/alphabeta.png" style="width:80%; margin-right: 20px" align="center">
+<img src="images/alphabeta.jpg" style="width:80%" align="center"> 
 
 Die Wahrscheinlichkeit, dass solche Fehler passieren (Irrtumswahrscheinlichkeit), kann man kontrollieren, aber ganz verhindern kann man es nicht. Die beiden Fehler bedingen sich auch noch gegenseitig, sodass der eine größer wird, wenn man den anderen klein halten möchte. Dies ist einer der Gründe warum oft $\alpha$ = 0.05 gewählt wird. Es bedeutet einfach, dass die Wahrscheinlichkeit, dass dem Test ein Fehler 1. Art unterläuft bei 5% liegt und dies scheint in den meisten Fällen ein guter Kompromiss zu sein.
 
