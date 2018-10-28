@@ -1,0 +1,12 @@
+data(jansen.carrot)
+dat <- jansen.carrot
+require(lattice)
+dotplot(gen ~ y/n, data=dat, group=trt, auto.key=TRUE,
+        main="jansen.carrot",
+        xlab="Proportion of carrots infected per block", ylab="Genotype")
+
+require(lme4); library(lmerTest)
+# Tentative model. Needs improvement.
+m1 <- glm(cbind(y,n-y) ~ gen*trt + block, data=dat, family=binomial)
+anova(m1, test="F")
+emmeans(m1, pairwise ~ gen|trt, type="response")

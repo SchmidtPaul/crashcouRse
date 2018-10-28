@@ -68,7 +68,7 @@ Für die vollständigen Blöcke haben wir den festen Effekt 'rep' im Modell. Des
 Somit haben wir gleichzeitig feste und zufällige Effekte im Modell und demnach ein gemischtes Modell, welches wir wieder mit `lmer()` aus dem `lme4` package modellieren.
 
 ```{r}
-mod <- lmer(yield ~ G + N + G*N + rep + (1|rep:mainplot), data=splitplot)
+mod <- lmer(yield ~ G + N + G:N + rep + (1|rep:mainplot), data=splitplot)
 ```
 
 Zunächst sollten nun die Residuenplots evaluiert werden - beispielsweise mit `plot(mod)` und `qqnorm(resid(mod)); qqline(resid(mod))`. Erst danach ist eine Varianzanalyse zulässig.

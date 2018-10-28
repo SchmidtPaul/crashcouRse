@@ -427,6 +427,9 @@ library(RColorBrewer) # bessere Farben</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
+<blockquote>
+<p>Wäre der Wechselwirkungseffekt hier nicht signifikant gewesen, würden wir ihn im Rahmen der Backwards Elimination aus dem Modell nehmen und erneut eine ANOVA für das reduzierte Modell durchführen. Mehr dazu <a href="appendix_interaktionen.html">hier</a>.</p>
+</blockquote>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>

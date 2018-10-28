@@ -1,7 +1,0 @@
-"0","colors <- c(brewer.pal(8,""Blues""), "
-"0","            brewer.pal(8,""Oranges""), "
-"0","            brewer.pal(8,""YlGn""))"
-"0","desplot(data=rcbd, form= gen ~ col+row, col.regions=colors,"
-"0","        text=gen, cex=0.4, shorten=""no"","
-"0","        main=""Feldplan"", "
-"0","        xlab="""", ylab="""", show.key=F, out1=rep)"

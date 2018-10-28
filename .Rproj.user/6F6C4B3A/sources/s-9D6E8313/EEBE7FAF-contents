@@ -1,0 +1,67 @@
+rm(list=ls())
+library(data.table)
+library(desplot)
+library(emmeans)
+library(ggplot2); library(ggfortify)
+setwd("D:/RKurse/Dokumentation/Excercises/Beispieldaten")
+dat <- fread("potatoe.txt")
+
+# data
+print(dat, nrows=10)
+str(dat)
+
+dat$block  <- as.factor(dat$block)
+dat$nitro  <- as.factor(dat$nitro)
+dat$potash <- as.factor(dat$potash)
+
+# desplot
+desplot(data=dat, form= block ~ col+row,
+        text=nitro, cex=1, col=potash,
+        main="",
+        out1=row, out1.gpar=list(col="grey50", lwd=1, lty=1),
+        out2=col, out2.gpar=list(col="grey50", lwd=1, lty=1))
+
+# boxplots
+boxplot(yield ~ nitro, data=dat, las=2)
+boxplot(yield ~ potash, data=dat, las=2)
+boxplot(yield ~ nitro*potash, data=dat, las=2)
+
+# model
+mod <- lm(yield ~ nitro + potash + nitro:potash + block, data=dat)
+autoplot(mod)
+
+# anova
+anova(mod)
+
+# backwards elimination
+mod2 <- lm(yield ~ nitro + potash + block, data=dat)
+anova(mod2) # finales modell
+
+# MW Nitro
+nitro.mw <- emmeans(mod2, pairwise ~ nitro)
+nitro.mw <- CLD(nitro.mw$emmeans, Letters=letters)
+nitro.mw$.group <- gsub(" ", "", nitro.mw$.group, fixed = TRUE)
+
+
+ggplot() +
+  # Rohdaten (crd)
+  geom_boxplot(data=dat, aes(x=nitro, y=yield), outlier.shape=NA, width=0.6) +
+  geom_jitter(data=dat, aes(x=nitro, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+  geom_point(data=nitro.mw, aes(x=as.numeric(nitro)+0.4, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=nitro.mw, aes(x=as.numeric(nitro)+0.4, ymin=lower.CL, ymax=upper.CL), col="red", width=0.1) +
+  geom_text(data=nitro.mw, aes(x=as.numeric(nitro)+0.5, y=emmean, label =.group), col="red")
+
+# MW potash
+potash.mw <- emmeans(mod2, pairwise ~ potash)
+potash.mw <- CLD(potash.mw$emmeans, Letters=letters)
+potash.mw$.group <- gsub(" ", "", potash.mw$.group, fixed = TRUE)
+
+ggplot() +
+  # Rohdaten (crd)
+  geom_boxplot(data=dat, aes(x=potash, y=yield), outlier.shape=NA, width=0.6) +
+  geom_jitter(data=dat, aes(x=potash, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+  geom_point(data=potash.mw, aes(x=as.numeric(potash)+0.4, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=potash.mw, aes(x=as.numeric(potash)+0.4, ymin=lower.CL, ymax=upper.CL), col="red", width=0.1) +
+  geom_text(data=potash.mw, aes(x=as.numeric(potash)+0.5, y=emmean, label =.group), col="red")

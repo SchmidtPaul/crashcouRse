@@ -1,14 +1,14 @@
-[0m[0KMicrosoft Windows [Version 10.0.17134.285][0K[?25l
+[0m[0KMicrosoft Windows [Version 10.0.17134.345][0K[?25l
 (c) 2018 Microsoft Corporation. Alle Rechte vorbehalten.[0K
 [0K
-D:\RKurse\Dokumentation\crashcouRse>desplot(data=rice, form=  ~ col+row|rep, fl[0Ki
-p=T,[0K
-Der Befehl "desplot" ist entweder falsch geschrieben oder[0K
-konnte nicht gefunden werden.[0K
-[0K[?25h[?25l
-D:\RKurse\Dokumentation\crashcouRse>[0K[?25h[?25l[5AD:\RKurse\Dokumentation\crashcouRse>desplot(data=rice, form=  ~ col+row|rep, flip=T,[0K
-Der Befehl "desplot" ist entweder falsch geschrieben oder[0K
+D:\RKurse\Dokumentation\crashcouRse>[0K[?25h            random    = list(county=~1, REPxE=~1[0K)[?25l
+,[0K
+Der Befehl "random" ist entweder falsch geschrieben oder[0K
 konnte nicht gefunden werden.[0K
 [0K
-D:\RKurse\Dokumentation\crashcouRse>[0K
-[0K[1A[37G[?25h
+D:\RKurse\Dokumentation\crashcouRse>[0K[?25h[?25l[5AD:\RKurse\Dokumentation\crashcouRse>            random    = list(county=~1, RE[0KP
+xE=~1),[0K
+Der Befehl "random" ist entweder falsch geschrieben oder[0K
+konnte nicht gefunden werden.[0K
+[0K
+D:\RKurse\Dokumentation\crashcouRse>[0K[?25h

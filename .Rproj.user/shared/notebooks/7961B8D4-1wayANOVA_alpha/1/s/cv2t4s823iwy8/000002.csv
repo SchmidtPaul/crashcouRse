@@ -1,1 +1,0 @@
-"0","mod <- lmer(yield ~ gen + rep + (1|rep:inc.block), data=alpha)"

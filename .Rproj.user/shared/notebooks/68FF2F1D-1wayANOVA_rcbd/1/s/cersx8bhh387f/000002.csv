@@ -1,2 +1,0 @@
-"0","means <- emmeans(mod, pairwise ~ gen, adjust=""tukey"")"
-"0","as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte "

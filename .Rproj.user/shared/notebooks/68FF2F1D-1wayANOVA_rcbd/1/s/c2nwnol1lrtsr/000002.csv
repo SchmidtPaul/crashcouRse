@@ -1,3 +1,0 @@
-"0","library(data.table) # bessere Datenmanipulation"
-"0","library(ggplot2); library(ggfortify) # bessere Plots"
-"0","library(emmeans) # adjustierte Mittelwerte"

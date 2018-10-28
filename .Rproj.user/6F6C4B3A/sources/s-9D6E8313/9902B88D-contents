@@ -1,0 +1,110 @@
+rm(list=ls())
+library(data.table)
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/MET HetErrVar.rda")
+
+# Data investigation
+print(dat, nrows=10)
+str(dat)
+
+# Desplot
+library(desplot)
+desplot(data=dat, form=gen ~ col*row|env,
+        aspect=36/11, show.key=F,
+        out1=rep, out2=inc.block,
+        main="")
+
+desplot(data=dat, form=inc.block ~ col*row|env,
+        aspect=36/11, show.key=T,
+        out1=rep, out2=inc.block,
+        main="Unvollst. Blockanlage an 3 Umwelten")
+
+desplot(data=dat, form=yield ~ col*row|env,
+        aspect=36/11, show.key=F,
+        out1=rep, out2=inc.block,
+        main="Ertrag je Parzelle")
+
+# Betrachte Abweichung vom mittleren Ertrag je Umwelt
+dat[, mean.env.yield := mean(yield, na.rm=T), by="env"]
+dat[, yield.diff := mean.env.yield - yield]
+
+desplot(data=dat, form=yield.diff ~ col*row|env,
+        aspect=36/11, show.key=T,
+        out1=rep, out2=inc.block,
+        main="Abweichung vom Ertragsmittelwert je Umwelt")
+
+# Boxplots
+boxplot(yield ~ env, data=dat, las=2)
+boxplot(yield ~ gen, data=dat, las=2)
+boxplot(yield ~ gen*env, data=dat, las=2)
+
+# nlme model
+library(nlme)
+dat$env.gen    <- as.factor(paste(dat$env, dat$gen, sep="-"))
+dat$env.rep    <- as.factor(paste(dat$env, dat$rep, sep="-"))
+dat$env.rep.ib <- as.factor(paste(dat$env, dat$rep, dat$inc.block, sep="-"))
+
+# remove NAs for lme
+dat.nona <- dat[!is.na(yield)]
+
+# model
+mod <- lme(fixed     = yield ~ gen + env,
+           random    = list(env.rep=~1, env.rep.ib=~1),
+           data      = dat.nona)
+VarCorr(mod)
+AIC(mod)
+
+# heterogeneous variances
+mod.het <- lme(fixed     = yield ~ gen + env,
+               random    = list(env.rep=~1, env.rep.ib=~1),
+               weights   = varIdent(form=~ 1|env),
+               na.action = "na.omit",
+               data      = dat.nona)
+
+VarCorr(mod.het)
+mod.het$sigma^2 * c(E1=1, coef(mod.het$modelStruct$varStruct, unc=F))^2
+AIC(mod.het)
+
+# sommer model
+library(sommer)
+som <- mmer2(fixed  = yield ~ gen + env,
+             random = ~ env:rep + env:rep:inc.block,
+             rcov   = ~ at(env):units,
+             data   = as.data.frame(dat))
+summary(som)$var.comp.table
+
+# anova
+anova(mod.het)
+
+# means
+library(emmeans)
+means <- emmeans(mod.het, pairwise ~ gen) # Mittelwertvergleiche
+means <- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group <- gsub(" ", "", means$.group, fixed = TRUE) # Entferne Leerzeichen
+means
+
+## ggplot
+library(ggplot2)
+ggplot() + theme_classic() +
+  # Rohdaten (dat)
+  geom_point(data=dat, aes(x=gen, y=yield, col=env), shape=1, size=1) +
+  # Ergebnisse (means)
+  geom_point(data=means, aes(x=gen, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=means, aes(x=gen, ymin=lower.CL, ymax=upper.CL), col="red", width=0.1) +
+  labs(y="Kreise: Beobachteter Ertrag\nRot: Adjustierter Ertragsmittelwert\n± 95% Konfidenzintervall", x="Sorte") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+# order genotypes
+means <- data.table(means)
+gen.ordered <- means[order(emmean)]$gen
+
+means$gen <- factor(means$gen, levels = gen.ordered)
+dat$gen   <- factor(dat$gen,   levels = gen.ordered)
+
+ggplot() + theme_classic() +
+  # Rohdaten (dat)
+  geom_point(data=dat, aes(x=gen, y=yield, col=env), shape=1, size=1) +
+  # Ergebnisse (means)
+  geom_point(data=means, aes(x=gen, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=means, aes(x=gen, ymin=lower.CL, ymax=upper.CL), col="red", width=0.1) +
+  labs(y="Kreise: Beobachteter Ertrag\nRot: Adjustierter Ertragsmittelwert\n± 95% Konfidenzintervall", x="Sorte") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))

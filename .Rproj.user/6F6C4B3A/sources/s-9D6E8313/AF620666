@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1540715909249.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "6|1|19|0|\n",
+    "hash" : "0",
+    "id" : "AF620666",
+    "lastKnownWriteTime" : 1540716858,
+    "last_content_update" : 1540716858632,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/render_site.R",
+    "project_path" : "render_site.R",
+    "properties" : {
+        "cursorPosition" : "19,40",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

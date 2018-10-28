@@ -1,0 +1,15 @@
+library(agridat)
+library(desplot)
+data(yates.oats); dat <- data.table(yates.oats)
+rm(list=ls()[! ls() %in% c("dat")])
+
+dat$nitro <- as.factor(dat$nitro)
+levels(dat$nitro) <- c("non", "min", "med", "max")
+
+# desplot(data=dat, form= block ~ col+row,
+#         col=nitro, text=gen, cex=1, main="",
+#         out1=block,
+#         out2=gen, out2.gpar=list(col = "gray50", lwd = 1, lty = 1))
+
+fwrite(dat, sep="\t", "D:/RKurse/Dokumentation/Excercises/Beispieldaten/oats.txt")
+save(dat,        file="D:/RKurse/Dokumentation/Excercises/Beispieldaten/oats.rda")

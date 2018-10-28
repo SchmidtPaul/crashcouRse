@@ -1,0 +1,56 @@
+rm(list=ls())
+library(data.table)
+library(desplot)
+library(emmeans)
+library(ggplot2); library(ggfortify)
+setwd("D:/RKurse/Dokumentation/Excercises/Beispieldaten")
+dat <- fread("oats.txt")
+
+# data
+print(dat, nrows=10)
+str(dat)
+
+dat$nitro <- as.factor(dat$nitro)
+dat$gen   <- as.factor(dat$gen)
+dat$block <- as.factor(dat$block)
+
+# desplot
+desplot(data=dat, form= block ~ col+row,
+        col=nitro, text=gen, cex=1, main="",
+        out1=block,
+        out2=gen, out2.gpar=list(col = "gray50", lwd = 1, lty = 1))
+
+# boxplots
+boxplot(yield ~ nitro,     data=dat, las=2)
+boxplot(yield ~ gen,       data=dat, las=2)
+boxplot(yield ~ nitro*gen, data=dat, las=2)
+
+# model
+library(lme4); library(lmerTest)
+mod <- lmer(yield ~ gen + nitro + gen:nitro + block + (1|block:gen), data=dat)
+
+# anova
+anova(mod)
+
+# backwards elimination - step 1
+mod2 <- lmer(yield ~ gen + nitro + block + (1|block:gen), data=dat)
+anova(mod2) 
+
+# backwards elimination - step 2
+mod3 <- lmer(yield ~ nitro + block + (1|block:gen), data=dat)
+anova(mod3) 
+
+# MW nitro
+library(emmeans)
+nitro.mw <- emmeans(mod3, pairwise ~ nitro)
+nitro.mw <- CLD(nitro.mw$emmeans, Letters=letters)
+nitro.mw$.group <- gsub(" ", "", nitro.mw$.group, fixed = TRUE)
+
+ggplot() +
+  # Rohdaten (crd)
+  geom_boxplot(data=dat, aes(x=nitro, y=yield), outlier.shape=NA, width=0.6) +
+  geom_jitter(data=dat,  aes(x=nitro, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+  geom_point(data=nitro.mw, aes(x=as.numeric(nitro)+0.4, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=nitro.mw, aes(x=as.numeric(nitro)+0.4, ymin=lower.CL, ymax=upper.CL), col="red", width=0.1) +
+  geom_text(data=nitro.mw, aes(x=as.numeric(nitro)+0.5, y=emmean, label =.group), col="red")

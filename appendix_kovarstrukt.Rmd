@@ -76,7 +76,7 @@ summary(asr.id)$varcomp[,c(2,3,5)] # ID.var
 gls.dg <- gls(y ~ week + week*gen + week*rep,
               weights = varIdent(form = ~ 1|week),
               data=repmes)
-c(gls.dg$sigma^2, coef(gls.dg$modelStruct$varStruct, unconstrained=T)) # DG.vars
+gls.dg$sigma^2 * c(1, coef(gls.dg$modelStruct$varStruct, unc=F))^2 # DG.vars
 ```
 </div> <div class = "col-md-6">
 

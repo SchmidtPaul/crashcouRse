@@ -435,8 +435,9 @@ summary(asr.id)$varcomp[,c(2,3,5)] # ID.var</code></pre>
 <pre class="r"><code>gls.dg &lt;- gls(y ~ week + week*gen + week*rep,
               weights = varIdent(form = ~ 1|week),
               data=repmes)
-c(gls.dg$sigma^2, coef(gls.dg$modelStruct$varStruct, unconstrained=T)) # DG.vars</code></pre>
-<pre><code>## [1] 0.01974885 0.02024967 0.06080366 0.25203986 0.02035091</code></pre>
+gls.dg$sigma^2 * c(1, coef(gls.dg$modelStruct$varStruct, unc=F))^2 # DG.vars</code></pre>
+<pre><code>##                     2          3          4          5 
+## 0.01974885 0.02056508 0.02230259 0.03269346 0.02056925</code></pre>
 </div>
 <div class="col-md-6">
 <h3 id="asreml-r-v3-1">asreml-R v3</h3>
