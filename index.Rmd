@@ -4,7 +4,9 @@ title: "R im Versuchswesen"
 
 Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus. 
 
-Weitere Codes finden sich hier: [https://github.com/SchmidtPaul/R-SAS.Introductory.Courses](https://github.com/SchmidtPaul/R-SAS.Introductory.Courses)
+Beispieldatensätze/-codes für den Kurs *Gemischte Modelle in R* gibt es [https://github.com/SchmidtPaul/GemischteModelleInR](https://github.com/SchmidtPaul/GemischteModelleInR)
+
+Beispieldatensätze/-codes für den Kurs *Statistics with R: Introductory course* gibt es [https://github.com/SchmidtPaul/R-SAS.Introductory.Courses](https://github.com/SchmidtPaul/R-SAS.Introductory.Courses)
 
 ### Inhaltsverzeichnis
 
