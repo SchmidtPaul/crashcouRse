@@ -1,2 +1,0 @@
-rm(list=ls())
-load("D:/RKurse/Dokumentation/Übungen/Beispieldaten/potatoe.rda")

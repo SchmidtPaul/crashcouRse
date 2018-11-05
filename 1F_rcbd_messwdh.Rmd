@@ -174,3 +174,21 @@ ggplot(data=means.plot, aes(x=gen)) +
        y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="Sorte",
        caption="Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
 ```
+
+oder alternativ:
+
+```{r}
+ggplot() +
+  # Rohdaten (lemna)
+  geom_jitter( data=repmes, aes(x=gen, y=y, fill=gen), width=0.15, height=0, shape=21) +
+  # Ergebnisse (plot.means)
+  geom_point(   data=means.plot, aes(x=as.numeric(gen)+0.4, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=means.plot, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col="red", width=0.3) +
+  geom_text(    data=means.plot, aes(x=gen, y=6.5, label =.group), col="red") +
+  facet_wrap(~week) + # ein Plot pro Woche
+  theme_bw() +
+  labs(main="Adj. Sortenmittelwerte pro Woche",
+       y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="Sorte",
+       caption="Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+```
+
