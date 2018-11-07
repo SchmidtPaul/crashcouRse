@@ -21,3 +21,4 @@ Ein Faktor **muss** außerdem fest sein, wenn die Faktorstufen miteinander vergl
 
 **Beispiel:** _In Hessen werden mehrere Versuche angelegt um die Leistung von mehreren Sorten zu untersuchen. Die Gesamtpopulation der Umwelten ist Hessen, wobei die Versuchsstandorte eine zufällige Stichprobe daraus sind. Der Faktor Umwelt ist also zufällig. Da ganz bestimmte Sorten geprüft werden und deren Mittelwerte berechnet und miteinander verglichen werden sollen, ist der Faktor Sorte fest. Wenn ein Wechselwirkungseffekt zwischen Umwelt und Sorte ins Modell aufgenommen wird, ist dieser auch zufällig, da Umwelt bereits zufällig ist._
 
+Weitere interessante Diskussionen [hier](https://stats.stackexchange.com/questions/4700/what-is-the-difference-between-fixed-effect-random-effect-and-mixed-effect-mode)
