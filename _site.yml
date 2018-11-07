@@ -37,6 +37,8 @@ navbar:
           href: appendix_kovarstrukt.html
         - text: "6) Nicht-Normalverteilte Daten"
           href: appendix_nichtnormalverteilt.html
+        - text: "7) Modelle aufstellen"
+          href: appendix_modelrules.html
   right:
     - text: "Kontakt"
       href: kontakt.html

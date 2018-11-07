@@ -11,7 +11,7 @@
 
 
 
-<title>Nicht-normalverteilte Daten</title>
+<title>Modelle aufstellen</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -359,21 +359,25 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Nicht-normalverteilte Daten</h1>
+<h1 class="title toc-ignore">Modelle aufstellen</h1>
 
 </div>
 
 
-<p>Neben normalverteilten Daten wie z.B. dem Ertrag als Zielvariable, gibt es auch z.B. binomial- oder poissonverteilte Daten. Der wichtigste Unterschied hier besteht darin, dass wir bei der Modellierung nicht davon ausgehen können, dass die Fehler normalverteilt sind. Die einfachen linearen Modelle und übrigens auch lineare gemischte Modelle nehmen allerdings normalverteilte Fehler an und um diese Vorraussetzung zu prüfen betrachten wir schließlich die Residuenplots. Wenn nun also ein Modell für solche Daten angepasst wird, der QQ-Plot aber schlichtweg nicht auf normalverteilte Fehler schließen lässt, sollte nicht mit dem zugehörigen Modell fortgefahren werden.</p>
-<div id="datentransformation" class="section level2">
-<h2>Datentransformation</h2>
-<p>In solchen Fällen kann versucht werden die Daten (<em>i.e.</em> die Zielvariable) zu transformieren und das Modell erneut anzupassen. Wenn sich der QQ-Plot auf diese Weise verbessert, können so schlichtweg die transformierten Daten mit dem einfachen linearen (gemischten) Modell ausgewertet werden. Gängige Transformationen sind die log- und Wurzel-Transformation. Praktisch bedeutet das tatsächlich, dass man nicht <code>y</code>, sondern <code>log(y)</code> oder <code>sqrt(y)</code> modelliert. Dementsprechend liefert am Ende <code>emmeans()</code> auch adjustierte Mittelwerte für die Wurzel aus dem Ertrag beispielsweise. Das scheint nicht zielführend zu sein, jedoch ist es eben doch genau das, da auch so signifikante Behandlungseffekte mittels ANOVA gefunden werden. Desweiteren können auch die paarweisen Mittelwertvergleiche durchgeführt werden. Schließlich können die Mittelwerte am Ende auch einfach rücktransformiert werden, also bei z.B. die <code>sqrt(y)</code> Mittelwerte quadriert werden. Wichtig ist eben, dass die Modellvoraussetzunge erfüllt sind.</p>
-</div>
-<div id="generalisierte-lineare-gemischte-modelle" class="section level2">
-<h2>Generalisierte lineare (gemischte) Modelle</h2>
-<p>Sollte man keine Datentransformation finden, die die gewünschten Modellvoraussetzungen erfüllt, können auch <strong>generalisierte lineare Modelle</strong> verwendet werden. Diese Modelle sind flexibler, da sie auch andere Verteilungen als die Normalverteilung, sowie Varianzheterogenität zulassen. Demnach kann man sich voll auf die Erzielung der Linearität/Additivität konzentrieren. In die Klasse der GLMs fallen eine ganze Reihe gängiger Modelle, z.B. die Logit- und Probit-Regression für binomialverteilte Daten oder die loglinearen Modelle für poissonverteilte Daten. Die für uns “normalen” Modelle sind also ein Sonderfall der generalisierten Modelle, die normalverteilte Fehler mit homogener Varianz annehmen.</p>
-<p>Es soll gesagt sein, dass in der Praxis die oben beschrieben Schritte manchmal auch übersprungen werden und einfach direkt ein generalisiertes lineares Modell für bestimmte Datentypen angepasst wird. So z.B. für <strong>Prozentwerte (binomialverteilt)</strong> oder <strong>nach oben offene Zähldaten (poissonverteilt)</strong>.</p>
-<p>Für eine kompakte Beschreibung der zugrundeliegenden Theorie siehe Prof. <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses/blob/master/Lecture%20Notes%20Piepho%20et%20al/2%20Biometrie%20%5Bger%5D.pdf">Piephos Biometrieskript</a> Kapitel 7.4.</p>
+<blockquote>
+<p>Diese Regeln wurde mit dem Fokus auf Pflanzenbauwissenschaften aufgestellt. Siehe <a href="https://www.gpw.uni-kiel.de/de/jahrestagung/pre-conference-workshops/pre-conference-workshop-2016/workshop-2016-1">hier</a></p>
+</blockquote>
+<div id="wann-ist-ein-faktor-zufallig" class="section level1">
+<h1>Wann ist ein Faktor zufällig?</h1>
+<p>Ein Faktor ist zufällig, wenn</p>
+<ul>
+<li><p>die beobachteten Faktorstufen eine Zufallsstichprobe einer definierten Gesamtpopulation darstellen</p></li>
+<li><p>wenn es eine Randomisationseinheit darstellt</p></li>
+<li><p>wenn er mit einem anderen zufälligen Faktor “gekreuzt” ist.</p></li>
+</ul>
+<p>Ansonsten ist ein Faktor meist fest.</p>
+<p>Ein Faktor <strong>muss</strong> außerdem fest sein, wenn die Faktorstufen miteinander verglichen werden sollen.</p>
+<p><em>Beispiel: In Hessen werden mehrere Versuche angelegt um die Leistung von mehreren Sorten zu untersuchen. Die Gesamtpopulation der Umwelten ist Hessen, wobei die Versuchsstandorte eine zufällige Stichprobe daraus sind. Der Faktor Umwelt ist also zufällig. Da ganz bestimmte Sorten geprüft werden und deren Mittelwerte berechnet und miteinander verglichen werden sollen, ist der Faktor Sorte fest. Wenn ein Wechselwirkungseffekt zwischen Umwelt und Sorte ins Modell aufgenommen wird, ist dieser auch zufällig, da Umwelt bereits zufällig ist.</em></p>
 </div>
 
 
