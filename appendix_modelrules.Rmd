@@ -2,7 +2,7 @@
 title: "Modelle aufstellen"
 ---
 
-> Diese Regeln wurde mit dem Fokus auf Pflanzenbauwissenschaften aufgestellt. Siehe [hier](https://www.gpw.uni-kiel.de/de/jahrestagung/pre-conference-workshops/pre-conference-workshop-2016/workshop-2016-1)
+> Diese Regeln wurden mit Fokus auf Pflanzenbauwissenschaften aufgestellt. [Quelle hier](https://www.gpw.uni-kiel.de/de/jahrestagung/pre-conference-workshops/pre-conference-workshop-2016/workshop-2016-1)
 
 # Wann ist ein Faktor zufällig?
 Ein Faktor ist zufällig, wenn
