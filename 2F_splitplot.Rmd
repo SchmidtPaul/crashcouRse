@@ -76,8 +76,9 @@ Zunächst sollten nun die Residuenplots evaluiert werden - beispielsweise mit `p
 > Die Spalte 'mainplot' ist in diesem Beispiel übrigens prinzipiell überflüssig. Das liegt daran, dass man die 3x6 main plots anstatt mit 'rep:mainplot' auch mit 'rep:N' hätte modellieren können, da ein main plot immer einer N-Stufe entspricht (siehe Feldplan oben). Um es aber leichter verständlich zu machen, nutzen wir hier eine extra 'mainplot' Spalte. Siehe außerdem die Anmerkung aus [dem vorigen Beispiel](1F_alpha.html).
 
 ## Varianzanalyse
-```{r}
-anova(mod)
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(car)
+Anova(mod, test.statistic="F", type="III")
 ```
 Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zuallererst den F-Test für die Wechselwirkung (mehr Infos [hier](appendix_interaktionen.html)). Der signifikante p-Wert von `G:N` deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und *nicht* die der beiden Haupteffekte.
 

@@ -11,7 +11,7 @@
 
 
 
-<title>1 Beh.faktor - RCBD - Binomiale Daten</title>
+<title>1 Beh.faktor - RCBD - Prozentwerte</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +115,6 @@ body {
   padding-top: 59px;
   margin-top: -59px;
 }
-
 .section h2 {
   padding-top: 59px;
   margin-top: -59px;
@@ -134,6 +134,43 @@ body {
 .section h6 {
   padding-top: 59px;
   margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -244,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -254,6 +346,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -338,7 +440,7 @@ div.tocify {
       <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
     </li>
     <li>
-      <a href="appendix_nichtnormalverteilt.html">6) Nicht-Normalverteilte Daten</a>
+      <a href="intro_GLM_carrot.html">6) Nicht-Normalverteilte Daten</a>
     </li>
     <li>
       <a href="appendix_modelrules.html">7) Modelle aufstellen</a>
@@ -359,7 +461,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">1 Beh.faktor - RCBD - Binomiale Daten</h1>
+<h1 class="title toc-ignore">1 Beh.faktor - RCBD - Prozentwerte</h1>
 
 </div>
 
@@ -415,8 +517,8 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <div id="generalisiertes-modell" class="section level2">
 <h2>Generalisiertes Modell</h2>
 <p>Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (<em>i.e.</em> 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Dies geht z.B. mit der <code>glm()</code> Funktion. Bezüglich der Effekte im Modell verfahren wir wie bei einer <a href="1F_rcbd.html">einfaktoriellen ANOVA in einem RCBD</a>.</p>
-<pre class="r"><code>mod &lt;- glm(y/n ~ block + gen, family=quasibinomial(link=&quot;logit&quot;), data=wheat)</code></pre>
-<p>Wie man sehen kann, wäre das vorige Berechnen der <code>anteil</code>-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt <code>y/n</code> als Zielvariable schreiben können. Als erwartete Verteilung schreiben wir hier <code>family=quasibinomial</code>, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Der Zusatz <code>(link=&quot;logit&quot;)</code> ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da <code>glm()</code> eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der <code>autoplot()</code> Funktion des <code>ggfortify</code> packages betrachtet werden:</p>
+<pre class="r"><code>mod &lt;- glm(y/n ~ block + gen, weights=n, family=quasibinomial(link=&quot;logit&quot;), data=wheat)</code></pre>
+<p>Wie man sehen kann, wäre das vorige Berechnen der <code>anteil</code>-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt <code>y/n</code> als Zielvariable schreiben können. Wichtig ist dabei aber, dass wir dann auch immer noch <code>weights=n</code> dazuschreiben müssen! Als erwartete Verteilung schreiben wir hier <code>family=quasibinomial</code>, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Der Zusatz <code>(link="logit")</code> ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da <code>glm()</code> eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der <code>autoplot()</code> Funktion des <code>ggfortify</code> packages betrachtet werden:</p>
 <pre class="r"><code>autoplot(mod) # Residuenplots</code></pre>
 <p><img src="1F_rcbd_binomial_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /> ## Test der festen Effekte</p>
 <pre class="r"><code>anova(mod, test=&quot;F&quot;)</code></pre>
@@ -430,9 +532,9 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ## 
 ## 
 ##       Df Deviance Resid. Df Resid. Dev      F    Pr(&gt;F)    
-## NULL                     63     28.023                     
-## block  3   0.4936        60     27.529 0.6870    0.5647    
-## gen   15  15.0629        45     12.466 4.1929 9.285e-05 ***
+## NULL                     63     258.68                     
+## block  3     2.11        60     256.57 0.2965 0.8277255    
+## gen   15   132.62        45     123.95 3.7272 0.0003095 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (<em>i.e.</em> Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x">Piepho (1999)</a>). Dennoch kann die <code>anova()</code> Funktion in R auch für Modell-Objekte aus der <code>glm()</code> Funktion angewendet werden, da in diesem Fall eine andere Berechnung (<em>i.e.</em> Analysis of Deviance) durchgeführt wird (siehe <code>?anova.glm</code> für Details). Um allerdings wie gewohnt p-Werte (eines F-Tests) für die festen Effekte zu erhalten, muss hier noch ein <code>test=</code> statement hinzugefügt werden.</p>
@@ -440,28 +542,30 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
-<p>Auch für generalisierte lineare Modelle eignet sich das <code>emmeans()</code> package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich <code>type=&quot;response&quot;</code> hinzugefügt werden.</p>
+<p>Auch für generalisierte lineare Modelle eignet sich das <code>emmeans()</code> package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich <code>type="response"</code> hinzugefügt werden.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, type=&quot;response&quot;) # Mittelwertvergleiche
-means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
-means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
+means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung</code></pre>
+<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
+## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+<pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
 means</code></pre>
-<pre><code>##  gen       prob         SE  df  asymp.LCL asymp.UCL .group
-##  G13 0.09232419 0.07042474 Inf 0.01921413 0.3455961 a     
-##  G16 0.15883240 0.08924694 Inf 0.04851352 0.4115165 ab    
-##  G14 0.24761042 0.10578557 Inf 0.09758816 0.5003799 abc   
-##  G15 0.31114077 0.11369199 Inf 0.13770905 0.5609126 abc   
-##  G08 0.48040068 0.12301746 Inf 0.26030945 0.7083711 abc   
-##  G11 0.49635787 0.12311529 Inf 0.27292629 0.7212536 abc   
-##  G12 0.50007079 0.12311946 Inf 0.27588708 0.7242260 abc   
-##  G09 0.52370763 0.12298144 Inf 0.29495734 0.7429257 abc   
-##  G04 0.53762746 0.12276673 Inf 0.30636676 0.7537568 abc   
-##  G06 0.62954659 0.11880583 Inf 0.38504869 0.8218186 abc   
-##  G03 0.74435728 0.10700694 Inf 0.49164552 0.8976059 abc   
-##  G10 0.74537169 0.10686342 Inf 0.49262904 0.8982237 abc   
-##  G07 0.75877609 0.10489325 Inf 0.50569210 0.9062933 abc   
-##  G02 0.80658935 0.09664663 Inf 0.55323900 0.9335306 bc    
-##  G05 0.80734618 0.09649923 Inf 0.55400229 0.9339407 bc    
-##  G01 0.85179601 0.08674138 Inf 0.59917588 0.9567060 c     
+<pre><code>##  gen  prob     SE  df asymp.LCL asymp.UCL .group
+##  G13 0.110 0.0802 Inf    0.0241     0.381 a     
+##  G16 0.188 0.0872 Inf    0.0701     0.415 a     
+##  G14 0.265 0.1062 Inf    0.1104     0.512 ab    
+##  G15 0.347 0.1007 Inf    0.1824     0.560 ab    
+##  G08 0.459 0.1138 Inf    0.2569     0.676 ab    
+##  G11 0.508 0.1110 Inf    0.3018     0.711 ab    
+##  G12 0.511 0.1153 Inf    0.2969     0.720 ab    
+##  G04 0.519 0.1016 Inf    0.3270     0.706 ab    
+##  G09 0.524 0.1023 Inf    0.3301     0.711 ab    
+##  G06 0.640 0.1128 Inf    0.4052     0.823 ab    
+##  G10 0.699 0.1178 Inf    0.4364     0.874 ab    
+##  G07 0.703 0.1062 Inf    0.4661     0.865 ab    
+##  G03 0.730 0.0994 Inf    0.5017     0.879 ab    
+##  G05 0.788 0.0971 Inf    0.5435     0.921 ab    
+##  G02 0.793 0.0905 Inf    0.5654     0.919 b     
+##  G01 0.816 0.0909 Inf    0.5751     0.935 b     
 ## 
 ## Results are averaged over the levels of: block 
 ## Confidence level used: 0.95 

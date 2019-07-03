@@ -1,5 +1,5 @@
 ---
-title: "1 Beh.faktor - RCBD - Binomiale Daten"
+title: "1 Beh.faktor - RCBD - Prozentwerte"
 ---
 
 # Datensatz
@@ -65,10 +65,10 @@ boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2) # las=2 dreht die Achsen
 Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (*i.e.* 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Dies geht z.B. mit der `glm()` Funktion. Bezüglich der Effekte im Modell verfahren wir wie bei einer [einfaktoriellen ANOVA in einem RCBD](1F_rcbd.html). 
 
 ```{r}
-mod <- glm(y/n ~ block + gen, family=quasibinomial(link="logit"), data=wheat)
+mod <- glm(y/n ~ block + gen, weights=n, family=quasibinomial(link="logit"), data=wheat)
 ```
 
-Wie man sehen kann, wäre das vorige Berechnen der `anteil`-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt `y/n` als Zielvariable schreiben können. Als erwartete Verteilung schreiben wir hier `family=quasibinomial`, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Der Zusatz `(link="logit")` ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da `glm()` eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der `autoplot()` Funktion des `ggfortify` packages betrachtet werden:
+Wie man sehen kann, wäre das vorige Berechnen der `anteil`-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt `y/n` als Zielvariable schreiben können. Wichtig ist dabei aber, dass wir dann auch immer noch `weights=n` dazuschreiben müssen! Als erwartete Verteilung schreiben wir hier `family=quasibinomial`, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Der Zusatz `(link="logit")` ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da `glm()` eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der `autoplot()` Funktion des `ggfortify` packages betrachtet werden:
 
 ```{r, fig.height = 4, fig.width = 4, fig.align = "center"}
 autoplot(mod) # Residuenplots

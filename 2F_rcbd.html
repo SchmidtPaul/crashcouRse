@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +115,6 @@ body {
   padding-top: 59px;
   margin-top: -59px;
 }
-
 .section h2 {
   padding-top: 59px;
   margin-top: -59px;
@@ -134,6 +134,43 @@ body {
 .section h6 {
   padding-top: 59px;
   margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -244,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -254,6 +346,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -338,7 +440,7 @@ div.tocify {
       <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
     </li>
     <li>
-      <a href="appendix_nichtnormalverteilt.html">6) Nicht-Normalverteilte Daten</a>
+      <a href="intro_GLM_carrot.html">6) Nicht-Normalverteilte Daten</a>
     </li>
     <li>
       <a href="appendix_modelrules.html">7) Modelle aufstellen</a>
@@ -417,16 +519,18 @@ library(RColorBrewer) # bessere Farben</code></pre>
 </div>
 <div id="varianzanalyse" class="section level2">
 <h2>Varianzanalyse</h2>
-<pre class="r"><code>anova(mod)</code></pre>
-<pre><code>## Analysis of Variance Table
+<pre class="r"><code>library(car)
+Anova(mod, test.statistic=&quot;F&quot;, type=&quot;III&quot;)</code></pre>
+<pre><code>## Anova Table (Type III tests)
 ## 
 ## Response: yield
-##           Df   Sum Sq  Mean Sq F value    Pr(&gt;F)    
-## N          5 30480453  6096091 15.4677 6.509e-09 ***
-## G          3 89885035 29961678 76.0221 &lt; 2.2e-16 ***
-## rep        2  1084820   542410  1.3763    0.2627    
-## N:G       15 69378044  4625203 11.7356 4.472e-11 ***
-## Residuals 46 18129432   394118                      
+##               Sum Sq Df  F value    Pr(&gt;F)    
+## (Intercept) 47548894  1 120.6463 1.893e-14 ***
+## N           35269882  5  17.8981 8.064e-10 ***
+## G            3162391  3   2.6747   0.05821 .  
+## rep          1084820  2   1.3763   0.26272    
+## N:G         69378044 15  11.7356 4.472e-11 ***
+## Residuals   18129432 46                       
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
@@ -438,43 +542,45 @@ library(RColorBrewer) # bessere Farben</code></pre>
 <h2>Multipler Mittelwertvergleich</h2>
 <p>Mit <code>emmeans()</code> können wir auch adjustierte Mittelwerte für Wechselwirkungseffekte berechnen. Das geht entweder mit <code>pairwise ~ N : G</code> oder <code>pairwise ~ N | G</code>. Im beiden Fällen werden wie erwartet Mittelwerte für alle Kombinationen errechnet. Der Unterschied besteht in der Anzahl der Differenzen zwischen den Mittelwerten, die berechnet werden. Im ersten Fall werden wie gewohnt alle Mittelwerte miteinander verglichen. Im zweiten Fall, werden nur N-Stufen innerhalb einer Sorte miteinander verglichen. Natürlich können ‘N’ und ‘G’ hier auch ausgetauscht werden. Es kommt auf die Versuchsfrage an, welche Mittelwertvergleiche von größerem Interesse sind. Wir wollen uns hier auf die Vergleiche der N-Mittelwerte getrennt pro Sorte fokussieren.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ N | G, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
-means &lt;- CLD(means$emmeans, Letters=letters)
-means</code></pre>
+means &lt;- CLD(means$emmeans, Letters=letters)</code></pre>
+<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
+## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+<pre class="r"><code>means</code></pre>
 <pre><code>## G = A:
-##  N    emmean       SE df lower.CL upper.CL .group
-##  N1 4252.667 362.4537 46 3523.085 4982.248  a    
-##  N2 5672.000 362.4537 46 4942.419 6401.581  ab   
-##  N3 6400.000 362.4537 46 5670.419 7129.581   bc  
-##  N4 6732.667 362.4537 46 6003.085 7462.248   bc  
-##  N5 7563.333 362.4537 46 6833.752 8292.915    cd 
-##  N6 8700.667 362.4537 46 7971.085 9430.248     d 
+##  N  emmean  SE df lower.CL upper.CL .group
+##  N1   4253 362 46     3523     4982  a    
+##  N2   5672 362 46     4942     6402  ab   
+##  N3   6400 362 46     5670     7130   bc  
+##  N4   6733 362 46     6003     7462   bc  
+##  N5   7563 362 46     6834     8293    cd 
+##  N6   8701 362 46     7971     9430     d 
 ## 
 ## G = B:
-##  N    emmean       SE df lower.CL upper.CL .group
-##  N1 4306.000 362.4537 46 3576.419 5035.581  a    
-##  N2 5982.000 362.4537 46 5252.419 6711.581   b   
-##  N3 6259.000 362.4537 46 5529.419 6988.581   b   
-##  N6 6540.333 362.4537 46 5810.752 7269.915   b   
-##  N4 6895.000 362.4537 46 6165.419 7624.581   b   
-##  N5 6950.667 362.4537 46 6221.085 7680.248   b   
+##  N  emmean  SE df lower.CL upper.CL .group
+##  N1   4306 362 46     3576     5036  a    
+##  N2   5982 362 46     5252     6712   b   
+##  N3   6259 362 46     5529     6989   b   
+##  N6   6540 362 46     5811     7270   b   
+##  N4   6895 362 46     6165     7625   b   
+##  N5   6951 362 46     6221     7680   b   
 ## 
 ## G = C:
-##  N    emmean       SE df lower.CL upper.CL .group
-##  N1 3177.333 362.4537 46 2447.752 3906.915  a    
-##  N2 5442.667 362.4537 46 4713.085 6172.248   b   
-##  N3 5994.000 362.4537 46 5264.419 6723.581   b   
-##  N4 6014.000 362.4537 46 5284.419 6743.581   b   
-##  N6 6065.333 362.4537 46 5335.752 6794.915   b   
-##  N5 6687.333 362.4537 46 5957.752 7416.915   b   
+##  N  emmean  SE df lower.CL upper.CL .group
+##  N1   3177 362 46     2448     3907  a    
+##  N2   5443 362 46     4713     6172   b   
+##  N3   5994 362 46     5264     6724   b   
+##  N4   6014 362 46     5284     6744   b   
+##  N6   6065 362 46     5336     6795   b   
+##  N5   6687 362 46     5958     7417   b   
 ## 
 ## G = D:
-##  N    emmean       SE df lower.CL upper.CL .group
-##  N6 1880.667 362.4537 46 1151.085 2610.248  a    
-##  N5 2046.667 362.4537 46 1317.085 2776.248  a    
-##  N4 3816.000 362.4537 46 3086.419 4545.581   b   
-##  N1 4481.333 362.4537 46 3751.752 5210.915   b   
-##  N3 4812.000 362.4537 46 4082.419 5541.581   b   
-##  N2 4816.000 362.4537 46 4086.419 5545.581   b   
+##  N  emmean  SE df lower.CL upper.CL .group
+##  N6   1881 362 46     1151     2610  a    
+##  N5   2047 362 46     1317     2776  a    
+##  N4   3816 362 46     3086     4546   b   
+##  N1   4481 362 46     3752     5211   b   
+##  N3   4812 362 46     4082     5542   b   
+##  N2   4816 362 46     4086     5546   b   
 ## 
 ## Results are averaged over the levels of: rep 
 ## Confidence level used: 0.95 

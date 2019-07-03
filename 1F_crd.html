@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +115,6 @@ body {
   padding-top: 59px;
   margin-top: -59px;
 }
-
 .section h2 {
   padding-top: 59px;
   margin-top: -59px;
@@ -134,6 +134,43 @@ body {
 .section h6 {
   padding-top: 59px;
   margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -244,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -254,6 +346,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -338,7 +440,7 @@ div.tocify {
       <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
     </li>
     <li>
-      <a href="appendix_nichtnormalverteilt.html">6) Nicht-Normalverteilte Daten</a>
+      <a href="intro_GLM_carrot.html">6) Nicht-Normalverteilte Daten</a>
     </li>
     <li>
       <a href="appendix_modelrules.html">7) Modelle aufstellen</a>
@@ -440,26 +542,28 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
 means$emmeans # Mittelwerte </code></pre>
-<pre><code>##  gen   emmean        SE df lower.CL upper.CL
-##  G01 5.162500 0.3023478  6 4.422682 5.902318
-##  G02 4.514200 0.3023478  6 3.774382 5.254018
-##  G03 3.343067 0.3023478  6 2.603248 4.082885
+<pre><code>##  gen emmean    SE df lower.CL upper.CL
+##  G01   5.16 0.302  6     4.42     5.90
+##  G02   4.51 0.302  6     3.77     5.25
+##  G03   3.34 0.302  6     2.60     4.08
 ## 
 ## Confidence level used: 0.95</code></pre>
 <pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
-<pre><code>##  contrast  estimate        SE df t.ratio p.value
-##  G01 - G02 0.648300 0.4275844  6   1.516  0.3488
-##  G01 - G03 1.819433 0.4275844  6   4.255  0.0127
-##  G02 - G03 1.171133 0.4275844  6   2.739  0.0754
+<pre><code>##  contrast  estimate    SE df t.ratio p.value
+##  G01 - G02    0.648 0.428  6 1.516   0.3488 
+##  G01 - G03    1.819 0.428  6 4.255   0.0127 
+##  G02 - G03    1.171 0.428  6 2.739   0.0754 
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
-<pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)
-means</code></pre>
-<pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
-##  G03 3.343067 0.3023478  6 2.603248 4.082885  a    
-##  G02 4.514200 0.3023478  6 3.774382 5.254018  ab   
-##  G01 5.162500 0.3023478  6 4.422682 5.902318   b   
+<pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)</code></pre>
+<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
+## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+<pre class="r"><code>means</code></pre>
+<pre><code>##  gen emmean    SE df lower.CL upper.CL .group
+##  G03   3.34 0.302  6     2.60     4.08  a    
+##  G02   4.51 0.302  6     3.77     5.25  ab   
+##  G01   5.16 0.302  6     4.42     5.90   b   
 ## 
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
@@ -477,7 +581,7 @@ means</code></pre>
   labs(y=&quot;Adjustierter Ertragsmittelwert ± Standardfehler&quot;, x=&quot;Sorte&quot;, 
       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
 <p><img src="1F_crd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a_”, “ab” und “_b“. Wir werden also auch diese Leerzeichen entfernen.</p>
+<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a_”, “ab” und "_b". Wir werden also auch diese Leerzeichen entfernen.</p>
 <pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Leerzeichen entfernen
 
 ggplot() + theme_classic() +

@@ -10,7 +10,7 @@ library(data.table)
 library(desplot) # plotte Feldplan
 library(RColorBrewer) # Farben für Feldplan
 alpha <- data.table(john.alpha)
-alpha$row <- rep(4:1)
+alpha$row <- rep(rep(4:1),18)
 alpha$col <- sort(rep(seq(18:1),4))
 names(alpha)[3] <- "inc.block"
 levels(alpha$rep) <- c("Rep1", "Rep2", "Rep3")
@@ -41,11 +41,12 @@ desplot(data=alpha, form= gen ~ col+row, col.regions=colors24,
         main="Feldplan",
         xlab="", ylab="", show.key=F, out1=rep,
         out2=inc.block, out2.gpar=list(col="black", lwd=1, lty=1))
-desplot(data=alpha, form= real.inc.block ~ col+row|rep,
+desplot(data=alpha, form=real.inc.block~col+row|rep,
         col.regions=colors18,
         text=gen, cex=0.4, shorten="no",
         main="Vollst. und unvollst. Blöcke",
-        xlab="", ylab="", show.key=F, out1=rep)
+        xlab="", ylab="", show.key=F, 
+        out1=real.inc.block, out1.gpar=list(col="black", lwd=1, lty=1))
 alpha <- alpha[,c("gen", "rep", "inc.block", "yield")]
 ```
 </div> <div class = "col-md-6">

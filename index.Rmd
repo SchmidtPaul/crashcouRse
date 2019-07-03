@@ -29,7 +29,7 @@ Appendix | Beschreibung | Funktion
 [Appendix 3](appendix_posthoc.html) | Post Hoc Tests | -
 [Appendix 4](appendix_interaktionen.html) | Behandlungsinteraktionen | -
 [Appendix 5](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
-[Appendix 6](NichtNormalverteil.html) | Binomial- und Poissonverteilte Daten | `glm()`
+[Appendix 6](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
 
 ### Andere Quellen
 Ich empfehle die ["Statistics" Playlist](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr) auf dem Youtube-Kanal "CrashCourse".

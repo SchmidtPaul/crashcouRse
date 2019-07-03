@@ -66,8 +66,9 @@ Zunächst sollten nun die Residuenplots (z.b. mit `autoplot(mod)`) evaluiert wer
 
 ## Varianzanalyse
 
-```{r}
-anova(mod)
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(car)
+Anova(mod, test.statistic="F", type="III")
 ```
 
 Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von `G:N` deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und *nicht* die der beiden Haupteffekte.

@@ -73,9 +73,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -114,7 +115,6 @@ body {
   padding-top: 59px;
   margin-top: -59px;
 }
-
 .section h2 {
   padding-top: 59px;
   margin-top: -59px;
@@ -134,6 +134,43 @@ body {
 .section h6 {
   padding-top: 59px;
   margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -155,18 +192,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -244,8 +338,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -254,6 +346,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -338,7 +440,7 @@ div.tocify {
       <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
     </li>
     <li>
-      <a href="appendix_nichtnormalverteilt.html">6) Nicht-Normalverteilte Daten</a>
+      <a href="intro_GLM_carrot.html">6) Nicht-Normalverteilte Daten</a>
     </li>
     <li>
       <a href="appendix_modelrules.html">7) Modelle aufstellen</a>
@@ -463,8 +565,10 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 ## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
 ## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
 <p>Im Vergleich zum Beispiel “1F_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
-<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
-as.data.table(means$emmeans)[1:6,]</code></pre>
+<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
+<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
+## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+<pre class="r"><code>as.data.table(means$emmeans)[1:6,]</code></pre>
 <pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
 ## 1: G03 3.343067 0.2118065 46 2.916722 3.769411   a   
 ## 2: G09 3.611600 0.2118065 46 3.185256 4.037944   ab  

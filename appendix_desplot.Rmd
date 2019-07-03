@@ -9,7 +9,7 @@ library(desplot) # plotte Feldplan
 library(RColorBrewer) # Farben für Feldplan
 alpha <- data.table(john.alpha)
 alpha$yield <- alpha$yield*10
-alpha$row <- rep(4:1)
+alpha$row <- rep(rep(4:1),18)
 alpha$col <- sort(rep(seq(18:1),4))
 alpha$inc.block <- paste0(alpha$rep,"-",alpha$block)
 alpha <- alpha[,c("row", "col", "rep", "gen", "inc.block", "yield")]
