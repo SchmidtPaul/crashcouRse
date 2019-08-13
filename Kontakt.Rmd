@@ -2,9 +2,9 @@
 title: "Paul Schmidt"
 ---
 
-<img src="images/PS.jpg" style="width:25%; margin-right: 20px" align="left">
+<img src="images/PauSch.jpg" style="width:25%; margin-right: 20px" align="left">
 
-Ich bin Doktorand im <a href="https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik" target="_blank">Fachgebiet Biostatistik</a> der Universität Hohenheim.
+Ich bin dabei meine **Promotion** im [Fachgebiet Biostatistik](https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik) der Universität Hohenheim zu beenden. Außerdem arbeite ich als **Data Scientist** bei [BioMath](https://www.biomath.de/). Desweiteren gebe ich **Workshops** in R für Einsteiger und Fortgeschrittene.
 
 <i class="fas fa-envelope fa-lg"></i> paul.schmidt@uni-hohenheim.de
 
