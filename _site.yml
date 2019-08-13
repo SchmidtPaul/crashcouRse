@@ -2,6 +2,9 @@ name: "crashcouRse-website"
 output_dir: "."    # in GitHub master folder instead of default "_site" so that GitHub Pages works
 navbar:
   title: "crashcouRse"
+  right:
+    - text: "Kontakt"
+      href: kontakt.html
   left:
     - text: "Home"
       href: index.html
@@ -39,9 +42,6 @@ navbar:
           href: intro_GLM_carrot.html
         - text: "7) Modelle aufstellen"
           href: appendix_modelrules.html
-  right:
-    - text: "Kontakt"
-      href: kontakt.html
 output:
   html_document:
     theme: lumen
