@@ -1,0 +1,11 @@
+---
+title: "Korrelation, Regression und Alkohol"
+---
+  
+# Datensatz
+```{r, include=FALSE}
+library(data.table)
+dat <- fread("D:/RKurse/MyDatasets/vision fixed (other) LM.txt", 
+             dec=",", na.strings = "", stringsAsFactors=TRUE)
+dat <- dat %>% select(Person, Ages, Gender, Vision, Distance)
+```

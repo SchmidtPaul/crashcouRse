@@ -2,6 +2,8 @@
 title: "Korrelation"
 ---
 
+> Ein zum Thema passendes Youtube Video gibt's [hier](https://youtu.be/GtV-VYdNt_g)
+
 # Eine kurze Zusammenfassung
 Um eine Beziehung zwischen zwei numerischen Variablen in Zahlen ausdrücken zu können, eignet sich die Korrelation (auch *Korrelationskoeffizient*, *Produkt-Moment-Korrelation*, *Pearson-Korrelation*). Sie wird als $\rho$ bzw. $r$ angegeben und kann einen Wert von $-1$ bis $+1$ annehmen. Tatsächlich kann man aus einem Plot wie dem oben schon recht gut abschätzen was für eine Korrelation zu erwarten ist. Hier zum Vergleich ein Überblick:
   

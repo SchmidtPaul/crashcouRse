@@ -413,6 +413,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="regcorr_drinks.html">Correlation &amp; Regression</a>
+    </li>
+    <li>
       <a href="1F_crd.html">1F crd</a>
     </li>
     <li>
@@ -447,6 +450,9 @@ div.tocify {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="stat_Korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_Regression.html">Regression</a>
     </li>
     <li>
       <a href="appendix_designs.html">Versuchsdesigns</a>
@@ -488,7 +494,25 @@ div.tocify {
 </div>
 
 
-
+<blockquote>
+<p>Ein zum Thema passendes Youtube Video gibt’s <a href="https://youtu.be/WWqE7YHR4Jc">hier</a></p>
+</blockquote>
+<div id="eine-kurze-zusammenfassung" class="section level1">
+<h1>Eine kurze Zusammenfassung</h1>
+<p>Der Begriff “Regression” kann für vieles stehen, meint aber oft den Spezialfall der <em>einfachen, linearen Regression</em>. Das Ziel einer solchen Regressionsanalyse ist es, wie bei der <a href="stat_Korrelation.html">Korrelation</a>, eine Beziehung zwischen zwei numerischen Variablen zu untersuchen. Allerdings besteht der Unterschied zur Korrelation darin, dass die Regression versucht die Beziehung der zwei Variablen zu modellieren. Es wird versucht eine beobachtete abhängige Variable (<span class="math inline">\(y\)</span>) durch eine unabhängige Variable (<span class="math inline">\(x\)</span>) zu erklären. Das Modell bei einer einfachen, linearen Regression lautet</p>
+<p><span class="math display">\[ y = \alpha + \beta x \]</span></p>
+<p>wobei <span class="math inline">\(\alpha\)</span> bzw. <span class="math inline">\(a\)</span> der Achsenabschnitt oder Intercept ist und <span class="math inline">\(\beta\)</span> bzw. <span class="math inline">\(b\)</span> die Steigung oder auch Slope. Kurz gesagt kann mit dem Herumspielen dieser zwei größen jede beliebige Gerade in einem Koordinatensystem gezeichnet werden.</p>
+<center>
+<img src="images/regressiontheorie.png" style="width:50%">
+</center>
+<blockquote>
+<p>Zum Ausprobieren empfehle ich auf <a href="https://www.desmos.com/calculator">dieser Website</a> ins Fenster oben links “y=a+bx” einzugeben, mit Enter zu bestätigen und dann an den Stellschrauben für <span class="math inline">\(a\)</span> und <span class="math inline">\(b\)</span> rumzuspielen.</p>
+</blockquote>
+<p>Bei einer Regressionsanalyse sollen schlichtweg die Werte für <span class="math inline">\(a\)</span> und <span class="math inline">\(b\)</span> gefunden werden, die am besten zu einer vorhandenen Punktewolke in einem Scatter Plot passen:</p>
+<center>
+<img src="images/regressiontheorie2.png" style="width:50%">
+</center>
+</div>
 
 
 

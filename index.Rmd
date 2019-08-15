@@ -1,6 +1,4 @@
----
-title: "CrashcouRse"
----
+<img src="images/Banner.png" style="width:100%">
 
 # Was ist diese Seite?
 
@@ -8,7 +6,7 @@ Diese Seite ist ein stetig wachsendes Skript zu Data Science in R. [Ich](kontakt
 
 1. **R Anwendung**: Erklärungen und Diskussionen zur Nutzung von R
 2. **Auswertungen**: Beispielhafte statistische Auswertungen von Datensätzen mit R
-3. **Statistik**: Weiterführende, aber anschauliche Erläuterungen zur Statistik
+3. **Statistik**: Weiterführende, aber vor allem anschauliche Erläuterungen zur Statistik
 
 Die Kategorien finden sich oben. Die Kapitel innerhalb der Kategorien können sowohl dort, als auch weiter unten in einem tabellarischem Inhaltsverzeichnis aufgerufen werden.
 
@@ -46,11 +44,12 @@ Pragmatische Erklärungen, Diskussionen und Verweise auf weiterführende Informa
 Kapitel | Beschreibung | Funktion
 --------|--------------|---------
 [Stat 1](stat_Korrelation.html) | Korrelation | `cor()`, `cor.test()`
-[Stat 1](appendix_designs.html) | Vergleich Versuchsdesigns | -
-[Stat 2](appendix_posthoc.html) | ANOVA & Post Hoc Tests | `anova()`, `emmeans()`
-[Stat 3](appendix_interaktionen.html) | Behandlungsinteraktionen | -
-[Stat 4](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
-[Stat 5](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
+[Stat 2](stat_Regression.html) | Regression | `lm()`
+[Stat 3](appendix_designs.html) | Vergleich Versuchsdesigns | -
+[Stat 4](appendix_posthoc.html) | ANOVA & Post Hoc Tests | `anova()`, `emmeans()`
+[Stat 5](appendix_interaktionen.html) | Behandlungsinteraktionen | -
+[Stat 6](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
+[Stat 7](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
 
 # Anderes
 ### Weitere Quellen

@@ -77,7 +77,7 @@ ggplot(data=dat, aes(x=drinks, y=blood_alc)) + # Definiere Daten
 ```
 
 # Regression
-Neben der Korrelation können noch andere statistische Methoden angewendet werden um die Beziehung zwischen zwei numerischen Variablen besser fassen zu können. Eine dieser Methoden ist die Regression und in diesem Fall genauer: die simple lineare Regression.
+Neben der Korrelation können noch andere statistische Methoden angewendet werden um die Beziehung zwischen zwei numerischen Variablen besser fassen zu können. Eine dieser Methoden ist die Regression und in diesem Fall genauer: die simple lineare Regression - [Hier eine kurze Zusammenfassung was eine Regression ist](stat_Regression.html).
 
 ```{r}
 reg <- lm(data = dat, formula = blood_alc ~ drinks) # Regressionsmodell y = a + bx

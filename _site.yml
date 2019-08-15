@@ -17,6 +17,8 @@ navbar:
           href: DatR_MoreAdvanced.html
     - text: "Auswertungen"
       menu:
+        - text: "Correlation & Regression"
+          href: regcorr_drinks.html
         - text: "1F crd"
           href: 1F_crd.html
         - text: "1F rcbd"
@@ -37,6 +39,8 @@ navbar:
       menu:
         - text: "Korrelation"
           href: stat_Korrelation.html      
+        - text: "Regression"
+          href: stat_Regression.html     
         - text: "Versuchsdesigns"
           href: appendix_designs.html   
         - text: "ANOVA & Post Hoc"
