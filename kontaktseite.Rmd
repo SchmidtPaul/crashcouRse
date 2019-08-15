@@ -4,9 +4,9 @@ title: "Paul Schmidt"
 
 <img src="images/PauSch.jpg" style="width:25%; margin-right: 20px" align="left">
 
-### Kurz über mich
+### Über mich
 
-Ich bin dabei meine **Promotion** im [Fachgebiet Biostatistik](https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik) der Universität Hohenheim zu beenden. Außerdem arbeite ich als **Data Scientist** bei [BioMath](https://www.biomath.de/). Desweiteren gebe ich **Workshops** in R für Einsteiger und Fortgeschrittene (siehe Tabelle unten).
+Ich bin dabei meine **Promotion** im [Fachgebiet Biostatistik](https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik) der Universität Hohenheim abzuschließen. Außerdem arbeite ich als **Data Scientist** bei [BioMath](https://www.biomath.de/). Desweiteren gebe ich **Workshops** in R für Einsteiger und Fortgeschrittene (siehe Tabelle unten).
 
 schmidtpaul@hotmail.de
 
@@ -14,7 +14,7 @@ schmidtpaul@hotmail.de
 
 [Xing](https://www.xing.com/profile/Paul_Schmidt203/cv)
 
-[Publikationen (ResearchGate)](https://www.researchgate.net/profile/Paul_Schmidt17)
+[Publikationen (ResearchGate)](https://www.researchgate.net/profile/Paul_Schmidt17/research)
 
 [GitHub mit Resultaten aus Promotion](https://github.com/PaulSchmidtGit/Heritability)
 

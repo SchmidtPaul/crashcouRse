@@ -1,38 +1,66 @@
 ---
-title: "R im Versuchswesen"
+title: "CrashcouRse"
 ---
 
-Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus. 
+# Was ist diese Seite?
 
-Beispieldatensätze/-codes für den Kurs *Gemischte Modelle in R* gibt es [https://github.com/SchmidtPaul/GemischteModelleInR](https://github.com/SchmidtPaul/GemischteModelleInR)
+Diese Seite ist ein stetig wachsendes Skript zu Data Science in R. [Ich](kontaktseite.html) versuche alle Kapitel prinzipiell in 3 verschiedene Kategorien einzuteilen:
 
-Beispieldatensätze/-codes für den Kurs *Statistics with R: Introductory course* gibt es [https://github.com/SchmidtPaul/R-SAS.Introductory.Courses](https://github.com/SchmidtPaul/R-SAS.Introductory.Courses)
+1. **R Anwendung**: Erklärungen und Diskussionen zur Nutzung von R
+2. **Auswertungen**: Beispielhafte statistische Auswertungen von Datensätzen mit R
+3. **Statistik**: Weiterführende, aber anschauliche Erläuterungen zur Statistik
 
-### Inhaltsverzeichnis
+Die Kategorien finden sich oben. Die Kapitel innerhalb der Kategorien können sowohl dort, als auch weiter unten in einem tabellarischem Inhaltsverzeichnis aufgerufen werden.
+
+# Inhaltsverzeichnis
+Wie gesagt wird diese Seite stetig um Kapitel erweitert. Aus diesem Grund gibt es streng genommen keine klare Reihenfolge in der die Kapitel gelesen werden sollten. Um dennoch das richtige zu finden, soll diese tabellarische Übersicht weiterhelfen.
+
+## R Anwendung
+Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur Nutzung von R - teilweise ganz unabhängig von statistischen Analysen und eher im Bereich Datenverarbeitung usw.
+
+Kapitel | Beschreibung | Funktion
+--------|--------------|---------
+[UseR 1](DatR_importexport.html) | Import & Export von Daten | `read.table()`, `fread()`, `read_excel()`, `ggsave()` ...
+[UseR 2](DatR_descriptiveStats.html) | Effizientes Erstellen deskriptiver Statistiken | `summary()`, `table()`, `data.table()` ...
+[UseR 3](appendix_desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
+[UseR 4](DatR_MoreAdvanced.html) | Weitere Tipps | `dplyr`, `%in%`, `%>%`
+
+## Auswertungen
+Aufgrund der bisherigen Workshops liegt der Schwerpunkt der Beispielauswertungen momentan auf Daten/Versuchen aus dem Agrar- bzw. Biologiebereich. Viele Punkte sowohl in der statistischen Vorgehensweise, als auch der Umsetzung in R lassen sich aber einfach auf andere Bereiche übertragen.
 
 Kapitel | Behandlungseffekt | Design | Besonderheit | Funktion
---------|-------------------|--------|--------------|----------
-[Kapitel 1](1F_crd.html) | 1 Faktor | CRD | | `lm()`
-[Kapitel 2](1F_rcbd.html) | 1 Faktor | RCBD | | `lm()`
-[Kapitel 3](1F_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
-[Kapitel 4](2F_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
-[Kapitel 5](2F_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
-[Kapitel 6](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
-[Kapitel 7](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
-[Kapitel 8](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
+--------|-----|-----|-----|-----
+[Bsp 1](regcorr_drinks.html) | 1 Metrischer | - |  | `cor()`, `lm()`
+[Bsp 2](1F_crd.html) | 1 Faktor | CRD | | `lm()`
+[Bsp 3](1F_rcbd.html) | 1 Faktor | RCBD | | `lm()`
+[Bsp 4](1F_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
+[Bsp 5](2F_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
+[Bsp 6](2F_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
+[Bsp 7](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
+[Bsp 8](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
+[Bsp 9](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
 
+## Statistik Theorie
+Pragmatische Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur statistischen Theorie.
 
-Appendix | Beschreibung | Funktion
----------|--------------|---------
-[Appendix 1](appendix_desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
-[Appendix 2](appendix_designs.html) | Vergleich Versuchsdesigns | -
-[Appendix 3](appendix_posthoc.html) | Post Hoc Tests | -
-[Appendix 4](appendix_interaktionen.html) | Behandlungsinteraktionen | -
-[Appendix 5](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
-[Appendix 6](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
+Kapitel | Beschreibung | Funktion
+--------|--------------|---------
+[Stat 1](stat_Korrelation.html) | Korrelation | `cor()`, `cor.test()`
+[Stat 1](appendix_designs.html) | Vergleich Versuchsdesigns | -
+[Stat 2](appendix_posthoc.html) | ANOVA & Post Hoc Tests | `anova()`, `emmeans()`
+[Stat 3](appendix_interaktionen.html) | Behandlungsinteraktionen | -
+[Stat 4](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
+[Stat 5](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
 
-### Andere Quellen
-Ich empfehle die ["Statistics" Playlist](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr) auf dem Youtube-Kanal "CrashCourse".
+# Anderes
+### Weitere Quellen
+Ich empfehle 
 
-### Kontakt
-[Hier](kontaktseite.html) kannst du mich kontaktieren.
+* die ["Statistics" Playlist](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr) auf dem Youtube-Kanal "CrashCourse".
+* den [R-Pocast](https://r-podcast.org/) und auch dessen "Resources" Liste
+
+### Archiv für Beispieldatensätze
+Beispieldatensätze/-codes für 
+
++ den Kurs *Gemischte Modelle in R (Nov 2018)* gibt es [hier](https://github.com/SchmidtPaul/GemischteModelleInR)
++ den Kurs *Statistics with R: Introductory course (2016-2018)* gibt es [hier](https://github.com/SchmidtPaul/R-SAS.Introductory.Courses)

@@ -5,39 +5,49 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Kapitel"
+    - text: "R Anwendung"
       menu:
-        - text: "1) 1F crd"
-          href: 1F_crd.html
-        - text: "2) 1F rcbd"
-          href: 1F_rcbd.html
-        - text: "3) 1F alpha"
-          href: 1F_alpha.html
-        - text: "4) 2F rcbd"
-          href: 2F_rcbd.html
-        - text: "5) 2F split-plot"
-          href: 2F_splitplot.html
-        - text: "6) 1F rcbd Messwiederholungen"
-          href: 1F_rcbd_messwdh.html
-        - text: "7) 1F crd Prozentwerte"
-          href: 1F_rcbd_binomial.html
-        - text: "8) 1F lat square Zählwerte"
-          href: 1F_latsq_poisson.html
-    - text: "Appendix"
-      menu:
-        - text: "1) desplot package"
+        - text: "Import & Export"
+          href: DatR_importexport.html
+        - text: "Deskriptive Statistik"
+          href: DatR_descriptiveStats.html        
+        - text: "desplot package"
           href: appendix_desplot.html
-        - text: "2) Versuchsdesigns"
-          href: appendix_designs.html
-        - text: "3) ANOVA & Post Hoc"
+        - text: "Weitere Tipps"
+          href: DatR_MoreAdvanced.html
+    - text: "Auswertungen"
+      menu:
+        - text: "1F crd"
+          href: 1F_crd.html
+        - text: "1F rcbd"
+          href: 1F_rcbd.html
+        - text: "1F alpha"
+          href: 1F_alpha.html
+        - text: "2F rcbd"
+          href: 2F_rcbd.html
+        - text: "2F split-plot"
+          href: 2F_splitplot.html
+        - text: "1F rcbd Messwiederholungen"
+          href: 1F_rcbd_messwdh.html
+        - text: "1F crd Prozentwerte"
+          href: 1F_rcbd_binomial.html
+        - text: "1F lat square Zählwerte"
+          href: 1F_latsq_poisson.html
+    - text: "Statistik"
+      menu:
+        - text: "Korrelation"
+          href: stat_Korrelation.html      
+        - text: "Versuchsdesigns"
+          href: appendix_designs.html   
+        - text: "ANOVA & Post Hoc"
           href: appendix_posthoc.html
-        - text: "4) Interaktionen"
+        - text: "Interaktionen"
           href: appendix_interaktionen.html
-        - text: "5) Kovarianzstrukturen"
+        - text: "Kovarianzstrukturen"
           href: appendix_kovarstrukt.html
-        - text: "6) Nicht-Normalverteilte Daten"
+        - text: "Nicht-Normalverteilte Daten"
           href: intro_GLM_carrot.html
-        - text: "7) Modelle aufstellen"
+        - text: "Modelle aufstellen"
           href: appendix_modelrules.html
     - text: "Kontakt"
       href: kontaktseite.html

@@ -11,7 +11,7 @@
 
 
 
-<title>R im Versuchswesen</title>
+<title>CrashcouRse</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -386,64 +386,85 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Kapitel
+    R Anwendung
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="1F_crd.html">1) 1F crd</a>
+      <a href="DatR_importexport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="1F_rcbd.html">2) 1F rcbd</a>
+      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="1F_alpha.html">3) 1F alpha</a>
+      <a href="appendix_desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="2F_rcbd.html">4) 2F rcbd</a>
-    </li>
-    <li>
-      <a href="2F_splitplot.html">5) 2F split-plot</a>
-    </li>
-    <li>
-      <a href="1F_rcbd_messwdh.html">6) 1F rcbd Messwiederholungen</a>
-    </li>
-    <li>
-      <a href="1F_rcbd_binomial.html">7) 1F crd Prozentwerte</a>
-    </li>
-    <li>
-      <a href="1F_latsq_poisson.html">8) 1F lat square Zählwerte</a>
+      <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Appendix
+    Auswertungen
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="appendix_desplot.html">1) desplot package</a>
+      <a href="1F_crd.html">1F crd</a>
     </li>
     <li>
-      <a href="appendix_designs.html">2) Versuchsdesigns</a>
+      <a href="1F_rcbd.html">1F rcbd</a>
     </li>
     <li>
-      <a href="appendix_posthoc.html">3) ANOVA &amp; Post Hoc</a>
+      <a href="1F_alpha.html">1F alpha</a>
     </li>
     <li>
-      <a href="appendix_interaktionen.html">4) Interaktionen</a>
+      <a href="2F_rcbd.html">2F rcbd</a>
     </li>
     <li>
-      <a href="appendix_kovarstrukt.html">5) Kovarianzstrukturen</a>
+      <a href="2F_splitplot.html">2F split-plot</a>
     </li>
     <li>
-      <a href="intro_GLM_carrot.html">6) Nicht-Normalverteilte Daten</a>
+      <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
-      <a href="appendix_modelrules.html">7) Modelle aufstellen</a>
+      <a href="1F_rcbd_binomial.html">1F crd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1F_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_Korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen</a>
+    </li>
+    <li>
+      <a href="intro_GLM_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
     </li>
   </ul>
 </li>
@@ -462,16 +483,67 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R im Versuchswesen</h1>
+<h1 class="title toc-ignore">CrashcouRse</h1>
 
 </div>
 
 
-<p>Wähle oben im Menü oder unten in der Tabelle ein Kapitel aus.</p>
-<p>Beispieldatensätze/-codes für den Kurs <em>Gemischte Modelle in R</em> gibt es <a href="https://github.com/SchmidtPaul/GemischteModelleInR">https://github.com/SchmidtPaul/GemischteModelleInR</a></p>
-<p>Beispieldatensätze/-codes für den Kurs <em>Statistics with R: Introductory course</em> gibt es <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses">https://github.com/SchmidtPaul/R-SAS.Introductory.Courses</a></p>
-<div id="inhaltsverzeichnis" class="section level3">
-<h3>Inhaltsverzeichnis</h3>
+<div id="was-ist-diese-seite" class="section level1">
+<h1>Was ist diese Seite?</h1>
+<p>Diese Seite ist ein stetig wachsendes Skript zu Data Science in R. <a href="kontaktseite.html">Ich</a> versuche alle Kapitel prinzipiell in 3 verschiedene Kategorien einzuteilen:</p>
+<ol style="list-style-type: decimal">
+<li><strong>R Anwendung</strong>: Erklärungen und Diskussionen zur Nutzung von R</li>
+<li><strong>Auswertungen</strong>: Beispielhafte statistische Auswertungen von Datensätzen mit R</li>
+<li><strong>Statistik</strong>: Weiterführende, aber anschauliche Erläuterungen zur Statistik</li>
+</ol>
+<p>Die Kategorien finden sich oben. Die Kapitel innerhalb der Kategorien können sowohl dort, als auch weiter unten in einem tabellarischem Inhaltsverzeichnis aufgerufen werden.</p>
+</div>
+<div id="inhaltsverzeichnis" class="section level1">
+<h1>Inhaltsverzeichnis</h1>
+<p>Wie gesagt wird diese Seite stetig um Kapitel erweitert. Aus diesem Grund gibt es streng genommen keine klare Reihenfolge in der die Kapitel gelesen werden sollten. Um dennoch das richtige zu finden, soll diese tabellarische Übersicht weiterhelfen.</p>
+<div id="r-anwendung" class="section level2">
+<h2>R Anwendung</h2>
+<p>Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur Nutzung von R - teilweise ganz unabhängig von statistischen Analysen und eher im Bereich Datenverarbeitung usw.</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="45%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kapitel</th>
+<th>Beschreibung</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="DatR_importexport.html">UseR 1</a></td>
+<td>Import &amp; Export von Daten</td>
+<td><code>read.table()</code>, <code>fread()</code>, <code>read_excel()</code>, <code>ggsave()</code> …</td>
+</tr>
+<tr class="even">
+<td><a href="DatR_descriptiveStats.html">UseR 2</a></td>
+<td>Effizientes Erstellen deskriptiver Statistiken</td>
+<td><code>summary()</code>, <code>table()</code>, <code>data.table()</code> …</td>
+</tr>
+<tr class="odd">
+<td><a href="appendix_desplot.html">UseR 3</a></td>
+<td>Ersellen von Feldplanabbildungen</td>
+<td><code>desplot()</code></td>
+</tr>
+<tr class="even">
+<td><a href="DatR_MoreAdvanced.html">UseR 4</a></td>
+<td>Weitere Tipps</td>
+<td><code>dplyr</code>, <code>%in%</code>, <code>%&gt;%</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="auswertungen" class="section level2">
+<h2>Auswertungen</h2>
+<p>Aufgrund der bisherigen Workshops liegt der Schwerpunkt der Beispielauswertungen momentan auf Daten/Versuchen aus dem Agrar- bzw. Biologiebereich. Viele Punkte sowohl in der statistischen Vorgehensweise, als auch der Umsetzung in R lassen sich aber einfach auf andere Bereiche übertragen.</p>
 <table>
 <thead>
 <tr class="header">
@@ -484,56 +556,63 @@ div.tocify {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="1F_crd.html">Kapitel 1</a></td>
+<td><a href="regcorr_drinks.html">Bsp 1</a></td>
+<td>1 Metrischer</td>
+<td>-</td>
+<td></td>
+<td><code>cor()</code>, <code>lm()</code></td>
+</tr>
+<tr class="even">
+<td><a href="1F_crd.html">Bsp 2</a></td>
 <td>1 Faktor</td>
 <td>CRD</td>
 <td></td>
 <td><code>lm()</code></td>
 </tr>
-<tr class="even">
-<td><a href="1F_rcbd.html">Kapitel 2</a></td>
+<tr class="odd">
+<td><a href="1F_rcbd.html">Bsp 3</a></td>
 <td>1 Faktor</td>
 <td>RCBD</td>
 <td></td>
 <td><code>lm()</code></td>
 </tr>
-<tr class="odd">
-<td><a href="1F_alpha.html">Kapitel 3</a></td>
+<tr class="even">
+<td><a href="1F_alpha.html">Bsp 4</a></td>
 <td>1 Faktor</td>
 <td><span class="math inline">\(\alpha\)</span>-lattice</td>
 <td></td>
 <td><code>lmer()</code></td>
 </tr>
-<tr class="even">
-<td><a href="2F_rcbd.html">Kapitel 4</a></td>
+<tr class="odd">
+<td><a href="2F_rcbd.html">Bsp 5</a></td>
 <td>2 Faktoren</td>
 <td>RCBD</td>
 <td></td>
 <td><code>lm()</code></td>
 </tr>
-<tr class="odd">
-<td><a href="2F_splitplot.html">Kapitel 5</a></td>
+<tr class="even">
+<td><a href="2F_splitplot.html">Bsp 6</a></td>
 <td>2 Faktoren</td>
 <td>split-plot</td>
 <td></td>
 <td><code>lmer()</code></td>
 </tr>
-<tr class="even">
-<td><a href="1F_rcbd_messwdh.html">Kapitel 6</a></td>
+<tr class="odd">
+<td><a href="1F_rcbd_messwdh.html">Bsp 7</a></td>
 <td>1 Faktor</td>
 <td>RCBD</td>
 <td>Messwiederholung</td>
 <td><code>gls()</code></td>
 </tr>
-<tr class="odd">
-<td><a href="1F_rcbd_binomial.html">Kapitel 7</a></td>
+<tr class="even">
+<td><a href="1F_rcbd_binomial.html">Bsp 8</a></td>
 <td>1 Faktor</td>
 <td>RCBD</td>
 <td>Prozentwerte</td>
 <td><code>glm()</code></td>
 </tr>
-<tr class="even">
-<td><a href="1F_latsq_poisson.html">Kapitel 8</a></td>
+<tr class="odd">
+<td><a href="1F_latsq_poisson.html">Bsp 9</a></td>
 <td>1 Faktor</td>
 <td>Lat. Quadrat</td>
 <td>Zählwerte</td>
@@ -541,55 +620,71 @@ div.tocify {
 </tr>
 </tbody>
 </table>
+</div>
+<div id="statistik-theorie" class="section level2">
+<h2>Statistik Theorie</h2>
+<p>Pragmatische Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur statistischen Theorie.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Appendix</th>
+<th>Kapitel</th>
 <th>Beschreibung</th>
 <th>Funktion</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="appendix_desplot.html">Appendix 1</a></td>
-<td>Ersellen von Feldplanabbildungen</td>
-<td><code>desplot()</code></td>
+<td><a href="stat_Korrelation.html">Stat 1</a></td>
+<td>Korrelation</td>
+<td><code>cor()</code>, <code>cor.test()</code></td>
 </tr>
 <tr class="even">
-<td><a href="appendix_designs.html">Appendix 2</a></td>
+<td><a href="appendix_designs.html">Stat 1</a></td>
 <td>Vergleich Versuchsdesigns</td>
 <td>-</td>
 </tr>
 <tr class="odd">
-<td><a href="appendix_posthoc.html">Appendix 3</a></td>
-<td>Post Hoc Tests</td>
-<td>-</td>
+<td><a href="appendix_posthoc.html">Stat 2</a></td>
+<td>ANOVA &amp; Post Hoc Tests</td>
+<td><code>anova()</code>, <code>emmeans()</code></td>
 </tr>
 <tr class="even">
-<td><a href="appendix_interaktionen.html">Appendix 4</a></td>
+<td><a href="appendix_interaktionen.html">Stat 3</a></td>
 <td>Behandlungsinteraktionen</td>
 <td>-</td>
 </tr>
 <tr class="odd">
-<td><a href="appendix_kovarstrukt.html">Appendix 5</a></td>
+<td><a href="appendix_kovarstrukt.html">Stat 4</a></td>
 <td>Kovarianzstrukturen</td>
 <td><code>gls()</code> &amp; <code>asreml()</code></td>
 </tr>
 <tr class="even">
-<td><a href="intro_GLM_carrot.html">Appendix 6</a></td>
+<td><a href="intro_GLM_carrot.html">Stat 5</a></td>
 <td>Nicht-normalverteilte Daten</td>
 <td><code>glm()</code></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="andere-quellen" class="section level3">
-<h3>Andere Quellen</h3>
-<p>Ich empfehle die <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr">“Statistics” Playlist</a> auf dem Youtube-Kanal “CrashCourse”.</p>
 </div>
-<div id="kontakt" class="section level2">
-<h2>Kontakt</h2>
-<p><a href="kontaktseite.html">Hier</a> kannst du mich kontaktieren.</p>
+<div id="anderes" class="section level1">
+<h1>Anderes</h1>
+<div id="weitere-quellen" class="section level3">
+<h3>Weitere Quellen</h3>
+<p>Ich empfehle</p>
+<ul>
+<li>die <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr">“Statistics” Playlist</a> auf dem Youtube-Kanal “CrashCourse”.</li>
+<li>den <a href="https://r-podcast.org/">R-Pocast</a> und auch dessen “Resources” Liste</li>
+</ul>
+</div>
+<div id="archiv-fur-beispieldatensatze" class="section level3">
+<h3>Archiv für Beispieldatensätze</h3>
+<p>Beispieldatensätze/-codes für</p>
+<ul>
+<li>den Kurs <em>Gemischte Modelle in R (Nov 2018)</em> gibt es <a href="https://github.com/SchmidtPaul/GemischteModelleInR">hier</a></li>
+<li>den Kurs <em>Statistics with R: Introductory course (2016-2018)</em> gibt es <a href="https://github.com/SchmidtPaul/R-SAS.Introductory.Courses">hier</a></li>
+</ul>
+</div>
 </div>
 
 
