@@ -17,8 +17,10 @@ navbar:
           href: DatR_MoreAdvanced.html
     - text: "Auswertungen"
       menu:
-        - text: "Correlation & Regression"
+        - text: "Korrelation & Regression"
           href: regcorr_drinks.html
+        - text: "Ausreisser (Korr & Reg pt.2)"
+          href: outlier_vision.html
         - text: "1F crd"
           href: 1F_crd.html
         - text: "1F rcbd"

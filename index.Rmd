@@ -29,14 +29,15 @@ Aufgrund der bisherigen Workshops liegt der Schwerpunkt der Beispielauswertungen
 Kapitel | Behandlungseffekt | Design | Besonderheit | Funktion
 --------|-----|-----|-----|-----
 [Bsp 1](regcorr_drinks.html) | 1 Metrischer | - |  | `cor()`, `lm()`
-[Bsp 2](1F_crd.html) | 1 Faktor | CRD | | `lm()`
-[Bsp 3](1F_rcbd.html) | 1 Faktor | RCBD | | `lm()`
-[Bsp 4](1F_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
-[Bsp 5](2F_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
-[Bsp 6](2F_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
-[Bsp 7](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
-[Bsp 8](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
-[Bsp 9](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
+[Bsp 2](outlier_vision.html) | 1 Metrischer | - | Ausreißer | `cor()`, `lm()`
+[Bsp 3](1F_crd.html) | 1 Faktor | CRD | | `lm()`
+[Bsp 4](1F_rcbd.html) | 1 Faktor | RCBD | | `lm()`
+[Bsp 5](1F_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
+[Bsp 6](2F_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
+[Bsp 7](2F_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
+[Bsp 8](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
+[Bsp 9](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
+[Bsp 10](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
 
 ## Statistik Theorie
 Pragmatische Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur statistischen Theorie.
