@@ -30,8 +30,8 @@ Statistical analysis with R | mtl. von 2016 bis 2018 | 9 h | Universität Hohenh
 Statistical analysis with SAS | mtl. von 2016 bis 2018 | 9 h | Universität Hohenheim
 Implementation of yield stability assessment with ASReml-R | Mai 2018 | 6 h | Bangladesh Rice Research Institute, Gazipur
 Gemischte Modelle in R | Nov 2018 | 20 h | Thünen-Institut, Braunschweig
-[Essential basics of statistics](https://www.uni-rostock.de/en/research/support-of-early-career-researchers/graduate-academy/qualifizierungsprogramm/grundlagen-der-angewandten-statistik/) | Sep 2019 | 16 h | Universität Rostock
-[Data Science in den Naturwissenschaften mit R (Teil 1)](https://biometrie-bmel.de/Kursinhalt?Kurs=2041) | Okt 2019 | 20 h | Thünen-Institut, Braunschweig
-[Data Science in den Naturwissenschaften mit R (Teil 2)](https://biometrie-bmel.de/Kursinhalt?Kurs=2042) | Nov 2019 | 20 h | Thünen-Institut, Braunschweig
-[Basics of applied statistics](https://www.uni-rostock.de/en/research/support-of-early-career-researchers/graduate-academy/qualifizierungsprogramm/grundlagen-der-angewandten-statistik/) | Dez 2019 | 16 h | Universität Rostock
+[Essential basics of statistics](https://www.uni-rostock.de/en/research/support-of-early-career-researchers/graduate-academy/qualifizierungsprogramm/grundlagen-der-angewandten-statistik/) | Sep 2019 | 12 h | Universität Rostock
+[Data Science in den Naturwissenschaften mit R (Teil 1)](https://biometrie-bmel.de/Kursinhalt?Kurs=2041) | Okt 2019 | 16 h | Thünen-Institut, Braunschweig
+[Data Science in den Naturwissenschaften mit R (Teil 2)](https://biometrie-bmel.de/Kursinhalt?Kurs=2042) | Nov 2019 | 16 h | Thünen-Institut, Braunschweig
+[Basics of applied statistics](https://www.uni-rostock.de/en/research/support-of-early-career-researchers/graduate-academy/qualifizierungsprogramm/grundlagen-der-angewandten-statistik/) | Dez 2019 | 12 h | Universität Rostock
 
