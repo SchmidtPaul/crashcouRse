@@ -65,6 +65,9 @@ mtcars %>%
 
 > Der Befehle `pull()` extrahiert eine Spalte aus einem Datensatz direkt in das Format eines Vektors. Will man eine oder mehrere Spalten extrahieren aber weiterhin im Spaltenformat lassen, kann man stattdessen den `select()` Befehl nutzen.
 
+## dplyr vs. data.table
+Manch einem mag aufgefallen sein, dass die packages `dplyr` und `data.table` in Sachen Datenhandling überlappen, also unterschiedliche Funktionen zum selben Prozess zur Verfügung stellen. Tatsächlich nutze ich of beide Pakete gleichzeitig. Es ist ein wenig Geschmackssache und abhängig von der jeweiligen Aufgabe, welcher Code am besten zum Ziel führt. Eine recht ausführliche Gegenüberstellung der beiden packages gibt es [hier](https://stackoverflow.com/questions/21435339/data-table-vs-dplyr-can-one-do-something-well-the-other-cant-or-does-poorly).
+
 # %in% Funktion
 Die %in% Funktion kann verschieden Arten nützlich sein. Wenn wir z.B. eine neue Spalte erstellen wollen, die lediglich "TRUE" anzeigt wenn ein Auto 4 oder 6 Zyliner hat, aber "FALSE" wenn es 8 hat, ginge das so:
 

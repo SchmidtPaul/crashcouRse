@@ -2,6 +2,8 @@
 title: "Im- und Exportieren"
 ---
 
+> Eine umfangreichere, aber dennoch übersichtliche Zusammenfassung zum Im- und Export verschiedener Dateiformate via verschiedener packages gibt es [hier](https://cran.r-project.org/web/packages/rio/vignettes/rio.html).
+
 Hier werden kurz einige Möglichkeiten diskutiert
 
 1. Daten in `R` zu importieren

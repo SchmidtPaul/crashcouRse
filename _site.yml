@@ -49,6 +49,8 @@ navbar:
           href: appendix_posthoc.html
         - text: "Interaktionen"
           href: appendix_interaktionen.html
+        - text: "Adj. Mittelwerte"
+          href: stat_adjmeans.html
         - text: "Kovarianzstrukturen"
           href: appendix_kovarstrukt.html
         - text: "Nicht-Normalverteilte Daten"
