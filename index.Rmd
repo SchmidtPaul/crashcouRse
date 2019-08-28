@@ -49,9 +49,10 @@ Kapitel | Beschreibung | Funktion
 [Stat 3](appendix_designs.html) | Vergleich Versuchsdesigns | -
 [Stat 4](appendix_posthoc.html) | ANOVA & Post Hoc Tests | `anova()`, `emmeans()`
 [Stat 5](stat_adjmeans.html) | Adjustierte Mittelwerte | `emmeans()`
-[Stat 6](appendix_interaktionen.html) | Behandlungsinteraktionen | -
-[Stat 7](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
-[Stat 8](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
+[Stat 6](stat_pvalue.html) | p-Werte und Signifikanzen | -
+[Stat 7](appendix_interaktionen.html) | Behandlungsinteraktionen | -
+[Stat 8](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
+[Stat 9](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
 
 # Anderes
 ### Weitere Quellen
