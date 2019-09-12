@@ -401,6 +401,9 @@ div.tocify {
       <a href="appendix_desplot.html">desplot package</a>
     </li>
     <li>
+      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
     </li>
   </ul>
@@ -506,6 +509,16 @@ div.tocify {
 <blockquote>
 <p>Ein zum Thema passendes Youtube Video gibt’s <a href="https://youtu.be/kn83BA7cRNM">hier</a></p>
 </blockquote>
+<p>Man kann Statistik in <em>deskriptive/erkundende</em> und <em>schließende/inferentielle/induktive/mathematische</em> Statistik unterteilen. Erstere beschreibt die Daten im Prinzip nur und versucht sie zusammenfassend darzustellen. Zweitere nutzt Methode und Verfahren um die Daten anhand von Tests zu analysieren und Entscheidungen zu treffen. Im Data Science Bereich formuliert Hadley Wickham die Unterteilung wie folgt:</p>
+<p><em>It’s possible to divide data analysis into two camps: hypothesis generation and hypothesis confirmation (sometimes called confirmatory analysis).</em></p>
+<ul>
+<li><em>Within the former, you’ll look deeply at the data and, in combination with your subject knowledge, generate many interesting hypotheses to help explain why the data behaves the way it does.</em></li>
+<li><em>The complement of hypothesis generation is hypothesis confirmation. Hypothesis confirmation is hard for two reasons:</em>
+<ol style="list-style-type: decimal">
+<li><em>You need a precise mathematical model in order to generate falsifiable predictions. This often requires considerable statistical sophistication.</em></li>
+<li><em>You can only use an observation once to confirm a hypothesis. As soon as you use it more than once you’re back to doing exploratory analysis. This means to do hypothesis confirmation you need to “preregister” (write out in advance) your analysis plan, and not deviate from it even when you have seen the data.</em></li>
+</ol></li>
+</ul>
 <p>Viele, die R (oder andere Statistiksoftware) für ihre schließende Statistik (<em>i.e.</em> ANOVA, <em>post-hoc</em> Tests, Regression <em>etc.</em>) nutzen, führen vrher die deskriptive Statistik (<em>i.e.</em> einfache Mittelwerte, Minimum, Maximum ausrechen) noch in Excel durch. Grund dafür ist, dass dies mit Excel-Funktionen wie <code>=MITTELWERT()</code> schlichtweg sehr schnell zu machen ist und die Ergebnisse dann direkt neben der Datentabelle zu sehen sind.</p>
 <p>Es gibt aber auch Argumente, die dafür sprechen selbst diese deskriptive Statistik schon in R durchzuführen. Zum einen kann das Einfügen von Mittelwerten neben den eigentlichen Datentabellen in einem Excel-Tabellenblatt dazu führen, dass der folgende <a href="DatR_importexport.html">Import in R</a> auf Probleme stößt. Zum anderen kann selbst die Berechnung von einfachen Mittelwerten in Excel schnell mühsam werden, wenn z.B. ein Mittelwert pro Gruppe unter nicht-Berücksichtigunge bestimmter Werte durchgeführt werden soll.</p>
 <p>Dieses Kapitel soll deshalb zeigen wie schnell und komfortabel deskriptive Statistiken in R erstellt werden können.</p>

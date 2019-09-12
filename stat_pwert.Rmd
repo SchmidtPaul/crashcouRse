@@ -1,5 +1,0 @@
----
-title: "Der p(roblem)-Wert"
----
-  
-# Datensatz

@@ -14,14 +14,15 @@ Die Kategorien finden sich oben. Die Kapitel innerhalb der Kategorien können so
 Wie gesagt wird diese Seite stetig um Kapitel erweitert. Aus diesem Grund gibt es streng genommen keine klare Reihenfolge in der die Kapitel gelesen werden sollten. Um dennoch das richtige zu finden, soll diese tabellarische Übersicht weiterhelfen.
 
 ## R Anwendung
-Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur Nutzung von R - teilweise ganz unabhängig von statistischen Analysen und eher im Bereich Datenverarbeitung usw.
+Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur Nutzung von R - teilweise ganz unabhängig von statistischen Analysen und eher im Bereich Datenverarbeitung usw. Wer wirklich noch überhaupt keine Erfahrung mit R hat, sollte wohl besser [z.B. hier](https://r4ds.had.co.nz/index.html) die absoluten Grundlagen lernen.
 
 Kapitel | Beschreibung | Funktion
---------|--------------|---------
+------|------------|------------------------
 [UseR 1](DatR_importexport.html) | Import & Export von Daten | `read.table()`, `fread()`, `read_excel()`, `ggsave()` ...
 [UseR 2](DatR_descriptiveStats.html) | Effizientes Erstellen deskriptiver Statistiken | `summary()`, `table()`, `data.table()` ...
 [UseR 3](appendix_desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
 [UseR 4](DatR_MoreAdvanced.html) | Weitere Tipps | `dplyr`, `%in%`, `%>%`
+
 
 ## Auswertungen
 Aufgrund der bisherigen Workshops liegt der Schwerpunkt der Beispielauswertungen momentan auf Daten/Versuchen aus dem Agrar- bzw. Biologiebereich. Viele Punkte sowohl in der statistischen Vorgehensweise, als auch der Umsetzung in R lassen sich aber einfach auf andere Bereiche übertragen.

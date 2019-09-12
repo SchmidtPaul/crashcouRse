@@ -3,7 +3,16 @@
 ---
 > Ein zum Thema passendes Youtube Video gibt's [hier](https://youtu.be/kn83BA7cRNM)
 
-  
+Man kann Statistik in *deskriptive/erkundende* und *schließende/inferentielle/induktive/mathematische* Statistik unterteilen. Erstere beschreibt die Daten im Prinzip nur und versucht sie zusammenfassend darzustellen. Zweitere nutzt Methode und Verfahren um die Daten anhand von Tests zu analysieren und Entscheidungen zu treffen. Im Data Science Bereich formuliert Hadley Wickham die Unterteilung wie folgt: 
+
+*It’s possible to divide data analysis into two camps: hypothesis generation and hypothesis confirmation (sometimes called confirmatory analysis).* 
+
++ *Within the former, you’ll look deeply at the data and, in combination with your subject knowledge, generate many interesting hypotheses to help explain why the data behaves the way it does.* 
++ *The complement of hypothesis generation is hypothesis confirmation. Hypothesis confirmation is hard for two reasons:* 
+  1. *You need a precise mathematical model in order to generate falsifiable predictions. This often requires considerable statistical sophistication.*
+  2. *You can only use an observation once to confirm a hypothesis. As soon as you use it more than once you’re back to doing exploratory analysis. This means to do hypothesis confirmation you need to “preregister” (write out in advance) your analysis plan, and not deviate from it even when you have seen the data.*
+
+
 Viele, die R (oder andere Statistiksoftware) für ihre schließende Statistik (*i.e.* ANOVA, *post-hoc* Tests, Regression *etc.*) nutzen, führen vrher die deskriptive Statistik (*i.e.* einfache Mittelwerte, Minimum, Maximum ausrechen) noch in Excel durch. Grund dafür ist, dass dies mit Excel-Funktionen wie `=MITTELWERT()` schlichtweg sehr schnell zu machen ist und die Ergebnisse dann direkt neben der Datentabelle zu sehen sind.
 
 Es gibt aber auch Argumente, die dafür sprechen selbst diese deskriptive Statistik schon in R durchzuführen. Zum einen kann das Einfügen von Mittelwerten neben den eigentlichen Datentabellen in einem Excel-Tabellenblatt dazu führen, dass der folgende [Import in R](DatR_importexport.html) auf Probleme stößt. Zum anderen kann selbst die Berechnung von einfachen Mittelwerten in Excel schnell mühsam werden, wenn z.B. ein Mittelwert pro Gruppe unter nicht-Berücksichtigunge bestimmter Werte durchgeführt werden soll.

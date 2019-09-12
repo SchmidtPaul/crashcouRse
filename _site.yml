@@ -13,6 +13,8 @@ navbar:
           href: DatR_descriptiveStats.html        
         - text: "desplot package"
           href: appendix_desplot.html
+        - text: "Loops & Listen"
+          href: DatR_multipledat.html
         - text: "Weitere Tipps"
           href: DatR_MoreAdvanced.html
     - text: "Auswertungen"
