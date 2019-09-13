@@ -575,7 +575,7 @@ div.tocify {
 </div>
 </div>
 <p>Wir finden also eine geschätzten Korrelationskoeffizient <span class="math inline">\(r \approx\)</span> 0.96, also eine hohe, positive Korrelation. Das Ergebins passt zu unserem Plot. Auch wenn das Ergebnise in diesem Fall recht klar ist, wollen wir noch prüfen ob die Korrelation signifikant ist. (Siehe <a href="stat_Korrelation.html">das Kapitel zur Korrelation</a> um zu verstehen was genau das bedeutet). Wie wir im Output sehen ist der p-Wert <span class="math inline">\(=\)</span> <code>5.089e-11</code> <span class="math inline">\(&lt; 0.0001\)</span> und demnach ist die Korrelation signifikant (von Null verschieden). Dies wäre in vielen Fällen bereits alles was bzgl. der Korrelation verlangt bzw. gezeigt wird. Als Ergebnissatz würde z.B. geschrieben werden</p>
-<p><em>“Es wurde eine signifikante (p = 5.09∙10^(-11) &lt; 0.0001) Korrelation r=0.96 zwischen dem Promillewert und der Anzahl Getränke gefunden.”</em></p>
+<p><em>“Es wurde eine signifikante (p = 5.09 10^(-11) &lt; 0.0001) Korrelation r=0.96 zwischen dem Promillewert und der Anzahl Getränke gefunden.”</em></p>
 <p>Oft unterbewertet wird m.E. außerdem die Information zum 95% Konfidenzintervall, welches hier von 0.89 bis 0.98 reicht. Desweiteren findet man das Ergebnis zusätzlich direkt im Plot abgebildet, weswegen wir hier zum Abschluss einen etwas schöneren Plot samt Ergebnis mit <code>ggplot2</code> und <code>ggpubr</code> erstellen wollen.</p>
 <pre class="r"><code>library(ggplot2) # Erzeugt Plot
 library(ggpubr) # Zusätzlicher Befehl &quot;stat_cor&quot; (siehe unten)</code></pre>

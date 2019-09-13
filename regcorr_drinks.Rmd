@@ -59,7 +59,7 @@ cor.test(dat$drinks, dat$blood_alc)
 
 Wir finden also eine geschätzten Korrelationskoeffizient $r \approx$ `r round(cor(dat$drinks, dat$blood_alc),2)`, also eine hohe, positive Korrelation. Das Ergebins passt zu unserem Plot. Auch wenn das Ergebnise in diesem Fall recht klar ist, wollen wir noch prüfen ob die Korrelation signifikant ist. (Siehe [das Kapitel zur Korrelation](stat_Korrelation.html) um zu verstehen was genau das bedeutet). Wie wir im Output sehen ist der p-Wert $=$ `5.089e-11` $< 0.0001$ und demnach ist die Korrelation signifikant (von Null verschieden). Dies wäre in vielen Fällen bereits alles was bzgl. der Korrelation verlangt bzw. gezeigt wird. Als Ergebnissatz würde z.B. geschrieben werden 
 
-*"Es wurde eine signifikante (p = 5.09∙10^(-11) < 0.0001) Korrelation r=0.96 zwischen dem Promillewert und der Anzahl Getränke gefunden."* 
+*"Es wurde eine signifikante (p = 5.09 10^(-11) < 0.0001) Korrelation r=0.96 zwischen dem Promillewert und der Anzahl Getränke gefunden."* 
 
 Oft unterbewertet wird m.E. außerdem die Information zum 95% Konfidenzintervall, welches hier von `r round(cor.test(dat$drinks, dat$blood_alc)$conf.int[1],2)` bis `r round(cor.test(dat$drinks, dat$blood_alc)$conf.int[2],2)` reicht. Desweiteren findet man das Ergebnis zusätzlich direkt im Plot abgebildet, weswegen wir hier zum Abschluss einen etwas schöneren Plot samt Ergebnis mit `ggplot2` und `ggpubr` erstellen wollen.
 

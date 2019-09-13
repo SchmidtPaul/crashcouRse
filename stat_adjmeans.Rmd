@@ -31,7 +31,7 @@ Adjustierte Mittelwerte können nur mithilfe von linearen Modellen berechnet wer
 
 Als Beispiel ([Quelle](http://onbiostatistics.blogspot.com/2009/04/least-squares-means-marginal-means-vs.html)) wollen wir annehmen wir hätten sowohl in Hamburg, als auch in Rostock gezählt wie viel Hunde uns beim Spazierengehen begegnet sind. Das haben wir sowohl im Sommer, als auch im Winter mehrere Male getan. Allerdings sind wir nicht in allen der vier Kombinationen (Rostock-Sommer, Rostock-Winter usw.) gleich oft spazieren gegangen, sodass wir einen unbalancierten Datensatz vorliegen haben.
 
-<img src="images/adjmeanexample.png" style="width:50%; margin-right: 20px" align="left">
+<img src="images/adjmeanexample.PNG" style="width:50%; margin-right: 20px" align="left">
 
 Wir könnten nun also nach der mittleren Anzahl Hunde im Winter und im Sommer fragen, also gemittelt über beide Städte. Würden wir lediglich die arithmetischen Mittelwerte berechnen, ergäbe sich für den Winter `(3+3+3+7+8)/5=` ``r round((3+3+3+7+8)/5,2)`` und für den Sommer `(5+6+3+5+7)/5=` ``r round((5+6+3+5+7)/5,2)``, wie auch in der oberen der beiden Tabellen angegeben. Man könnte also meinen, dass im Sommer mehr Hunde unterwegs sind.
 

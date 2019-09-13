@@ -1,5 +1,5 @@
 ---
-title: "Korrelation, Regression und Alkohol"
+title: "Ausreisser"
 ---
 
 # Datensatz

@@ -20,8 +20,9 @@ Kapitel | Beschreibung | Funktion
 ------|------------|------------------------
 [UseR 1](DatR_importexport.html) | Import & Export von Daten | `read.table()`, `fread()`, `read_excel()`, `ggsave()` ...
 [UseR 2](DatR_descriptiveStats.html) | Effizientes Erstellen deskriptiver Statistiken | `summary()`, `table()`, `data.table()` ...
-[UseR 3](appendix_desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
-[UseR 4](DatR_MoreAdvanced.html) | Weitere Tipps | `dplyr`, `%in%`, `%>%`
+[UseR 3](DatR_multipledat.html) | Loops & Listen | `for(i in ...){...}`, `list()`
+[UseR 4](appendix_desplot.html) | Ersellen von Feldplanabbildungen | `desplot()`
+[UseR 5](DatR_MoreAdvanced.html) | Weitere Tipps | `dplyr`, `%in%`, `%>%`
 
 
 ## Auswertungen
