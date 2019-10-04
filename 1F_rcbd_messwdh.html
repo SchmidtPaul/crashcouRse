@@ -484,6 +484,9 @@ div.tocify {
     <li>
       <a href="appendix_modelrules.html">Modelle aufstellen</a>
     </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -606,8 +609,8 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 <p><img src="images/fig6corerr.PNG" style="width:50%" align="right"> Der Nachteil der separaten Analyse einzelner Wochen wird besonders deutlich, wenn wir uns vorstellen, dass wir Messwerte von sehr viel mehr Wochen hätten, deren ANOVAs nicht immer die gleichen Signifikanzen zeigen: Es kann schwierig sein eine wochenübergreifende Antwort zu geben. Außerdem wurde durch das separate Analysieren auch immer nur ein Bruchteil der Informationen genutzt. Demnach ist es erstrebenswert den Datensatz als Ganzes mit einem geeigneten Modell auszuwerten. Dafür müssen wir Korrelationen zwischen den Fehlertermen verschiedener Wochen erlauben. Die Grafik, die aus dem oben erwähnten Artikel stammt, soll dies verdeutlichen.</p>
 <div id="die-ar1-kovarianzstruktur" class="section level3">
 <h3>Die AR1 Kovarianzstruktur</h3>
-<p>Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (<em>independent and identically distributed</em>, kurz <em>IID</em>). Um also nun korrelierte Fehler zu modellieren, kann man eine Kovarianstruktur für die Fehler annehmen. Es gibt verschiedene Kovarianstrukturen ( <a href="appendix_kovarstrukt.html">siehe hier</a> ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen <em>first order autoregressive</em>, kurz <em>AR1</em> trägt.</p>
-<p>Um lineare Modelle anzupassen, die eine andere Kovarianstruktur als <em>IID</em> annehmen, wird die <em>Verallgemeinerte Kleinste-Quadrat-Schätzung</em> (engl. <em>generalized least squares</em> kurz <em>GLS</em>) angewandt. Das <code>nlme</code> package hat dafür die Funktion <code>gls()</code>. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: <code>y ~ gen + rep</code>. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept <span class="math inline">\(\mu\)</span> angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, können wir jeden Effekt (also auch <span class="math inline">\(\mu\)</span>) zusätzlich wochenspezifisch definieren: <code>y ~ week + gen + week*gen + rep + week*rep</code>. Wir erhalten nun also zusätzlich je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche. Man kann die Syntax für dieses Modell wie folgt abkürzen und trotzdem dieselben Effekte anpassen lassen:</p>
+<p>Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (<em>independent and identically distributed</em>, kurz <em>IID</em>). Um also nun korrelierte Fehler zu modellieren, kann man eine Kovarianzstruktur für die Fehler annehmen. Es gibt verschiedene Kovarianzstrukturen ( <a href="appendix_kovarstrukt.html">siehe hier</a> ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen <em>first order autoregressive</em>, kurz <em>AR1</em> trägt.</p>
+<p>Um lineare Modelle anzupassen, die eine andere Kovarianzstruktur als <em>IID</em> annehmen, wird die <em>Verallgemeinerte Kleinste-Quadrat-Schätzung</em> (engl. <em>generalized least squares</em> kurz <em>GLS</em>) angewandt. Das <code>nlme</code> package hat dafür die Funktion <code>gls()</code>. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: <code>y ~ gen + rep</code>. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept <span class="math inline">\(\mu\)</span> angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, können wir jeden Effekt (also auch <span class="math inline">\(\mu\)</span>) zusätzlich wochenspezifisch definieren: <code>y ~ week + gen + week*gen + rep + week*rep</code>. Wir erhalten nun also zusätzlich je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche. Man kann die Syntax für dieses Modell wie folgt abkürzen und trotzdem dieselben Effekte anpassen lassen:</p>
 <pre class="r"><code>mod.iid &lt;- gls(y ~ week * (gen + rep),
                data = repmes)</code></pre>
 <p>Schließlich wollen wir noch dafür sorgen, dass die Fehler derselben Parzelle zwsichen den Wochen autokorreliert sind, was mit dem Argument <code>corr = corExp(form = ~ week|plot)</code> funktioniert.</p>
@@ -627,7 +630,7 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 </div>
 <pre class="r"><code>as.numeric(exp(-1/coef(mod.ar1$modelStruct$corStruct, unconstrained=F))) # AR1.cor</code></pre>
 <pre><code>## [1] 0.7776763</code></pre>
-<p>Die Korrelation wurde also auf 0.78 geschätzt, was darauf hindeutet, dass diese Kovarianstruktur in der Tat für die Modellierung der Daten geeignet ist. Um in solchen Fällen zu entscheiden ob das AR1-Modell tatsächlich dem IID-Modell vorzuziehen ist, können hier die AIC (<em>Akaike Information Criterion</em>) Werte verglichen werden. Dabei gilt, dass das Modell mit dem kleineren AIC-Wert das bessere ist. Zu beachten ist außerdem, dass nur Modelle, die die gleichen festen Effekte haben und dieselben Daten auswerten, mittels AIC-Wert verglichen werden sollten.</p>
+<p>Die Korrelation wurde also auf 0.78 (und somit ganz und gar nicht 0) geschätzt, was darauf hindeutet, dass diese Kovarianzstruktur in der Tat für die Modellierung der Daten geeignet ist. Um in solchen Fällen zu entscheiden ob das AR1-Modell tatsächlich dem IID-Modell vorzuziehen ist, können hier die AIC (<em>Akaike Information Criterion</em>) Werte der beiden Modelle verglichen werden. Dabei gilt, dass das Modell mit dem kleineren AIC-Wert das bessere ist. Zu beachten ist außerdem, dass nur Modelle, die die gleichen festen Effekte haben und dieselben Daten auswerten, mittels AIC-Wert verglichen werden sollten. Da das hier der Fall ist, können wir das demnach tun.</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>AIC(mod.iid)</code></pre>
@@ -638,7 +641,7 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 <pre><code>## [1] 38.37925</code></pre>
 </div>
 </div>
-<p>Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit <a href="appendix_kovarstrukt.html">anderen Kovarianstrukturen</a> verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.</p>
+<p>Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit <a href="appendix_kovarstrukt.html">anderen Kovarianzstrukturen</a> verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.</p>
 </div>
 <div id="varianzanalyse" class="section level3">
 <h3>Varianzanalyse</h3>
@@ -657,10 +660,8 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 <div id="multipler-mittelwertvergleich" class="section level3">
 <h3>Multipler Mittelwertvergleich</h3>
 <pre class="r"><code>means &lt;- emmeans(mod.ar1, pairwise ~ gen|week, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
-means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
-<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
-## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
-<pre class="r"><code>means$emmeans # Sorten-Mittelwerte pro Woche</code></pre>
+means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
+means$emmeans # Sorten-Mittelwerte pro Woche</code></pre>
 <pre><code>## week = 1:
 ##  gen emmean     SE   df lower.CL upper.CL .group
 ##  A     4.24 0.0681 18.2     4.10     4.38  a    
@@ -697,11 +698,11 @@ means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
 ##  C     4.02 0.0681 19.5     3.88     4.16   b   
 ## 
 ## Results are averaged over the levels of: rep 
-## d.f. method: satterthwaite 
+## Degrees-of-freedom method: satterthwaite 
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<p>Wie der im F-Test signifikante <code>week:gen</code> Effekt schon vermuten ließ, finden wir für die Sortenmittelwerte je Woche unterschiedliche Buchstabendarstellungen oder anders gesagt: Wochen-spezifische Unterschiede zwischen den Sorten. Allerdings sehen wir beispielsweise auch, dass Sorte A in jeder Woche signifikant schlechter ist als alle anderen Sorten.</p>
+<p>Wie der im F-Test signifikante <code>week:gen</code> Effekt schon vermuten ließ, finden wir für die Sortenmittelwerte je Woche unterschiedliche Buchstabendarstellungen oder anders gesagt: Wochen-spezifische Unterschiede zwischen den Sorten. Allerdings sehen wir beispielsweise auch, dass Sorte A <strong>in jeder Woche</strong> signifikant schlechter ist als alle anderen Sorten.</p>
 </div>
 </div>
 </div>

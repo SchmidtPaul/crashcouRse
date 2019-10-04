@@ -61,6 +61,8 @@ navbar:
           href: intro_GLM_carrot.html
         - text: "Modelle aufstellen"
           href: appendix_modelrules.html
+        - text: "Stichprobenplanung"
+          href: stat_samplesize.html
     - text: "Kontakt"
       href: kontaktseite.html
 output:
