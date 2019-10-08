@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Von p-Werten und Signifikanzen</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="DatR_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="appendix_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1F_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1F_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1F_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2F_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2F_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1F_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1F_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_Korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_Regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3F_MET_Regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_GLM_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Von p-Werten und Signifikanzen</h1>
+
+</div>
+
+
+<blockquote>
+<p>Dieses Kapitel ist zwar weniger ernst geschrieben als die anderen, ist aber mindestens genau so wichtig!</p>
+</blockquote>
+<p>Das Thema, das in diesem Kapitel diskutiert wird, hat gerade in den letzten Jahren unter Statistikern zu <a href="https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XInvWyPMzyW">einer aufgeheizten Debatte</a> geführt. Tatsächlich ist das nicht korrekt formuliert, da alle Statistiker sich zu dem Thema sehr einig sind, ihnen aber das Herz blutet, wenn sie sehen wie p-Werte und Signifikanzen aus statistischen Analysen fehlinterpretiert oder gar manipuliert werden. Deshalb würde ich als Einstieg gerne die <a href="https://www.tidyverse.org/articles/2017/12/workflow-vs-script/">Formulierung von Jenny Brian</a> entsprechend abwandeln und sagen:</p>
+<center>
+<strong>Wenn es dir nur darum geht, dass deine Ergebnisse signifikant sind, </br> weil du ja sonst “nichts gefunden” hast, </br> dann komm ich in dein Büro und ZÜNDE DEINEN COMPUTER AN</strong>
+</center>
+<div id="damals-die-idee" class="section level1">
+<h1>Damals: Die Idee</h1>
+<p>Die Geschichte des p-Wertes geht <a href="https://www.wikiwand.com/en/P-value#/History">bis ins 17.Jh.</a> zurück. Es war schließlich R.A. Fisher, der in seinen Büchern <a href="https://www.wikiwand.com/en/Statistical_Methods_for_Research_Workers">Statistical Methods for Research Workers (1925)</a> und <a href="https://www.wikiwand.com/en/The_Design_of_Experiments">The Design of Experiments (1935)</a> den p-Wert nicht nur populärer gemacht, sondern auch das heute gängige Signifikanzniveau <code>p=0.05</code> vorgeschlagen hat. Bis dahin gab es auch noch kein Problem, da Fisher den p-Wert bzw. die Grenze 0.05 als Hilfsmittel angesehen hat - so wie jede andere statistische Maßzahl.</p>
+</div>
+<div id="heute-das-streben-nach-signifikanz" class="section level1">
+<h1>Heute: Das Streben nach Signifikanz</h1>
+<p>Wissenschaft ist anstrengend. Viel Mühe und Zeit fließt in die Planung, Durchführung und Auswertung von Experimenten. Wenn das Experiment dann noch durch eine Vermutung/Hypothese motiviert ist wie <em>“Mittel A führt bestimmt zu höheren Werten als Mittel B”</em>, dann ist von Anfang an eine Erwartungshaltung da: Der Unterschied soll gefunden und wissenschaftliche belegt werden. Es wäre ja auch peinlich eine Hypothese aufzustellen, die am Ende gar nicht stimmt, oder?</p>
+<p>Oft werden jungen Wissenschaftlern in diesem Kontext schon früh Worte wie “statistisch signifikant” zusammen mit positiven Gefühlen vermittelt oder die <code>0.05</code> als magische Grenze dafür ob ein Ergebnis etwas wert ist, bzw. ein Versuch überhaupt was gebracht hat. In gewisser Hinsicht kann dies dem einzelnen älteren Wissenschaftler/Betreuer auch nicht verübelt werden, da wissenschaftliche Artikel mit statistisch signifikantem Ergebnis es heutzutage eher zur Publikation schaffen, als gleichwertige Artikel ohne statistische Signifikanz. Im Umkehrschluss führt das aber dazu, dass ggf. zwar mehr Experimente zu einer Hypothese keinen (signifikanten) Unterschied gefunden haben, aber nur die wenigen Resultate veröffentlicht werden, in denen es doch zu (signifikanten) Unterschieden kam. Dieses Problem nennt man den <a href="https://www.wikiwand.com/de/Publikationsbias">Publication Bias</a> und es verzerrt natürlich den Blick auf die Wahrheit.</p>
+<center>
+<strong>Tatsächlich kann ein p-Wert durchaus gewisse zusätzliche Informationen liefern, </br> er wird aber leider oft überbewertet, missverstanden und/oder missbraucht.</strong>
+</center>
+<p></br></p>
+</div>
+<div id="was-ist-der-p-wert-wirklich" class="section level1">
+<h1>Was ist der p-Wert wirklich?</h1>
+<p>Der p-Wert (<em>p</em> für <em>probability</em>) wird auch <em>Überschreitungswahrscheinlichkeit</em>, <em>Signifikanzwert</em> genannt und ist wie folgt definiert:</p>
+</br>
+<center>
+<strong>Der p-Wert ist die Wahrscheinlichkeit dafür, </br> dass man das vorliegende oder ein noch extremeres Ergebnis findet, </br> gegeben dem Fall, dass die Nullhypothese wahr ist. </strong>
+</center>
+<p></br></p>
+<p>Der Satz ist zwar kompliziert, aber viel kompakter kann man ihn m.E. nicht schreiben. Wollen wir ihn also genauer betrachten:</p>
+<ul>
+<li>Der p-Wert ist eine Wahrscheinlichkeit, kann also nur <strong>Werte zwischen 0 und 1</strong> (bzw. 0% und 100%) annehmen.</li>
+<li>Der p-Wert <strong>geht davon aus, dass die Nullhypothese wahr ist</strong>.
+<ul>
+<li><em>Zur Erinnerung:</em> Wenn man einen Test durchführt, stellt man vorher eine zu testende Nullhypothese (<span class="math inline">\(H_0\)</span>) und die entsprechende Alternativhypothese (<span class="math inline">\(H_A\)</span>) auf. Die Nullhypothese hängt vom jeweiligen Test ab, besagt aber in der Regel, dass es keinen Effekt/Unterschied gibt. Bei einem t-test zum Mittelwertvergleich zweier Stichproben z.B. besagt sie, dass beide Mittelwerte gleich sind <span class="math inline">\(H_0: \mu_1=\mu_2\)</span> während die Alternativhypothese sagt, dass die beiden Mittelwerte nicht gleich sind <span class="math inline">\(H_A: \mu_1\neq\mu_2\)</span>.</li>
+<li>Der p-Wert geht demzufolge davon aus, dass <span class="math inline">\(H_0\)</span> wahr und es somit keinen Effekt/Unterschied gibt.</li>
+</ul></li>
+<li>Der p-Wert zeigt wie wahrscheinlich es ist <strong>die vorhandenen Ergebnisse oder noch extremere Ergebnisse</strong> zu finden.
+<ul>
+<li>“Noch extremer” meint dabei <em>noch mehr der Nullhypothese widersprechend</em>. Deuten die Ergebnisse also auf einen Unterschied hin, ist der p-Wert nicht nur die Wahrscheinlichkeit genau diesen Unterschied zu finden, sondern auch alle möglichen noch größeren Unterschiede.</li>
+</ul></li>
+</ul>
+<p>Demnach gilt, dass je kleiner ein p-Wert, desto mehr widersprechen die Ergebnisse der Nullhypothese. Da die Nullhypothese meist behauptet, dass es keinen Effekt gibt, bedeutet es dementsprechend in diesen Fällen auch: Je kleiner der p-Wert, desto mehr widersprechen die Ergebnisse der Behauptung, dass es in Wirklichkeit keinen Effekt gibt.</p>
+<p>Außerdem kann man den p-Wert auch so betrachten: Sagen wir, wir erhalten in einem Test <code>p=0.04</code>, also 4%. Das bedeutet, dass wenn wir das Experiment 100 mal durchführen würden und - gegeben der Nullhypothese (=dass es keinen Effekt/Unterschied gibt) - nur 4 mal ein solches, oder ein noch extremeres Ergebnis finden würden. Wir haben das Experiment natürlich nur 1 mal durchgeführt.</p>
+<div id="ein-beispiel" class="section level3">
+<h3>Ein Beispiel</h3>
+<p>Sagen wir die Zwillinge Arne und Tim sind exakt gleich gebaut und exakt gleich schnell im 100-m-Lauf: sie brauchen beide im Schnitt genau 11 Sekunden. Nichtsdestotrotz treten beide jeden Tag gegeneinander an um zu sehen wer schneller ist und notieren die Zeiten. Nach ein paar Tagen nehmen sie ihre Stichprobe und führen einen t-test durch um zu vergleichen ob es einen signifikanten Unterschied zwischen ihren Durchschnittszeiten gibt. Die Nullhypothese besagt, dass es keinen gibt <span class="math inline">\(H_0: \mu_{Arne}=\mu_{Tim}\)</span>, während die Alternativhypothese das Gegenteil behauptet <span class="math inline">\(H_A: \mu_{Arne}\neq\mu_{Tim}\)</span> (Der Alternativhypothese ist demnach auch egal wer von beiden schneller ist).</p>
+<p>In diesem fiktiven Beispiel kennen wir die absolute Wahrheit, nämlich dass beide Mittelwerte gleich sind: <span class="math inline">\(\mu_{Arne}=\mu_{Tim}=11,0s\)</span>. Das entspricht also der Nullhypothese. Aufgrund der jeweiligen Tagesform der beiden, aber auch der Messungenauigkeit der Stoppuhr, wird es allerdings niemals der Fall sein, dass alle gemessenen Zeit genau 11,0s sind. Stattdessen werden die Zeiten leicht um 11,0s schwanken. Demnach werden auch die Stichprobenmittelwerte (<span class="math inline">\(\bar{x}_{Arne}\)</span> und <span class="math inline">\(\bar{x}_{Tim}\)</span>) so gut wie nie genau 11,0s sein, sondern vielleicht <span class="math inline">\(\bar{x}_{Arne}=11,002s\)</span> und <span class="math inline">\(\bar{x}_{Tim}=10,996s\)</span> für Tim. Und das obwohl wir hier sogar wissen, dass Arne und Tim in Wahrheit exakt gleich schnell sind.</p>
+<p>Würde man nun also schließen, dass Tim wirklich ein schnellerer Läufer ist als Arne? Wie wäre es bei <span class="math inline">\(\bar{x}_{Arne}=11,00000000000001s\)</span> und <span class="math inline">\(\bar{x}_{Tim}=10,9999999999999999s\)</span>? Oder wie wäre es bei <span class="math inline">\(\bar{x}_{Arne}=12,0s\)</span> und <span class="math inline">\(\bar{x}_{Tim}=10,0s\)</span>? Die Entscheidung wo hier die Grenze gezogen werden soll ist schwer zu treffen und vor allem subjektiv. Genau hier soll der p-Wert helfen - Die Betonung liegt auf helfen und nicht komplett die Entscheidung abnehmen.</p>
+<p>Da wir in diesem Beispiel nun <em>wissen</em>, dass für die wahren Mittelwerte gilt <span class="math inline">\(\mu_{Arne}=\mu_{Tim}=11,0s\)</span>, wäre es schon sehr eigenartig, wenn in unseren Stichproben rauskommt, dass <span class="math inline">\(\bar{x}_{Arne}=12,0s\)</span> und <span class="math inline">\(\bar{x}_{Tim}=10,0s\)</span>. Tatsächlich wäre es nicht nur eigenartig, es wäre schlichtweg unwahrscheinlich: der p-Wert für solch einen Fall wäre klein. Noch extremer: Die Wahrscheinlichkeit dafür, dass Arne beispielsweise sogar 100s und Tim nur 1s benötigt, geht demnach gegen 0% und der entsprechende p-Wert also auch.</p>
+</div>
+<div id="wieso-0.05" class="section level3">
+<h3>Wieso 0.05?</h3>
+<p>Nun ist also klar: Ein kleiner p-Wert bedeutet, dass es unwahrscheinlich ist das vorliegende Ergebnis zu finden, wenn doch eigentlich angeblich die Nullhypothese gilt. Im Umkehrschluss kann man sich also bei einem <em>zu kleinen</em> p-Wert entscheiden der Nullhypothese nicht länger zu glauben. Genau das passiert, wenn der p-Wert kleiner 0.05 (5%) ist und man das Ergebnis als <em>statistisch signifikant</em> einstuft. Wieso sich diese Grenze nun genau bei 0.05 eingependelt hat ist nicht unbedingt klar. Sie gilt mittlerweile schlichtweg als gängig und ist in den meisten Statistikprogrammen als <em>default</em> eingestellt. Man kann aber selbstverständlich auch manuell eine andere Grenze setzen wie z.B. <code>p=0.001</code> und das wird ab und an auch getan.</p>
+</div>
+<div id="der-p-wert-hangt-vom-stichprobenumfang-ab" class="section level3">
+<h3>Der p-Wert hängt vom Stichprobenumfang ab!</h3>
+<p>Es ist ein wichtiger erster Schritt zu verstehen was ein p-Wert genau bedeutet um Ergebnisse richtig einordnen zu können. Genau so wichtig ist aber auch zu verstehen wovon der p-Wert abhängt. Das sind vor allem (aber nicht ausschließlich):</p>
+<ul>
+<li>die Stichprobengröße bzw. Datenmenge</li>
+<li>wie sehr die Daten aus unerklärlichen Gründen streuen (= Noise)</li>
+</ul>
+<p>Zur Erklärung dieser beiden Punkte können wir wieder auf das Beispiel oben verweisen. Wieder gegeben der Nullhypothese, dass Arne und Tim gleich schnell sind ist es unwahrscheinlich, dass wir Stichprobenmittelwerte <span class="math inline">\(\bar{x}_{Arne}=12,0s\)</span> und <span class="math inline">\(\bar{x}_{Tim}=10,0s\)</span> finden. Man kann sich aber schnell vorstellen, dass dies in Ausnahmefällen mal passiert, wenn die beiden z.B. nur an zwei Tagen gelaufen sind und aus bestimmten Gründen es eben zu diesen Werten kam. Das waren dann eben zwei verrückte Tage für diese Messungen. Es wird aber sehr schnell sehr viel unwahrscheinlicher diese Stichprobenmittelwerte zu finden, wenn die beiden 100 Tage gemessen haben. Genau so funktioniert auch der p-Wert: Bei <code>n=2</code> wir der p-Wert zwar klein sein, da wir Werte von 11,0s erwarten, aber bei <code>n=100</code> wird er gegen 0 gehen. Wir würden die Nullhypothese ablehnen und nicht länger glauben, dass Arne und Tim gleich schnell sind - schließlich sind sie ganze 100 mal gegeneinander angetreten und es liegen im Schnitt ganze 2 Sekunden zwischen ihren Zeiten.</p>
+<p>Auch der zweite Punkt, nämlich die Streuung der Daten, beeinflusst den p-Wert. Würden Arnes und Timis Zeiten immer nur 0,1s von ihrem Stichprobenmittelwert abweichen, wäre es schließlich auch viel deutlicher zu sagen wer schneller ist, als wenn beide immer mal 5s schneller oder langsamer sind.</p>
+</div>
+<div id="ein-test-kann-nichts-auer-die-nullhypothese-ablehnen" class="section level3">
+<h3>Ein Test kann nichts außer die Nullhypothese ablehnen!</h3>
+<p>Aus dem vorangegangen Abschnitt ergibt sich eine weitere Interpretationsweise des p-Werts:</p>
+</br>
+<center>
+<strong>Der p-Wert drückt (indirekt) aus wie viel Evidenz wir haben </br> um die Nullhypothese abzulehnen.</strong>
+</center>
+<p></br></p>
+<p>Je kleiner der p-Wert, desto sicherer sind wir uns, dass die Nullhypothese nicht stimmt. Wichtig ist, dass dies auch tatsächlich die einzige Entscheidung ist, die wir bei einem Test treffen können. Wenn der p-Wert größer als 0.05 ist und demnach nicht signifikant, dann lehnen wir die Nullhypothese nicht ab.</p>
+</br>
+<center>
+<strong>Die Nullhypothese nicht ablehnen zu können (p&gt;0.05) bedeutet nicht unbedingt, dass die Nullhypothese wahr ist!</strong>
+</center>
+<p></br></p>
+<p>Stattdessen kann es zwei Gründe geben warum man die Nullhypothese nicht ablehnen konnte:</p>
+<ol style="list-style-type: decimal">
+<li>Die Nullhypothese ist tatsächlich nicht wahr.</li>
+<li>Wir hatte nicht genug Evidenz (z.B. zu kleine Stichprobengröße) um die Nullhypothese abzulehnen.</li>
+</ol>
+<p>Wenn man wirklich testen möchte ob z.B. zwei Mittelwerte gleich sind, dann könnte man einen Äquivalenztest anstelle eines t-tests durchführen. Mehr zum Thema z.B. <a href="https://en.wikivet.net/Hypothesis_testing">hier</a></p>
+</div>
+</div>
+<div id="signifikanz-neq-relevanz" class="section level1">
+<h1>Signifikanz <span class="math inline">\(\neq\)</span> Relevanz</h1>
+<p>Wenn man das alles mal sacken lässt und ein Gefühl dafür bekommt was ein p-Wert nun wirklich ausdrücken kann, was er nicht ausdrücken kann und wie man ihn durch z.B die Stichprobengröße beeinflussen kann, dann wird es Zeit für eine Anekdote. Was jetzt folgt ist wirklich passiert und wohl auch der Grund warum ich hier ab und an von brennenden Computern spreche:</p>
+<p>Eine Doktorandin aus der biologischen Fakultät kommt für eine statistische Beratung zu uns, da sie demnächst ein Experiment durchführen möchte um zu prüfen ob ein Mittel zu einem erhöhten Wachstum bei Pflanzen führt. Sie will demnach einigen Pflanzen das Mittel verarbreichen und anderen nicht und nach einer bestimmten Zeit messen wie hoch die Pflanzen gewachsen sind.</br> <strong>Doktorandin:</strong> “Wie viele Wiederholungen sollte ich machen um Unterschiede zu finden?”</br> <strong>Wir:</strong> “Das kommt darauf an was für Unterschiede du finden möchtest.”</br> <strong>Doktorandin:</strong> “Na signifikante Unterschiede natürlich!”</br> <strong>Wir:</strong> “Naja, statistisch signifikant kriegen wie jeden Unterschied, wenn wir nur genug Wiederholungen machen. Ich meinte eher wie viel mm oder cm Unterschied in der Pflanzenhöhe für dich ein echter, also biologisch relevanter Unterschied wäre. Das müsst ihr als Experten auf dem Gebiet festlegen, damit die Statistik helfen kann diesen zu finden.”</br> <strong>Doktorandin:</strong> “Achso? Darüber habe ich noch nicht nachgedacht - ich frage mal meinen Professor.”</br> <em>[Treffen vorbei, ein paar Tage kein Kontakt.]</em></br> <strong>Email Doktorandin:</strong> “Hallo Paul! Ich habe noch keine Antwort auf deine Frage ab wann genau es für uns ein echter Unterschied wäre, aber mein Professor hat gesagt, dass wie vier Wiederholungen machen werden, weil wir das immer so machen. Danke nochmal!”</p>
+<p>Diese Konversation fasst für mich bis heute sehr gut zusammen was <em>Statistische Signifikanz</em> <span class="math inline">\(\neq\)</span> <em>Biologische Relevanz</em> ausdrücken soll. Der ursprünglich als Hilfsmittel gedachte p-Wert wird missbraucht indem er die eigentliche Fachexpertise völlig ersetzt. Mehr zum Thema beispielsweise <a href="https://efsa.onlinelibrary.wiley.com/doi/pdf/10.2903/j.efsa.2011.2372">hier</a> und <a href="https://pubs.acs.org/doi/pdf/10.1021/jf401124y">hier</a></p>
+</div>
+<div id="fehlinterpretationen-des-p-werts" class="section level1">
+<h1>Fehlinterpretationen des p-Werts</h1>
+<p>Achtung, hier tauchen ein paar <strong>falsche</strong> Aussagen über den p-Wert auf. Bitte nicht im Kopf durcheinanderbringen mit der korrekten Interpretation. Falls du in Zukunft eine der folgenden Aussagen in deine Arbeiten schreibst, dann komm ich in dein Büro und ZÜNDE DEINEN COMPUTER AN</p>
+<p><span style="color:red"> <strong>FALSCH:</strong> Wenn <code>p=0.05</code>, dann ist die Chance, dass die Nullhypothese wahr ist, nur 5%. </span> </br> <span style="color:ForestGreen"> <strong>RICHTIG:</strong> Der p-Wert geht sowieso immer davon aus, dass die Nullhypothese stimmt. </span></p>
+<p><span style="color:red"> <strong>FALSCH:</strong> Ein nicht-signifikanter Unterschied bedeutet, dass die Mittelwerte gleich sind oder es keinen Effekt gibt. </span> </br> <span style="color:ForestGreen"> <strong>RICHTIG:</strong> Die Nullhypothese nicht ablehnen zu können bedeutet nicht unbedingt, dass die Nullhypothese wahr ist. </span></p>
+<p><span style="color:red"> <strong>FALSCH:</strong> Nur ein signifikanter Unterschied bedeutet, dass das Ergebnis in der Realität wichtig ist. </span> </br> <span style="color:ForestGreen"> <strong>RICHTIG:</strong> Statistische Signifikanz ist nicht gleichzusetzen mit biologischer Relevanz. </span></p>
+<p>Weitere Falschaussagen mit Korrekturen finden sich z.B. <a href="http://www.biometrische-gesellschaft.de/fileadmin/AG_Daten/Landwirtschaft/PDFs/Tuchscherer_Vortrag_2019.pdf">hier</a>.</p>
+<blockquote>
+<p><strong>Mehr zum Thema:</strong> </br> <a href="https://www.wikiwand.com/en/Misuse_of_p-values">Wikipedia: Misuse of p-values</a> </br> <a href="https://www.wikiwand.com/de/P-Hacking">Wikipedia: p-Hacking</a> </br> <a href="https://www.youtube.com/results?search_query=p+hacking">Most relevant Youtube Videos: p-hacking</a> </br> <a href="https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XWZIPegzaUn">The ASA Statement on p-Values: Context, Process and Purpose (2016)</a> </br> <a href="https://link.springer.com/article/10.1007/s00204-015-1487-8">Schmidt et al. (2016): Enhancing the interpretation of statistical P values in toxicology studies</a> </br> <a href="https://www.nature.com/articles/d41586-019-00874-8">Nature (2019): It’s time to talk about ditching statistical significance</a> </br> <a href="https://www.nature.com/articles/d41586-019-00857-9">Nature (2019): Scientists rise up against statistical significance</a> </br> <a href="https://www.sueddeutsche.de/wissen/statistik-p-wert-signifikanz-hypothese-nullhypothese-1.4375636">Süddeutsche (2019): Signifikanter Unfug</a></p>
+</blockquote>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
