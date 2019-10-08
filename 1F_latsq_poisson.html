@@ -476,7 +476,10 @@ div.tocify {
       <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
     </li>
     <li>
-      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen</a>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3F_MET_Regions.html">Kovarianzstrukturen 2</a>
     </li>
     <li>
       <a href="intro_GLM_carrot.html">Nicht-Normalverteilte Daten</a>
@@ -589,6 +592,12 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>car::Anova(mod, test.statistic=&quot;Wald&quot;)</code></pre>
+<pre><code>## Registered S3 methods overwritten by &#39;car&#39;:
+##   method                          from
+##   influence.merMod                lme4
+##   cooks.distance.influence.merMod lme4
+##   dfbeta.influence.merMod         lme4
+##   dfbetas.influence.merMod        lme4</code></pre>
 <pre><code>## Analysis of Deviance Table (Type II tests)
 ## 
 ## Response: bugs
