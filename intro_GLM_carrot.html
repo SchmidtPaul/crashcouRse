@@ -440,7 +440,7 @@ div.tocify {
       <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
-      <a href="1F_rcbd_binomial.html">1F crd Prozentwerte</a>
+      <a href="1F_rcbd_binomial.html">1F rcbd Prozentwerte</a>
     </li>
     <li>
       <a href="1F_latsq_poisson.html">1F lat square Zählwerte</a>
@@ -480,6 +480,9 @@ div.tocify {
     </li>
     <li>
       <a href="intro_GLM_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
     </li>
     <li>
       <a href="appendix_modelrules.html">Modelle aufstellen</a>
@@ -531,9 +534,8 @@ div.tocify {
 <p>Hier wurde ein Experiment mit Mohrrüben durchgeführt ( <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-9574.1993.tb01414.x">Jansen und Hoekstra, 1993</a>). In einer randomisierten vollständigen Blockanlage wurden 16 Sorten bei zwei verschiedenen Insektizidbehandlungen untersucht und der Anteil der mit Rübenfliegen befallenen Pflanzen ermittelt. Der Datensatz ist im <code>agridat</code> package unter dem Namen <code>jansen.carrot</code> hinterlegt.</p>
 <pre class="r"><code>library(agridat)
 data(jansen.carrot)
-library(data.table)</code></pre>
-<pre><code>## Warning: package &#39;data.table&#39; was built under R version 3.6.1</code></pre>
-<pre class="r"><code># kürzerer Name und data.table Format
+library(data.table)
+# kürzerer Name und data.table Format
 carrot &lt;- as.data.table(jansen.carrot) </code></pre>
 <div class="row">
 <div class="col-md-6">
@@ -639,13 +641,13 @@ autoplot(mod.arcsin, which=1:2)</code></pre>
 </blockquote>
 <p>Übrigens muss klar sein, dass die Verwendung von GLM nicht automatisch bedeutet, dass keine Datentransformation mehr nötig ist. Stattdessen kann sich mit der eventuellen Datentransformation nun darauf konzentriert werden die letzte verbleibende Annahme der Additivität zu erzielen. Die Logit-Transformation ist in solch einem Fall eine gängige Methode, könnte also auch für das Beispiel im Anmerkungskasten hierüber angewendet werden.</p>
 <blockquote>
-<p><strong>Maximum Likelihood</strong> <br /> Einfache lineare Modelle (z.B. Regression oder Varianzanalyse) können mit der <em>Kleinstquadratlösung</em> (auch <em>Methode der minimalen Abweichungsquadrate</em>, <em>ordinary least squares (OLS)</em>) analytisch mittels Matrixalgebra gelöst werden (siehe z.B. <a href="https://cran.r-project.org/doc/contrib/Dormann+Kuehn_AngewandteStatistik.pdf">Kapitel 6.6 von Doormann &amp; Kühn</a>). Es gibt auch den <em>maximum likelihood</em>-Ansatz und es kann gezeigt werden, dass bei für normalverteilte Daten bei einfachen linearen Modellen der <em>maximum likelihood</em>-Ansatz zum Kleinsquadratansatz führt. Mittels des <em>maximum likelihood</em>-Ansatzes können auch Poisson-, binomial- oder anders verteilte Datensätze analysiert werden. Allerdings ist dieser eben nicht mehr analytisch lösbar. Stattdessen werden Parameter im Modell iterativ numerisch gelöst. Dieser Prozess ist rechenaufwendig und wurde deshalb erst mit der Entwicklung von leistungsfähigen Computern sowie der entsprechenden Statistiksoftware populär. Alle GLM werden mit dem Maximum Likelihood Ansatz gelöst.</p>
+<p><strong>Maximum Likelihood</strong> <br /> Einfache lineare Modelle (z.B. Regression oder Varianzanalyse) können mit der <em>Kleinstquadratlösung</em> (auch <em>Methode der minimalen Abweichungsquadrate</em>, <em>ordinary least squares (OLS)</em>) analytisch mittels Matrixalgebra gelöst werden (siehe z.B. <a href="https://cran.r-project.org/doc/contrib/Dormann+Kuehn_AngewandteStatistik.pdf">Kapitel 6.6 von Doormann &amp; Kühn</a>). Generalisierte lineare Modelle müssen stattdessen mit dem <em>maximum likelihood</em>-Ansatz gelöst werden. Es kann gezeigt werden, dass für normalverteilte Daten bei einfachen linearen Modellen der <em>maximum likelihood</em>-Ansatz zum Kleinsquadratansatz führt. Mittels des <em>maximum likelihood</em>-Ansatzes können demach auch Poisson-, binomial- oder anders verteilte Datensätze analysiert werden. Allerdings ist dieser eben nicht mehr analytisch lösbar. Stattdessen werden Parameter im Modell iterativ numerisch gelöst. Dieser Prozess ist rechenaufwendig und wurde deshalb erst mit der Entwicklung von leistungsfähigen Computern sowie der entsprechenden Statistiksoftware populär.</p>
 </blockquote>
 <div id="die-link-funktion" class="section level3">
 <h3>Die Link-Funktion</h3>
 <p>Wie schon kurz angedeutet, muss bei einem GLM stets eine Link-Funktion angegeben werden. Um zu verstehen was diese Funktion ver<em>link</em>t, sollten erst die wichtigsten Bezeichnungen und Formeln erklärt werden.</p>
 <p>Bei Annahme der Normalverteilung lautet das lineare Modell <span class="math inline">\(y=X\beta+e\)</span>, wobei <span class="math inline">\(X\beta\)</span> alle (festen) Effekte des Modells zusammenfasst. Da der Fehlerterm <span class="math inline">\(e\)</span> unbekannte, zufällige Streuung darstellt, entspricht der Erwartungswert <span class="math inline">\(E(y)\)</span> des Modells nur <span class="math inline">\(X\beta\)</span>. Dieser Teil des Modells kann auch als <em>linearer Prädiktor</em> <span class="math inline">\(\eta\)</span> bezeichnet werden. Im einfachen Fall entspricht der lineare Prädiktor dem Erwartungswert.</p>
-<p>Bei einer Datentransformation wird eine Funktion <span class="math inline">\(f()\)</span>, also z.B. <code>log()</code> oder <code>sqrt()</code> auf die Daten <code>y</code> angewendet. Der lineare Prädiktor entspricht dann dem Erwartungswert der transformierten Daten.</p>
+<p>Bei einer Datentransformation wird eine Funktion <span class="math inline">\(f()\)</span>, also z.B. <code>log()</code> oder <code>sqrt()</code> auf die Daten <span class="math inline">\(y\)</span> angewendet. Der lineare Prädiktor entspricht dann dem Erwartungswert der transformierten Daten.</p>
 <p>Der große Unterschied bei einem GLM ist nun, dass nicht die Daten transformiert werden, sondern der lineare Prädiktor bzw. der Erwartungswert selbst. Dies geschieht mittels der <em>Link-Funktion</em> <span class="math inline">\(g()\)</span>.</p>
 <div class="column-left">
 <p><strong>lm ohne Datentransformation</strong> <span class="math inline">\(E(y)=\eta=X\beta\)</span><br />
@@ -658,11 +660,11 @@ autoplot(mod.arcsin, which=1:2)</code></pre>
 <p><strong>GLM ohne Datentransformation</strong> <span class="math inline">\(g[E(y)]=\eta=X\beta\)</span></p>
 <p>beziehungsweise: <br /> <span class="math inline">\(E(y)=g^{-1}(\eta)=g^{-1}(X\beta)\)</span></p>
 </div>
-<p>Wird nun z.B. die logit-Transformation als Link-Funktion <span class="math inline">\(g()=logit()\)</span>gewählt, so erhalten wir ein “Logit-Modell” oder “logtistisches Modell” als Sonderfall eines GLM. Das Modell ist weiterhin linear, allerdings gilt die lineare Beziehung mit dem Prädiktor nicht bezüglich des Messwertes. selbst, sondern für eine Funktion des Messwertes:</p>
+<p>Wird nun z.B. die logit-Transformation als Link-Funktion <span class="math inline">\(g()=logit()\)</span>gewählt, so erhalten wir ein “Logit-Modell” oder “logtistisches Modell” als Sonderfall eines GLM. Das Modell ist weiterhin linear, allerdings gilt die lineare Beziehung mit dem Prädiktor nicht bezüglich des Messwertes selbst, sondern für eine Funktion des Messwertes:</p>
 <p><span class="math display">\[ logit(y) = log\left(\frac{y}{1-y}\right) = \eta = X\beta\]</span></p>
 <p>Die Link-Funktion stellt also den Link zwischen Messwert und linearem Modell her.</p>
-<p>Wie schon erwähnt erlauben GLM neben der Normalverteilung auch andere Verteileungen. Für bestimmte Verteilungen gibt es gängige Link-Funktionen (siehe erste Tabelle).</p>
-<p>Ebenfalls schon erwähnt erlauben GLM, dass die Varianz nicht mehr homogen sein muss. Stattdessen hängt die Varianz nun vom Erwartungswert ab - es besteht also ein direkter Zusammenhang zwischen Erwartungswert und Varianz. Diese Varianzfunktion hängt direkt von der gewählten Verteilung ab (siehe zweite Tabelle).</p>
+<p>Wie schon erwähnt erlauben GLM neben der Normalverteilung auch andere Verteileungen. Für bestimmte Verteilungen gibt es gängige Link-Funktionen (siehe erste Tabelle unten).</p>
+<p>Ebenfalls schon erwähnt erlauben GLM, dass die Varianz nicht mehr homogen sein muss. Stattdessen hängt die Varianz nun vom Erwartungswert ab - es besteht also ein direkter Zusammenhang zwischen Erwartungswert und Varianz. Diese Varianzfunktion hängt direkt von der gewählten Verteilung ab (siehe zweite Tabelle unten).</p>
 <div class="row">
 <div class="col-md-6">
 <p><img src="images/tab388linkfunctions.PNG" style="width:50%" align="center"> <br /> Quelle: <a href="https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/statug_glimmix_a0000001411.htm#statug.glimmix.gmxlinktable">SAS Dokumentation</a></p>
@@ -679,7 +681,7 @@ autoplot(mod.arcsin, which=1:2)</code></pre>
                weights= n,
                family = binomial(link=&#39;logit&#39;),
                data   = carrot)</code></pre>
-<p>Wie man sehen kann, wäre das vorige Berechnen der anteil-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt <code>y/n</code> als Zielvariable schreiben können. Wichtig ist dabei aber, dass wir bei Angabe eines solchen Bruchs auch immer noch <code>weights=n</code> dazuschreiben müssen! <em>(Zur Info: Alternativ kann man statt <code>y/n</code> auch <code>cbind(y, n-y)</code> schreiben und das <code>weights=n</code> weglassen)</em></p>
+<p>Wie man sehen kann, wäre übrigens das vorige Berechnen der anteil-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir auch direkt <code>y/n</code> als Zielvariable schreiben können. Wichtig ist dabei aber, dass wir bei Angabe eines solchen Bruchs auch immer noch <code>weights=n</code> dazuschreiben müssen! <em>(Zur Info: Alternativ kann man statt <code>y/n</code> auch <code>cbind(y, n-y)</code> schreiben und das <code>weights=n</code> weglassen)</em></p>
 <p>Als erwartete Verteilung schreiben wir hier vorerst <code>family=binomial</code>, sodass eine Binomialverteilung für die Fehler angenommen wird. Der Zusatz <code>(link="logit")</code> ist hier eigentlich überflüssig, weil dies die default Linkfunktion für binomialverteilte Daten ist - ich schreibe es aber der Klarheit gerne dazu. Da <code>glm()</code> eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der <code>autoplot()</code> Funktion des <code>ggfortify</code> packages betrachtet werden:</p>
 <pre class="r"><code>autoplot(mod.glm, which=1:2)</code></pre>
 <p><img src="intro_GLM_carrot_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -689,16 +691,33 @@ autoplot(mod.arcsin, which=1:2)</code></pre>
 <h3>Devianzanalyse</h3>
 <p>Sobald wir mit unserem Modell zufrieden sind, würden wir gerne wie in <a href="2F_rcbd.html">Kapitel 4</a> als nächstes mittels F-Test einer zweifaktoriellen Varianzanalyse prüfen wollen welche Behandlungseffekte signifikant sind. Bei GLM werden Varianzanalyse-Tabellen allerdings durch Devianzanalyse-Tabellen ersetzt. Praktischerweise macht dies für den Anwender keinen großen Unterschied in der Codierung und Interpretation der Ergebnisse.</p>
 <pre class="r"><code>library(car)
-Anova(mod.glm, test.statistic=&quot;Wald&quot;, type=&quot;III&quot;)</code></pre>
-<pre><code>## Analysis of Deviance Table (Type III tests)
+anova(mod.glm, test=&quot;Chisq&quot;) # Option 1</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
 ## 
 ## Response: y/n
-##             Df   Chisq Pr(&gt;Chisq)    
-## (Intercept)  1  18.342  1.846e-05 ***
-## block        2  17.065  0.0001969 ***
-## gen         15 362.032  &lt; 2.2e-16 ***
-## trt          1  56.253  6.371e-14 ***
-## gen:trt     15  66.875  1.600e-08 ***
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##         Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                       95     901.70              
+## block    2    16.40        93     885.30  0.000274 ***
+## gen     15   500.52        78     384.78 &lt; 2.2e-16 ***
+## trt      1   107.72        77     277.05 &lt; 2.2e-16 ***
+## gen:trt 15    68.91        62     208.14 6.971e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>Anova(mod.glm, test.statistic=&quot;Wald&quot;) # Option 2</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II tests)
+## 
+## Response: y/n
+##         Df   Chisq Pr(&gt;Chisq)    
+## block    2  17.065  0.0001969 ***
+## gen     15 413.459  &lt; 2.2e-16 ***
+## trt      1  94.423  &lt; 2.2e-16 ***
+## gen:trt 15  66.875    1.6e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Laut der Devianzanalyse-Tabelle gibt es also eine signifikante Wechselwirkung zwischen den beiden Behandlungseffekten. Demnach müsste man im Anschluss die adjustierten Mittelwerte aller Genotype-Treatment-Kombinationen berechnen und miteinander (via post-hoc Tests) vergleichen wie z.B. in <a href="2F_rcbd.html">Kapitel 4</a> oder <a href="2F_splitplot.html">Kapitel 5</a>.</p>
@@ -718,17 +737,16 @@ Anova(mod.glm, test.statistic=&quot;Wald&quot;, type=&quot;III&quot;)</code></pr
 
 summary(mod.glm2)$dispersion </code></pre>
 <pre><code>## [1] 3.215226</code></pre>
-<p>Da das Modell sich nun verändert hat, ergeben sich auch andere Testergebnisse in der Devianzanalyse-Tabelle:</p>
-<pre class="r"><code>Anova(mod.glm2, test.statistic=&quot;Wald&quot;, type=&quot;III&quot;)</code></pre>
-<pre><code>## Analysis of Deviance Table (Type III tests)
+<p>Und tatsächlich liegt eine relativ starke Überdispersion vor. Da das Modell sich nun verändert hat, ergeben sich auch andere Testergebnisse in der Devianzanalyse-Tabelle:</p>
+<pre class="r"><code>Anova(mod.glm2, test.statistic=&quot;Wald&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II tests)
 ## 
 ## Response: y/n
-##             Df    Chisq Pr(&gt;Chisq)    
-## (Intercept)  1   5.7047    0.01692 *  
-## block        2   5.3077    0.07038 .  
-## gen         15 112.5992  &lt; 2.2e-16 ***
-## trt          1  17.4959  2.879e-05 ***
-## gen:trt     15  20.7994    0.14336    
+##         Df    Chisq Pr(&gt;Chisq)    
+## block    2   5.3077    0.07038 .  
+## gen     15 128.5940  &lt; 2.2e-16 ***
+## trt      1  29.3673  5.988e-08 ***
+## gen:trt 15  20.7994    0.14336    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Die Wechselwirkung ist nun nicht mehr signifikant.</p>
