@@ -560,15 +560,15 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <h1>Schließende Statistik</h1>
 <div id="generalisiertes-modell" class="section level2">
 <h2>Generalisiertes Modell</h2>
-<p>Wie zu erkennen, ist das Auftreten der Larven ein relativ seltenes Ereignis, sodass die meisten Werte nahe 0 liegen. Wir haben also <em>Zählwerte ohne feste Beschränkung nach oben</em> und können uns entscheiden eine Poissonverteilung für diese Daten anzunehmen und ein entsprechendes generalisiertes lineares Modell anpassen (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>).Bezüglich der Effekte im Modell verfahren wir ähnlich einer <a href="1F_rcbd.html">einfaktoriellen ANOVA in einem RCBD</a>, allerdings mit noch einem zweiten vollständigen Block Effekt, sodass wir Effekte für Zeilen und Spalten haben.</p>
+<p>Wie zu erkennen, ist das Auftreten der Larven ein relativ seltenes Ereignis, sodass die meisten Werte nahe 0 liegen. Wir haben also <em>Zählwerte ohne feste Beschränkung nach oben</em> und können uns entscheiden eine Poissonverteilung für diese Daten anzunehmen und ein entsprechendes generalisiertes lineares Modell anpassen (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Bezüglich der Effekte im Modell verfahren wir ähnlich einer <a href="1F_rcbd.html">einfaktoriellen ANOVA in einem RCBD</a>, allerdings mit noch einem zweiten vollständigen Block Effekt, sodass wir Effekte für Zeilen und Spalten haben.</p>
 <pre class="r"><code>mod &lt;- glm(bugs ~ trt + row + col, family=quasipoisson(link=&quot;log&quot;), data=bugs)</code></pre>
-<p>Wie im <a href="1F_rcbd_binomial.html">vorangegangenen Beispiel</a>, legen wir die erwartete Verteileung mit dem <code>family=</code> statement fest. Ebenso entscheiden wir uns direkt für <code>quasipoisson</code> anstelle der einfacheren <code>poisson</code> Verteilung, da diese in gewisser Hinischt flexibler/robuster ist (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Auch hier ist der Zusatz <code>(link="log")</code> eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für poissonverteilte Daten ist. Sie wird hier aber zur Verdeutlichung mit ins Modell geschrieben.</p>
-<pre class="r"><code>autoplot(mod) # Residuenplots</code></pre>
+<p>Wie im <a href="1F_rcbd_binomial.html">vorangegangenen Beispiel</a>, legen wir die erwartete Verteileung mit dem <code>family=</code> statement fest. Ebenso entscheiden wir uns direkt für <code>quasipoisson</code> anstelle der einfacheren <code>poisson</code> Verteilung, da diese in gewisser Hinischt flexibler/robuster ist (<a href="intro_GLM_carrot.html">mehr dazu hier</a>). Auch hier ist der Zusatz <code>(link="log")</code> eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für poissonverteilte Daten ist. Sie wird hier aber zur Verdeutlichung mit ins Modell geschrieben.</p>
+<pre class="r"><code>autoplot(mod)[1:2] # Residuenplots</code></pre>
 <p><img src="1F_latsq_poisson_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div id="test-der-festen-effekte" class="section level2">
 <h2>Test der festen Effekte</h2>
-<pre class="r"><code>anova(mod, test=&quot;F&quot;)</code></pre>
+<pre class="r"><code>anova(mod, test=&quot;Chisq&quot;)</code></pre>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model: quasipoisson, link: log
@@ -578,23 +578,31 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ## Terms added sequentially (first to last)
 ## 
 ## 
-##      Df Deviance Resid. Df Resid. Dev      F  Pr(&gt;F)  
-## NULL                    24     64.555                 
-## trt   4  26.5294        20     38.026 4.4190 0.02000 *
-## row   4  15.6955        16     22.331 2.6144 0.08831 .
-## col   4   2.8225        12     19.508 0.4701 0.75686  
+##      Df Deviance Resid. Df Resid. Dev Pr(&gt;Chi)   
+## NULL                    24     64.555            
+## trt   4  26.5294        20     38.026 0.001428 **
+## row   4  15.6955        16     22.331 0.033385 * 
+## col   4   2.8225        12     19.508 0.757711   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der p-Wert für den Behandlungseffekt weist in diesem Fall deutlich auf unterschiedliche Häufigkeiten der gefundenen Larven hin.</p>
+<pre class="r"><code>car::Anova(mod, test.statistic=&quot;Wald&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II tests)
+## 
+## Response: bugs
+##     Df   Chisq Pr(&gt;Chisq)  
+## trt  4 10.8143    0.02873 *
+## row  4  9.6828    0.04612 *
+## col  4  1.9627    0.74262  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Der p-Wert für den Behandlungseffekt weist in diesem Fall auf unterschiedliche Häufigkeiten der gefundenen Larven hin.</p>
 </div>
 <div id="multipler-mittelwertvergleich" class="section level2">
 <h2>Multipler Mittelwertvergleich</h2>
 <p>Mittels des <code>emmeans()</code> package lassen wir uns <a href="1F_rcbd_binomial.html">wie im vorigen Beispiel</a> direkt die rücktransformierten Mittelwerte schätzen. Dazu muss lediglich <code>type="response"</code> hinzugefügt werden.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ trt, type=&quot;response&quot;) # Mittelwertvergleiche
-means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung</code></pre>
-<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
-## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
-<pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
+means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
 means</code></pre>
 <pre><code>##  trt rate    SE  df asymp.LCL asymp.UCL .group
 ##  K   1.12 0.563 Inf     0.415      3.00 a     

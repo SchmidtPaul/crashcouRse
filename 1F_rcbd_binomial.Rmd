@@ -1,5 +1,5 @@
 ---
-title: "1 Beh.faktor - RCBD - Prozentwerte"
+title: "Prozentwerte & Proportionen"
 ---
 
 # Datensatz
@@ -70,24 +70,25 @@ mod <- glm(y/n ~ block + gen, weights=n, family=quasibinomial(link="logit"), dat
 
 Wie man sehen kann, wäre das vorige Berechnen der `anteil`-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt `y/n` als Zielvariable schreiben können. Wichtig ist dabei aber, dass wir dann auch immer noch `weights=n` dazuschreiben müssen! Als erwartete Verteilung schreiben wir hier `family=quasibinomial`, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Der Zusatz `(link="logit")` ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da `glm()` eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der `autoplot()` Funktion des `ggfortify` packages betrachtet werden:
 
-```{r, fig.height = 4, fig.width = 4, fig.align = "center"}
-autoplot(mod) # Residuenplots
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+autoplot(mod)[1:2] # Residuenplots
 ```
 ## Test der festen Effekte
 
 ```{r}
-anova(mod, test="F")
+anova(mod, test="Chisq")
+car::Anova(mod, test.statistic="Wald")
 ```
 
-Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (*i.e.* Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in [Piepho (1999)](https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x)). Dennoch kann die `anova()` Funktion in R auch für Modell-Objekte aus der `glm()` Funktion angewendet werden, da in diesem Fall eine andere Berechnung (*i.e.* Analysis of Deviance) durchgeführt wird (siehe `?anova.glm` für Details). Um allerdings wie gewohnt p-Werte (eines F-Tests) für die festen Effekte zu erhalten, muss hier noch ein `test=` statement hinzugefügt werden.
+Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (*i.e.* Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in [Piepho (1999)](https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x)). Dennoch kann die `anova()` Funktion in R auch für Modell-Objekte aus der `glm()` Funktion angewendet werden, da in diesem Fall eine andere Berechnung (*i.e.* Analysis of Deviance) durchgeführt wird. Um allerdings weiterhin p-Werte zu erhalten, muss hier z.B. das Argument `test="Chisq"` hinzugefügt werden (siehe `?anova.glm` für Details). Alternativ kann auch ein Wald-Test mit der `Anova()`-Funktion aus dem `car`-package und  dem Argument `test.statistic="Wald"` durchgeführt werden.
 
-Der p-Wert für den Sorteneffekt weist in diesem Fall deutlich auf unterschiedliche Anfälligkeiten der Sorten hin.
+Der p-Wert für den Sorteneffekt weist in jedem Fall deutlich auf unterschiedliche Anfälligkeiten der Sorten hin.
 
 ## Multipler Mittelwertvergleich
 
 Auch für generalisierte lineare Modelle eignet sich das `emmeans()` package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich `type="response"` hinzugefügt werden.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 means <- emmeans(mod, pairwise ~ gen, type="response") # Mittelwertvergleiche
 means <- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
 means$.group <- gsub(" ", "", means$.group, fixed = TRUE) # Entferne Leerzeichen

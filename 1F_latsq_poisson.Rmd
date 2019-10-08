@@ -67,31 +67,32 @@ boxplot(bugs ~ trt, col=trtfarben, data=bugs, las=2) # las=2 dreht die Achsenbes
 # Schließende Statistik
 ## Generalisiertes Modell
 
-Wie zu erkennen, ist das Auftreten der Larven ein relativ seltenes Ereignis, sodass die meisten Werte nahe 0 liegen. Wir haben also *Zählwerte ohne feste Beschränkung nach oben* und können uns entscheiden eine Poissonverteilung für diese Daten anzunehmen und ein entsprechendes generalisiertes lineares Modell anpassen ([mehr dazu hier](appendix_nichtnormalverteilt.html)).Bezüglich der Effekte im Modell verfahren wir ähnlich einer [einfaktoriellen ANOVA in einem RCBD](1F_rcbd.html), allerdings mit noch einem zweiten vollständigen Block Effekt, sodass wir Effekte für Zeilen und Spalten haben.  
+Wie zu erkennen, ist das Auftreten der Larven ein relativ seltenes Ereignis, sodass die meisten Werte nahe 0 liegen. Wir haben also *Zählwerte ohne feste Beschränkung nach oben* und können uns entscheiden eine Poissonverteilung für diese Daten anzunehmen und ein entsprechendes generalisiertes lineares Modell anpassen ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Bezüglich der Effekte im Modell verfahren wir ähnlich einer [einfaktoriellen ANOVA in einem RCBD](1F_rcbd.html), allerdings mit noch einem zweiten vollständigen Block Effekt, sodass wir Effekte für Zeilen und Spalten haben.  
 
 ```{r}
 mod <- glm(bugs ~ trt + row + col, family=quasipoisson(link="log"), data=bugs)
 ```
 
-Wie im [vorangegangenen Beispiel](1F_rcbd_binomial.html), legen wir die erwartete Verteileung mit dem `family=` statement fest. Ebenso entscheiden wir uns direkt für `quasipoisson` anstelle der einfacheren `poisson` Verteilung, da diese in gewisser Hinischt flexibler/robuster ist ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Auch hier ist der Zusatz `(link="log")` eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für poissonverteilte Daten ist. Sie wird hier aber zur Verdeutlichung mit ins Modell geschrieben.
+Wie im [vorangegangenen Beispiel](1F_rcbd_binomial.html), legen wir die erwartete Verteileung mit dem `family=` statement fest. Ebenso entscheiden wir uns direkt für `quasipoisson` anstelle der einfacheren `poisson` Verteilung, da diese in gewisser Hinischt flexibler/robuster ist ([mehr dazu hier](intro_GLM_carrot.html)). Auch hier ist der Zusatz `(link="log")` eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für poissonverteilte Daten ist. Sie wird hier aber zur Verdeutlichung mit ins Modell geschrieben.
 
-```{r, fig.height = 4, fig.width = 4, fig.align = "center"}
-autoplot(mod) # Residuenplots
+```{r, fig.height = 2, fig.width = 4, fig.align = "center"}
+autoplot(mod)[1:2] # Residuenplots
 ```
 
 ## Test der festen Effekte
 
 ```{r}
-anova(mod, test="F")
+anova(mod, test="Chisq")
+car::Anova(mod, test.statistic="Wald")
 ```
 
-Der p-Wert für den Behandlungseffekt weist in diesem Fall deutlich auf unterschiedliche Häufigkeiten der gefundenen Larven hin.
+Der p-Wert für den Behandlungseffekt weist in diesem Fall auf unterschiedliche Häufigkeiten der gefundenen Larven hin.
 
 ## Multipler Mittelwertvergleich
 
 Mittels des `emmeans()` package lassen wir uns [wie im vorigen Beispiel](1F_rcbd_binomial.html) direkt die rücktransformierten Mittelwerte schätzen. Dazu muss lediglich `type="response"` hinzugefügt werden.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 means <- emmeans(mod, pairwise ~ trt, type="response") # Mittelwertvergleiche
 means <- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
 means$.group <- gsub(" ", "", means$.group, fixed = TRUE) # Entferne Leerzeichen

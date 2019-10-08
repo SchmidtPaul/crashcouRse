@@ -35,7 +35,7 @@ navbar:
           href: 2F_splitplot.html
         - text: "1F rcbd Messwiederholungen"
           href: 1F_rcbd_messwdh.html
-        - text: "1F crd Prozentwerte"
+        - text: "1F rcbd Prozentwerte"
           href: 1F_rcbd_binomial.html
         - text: "1F lat square Zählwerte"
           href: 1F_latsq_poisson.html
@@ -44,7 +44,7 @@ navbar:
         - text: "Korrelation"
           href: stat_Korrelation.html      
         - text: "Regression"
-          href: stat_Regression.html     
+          href: stat_Regression.html 
         - text: "Versuchsdesigns"
           href: appendix_designs.html   
         - text: "ANOVA & Post Hoc"
@@ -59,6 +59,8 @@ navbar:
           href: appendix_kovarstrukt.html
         - text: "Nicht-Normalverteilte Daten"
           href: intro_GLM_carrot.html
+        - text: "Logistische Regression"
+          href: stat_logisticregression.html
         - text: "Modelle aufstellen"
           href: appendix_modelrules.html
         - text: "Stichprobenplanung"
