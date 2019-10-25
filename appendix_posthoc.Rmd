@@ -22,10 +22,10 @@ dementsprechend auch vom *Unprotected LSD test*.
 
 Es gibt mehrere Methoden um multiple Mittelwertvergleiche durchzuführen, z.B.:
 
-* Multipler t-Test (Fisher ~1940?)
+* Multipler t-Test (Fisher 1940)
 * Tukey-Test (John Tukey, 1949)
 * Dunnett Test (Charles Dunnett, 1955)
-* Scheffé Test (Henry Scheffé, 1959)
+* Scheffe Test (Henry Scheffe, 1959)
 * Holm-Bonferroni Test (Sture Holm & Carlo Emilio Bonferroni, 1979)
 
 Vorneweg soll gesagt sein, dass es keinen einzigen besten Test gibt, sondern, dass jeder der Tests verschiedene Vor- und Nachteile hat. Wir wollen erstmal nur zwei Methoden betrachten: Den multiplen t-Test und den Tukey-Test. Die Gegenüberstellung beider Methoden ist in folgender Tabelle zusammengefasst:
@@ -40,7 +40,7 @@ Korrigiert der Test dafür, dass es mehrere Vergleiche gibt? | Nein | Ja
 
 Beide Tests berechnen eine *Grenzdifferenz*, an der dann die Differenzen zwischen den Behandlungsstufen-Mittelwerten gemessen werden. Sind letztere größer als die Grenzdifferenz, gelten sie als *statistisch signifikant*. 
 
-Was ist also der Unterschied zwischen mutliplem t-test und Tukey Test? Der Unterschied liegt in ihrer Umgangsweise mit dem *Fehler 1. Art*, auch $\alpha$𝛼-Fehler genannt (siehe dazu Kapitel 3.13 Statistikskript). Als kurze Zusammenfassung: Statistische Tests sind nie perfekt und es können Fehler passieren, sodass das Ergebnis des Tests eventuell nicht die Wahrheit abbildet. Es gibt zwei Arten von Fehlern, die passieren können: Die Nullhypothese ist eigentlich wahr, wird aber vom Test fälschlicherweise verworfen (Fehler 1. Art) oder die Nullhypothese ist eigentlich falsch, wird aber vom Test fälschlicherweise beibehalten (Fehler 2. Art) – siehe dazu die Tabelle. 
+Was ist also der Unterschied zwischen mutliplem t-test und Tukey Test? Der Unterschied liegt in ihrer Umgangsweise mit dem *Fehler 1. Art*, auch $\alpha$-Fehler genannt (siehe dazu Kapitel 3.13 Statistikskript). Als kurze Zusammenfassung: Statistische Tests sind nie perfekt und es können Fehler passieren, sodass das Ergebnis des Tests eventuell nicht die Wahrheit abbildet. Es gibt zwei Arten von Fehlern, die passieren können: Die Nullhypothese ist eigentlich wahr, wird aber vom Test fälschlicherweise verworfen (Fehler 1. Art) oder die Nullhypothese ist eigentlich falsch, wird aber vom Test fälschlicherweise beibehalten (Fehler 2. Art) – siehe dazu die Tabelle. 
 
 <img src="images/alphabeta.jpg" style="width:80%" align="center"> 
 
@@ -48,14 +48,14 @@ Die Wahrscheinlichkeit, dass solche Fehler passieren (Irrtumswahrscheinlichkeit)
 
 ## Wie also gehen der multiple t-Test und der Tukey-Test mit dem Fehler 1. Art um?
 
-Der multiple t-Test fixiert die Wahrscheinlichkeit für einen Fehler 1. Art (= 𝛼) pro paarweisem Vergleich. Das heißt für jeden einzelnen Vergleich gilt, dass die Wahrscheinlichkeit einen $\alpha$𝛼-Fehler zu begehen nicht über 𝛼 = 5% liegt. Andersherum heißt das, dass wir mit 95% Wahrscheinlichkeit
+Der multiple t-Test fixiert die Wahrscheinlichkeit für einen Fehler 1. Art (= $\alpha$) pro paarweisem Vergleich. Das heißt für jeden einzelnen Vergleich gilt, dass die Wahrscheinlichkeit einen $\alpha$-Fehler zu begehen nicht über $\alpha$ = 5% liegt. Andersherum heißt das, dass wir mit 95% Wahrscheinlichkeit
 eine Nullhypothese korrekterweise beibehalten. Würden wir also beispielsweise
 genau 100 paarweise Vergleiche durchführen in denen in Wirklichkeit die Nullhypothese gilt, würden wir erwartungsgemäß leider 5 mal ein falsches Testergebnis erhalten.
 
 Man könnte sich auch fragen wie hoch die Wahrscheinlichkeit liegt, dass wir bei **allen** paarweisen Vergleichen die Nullhypothese korrekterweise
-beibehalten. Bei den 100 Vergleichen wäre das $(1-\alpha)^{100}=0.95^{100}=0,006=0,6%$. Demnach beträgt die Wahrscheinlichkeit bei den 100 Vergleichen mindestens einen $\alpha$𝛼-Fehler zu begehen in diesem Fall erschreckende 99,4%. Dieses Problem wird „Multiple comparison problem“ oder auch „Alphafehler-Kumulierung“ genannt. Sicherlich sind 100 Vergleiche eine extremes Beispiel, doch es muss klar sein, wie schnell die Anzahl der Vergleiche in Abhängigkeit von der Anzahl der zu vergleichenden Behandglungsstufen steigt. Schon bei 4 Behandlungsstufen (z.B. 4 Sorten) gibt es 6 Vergleiche, sodass $(1-\alpha)^{6}=0.95^{6}=0,735=73,6%$. Also liegt selbst hier die Wahrscheinlichkeit mindestens einen $\alpha$-Fehler zu begehen schon bei 26,5%.
+beibehalten. Bei den 100 Vergleichen wäre das $(1-\alpha)^{100}=0.95^{100}=0,006=0,6%$. Demnach beträgt die Wahrscheinlichkeit bei den 100 Vergleichen mindestens einen $\alpha$-Fehler zu begehen in diesem Fall erschreckende 99,4%. Dieses Problem wird „Multiple comparison problem“ oder auch „Alphafehler-Kumulierung“ genannt. Sicherlich sind 100 Vergleiche eine extremes Beispiel, doch es muss klar sein, wie schnell die Anzahl der Vergleiche in Abhängigkeit von der Anzahl der zu vergleichenden Behandglungsstufen steigt. Schon bei 4 Behandlungsstufen (z.B. 4 Sorten) gibt es 6 Vergleiche, sodass $(1-\alpha)^{6}=0.95^{6}=0,735=73,6%$. Also liegt selbst hier die Wahrscheinlichkeit mindestens einen $\alpha$-Fehler zu begehen schon bei 26,5%.
 
-Im Gegensatz zum multiplen t-Test korrigiert der Tukey-Test dafür, dass es mehrere Vergleiche gibt. Er fixiert die Wahrscheinlichkeit für einen Fehler 1. Art **pro Versuch - also über alle paarweisen Vergleiche**. Die Grenzdifferenz wird schlichtweg so berechnet, dass die Wahrscheinlichkeit im ganzen Versuch mindestens einen $\alpha$𝛼-Fehler zu begehen eben nicht bei
+Im Gegensatz zum multiplen t-Test korrigiert der Tukey-Test dafür, dass es mehrere Vergleiche gibt. Er fixiert die Wahrscheinlichkeit für einen Fehler 1. Art **pro Versuch - also über alle paarweisen Vergleiche**. Die Grenzdifferenz wird schlichtweg so berechnet, dass die Wahrscheinlichkeit im ganzen Versuch mindestens einen $\alpha$-Fehler zu begehen eben nicht bei
 99,4% oder 26,5% liegt, sondern den Wert von 5% nicht überschreitet.
 
 Aus diesem Grund ist die HSD stets größer als die LSD, sodass mit dem Tukey-Test weniger Behandlungsunterschiede als signifikant eingestuft werden als mit dem multiplen t-Test. Es wird quasi „auf Nummer sicher gegangen um weniger Fehler zu begehen“. Man spricht deshalb davon, dass der Tukey-Test konservativer ist als der multiple t-Test.

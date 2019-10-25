@@ -437,6 +437,9 @@ div.tocify {
       <a href="2F_splitplot.html">2F split-plot</a>
     </li>
     <li>
+      <a href="1F_augmented_blockFixOrRandom.html">1F augmented</a>
+    </li>
+    <li>
       <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
@@ -591,17 +594,17 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
 means$emmeans # Mittelwerte </code></pre>
-<pre><code>##  gen emmean    SE df lower.CL upper.CL
-##  G01   5.16 0.302  6     4.42     5.90
-##  G02   4.51 0.302  6     3.77     5.25
-##  G03   3.34 0.302  6     2.60     4.08
+<pre><code>##  gen   emmean        SE df lower.CL upper.CL
+##  G01 5.162500 0.3023478  6 4.422682 5.902318
+##  G02 4.514200 0.3023478  6 3.774382 5.254018
+##  G03 3.343067 0.3023478  6 2.603248 4.082885
 ## 
 ## Confidence level used: 0.95</code></pre>
 <pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
-<pre><code>##  contrast  estimate    SE df t.ratio p.value
-##  G01 - G02    0.648 0.428  6 1.516   0.3488 
-##  G01 - G03    1.819 0.428  6 4.255   0.0127 
-##  G02 - G03    1.171 0.428  6 2.739   0.0754 
+<pre><code>##  contrast  estimate        SE df t.ratio p.value
+##  G01 - G02 0.648300 0.4275844  6 1.516   0.3488 
+##  G01 - G03 1.819433 0.4275844  6 4.255   0.0127 
+##  G02 - G03 1.171133 0.4275844  6 2.739   0.0754 
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
@@ -609,10 +612,10 @@ means$emmeans # Mittelwerte </code></pre>
 <pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
 ## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
 <pre class="r"><code>means</code></pre>
-<pre><code>##  gen emmean    SE df lower.CL upper.CL .group
-##  G03   3.34 0.302  6     2.60     4.08  a    
-##  G02   4.51 0.302  6     3.77     5.25  ab   
-##  G01   5.16 0.302  6     4.42     5.90   b   
+<pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
+##  G03 3.343067 0.3023478  6 2.603248 4.082885  a    
+##  G02 4.514200 0.3023478  6 3.774382 5.254018  ab   
+##  G01 5.162500 0.3023478  6 4.422682 5.902318   b   
 ## 
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 

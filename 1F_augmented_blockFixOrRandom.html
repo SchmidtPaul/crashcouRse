@@ -11,7 +11,7 @@
 
 
 
-<title>1 Beh.faktor - RCBD</title>
+<title>Augmented Design - Blockeffekt fest oder zufällig?</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -513,135 +513,145 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">1 Beh.faktor - RCBD</h1>
+<h1 class="title toc-ignore">Augmented Design - Blockeffekt fest oder zufällig?</h1>
 
 </div>
 
 
+<blockquote>
+<p>Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung “Mixed models for metric data” von <a href="https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en">Prof. Dr. Piepho</a>. In dem Skript finden sich detailliertere Erläuterungen, sowie SAS Codes.</p>
+</blockquote>
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
-<pre class="r"><code>library(data.table) # bessere Datenmanipulation
-library(ggplot2); library(ggfortify) # bessere Plots
-library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Dieses Beispiel ist dem Beispiel “1F_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
-<div class="row">
-<div class="col-md-6">
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
-</div>
-<div class="col-md-6">
-<pre class="r"><code>print(rcbd, nrows=10)</code></pre>
-<pre><code>##     gen  rep  yield
-##  1: G11 Rep1 4.1172
-##  2: G04 Rep1 4.4461
-##  3: G05 Rep1 5.8757
-##  4: G22 Rep1 4.5784
-##  5: G21 Rep1 4.6540
-## ---                
-## 68: G24 Rep3 3.5655
-## 69: G03 Rep3 2.8873
-## 70: G05 Rep3 4.1972
-## 71: G20 Rep3 3.7349
-## 72: G07 Rep3 3.6096</code></pre>
-</div>
-</div>
+<p>Die Daten in diesem Beispiel stammen von einem Versuch, der als die einfachste Form eines <strong>augmented Designs</strong> angelegt wurde. Der Versuch hat 6 Blöcke (I-VI; mit je 8 Parzellen) und es wurde der Ertrag von Sorten geprüft. Allerdings wurden im Gegensatz zu einer einfachen randomisierten, vollständigen Blockanlage nicht jede Sorte in jedem Block angebaut - einige aber schon:</p>
+<p><img src="1F_augmented_blockFixOrRandom_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Wie man sieht, tauchen die drei Sorten <em>ci</em>, <em>st</em> und <em>wa</em> (orange) in jedem Block auf, alle anderen Sorten (<em>01-30</em>, blau) wurden aber nur je ein einziges Mal geprüft. Somit gibt es also insgesamt 33 Sorten, allerdings nur 3 davon in 6 Wiederholungen und alle anderen in einer Wiederholung.</p>
+<p>Die Idee hinter dem Design ist, dass mittels der wiederholten Sorten (auch <em>Standards</em> genannt) die Blockeffekte geschätzt werden können und dann die eigentlich zu prüfenden Sorten über die Standards geschätzt werden. Man könnte auch sagen, dass die Sorten quasi an den Standards gemessen werden, weswegen übrigens für die Standards in der Regel meist sehr bekannte, gängige Sorten genommen werden. Klar ist, dass man auf diese Weise nicht so gute Schätzungen für die Sorten erhält, wie wenn man sie wiederholt geprüft hätte. Immerhin erhält man aber Schätzungen und zwar für relativ viele Sorten auf relativ wenig Parzellen. Genau dies ist eine Hauptmotivation für ein augmented Design: (i) Es erlaubt das Prüfen von sehr vielen Prüfgliedern wenn die Versuchskapazitäten begrenzt sind. Andersherum erlaubt es aber auch z.B. (ii) das prüfen von neuen Sorten, für die noch nicht genug Saatgut vorhanden ist um mehrere Parzellen anzulegen.</p>
 </div>
 <div id="deskriptive-statistik" class="section level1">
 <h1>Deskriptive Statistik</h1>
-<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1F_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
+<p>Beim betrachten von deskriptiven Statistiken muss sich in diesem Beispiel vor Augen geführt werden, dass wir z.B. keinen Mittelwert für die Sorten <em>01-30</em> berechnen können, da wir schlichtweg nur eine Beobachtung pro Sorte haben. Um sich dies endgültig zu verdeutlichen wählen wir den Plot hierunter.</p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>str(rcbd)</code></pre>
-<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  3 variables:
-##  $ gen  : Factor w/ 24 levels &quot;G01&quot;,&quot;&quot;..
-##  $ rep  : Factor w/ 3 levels &quot;Rep1&quot;,&quot;&quot;..
-##  $ yield: num  4.12 4.45 5.88 4.58 4.6..
-##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
-<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>print(patt, nrows=10)</code></pre>
+<pre><code>##     gen yield block
+##  1:  st  2972     I
+##  2:  14  2405     I
+##  3:  26  2855     I
+##  4:  ci  2592     I
+##  5:  17  2572     I
+## ---                
+## 44:  ci  3483    VI
+## 45:  01  3013    VI
+## 46:  wa  3400    VI
+## 47:  12  2385    VI
+## 48:  19  3643    VI</code></pre>
 </div>
 <div class="col-md-6">
-<pre class="r"><code>summary(rcbd)</code></pre>
-<pre><code>##       gen       rep         yield      
-##  G01    : 3   Rep1:24   Min.   :2.887  
-##  G02    : 3   Rep2:24   1st Qu.:4.110  
-##  G03    : 3   Rep3:24   Median :4.404  
-##  G04    : 3             Mean   :4.480  
-##  G05    : 3             3rd Qu.:4.968  
-##  G06    : 3             Max.   :5.876  
-##  (Other):54</code></pre>
-<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>str(patt)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   48 obs. of  3 variables:
+##  $ gen  : Factor w/ 33 levels &quot;01&quot;,&quot;0&quot;..
+##  $ yield: num  2972 2405 2855 2592 257..
+##  $ block: Factor w/ 6 levels &quot;I&quot;,&quot;II&quot;&quot;..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 </div>
 </div>
+<pre class="r"><code>ggplot(data=patt, aes(y=yield, x=gen, color=gen, shape=block)) +
+  geom_point(size=2) +
+  scale_color_manual(values=StandardFarben) + # Vektor mit Farben wurde vorher definiert
+  guides(color = FALSE) + # Verstecke Legende zu Colors, aber nicht zu Shapes
+  theme_classic() + theme(legend.position = &quot;top&quot;)</code></pre>
+<p><img src="1F_augmented_blockFixOrRandom_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Was wir an diesem Plot auch erkennen können ist, dass Block V anscheinend generell schlechtere Wachstumsbedingungen für die Sorten geboten hat. Man könnte auf den ersten Blick vermuten, dass die Sorten <em>02, 08, 10, 16</em> und <em>21</em> schlichtweg nicht so hohe Erträge liefern, jedoch liefern auch die drei Standards deutlich schlechtere Erträge in Block V verglichen mit den anderen Blöcken. Gemessen an den Standards wirkt speziell Sorte <em>21</em> also doch vielversprechend - auch wenn wir dieser Vermutung nur eine einzige Beobachtung zugrunde legen.</p>
 </div>
 <div id="schlieende-statistik" class="section level1">
 <h1>Schließende Statistik</h1>
-<div id="lineares-modell" class="section level2">
-<h2>Lineares Modell</h2>
-<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. Außerdem haben wir den nun noch den qualitativen Faktor ‘rep’ im Modell.</p>
-<pre class="r"><code>mod &lt;- lm(yield ~ gen + rep, data=rcbd)</code></pre>
-<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
+<p>Das Modell für die Daten lautet</p>
+<p><span class="math display">\[ yield_{ij} = \mu + gen_i + block_j + e_{ij} \]</span></p>
+<p>Da wir die Sorten miteinander vergleichen wollen, nehmen wir sie als festen Effekt. Bei den Blöcken ist die Entscheidung nicht ganz so schnell gefällt: Zum Einen kann es bei unvollständigen Blöcken von Vorteil sein sie als zufällig ins Modell zu nehmen, zum Anderen gibt es aber auch die Faustregel, dass man Blockeffekte erst ab 8 Blöcken als zufällig nehmen sollte. Wir wollen in diesem Beispiel beide Modelle anpassen und dann entscheiden welches Modell wir nehmen sollten. Dies können wir davon abhängig machen in welchem der Modelle der mittlere <em>s.e.d.</em> (standard error of a difference) der Differenzen zwischen den adjustierten Sortenmittelwerten kleiner ist. Je kleiner dieser s.e.d., desto präziser können wir nämlich die Sortenunterschiede schätzen - und das ist was uns in diesem Versuch interessiert: Ein Vergleich der Sorten. Zur Klarstellung: Es gibt Standardfehler für jeden der adjustierten Mittelwerte selbst (standard error of a mean), aber wir möchten hier die Standardfehler der Differenzen zwischen den adjustierten Mittelwerten betrachten!</p>
+<div id="vergleich-beider-modelle" class="section level2">
+<h2>Vergleich beider Modelle</h2>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code># Fester Blockeffekt
+mod.fixBl &lt;- lm(yield ~ gen + block, 
+                data=patt)</code></pre>
 </div>
-<div id="varianzanalyse" class="section level2">
-<h2>Varianzanalyse</h2>
-<pre class="r"><code>anova(mod)</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: yield
-##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## gen       23 14.0765 0.61202  4.5475 6.259e-06 ***
-## rep        2  6.1355 3.06774 22.7939 1.322e-07 ***
-## Residuals 46  6.1910 0.13459                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
-</div>
-<div id="multipler-mittelwertvergleich" class="section level2">
-<h2>Multipler Mittelwertvergleich</h2>
-<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
-<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
-as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
-<pre><code>##    gen   emmean        SE df lower.CL upper.CL
-## 1: G01 5.162500 0.2118065 46 4.736156 5.588844
-## 2: G02 4.514200 0.2118065 46 4.087856 4.940544
-## 3: G03 3.343067 0.2118065 46 2.916722 3.769411
-## 4: G04 4.400667 0.2118065 46 3.974322 4.827011
-## 5: G05 5.064367 0.2118065 46 4.638022 5.490711
-## 6: G06 4.710333 0.2118065 46 4.283989 5.136678</code></pre>
-<pre class="r"><code>as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen</code></pre>
-<pre><code>##     contrast   estimate        SE df   t.ratio      p.value
-## 1: G01 - G02 0.64830000 0.2995396 46 2.1643215 8.669495e-01
-## 2: G01 - G03 1.81943333 0.2995396 46 6.0740994 5.296688e-05
-## 3: G01 - G04 0.76183333 0.2995396 46 2.5433476 6.406025e-01
-## 4: G01 - G05 0.09813333 0.2995396 46 0.3276139 1.000000e+00
-## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
-## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
-<p>Im Vergleich zum Beispiel “1F_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
-<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
-<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
-## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
-<pre class="r"><code>as.data.table(means$emmeans)[1:6,]</code></pre>
-<pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
-## 1: G03 3.343067 0.2118065 46 2.916722 3.769411   a   
-## 2: G09 3.611600 0.2118065 46 3.185256 4.037944   ab  
-## 3: G20 3.784867 0.2118065 46 3.358522 4.211211   abc 
-## 4: G07 4.129933 0.2118065 46 3.703589 4.556278   abcd
-## 5: G23 4.136200 0.2118065 46 3.709856 4.562544   abcd
-## 6: G24 4.142367 0.2118065 46 3.716022 4.568711   abcd</code></pre>
+<div class="col-md-6">
+<pre class="r"><code>library(lme4) # Zufälliger Blockeffekt
+mod.ranBl &lt;- lmer(yield ~ gen + (1|block), 
+                  data=patt)</code></pre>
 </div>
 </div>
-<div id="ergebnisaufbereitung" class="section level1">
-<h1>Ergebnisaufbereitung</h1>
-<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1F_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
-<pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
-  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
-  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
-  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle=90)) +
-  labs(y=&quot;Adjustierter Ertragsmittelwert mit 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
-  theme_bw() +
-  annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
-  label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Wir überspringen hier also mal die ANOVA und ermitteln direkt die mittleren s.e.d. der beiden Modelle. Dazu berechnen wir voererstwie gehabt die adjustierten Mittelwerte und alle Kontraste zwischen ihnen mit dem <code>emmeans</code> package. Im Anschluss ziehen wir uns aber nur die Spalte mit allen s.e.d. raus und berechnen jeweils den Mittelwert.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>emm.fixBl &lt;- emmeans(mod.fixBl, pairwise~&quot;gen&quot;)
+print(as.data.table(emm.fixBl$emmeans)[,1:3], nrows=10)</code></pre>
+<pre><code>##     gen   emmean       SE
+##  1:  01 2260.222 341.1876
+##  2:  02 2329.889 341.1876
+##  3:  03 2901.889 341.1876
+##  4:  04 2864.889 341.1876
+##  5:  05 2024.222 341.1876
+## ---                      
+## 29:  29 2162.222 341.1876
+## 30:  30 2801.889 341.1876
+## 31:  ci 2725.667 123.2225
+## 32:  st 2759.167 123.2225
+## 33:  wa 2677.833 123.2225</code></pre>
+<pre class="r"><code>dif.fixBl &lt;- as.data.table(emm.fixBl$contrasts)
+print(dif.fixBl[,1:3], nrows=10)</code></pre>
+<pre><code>##      contrast   estimate       SE
+##   1:  01 - 02  -69.66667 492.8899
+##   2:  01 - 03 -641.66667 492.8899
+##   3:  01 - 04 -604.66667 492.8899
+##   4:  01 - 05  236.00000 492.8899
+##   5:  01 - 06  437.33333 492.8899
+##  ---                             
+## 524:  30 - st   42.72222 362.7571
+## 525:  30 - wa  124.05556 362.7571
+## 526:  ci - st  -33.50000 174.2629
+## 527:  ci - wa   47.83333 174.2629
+## 528:  st - wa   81.33333 174.2629</code></pre>
+<pre class="r"><code>mean(dif.fixBl$SE)</code></pre>
+<pre><code>## [1] 461.3938</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>emm.ranBl &lt;- emmeans(mod.ranBl, pairwise~&quot;gen&quot;)
+print(as.data.table(emm.ranBl$emmeans)[,1:3], nrows=10)</code></pre>
+<pre><code>##     gen   emmean       SE
+##  1:  01 2309.430 434.8634
+##  2:  02 2246.552 434.8634
+##  3:  03 2911.897 434.8634
+##  4:  04 2874.897 434.8634
+##  5:  05 2026.888 434.8634
+## ---                      
+## 29:  29 2211.430 434.8634
+## 30:  30 2811.897 434.8634
+## 31:  ci 2725.667 295.8887
+## 32:  st 2759.167 295.8887
+## 33:  wa 2677.833 295.8887</code></pre>
+<pre class="r"><code>dif.ranBl &lt;- as.data.table(emm.ranBl$contrasts)
+dif.ranBl[,1:3]</code></pre>
+<pre><code>##      contrast   estimate       SE
+##   1:  01 - 02   62.87705 493.6947
+##   2:  01 - 03 -602.46789 493.6947
+##   3:  01 - 04 -565.46789 493.6947
+##   4:  01 - 05  282.54174 493.6947
+##   5:  01 - 06  465.28888 493.6947
+##  ---                             
+## 524:  30 - st   52.73073 363.2128
+## 525:  30 - wa  134.06406 363.2128
+## 526:  ci - st  -33.50000 174.2629
+## 527:  ci - wa   47.83333 174.2629
+## 528:  st - wa   81.33333 174.2629</code></pre>
+<pre class="r"><code>mean(dif.ranBl$SE)</code></pre>
+<pre><code>## [1] 462.0431</code></pre>
+</div>
+</div>
+<p>Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können.</p>
+</div>
 </div>
 
 

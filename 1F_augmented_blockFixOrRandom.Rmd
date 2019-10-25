@@ -1,0 +1,109 @@
+---
+title: "Augmented Design - Blockeffekt fest oder zufällig?"
+---
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(emmeans)
+library(data.table)
+library(desplot)
+library(dplyr)
+library(ggplot2)
+library(lme4)
+library(readxl)
+
+emm_options(opt.digits=FALSE)
+
+patt <- read_xlsx("D:/RKurse/MyDatasets/augmentedPattersen.xlsx") %>%
+  mutate_if(is.character, as.factor) %>% data.table
+```
+
+> Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung "Mixed models for metric data" von [Prof. Dr. Piepho](https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en). In dem Skript finden sich detailliertere Erläuterungen, sowie SAS Codes.
+
+# Datensatz
+Die Daten in diesem Beispiel stammen von einem Versuch, der als die einfachste Form eines **augmented Designs** angelegt wurde. Der Versuch hat 6 Blöcke (I-VI; mit je 8 Parzellen) und es wurde der Ertrag von Sorten geprüft. Allerdings wurden im Gegensatz zu einer einfachen randomisierten, vollständigen Blockanlage nicht jede Sorte in jedem Block angebaut - einige aber schon:
+
+```{r, echo=FALSE}
+colfunc <- colorRampPalette(colors=c("skyblue", "royalblue4"))
+StandardFarben <- c(colfunc(30), "darkorange", "darkorange2", "darkorange3")
+
+desplot(gen~col+row|block, patt, flip=TRUE,
+        text=gen, cex=1,
+        col.regions=StandardFarben,
+        main="", show.key=FALSE)
+
+patt <- patt %>% select(-row, -col)
+```
+
+Wie man sieht, tauchen die drei Sorten *ci*, *st* und *wa* (orange) in jedem Block auf, alle anderen Sorten (*01-30*, blau) wurden aber nur je ein einziges Mal geprüft. Somit gibt es also insgesamt 33 Sorten, allerdings nur 3 davon in 6 Wiederholungen und alle anderen in einer Wiederholung. 
+
+Die Idee hinter dem Design ist, dass mittels der wiederholten Sorten (auch *Standards* genannt) die Blockeffekte geschätzt werden können und dann die eigentlich zu prüfenden Sorten über die Standards geschätzt werden. Man könnte auch sagen, dass die Sorten quasi an den Standards gemessen werden, weswegen übrigens für die Standards in der Regel meist sehr bekannte, gängige Sorten genommen werden. Klar ist, dass man auf diese Weise nicht so gute Schätzungen für die Sorten erhält, wie wenn man sie wiederholt geprüft hätte. Immerhin erhält man aber Schätzungen und zwar für relativ viele Sorten auf relativ wenig Parzellen. Genau dies ist eine Hauptmotivation für ein augmented Design: (i) Es erlaubt das Prüfen von sehr vielen Prüfgliedern wenn die Versuchskapazitäten begrenzt sind. Andersherum erlaubt es aber auch z.B. (ii) das prüfen von neuen Sorten, für die noch nicht genug Saatgut vorhanden ist um mehrere Parzellen anzulegen.
+
+# Deskriptive Statistik
+Beim betrachten von deskriptiven Statistiken muss sich in diesem Beispiel vor Augen geführt werden, dass wir z.B. keinen Mittelwert für die Sorten *01-30* berechnen können, da wir schlichtweg nur eine Beobachtung pro Sorte haben. Um sich dies endgültig zu verdeutlichen wählen wir den Plot hierunter. 
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(patt, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r, eval=FALSE}
+str(patt)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(patt, width=40, strict.width="cut")
+```
+</div> </div>
+
+```{r}
+ggplot(data=patt, aes(y=yield, x=gen, color=gen, shape=block)) +
+  geom_point(size=2) +
+  scale_color_manual(values=StandardFarben) + # Vektor mit Farben wurde vorher definiert
+  guides(color = FALSE) + # Verstecke Legende zu Colors, aber nicht zu Shapes
+  theme_classic() + theme(legend.position = "top")
+```
+
+Was wir an diesem Plot auch erkennen können ist, dass  Block V anscheinend generell schlechtere Wachstumsbedingungen für die Sorten geboten hat. Man könnte auf den ersten Blick vermuten, dass die Sorten *02, 08, 10, 16* und *21* schlichtweg nicht so hohe Erträge liefern, jedoch liefern auch die drei Standards deutlich schlechtere Erträge in Block V verglichen mit den anderen Blöcken. Gemessen an den Standards wirkt speziell Sorte *21* also doch vielversprechend - auch wenn wir dieser Vermutung nur eine einzige Beobachtung zugrunde legen.
+
+# Schließende Statistik
+Das Modell für die Daten lautet
+
+$$ yield_{ij} = \mu + gen_i + block_j + e_{ij} $$
+
+Da wir die Sorten miteinander vergleichen wollen, nehmen wir sie als festen Effekt. Bei den Blöcken ist die Entscheidung nicht ganz so schnell gefällt: Zum Einen kann es bei unvollständigen Blöcken von Vorteil sein sie als zufällig ins Modell zu nehmen, zum Anderen gibt es aber auch die Faustregel, dass man Blockeffekte erst ab 8 Blöcken als zufällig nehmen sollte. Wir wollen in diesem Beispiel beide Modelle anpassen und dann entscheiden welches Modell wir nehmen sollten. Dies können wir davon abhängig machen in welchem der Modelle der mittlere *s.e.d.* (standard error of a difference) der Differenzen zwischen den adjustierten Sortenmittelwerten kleiner ist. Je kleiner dieser s.e.d., desto präziser können wir nämlich die Sortenunterschiede schätzen - und das ist was uns in diesem Versuch interessiert: Ein Vergleich der Sorten. Zur Klarstellung: Es gibt Standardfehler für jeden der adjustierten Mittelwerte selbst (standard error of a mean), aber wir möchten hier die Standardfehler der Differenzen zwischen den adjustierten Mittelwerten betrachten!
+
+## Vergleich beider Modelle
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+# Fester Blockeffekt
+mod.fixBl <- lm(yield ~ gen + block, 
+                data=patt)
+```
+</div> <div class = "col-md-6">
+```{r}
+library(lme4) # Zufälliger Blockeffekt
+mod.ranBl <- lmer(yield ~ gen + (1|block), 
+                  data=patt)
+```
+</div> </div>
+
+Wir überspringen hier also mal die ANOVA und ermitteln direkt die mittleren s.e.d. der beiden Modelle. Dazu berechnen wir voererstwie gehabt die adjustierten Mittelwerte und alle Kontraste zwischen ihnen mit dem `emmeans` package. Im Anschluss ziehen wir uns aber nur die Spalte mit allen s.e.d. raus und berechnen jeweils den Mittelwert.
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+emm.fixBl <- emmeans(mod.fixBl, pairwise~"gen")
+print(as.data.table(emm.fixBl$emmeans)[,1:3], nrows=10)
+dif.fixBl <- as.data.table(emm.fixBl$contrasts)
+print(dif.fixBl[,1:3], nrows=10)
+mean(dif.fixBl$SE)
+```
+</div> <div class = "col-md-6">
+```{r}
+emm.ranBl <- emmeans(mod.ranBl, pairwise~"gen")
+print(as.data.table(emm.ranBl$emmeans)[,1:3], nrows=10)
+dif.ranBl <- as.data.table(emm.ranBl$contrasts)
+dif.ranBl[,1:3]
+mean(dif.ranBl$SE)
+```
+</div> </div>
+
+Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können.

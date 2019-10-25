@@ -11,7 +11,7 @@
 
 
 
-<title>1 Beh.faktor - RCBD</title>
+<title>stat_GemischteModelle.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -513,135 +513,55 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">1 Beh.faktor - RCBD</h1>
 
 </div>
 
 
-<div id="datensatz" class="section level1">
-<h1>Datensatz</h1>
-<pre class="r"><code>library(data.table) # bessere Datenmanipulation
-library(ggplot2); library(ggfortify) # bessere Plots
-library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Dieses Beispiel ist dem Beispiel “1F_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
-<div class="row">
-<div class="col-md-6">
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
+<div id="eine-recht-einfach-gehaltene-einfuhrung" class="section level1">
+<h1>Eine recht einfach gehaltene Einführung</h1>
+<p>Einfaches lineares Modell</p>
+<p><span class="math display">\[ y = X\beta + e \]</span></p>
+<p>wobei y… und e kann …</p>
+<p>Gemischte Modelle</p>
+<p><span class="math display">\[ y = X\beta + Zu + e \]</span></p>
+<div id="ml-und-reml" class="section level3">
+<h3>ML und REML</h3>
+<p>Im Gegensatz zu einfachen linearen Modellen, können weder generalisierte, noch gemischte Modelle nur mit der <strong>Kleinst-Quadrat-Methode (KQ)</strong> (<a href="https://books.google.de/books/about/Nouvelles_m%C3%A9thodes_pour_la_d%C3%A9terminati.html?id=FRcOAAAAQAAJ&amp;redir_esc=y">Legendre, 1805</a>) auskommen, d.h. all ihre Parameter schätzen.</p>
+<p>Stattdessen muss z.B. die <strong>Maximum-Likelihood-Methode (ML)</strong> (<a href="https://www.jstor.org/stable/2339293?origin=crossref&amp;seq=1#page_scan_tab_contents">Edgeworth, 1908</a>) genutzt werden. Wie der Name schon sagt, schätzt diese Methode den Parameter mithilfe einer Wahrscheinlichkeitsfunktion so, dass dessen Verteilung am besten zur Realisierung der beobachteten Daten passt. Die Schätzwerte sind also <em>maximum likely</em> - am wahrscheinlichsten. Wenn man übrigens ein einfaches lineares Modell (z.B. eine lineare Regression unter Annahme der Normalverteiliung) mit der ML-Methode schätzt, sind die Schätzwerte der Parameter (<span class="math inline">\(\beta\)</span>) identisch zu denen der KQ-Methode.</p>
+<p>Ein Vorteil der ML-Methode ist, dass sie auch für Modelle eingesetzt werden kann, die eben nicht annehmen, dass der Fehlerterm normalverteilt annehmen. Stattdessen können auch andere Verteilungen aus der Klasse der <em>Exponentialfamilien</em> angenommen werden - dazu gehören neben der Normalverteilung auch die Binomial-, Poisson-, Gamma- und inverse Gaußverteilung.</p>
+<p>Ein Nachteil der ML-Methode ist, dass sie in gemischten Modellen die wahren Varianzkomponenten unterschätzt und das besonders bei kleinen Stichproben.</p>
+<p>Eine unverzerrte Schätzung der Varianzkomponenten liefert hingegen die <strong>Restricted-Maximum-Likelihood-Methode (REML)</strong> (<a href="https://royalsocietypublishing.org/doi/10.1098/rspa.1937.0109">Bartlett, 1937</a>). Es wird aber auch wirklich nur <span class="math inline">\(V\)</span> und nicht <span class="math inline">\(\beta\)</span> mit mit der REML-Methode geschätzt. Stattdessen wird in gemischten Modellen die REML-Schätzung von <span class="math inline">\(V\)</span> genutzt um mit ihr eine ML-Schätzung von <span class="math inline">\(\beta\)</span> durchzuführen. Das bedeutet demnach auch, dass die mit REML geschätzten Varianzkomponenten unabhängig der festen Effekte im Modell sind.</p>
+<p>Ein Nachteil von REML gegenüber ML ist, dass die Modellanpassungen von verschiedenen Modellen für denselben Datensatz nur bedingt miteinander vergleichbar sind: Man darf nämlich nur solange die Anpassungsgüten verschiedener REML Modelle vergleichen, wie sie die gleichen festen Effekte aufweisen.</p>
 </div>
-<div class="col-md-6">
-<pre class="r"><code>print(rcbd, nrows=10)</code></pre>
-<pre><code>##     gen  rep  yield
-##  1: G11 Rep1 4.1172
-##  2: G04 Rep1 4.4461
-##  3: G05 Rep1 5.8757
-##  4: G22 Rep1 4.5784
-##  5: G21 Rep1 4.6540
-## ---                
-## 68: G24 Rep3 3.5655
-## 69: G03 Rep3 2.8873
-## 70: G05 Rep3 4.1972
-## 71: G20 Rep3 3.7349
-## 72: G07 Rep3 3.6096</code></pre>
+<div id="was-ist-ein-zufalliger-effekt" class="section level3">
+<h3>Was ist ein zufälliger Effekt?</h3>
+<p>Modelle mit zufälligen Effekten sind eine neuere Entwicklung (<a href="https://www.cambridge.org/core/journals/earth-and-environmental-science-transactions-of-royal-society-of-edinburgh/article/xvthe-correlation-between-relatives-on-the-supposition-of-mendelian-inheritance/A60675052E0FB78C561F66C670BC75DE">Fisher, 1919</a>) als Modelle mit festen Effekten (<a href="https://books.google.de/books/about/Nouvelles_m%C3%A9thodes_pour_la_d%C3%A9terminati.html?id=FRcOAAAAQAAJ&amp;redir_esc=y">Legendre, 1805</a>, <a href="https://www.beck-shop.de/gauss-theoria-motus-corporum-coelestium-sectionibus-conicis-solem-ambientium/product/10712705">Gauss, 1809</a>). Auch beim Erlernen statistischer Methoden folgt das Anwenden zufälliger Effekte - wenn überhaupt - nachdem einfache Regressionen angepasst und ANOVAs durchgeführt wurden. Noch heute gilt daher, dass mit “einem Effekt” in der Regel ein fester Effekt gemeint ist, der zufällige Effekt also etwas besonderes ist.</p>
+<p>Wo immer zufällige Effekte erläutert werden, wird zumeist damit begonnen, dass <em>sie zufällige Stichproben aus einer Population</em> darstellen oder, dass es sich um Faktoren handelt, <em>deren Stufen nicht wie bei festen Effekten bestimmt, sondern zufällig aus einer Gesamtheit ausgewählt wurden</em>.</p>
+<p>Ein anderer Punkt, der oft genannt wird, ist die Mindestanzahl an Faktorstufen, die vorhanden sein sollte bevor der Faktor als zufällig ins Modell genommen werden darf. Dabei schwanken die Empfehlungen meist zwischen 5 und 12.</p>
+<p>Es soll übrigens gesagt sein, dass der Fehlerterm (<span class="math inline">\(e\)</span>) in allen Modellen - also auch in Modellen mit festen Effekten - eine Zufallsvariable, also eine zufällige, stochastische Komponente ist. Streng genommen sind also so gut wie alle Modelle <em>gemischte Modelle</em>, doch der Fehler nimmt hier eine besondere Rolle ein und wird somit nicht als zufälliger Effekt gezählt.</p>
+<p><strong>Faustregeln: Ein Faktor ist zufällig wenn</strong></p>
+<ul>
+<li><p>seine Stufen zufällig aus einer größeren Population gezogen wurden. <em>Beispiel: Ein paar Orte aus einer Zielregion</em></p></li>
+<li><p>er mindestens ~8 Stufen aufweist. <em>Beispiel: Blöcke<span class="math inline">\(^1\)</span> in einem Versuch.</em></p></li>
+<li><p>er eine zusätzliche Randomisationseinheit in (dem Design) eines Versuchs darstellt. <em>Beispiel: Mainplots/Großteilstücke in Split-Plot-Designs/Spaltanlagen. Sonst ist meist nur die Parzelle Randomisationseinheit und diese wird durch den Fehler abgebildet.</em></p></li>
+<li><p>er unvollständige Blöcke<span class="math inline">\(^1\)</span> in einem Versuch darstellt.</p></li>
+<li><p>er Mehrfachmessungen darstellt. <em>Beispiel: Mehrere Pflanzen in derselben Parzelle wurden beprobt. Es gibt also Noise aufgrund der Parzellen und aufgrund der Pflanzen innerhalb der Parzellen.</em></p></li>
+<li><p>er mit einem anderen zufälligen Effekt gekreuzt ist. <em>Beispiel: Der Effekt Ort sei definitiv zufällig. Dann ist der Effekt Jahr:Ort auch zufällig.</em></p></li>
+<li>es nötig ist Korrelationen/Varianzstrukturen zwischen seinen Stufen anzunehmen:
+<ul>
+<li>zwischen Genotypen aufgrund von genetischer Ähnlichkeit</li>
+<li>zwischen Messwiederholungen am selben Objekt aufgrund von zeitlicher Nähe</li>
+<li>zwischen Proben/Parzellen aufgrund von räumlicher Nähe</li>
+</ul></li>
+</ul>
+<blockquote>
+<p><br> <span class="math inline">\(^1\)</span>: Bei balancierten Daten und ausschließlich vollständigen Blöcken macht es keinen Unterschied ob die Blockeffekte als fest oder zufällig ins Modell genommen werden. Nur bei unbalancierten Daten bzw. unvollständigen Blöcken <strong>kann</strong> es sinnvoll sein die Blockeffekte als zufällig ins Modell zu nehmen, da nur so auch <em>Inter-Block</em> und <em>Intra-Block Informationen</em> in der Analyse berücksichtigt werden können. Um zu prüfen ob Blockeffekte als fest oder zufällig ins Modell genommen werden sollten, sollten beide Modelle aufgestellt werden und die s.e.d. (standard error of a difference) der Vergleiche zwischen den Behandlungsstufen verglichen werden. Das Modell mit den (durchschnittlich) kleineren s.e.d. ist vorzuziehen. Es muss dabei aber unbedingt eine Approximierung der Freiheitsgrade stattfinden (z.B. Kenward-Rorger oder Satterthwaite).</p>
+</blockquote>
 </div>
+<div id="blup-und-blue" class="section level3">
+<h3>BLUP und BLUE</h3>
+<p>Während die REML-Methode genutzt wird um die Varianzkomponenten zu schätzen, werden die zufälligen Effekte selbst als <strong>Best linear unbiased prediction (BLUP)</strong> <em>predicted/vorhergesagt</em>. Die festen Effekte hingegen werden als <strong>Best linear unbiased estimation (BLUE)</strong> <em>estimated/geschätzt</em>.</p>
 </div>
-</div>
-<div id="deskriptive-statistik" class="section level1">
-<h1>Deskriptive Statistik</h1>
-<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1F_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
-<div class="row">
-<div class="col-md-6">
-<pre class="r"><code>str(rcbd)</code></pre>
-<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  3 variables:
-##  $ gen  : Factor w/ 24 levels &quot;G01&quot;,&quot;&quot;..
-##  $ rep  : Factor w/ 3 levels &quot;Rep1&quot;,&quot;&quot;..
-##  $ yield: num  4.12 4.45 5.88 4.58 4.6..
-##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
-<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-</div>
-<div class="col-md-6">
-<pre class="r"><code>summary(rcbd)</code></pre>
-<pre><code>##       gen       rep         yield      
-##  G01    : 3   Rep1:24   Min.   :2.887  
-##  G02    : 3   Rep2:24   1st Qu.:4.110  
-##  G03    : 3   Rep3:24   Median :4.404  
-##  G04    : 3             Mean   :4.480  
-##  G05    : 3             3rd Qu.:4.968  
-##  G06    : 3             Max.   :5.876  
-##  (Other):54</code></pre>
-<pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-</div>
-</div>
-</div>
-<div id="schlieende-statistik" class="section level1">
-<h1>Schließende Statistik</h1>
-<div id="lineares-modell" class="section level2">
-<h2>Lineares Modell</h2>
-<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor. Außerdem haben wir den nun noch den qualitativen Faktor ‘rep’ im Modell.</p>
-<pre class="r"><code>mod &lt;- lm(yield ~ gen + rep, data=rcbd)</code></pre>
-<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
-</div>
-<div id="varianzanalyse" class="section level2">
-<h2>Varianzanalyse</h2>
-<pre class="r"><code>anova(mod)</code></pre>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: yield
-##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## gen       23 14.0765 0.61202  4.5475 6.259e-06 ***
-## rep        2  6.1355 3.06774 22.7939 1.322e-07 ***
-## Residuals 46  6.1910 0.13459                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test).</p>
-</div>
-<div id="multipler-mittelwertvergleich" class="section level2">
-<h2>Multipler Mittelwertvergleich</h2>
-<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
-<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
-as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
-<pre><code>##    gen   emmean        SE df lower.CL upper.CL
-## 1: G01 5.162500 0.2118065 46 4.736156 5.588844
-## 2: G02 4.514200 0.2118065 46 4.087856 4.940544
-## 3: G03 3.343067 0.2118065 46 2.916722 3.769411
-## 4: G04 4.400667 0.2118065 46 3.974322 4.827011
-## 5: G05 5.064367 0.2118065 46 4.638022 5.490711
-## 6: G06 4.710333 0.2118065 46 4.283989 5.136678</code></pre>
-<pre class="r"><code>as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen</code></pre>
-<pre><code>##     contrast   estimate        SE df   t.ratio      p.value
-## 1: G01 - G02 0.64830000 0.2995396 46 2.1643215 8.669495e-01
-## 2: G01 - G03 1.81943333 0.2995396 46 6.0740994 5.296688e-05
-## 3: G01 - G04 0.76183333 0.2995396 46 2.5433476 6.406025e-01
-## 4: G01 - G05 0.09813333 0.2995396 46 0.3276139 1.000000e+00
-## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
-## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
-<p>Im Vergleich zum Beispiel “1F_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
-<pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
-<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
-## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
-<pre class="r"><code>as.data.table(means$emmeans)[1:6,]</code></pre>
-<pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
-## 1: G03 3.343067 0.2118065 46 2.916722 3.769411   a   
-## 2: G09 3.611600 0.2118065 46 3.185256 4.037944   ab  
-## 3: G20 3.784867 0.2118065 46 3.358522 4.211211   abc 
-## 4: G07 4.129933 0.2118065 46 3.703589 4.556278   abcd
-## 5: G23 4.136200 0.2118065 46 3.709856 4.562544   abcd
-## 6: G24 4.142367 0.2118065 46 3.716022 4.568711   abcd</code></pre>
-</div>
-</div>
-<div id="ergebnisaufbereitung" class="section level1">
-<h1>Ergebnisaufbereitung</h1>
-<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1F_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
-<pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
-  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
-  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
-  geom_text(aes(y=(upper.CL)*1.1, label=.group, angle=90)) +
-  labs(y=&quot;Adjustierter Ertragsmittelwert mit 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;) +
-  theme_bw() +
-  annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
-  label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 
 

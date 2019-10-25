@@ -33,6 +33,8 @@ navbar:
           href: 2F_rcbd.html
         - text: "2F split-plot"
           href: 2F_splitplot.html
+        - text: "1F augmented"
+          href: 1F_augmented_blockFixOrRandom.html
         - text: "1F rcbd Messwiederholungen"
           href: 1F_rcbd_messwdh.html
         - text: "1F rcbd Prozentwerte"

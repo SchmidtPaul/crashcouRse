@@ -1,0 +1,66 @@
+---
+Title: "Gemischte Modelle"
+---
+# Eine recht einfach gehaltene Einführung
+
+Einfaches lineares Modell
+
+$$ y = X\beta + e $$
+
+wobei y...
+und e kann ...
+
+Gemischte Modelle
+
+$$ y = X\beta + Zu + e $$
+
+### ML und REML
+Im Gegensatz zu einfachen linearen Modellen, können weder generalisierte, noch gemischte Modelle nur mit der **Kleinst-Quadrat-Methode (KQ)** ([Legendre, 1805](https://books.google.de/books/about/Nouvelles_m%C3%A9thodes_pour_la_d%C3%A9terminati.html?id=FRcOAAAAQAAJ&redir_esc=y)) auskommen, d.h. all ihre Parameter schätzen.
+
+Stattdessen muss z.B. die **Maximum-Likelihood-Methode (ML)** ([Edgeworth, 1908](https://www.jstor.org/stable/2339293?origin=crossref&seq=1#page_scan_tab_contents)) genutzt werden. Wie der Name schon sagt, schätzt diese Methode den Parameter mithilfe einer Wahrscheinlichkeitsfunktion so, dass dessen Verteilung am besten zur Realisierung der beobachteten Daten passt. Die Schätzwerte sind also *maximum likely* - am wahrscheinlichsten. Wenn man übrigens ein einfaches lineares Modell (z.B. eine lineare Regression unter Annahme der Normalverteiliung) mit der ML-Methode schätzt, sind die Schätzwerte der Parameter ($\beta$) identisch zu denen der KQ-Methode. 
+
+Ein Vorteil der ML-Methode ist, dass sie auch für Modelle eingesetzt werden kann, die eben nicht annehmen, dass der Fehlerterm normalverteilt annehmen. Stattdessen können auch andere Verteilungen aus der Klasse der *Exponentialfamilien* angenommen werden - dazu gehören neben der Normalverteilung auch die Binomial-, Poisson-, Gamma- und inverse Gaußverteilung.
+
+Ein Nachteil der ML-Methode ist, dass sie in gemischten Modellen die wahren Varianzkomponenten unterschätzt und das besonders bei kleinen Stichproben. 
+
+Eine unverzerrte Schätzung der Varianzkomponenten liefert hingegen die **Restricted-Maximum-Likelihood-Methode (REML)** ([Bartlett, 1937](https://royalsocietypublishing.org/doi/10.1098/rspa.1937.0109)). Es wird aber auch wirklich nur $V$ und nicht $\beta$ mit mit der REML-Methode geschätzt. Stattdessen wird in gemischten Modellen die REML-Schätzung von $V$ genutzt um mit ihr eine ML-Schätzung von $\beta$ durchzuführen. Das bedeutet demnach auch, dass die mit REML geschätzten Varianzkomponenten unabhängig der festen Effekte im Modell sind.
+
+Ein Nachteil von REML gegenüber ML ist, dass die Modellanpassungen von verschiedenen Modellen für denselben Datensatz nur bedingt miteinander vergleichbar sind: Man darf nämlich nur solange die Anpassungsgüten verschiedener REML Modelle vergleichen, wie sie die gleichen festen Effekte aufweisen.
+
+### Was ist ein zufälliger Effekt?
+Modelle mit zufälligen Effekten sind eine neuere Entwicklung ([Fisher, 1919](https://www.cambridge.org/core/journals/earth-and-environmental-science-transactions-of-royal-society-of-edinburgh/article/xvthe-correlation-between-relatives-on-the-supposition-of-mendelian-inheritance/A60675052E0FB78C561F66C670BC75DE)) als Modelle mit festen Effekten ([Legendre, 1805](https://books.google.de/books/about/Nouvelles_m%C3%A9thodes_pour_la_d%C3%A9terminati.html?id=FRcOAAAAQAAJ&redir_esc=y), [Gauss, 1809](https://www.beck-shop.de/gauss-theoria-motus-corporum-coelestium-sectionibus-conicis-solem-ambientium/product/10712705)). Auch beim Erlernen statistischer Methoden folgt das Anwenden zufälliger Effekte - wenn überhaupt - nachdem einfache Regressionen angepasst und ANOVAs durchgeführt wurden. Noch heute gilt daher, dass mit "einem Effekt" in der Regel ein fester Effekt gemeint ist, der zufällige Effekt also etwas besonderes ist.
+
+Wo immer zufällige Effekte erläutert werden, wird zumeist damit begonnen, dass *sie zufällige Stichproben aus einer Population* darstellen oder, dass es sich um Faktoren handelt, *deren Stufen nicht wie bei festen Effekten bestimmt, sondern zufällig aus einer Gesamtheit ausgewählt wurden*.
+
+Ein anderer Punkt, der oft genannt wird, ist die Mindestanzahl an Faktorstufen, die vorhanden sein sollte bevor der Faktor als zufällig ins Modell genommen werden darf. Dabei schwanken die Empfehlungen meist zwischen 5 und 12.
+
+Es soll übrigens gesagt sein, dass der Fehlerterm ($e$) in allen Modellen - also auch in Modellen mit festen Effekten - eine Zufallsvariable, also eine zufällige, stochastische Komponente ist. Streng genommen sind also so gut wie alle Modelle *gemischte Modelle*, doch der Fehler nimmt hier eine besondere Rolle ein und wird somit nicht als zufälliger Effekt gezählt. 
+
+**Faustregeln: Ein Faktor ist zufällig wenn**
+
+ * seine Stufen zufällig aus einer größeren Population gezogen wurden. *Beispiel: Ein paar Orte aus einer Zielregion*
+ 
+ * er mindestens ~8 Stufen aufweist. *Beispiel: Blöcke$^1$ in einem Versuch.*
+ 
+ * er eine zusätzliche Randomisationseinheit in (dem Design) eines Versuchs darstellt. *Beispiel: Mainplots/Großteilstücke in Split-Plot-Designs/Spaltanlagen. Sonst ist meist nur die Parzelle Randomisationseinheit und diese wird durch den Fehler abgebildet.*
+ 
+ * er unvollständige Blöcke$^1$ in einem Versuch darstellt.
+ 
+ * er Mehrfachmessungen darstellt. *Beispiel: Mehrere Pflanzen in derselben Parzelle wurden beprobt. Es gibt also Noise aufgrund der Parzellen und aufgrund der Pflanzen innerhalb der Parzellen.*
+ 
+ * er mit einem anderen zufälligen Effekt gekreuzt ist. *Beispiel: Der Effekt Ort sei definitiv zufällig. Dann ist der Effekt Jahr:Ort auch zufällig.*
+ 
+ * es nötig ist Korrelationen/Varianzstrukturen zwischen seinen Stufen anzunehmen:
+   + zwischen Genotypen aufgrund von genetischer Ähnlichkeit
+   + zwischen Messwiederholungen am selben Objekt aufgrund von zeitlicher Nähe
+   + zwischen Proben/Parzellen aufgrund von räumlicher Nähe
+   
+> <br> $^1$: Bei balancierten Daten und ausschließlich vollständigen Blöcken macht es keinen Unterschied ob die Blockeffekte als fest oder zufällig ins Modell genommen werden. Nur bei unbalancierten Daten bzw. unvollständigen Blöcken **kann** es sinnvoll sein die Blockeffekte als zufällig ins Modell zu nehmen, da nur so auch *Inter-Block* und *Intra-Block Informationen* in der Analyse berücksichtigt werden können. Um zu prüfen ob Blockeffekte als fest oder zufällig ins Modell genommen werden sollten, sollten beide Modelle aufgestellt werden und die s.e.d. (standard error of a difference) der Vergleiche zwischen den Behandlungsstufen verglichen werden. Das Modell mit den (durchschnittlich) kleineren  s.e.d. ist vorzuziehen. Es muss dabei aber unbedingt eine Approximierung der Freiheitsgrade stattfinden (z.B. Kenward-Rorger oder Satterthwaite).
+
+### BLUP und BLUE
+Während die REML-Methode genutzt wird um die Varianzkomponenten zu schätzen, werden die zufälligen Effekte selbst als **Best linear unbiased prediction (BLUP)** *predicted/vorhergesagt*. Die festen Effekte hingegen werden als **Best linear unbiased estimation (BLUE)** *estimated/geschätzt*.  
+
+
+
+
+

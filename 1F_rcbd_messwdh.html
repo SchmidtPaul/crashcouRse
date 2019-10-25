@@ -437,6 +437,9 @@ div.tocify {
       <a href="2F_splitplot.html">2F split-plot</a>
     </li>
     <li>
+      <a href="1F_augmented_blockFixOrRandom.html">1F augmented</a>
+    </li>
+    <li>
       <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
@@ -669,39 +672,39 @@ anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
 means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
 means$emmeans # Sorten-Mittelwerte pro Woche</code></pre>
 <pre><code>## week = 1:
-##  gen emmean     SE   df lower.CL upper.CL .group
-##  A     4.24 0.0681 18.2     4.10     4.38  a    
-##  C     4.89 0.0681 19.5     4.75     5.03   b   
-##  B     5.15 0.0681 19.5     5.01     5.29    c  
-##  D     5.15 0.0681 18.2     5.01     5.30    c  
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    4.242 0.06808206 18.22 4.099088 4.384912  a    
+##  C    4.888 0.06808206 19.51 4.745752 5.030248   b   
+##  B    5.148 0.06808206 19.51 5.005752 5.290248    c  
+##  D    5.154 0.06808206 18.22 5.011088 5.296912    c  
 ## 
 ## week = 2:
-##  gen emmean     SE   df lower.CL upper.CL .group
-##  A     4.05 0.0681 18.2     3.90     4.19  a    
-##  D     4.94 0.0681 18.2     4.80     5.09   b   
-##  B     4.98 0.0681 19.5     4.84     5.12   b   
-##  C     5.07 0.0681 19.5     4.93     5.22   b   
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    4.046 0.06808206 18.22 3.903088 4.188912  a    
+##  D    4.944 0.06808206 18.22 4.801088 5.086912   b   
+##  B    4.980 0.06808206 19.51 4.837752 5.122248   b   
+##  C    5.074 0.06808206 19.51 4.931752 5.216248   b   
 ## 
 ## week = 3:
-##  gen emmean     SE   df lower.CL upper.CL .group
-##  A     3.41 0.0681 18.2     3.26     3.55  a    
-##  B     4.59 0.0681 19.5     4.45     4.74   b   
-##  D     4.71 0.0681 18.2     4.56     4.85   b   
-##  C     4.71 0.0681 19.5     4.57     4.86   b   
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    3.406 0.06808206 18.22 3.263088 3.548912  a    
+##  B    4.594 0.06808206 19.51 4.451752 4.736248   b   
+##  D    4.706 0.06808206 18.22 4.563088 4.848912   b   
+##  C    4.714 0.06808206 19.51 4.571752 4.856248   b   
 ## 
 ## week = 4:
-##  gen emmean     SE   df lower.CL upper.CL .group
-##  A     3.09 0.0681 18.2     2.94     3.23  a    
-##  B     4.22 0.0681 19.5     4.08     4.36   b   
-##  D     4.39 0.0681 18.2     4.25     4.53   b   
-##  C     4.48 0.0681 19.5     4.33     4.62   b   
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    3.086 0.06808206 18.22 2.943088 3.228912  a    
+##  B    4.220 0.06808206 19.51 4.077752 4.362248   b   
+##  D    4.388 0.06808206 18.22 4.245088 4.530912   b   
+##  C    4.476 0.06808206 19.51 4.333752 4.618248   b   
 ## 
 ## week = 5:
-##  gen emmean     SE   df lower.CL upper.CL .group
-##  A     2.70 0.0681 18.2     2.56     2.84  a    
-##  D     3.83 0.0681 18.2     3.69     3.98   b   
-##  B     4.01 0.0681 19.5     3.87     4.15   b   
-##  C     4.02 0.0681 19.5     3.88     4.16   b   
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    2.700 0.06808206 18.22 2.557088 2.842912  a    
+##  D    3.834 0.06808206 18.22 3.691088 3.976912   b   
+##  B    4.008 0.06808206 19.51 3.865752 4.150248   b   
+##  C    4.018 0.06808206 19.51 3.875752 4.160248   b   
 ## 
 ## Results are averaged over the levels of: rep 
 ## Degrees-of-freedom method: satterthwaite 

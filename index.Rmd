@@ -37,9 +37,10 @@ Kapitel | Behandlungseffekt | Design | Besonderheit | Funktion
 [Bsp 5](1F_alpha.html) | 1 Faktor | $\alpha$-lattice | | `lmer()`
 [Bsp 6](2F_rcbd.html) | 2 Faktoren | RCBD | | `lm()`
 [Bsp 7](2F_splitplot.html) | 2 Faktoren | split-plot | | `lmer()`
-[Bsp 8](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
-[Bsp 9](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
-[Bsp 10](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
+[Bsp 8](1F_augmented_blockFixOrRandom.html) | 1 Faktor | Augmtended | | `lmer()`
+[Bsp 9](1F_rcbd_messwdh.html) | 1 Faktor | RCBD | Messwiederholung | `gls()`
+[Bsp 10](1F_rcbd_binomial.html) | 1 Faktor | RCBD | Prozentwerte | `glm()`
+[Bsp 11](1F_latsq_poisson.html) | 1 Faktor | Lat. Quadrat | Zählwerte | `glm()`
 
 ## Statistik Theorie
 Pragmatische Erklärungen, Diskussionen und Verweise auf weiterführende Informationen zur statistischen Theorie.
@@ -53,8 +54,9 @@ Kapitel | Beschreibung | Funktion
 [Stat 5](stat_adjmeans.html) | Adjustierte Mittelwerte | `emmeans()`
 [Stat 6](stat_pvalue.html) | p-Werte und Signifikanzen | -
 [Stat 7](appendix_interaktionen.html) | Behandlungsinteraktionen | -
-[Stat 8](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
-[Stat 9](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
+[Stat 8](stat_GemischteModelle.html) | Gemischte Modelle | -
+[Stat 9](appendix_kovarstrukt.html) | Kovarianzstrukturen | `gls()` & `asreml()`
+[Stat 10](intro_GLM_carrot.html) | Nicht-normalverteilte Daten | `glm()`
 
 # Anderes
 ### Weitere Quellen

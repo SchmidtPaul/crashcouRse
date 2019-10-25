@@ -437,6 +437,9 @@ div.tocify {
       <a href="2F_splitplot.html">2F split-plot</a>
     </li>
     <li>
+      <a href="1F_augmented_blockFixOrRandom.html">1F augmented</a>
+    </li>
+    <li>
       <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
@@ -616,12 +619,12 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
 means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
 means</code></pre>
-<pre><code>##  trt rate    SE  df asymp.LCL asymp.UCL .group
-##  K   1.12 0.563 Inf     0.415      3.00 a     
-##  P   4.44 1.150 Inf     2.668      7.37 ab    
-##  O   5.42 1.271 Inf     3.423      8.58 b     
-##  M   5.93 1.335 Inf     3.819      9.22 b     
-##  N   6.18 1.373 Inf     4.002      9.56 b     
+<pre><code>##  trt     rate        SE  df asymp.LCL asymp.UCL .group
+##  K   1.116262 0.5634313 Inf  0.415072  3.001986 a     
+##  P   4.435874 1.1504576 Inf  2.668194  7.374642 ab    
+##  O   5.419780 1.2711275 Inf  3.422513  8.582585 b     
+##  M   5.934068 1.3345778 Inf  3.818708  9.221224 b     
+##  N   6.184781 1.3733085 Inf  4.002377  9.557198 b     
 ## 
 ## Results are averaged over the levels of: row, col 
 ## Confidence level used: 0.95 

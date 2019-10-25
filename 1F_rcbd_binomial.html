@@ -437,6 +437,9 @@ div.tocify {
       <a href="2F_splitplot.html">2F split-plot</a>
     </li>
     <li>
+      <a href="1F_augmented_blockFixOrRandom.html">1F augmented</a>
+    </li>
+    <li>
       <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
@@ -605,23 +608,23 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
 means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
 means</code></pre>
-<pre><code>##  gen  prob     SE  df asymp.LCL asymp.UCL .group
-##  G13 0.110 0.0802 Inf    0.0241     0.381 a     
-##  G16 0.188 0.0872 Inf    0.0701     0.415 a     
-##  G14 0.265 0.1062 Inf    0.1104     0.512 ab    
-##  G15 0.347 0.1007 Inf    0.1824     0.560 ab    
-##  G08 0.459 0.1138 Inf    0.2569     0.676 ab    
-##  G11 0.508 0.1110 Inf    0.3018     0.711 ab    
-##  G12 0.511 0.1153 Inf    0.2969     0.720 ab    
-##  G04 0.519 0.1016 Inf    0.3270     0.706 ab    
-##  G09 0.524 0.1023 Inf    0.3301     0.711 ab    
-##  G06 0.640 0.1128 Inf    0.4052     0.823 ab    
-##  G10 0.699 0.1178 Inf    0.4364     0.874 ab    
-##  G07 0.703 0.1062 Inf    0.4661     0.865 ab    
-##  G03 0.730 0.0994 Inf    0.5017     0.879 ab    
-##  G05 0.788 0.0971 Inf    0.5435     0.921 ab    
-##  G02 0.793 0.0905 Inf    0.5654     0.919 b     
-##  G01 0.816 0.0909 Inf    0.5751     0.935 b     
+<pre><code>##  gen      prob         SE  df asymp.LCL asymp.UCL .group
+##  G13 0.1096695 0.08015208 Inf 0.0240563 0.3810171 a     
+##  G16 0.1877818 0.08721538 Inf 0.0700935 0.4149056 a     
+##  G14 0.2653243 0.10621731 Inf 0.1104184 0.5123780 ab    
+##  G15 0.3474510 0.10066214 Inf 0.1823600 0.5596926 ab    
+##  G08 0.4591115 0.11377640 Inf 0.2569434 0.6756990 ab    
+##  G11 0.5078141 0.11096378 Inf 0.3017679 0.7112395 ab    
+##  G12 0.5105842 0.11528955 Inf 0.2969393 0.7204313 ab    
+##  G04 0.5189702 0.10163084 Inf 0.3269521 0.7055434 ab    
+##  G09 0.5239933 0.10227434 Inf 0.3301250 0.7108907 ab    
+##  G06 0.6401054 0.11281144 Inf 0.4051711 0.8228253 ab    
+##  G10 0.6987352 0.11784284 Inf 0.4363647 0.8741865 ab    
+##  G07 0.7028341 0.10621641 Inf 0.4660713 0.8650151 ab    
+##  G03 0.7303351 0.09944380 Inf 0.5016697 0.8793159 ab    
+##  G05 0.7881716 0.09706373 Inf 0.5435088 0.9208099 ab    
+##  G02 0.7933597 0.09051044 Inf 0.5654256 0.9188917 b     
+##  G01 0.8155320 0.09085289 Inf 0.5751050 0.9352342 b     
 ## 
 ## Results are averaged over the levels of: block 
 ## Confidence level used: 0.95 
