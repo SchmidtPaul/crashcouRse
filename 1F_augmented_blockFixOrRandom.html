@@ -479,6 +479,9 @@ div.tocify {
       <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
     </li>
     <li>
+      <a href="stat_GemischteModelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
       <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
     </li>
     <li>
@@ -519,7 +522,7 @@ div.tocify {
 
 
 <blockquote>
-<p>Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung “Mixed models for metric data” von <a href="https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en">Prof. Dr. Piepho</a>. In dem Skript finden sich detailliertere Erläuterungen, sowie SAS Codes.</p>
+<p>Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung “Mixed models for metric data” von <a href="https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en">Prof. Dr. Piepho</a>. In dem Skript finden sich weitere Erläuterungen, sowie SAS Codes.</p>
 </blockquote>
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
@@ -650,7 +653,8 @@ dif.ranBl[,1:3]</code></pre>
 <pre><code>## [1] 462.0431</code></pre>
 </div>
 </div>
-<p>Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können.</p>
+<p>Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können. <strong>Wichtig bei diesem Vergleich ist</strong>, dass die s.e.d. der adjustierten Mittelwertdifferenzen für das gemischte Modelle unbedingt mit einer Approximation wie z.B. der Kenward-Roger-Methode oder Satterthwaite-Methode berechnet werden sollten - dies wird von der <code>emmeans()</code> Funktion allerdings standardmäßig getan. Mehr zu dem Thema im <a href="stat_GemischteModelle.html">Kapitel zu gemischten Modellen</a>.</p>
+<p>Demnach würden wir ab hier wie in den vorangegangenen Beispielen (eine ANOVA durchführen um zu prüfen ob der Sorteneffekt signifikant ist und) post-hoc-Tests für die Sortenmittelwertvergleiche durchführen.</p>
 </div>
 </div>
 

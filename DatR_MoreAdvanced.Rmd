@@ -129,5 +129,71 @@ mtcars %>%
 ```
 </div> </div>
 
+# Faktorstufen ordnen
+Spätestens beim Erstellen von Plots mit `ggplot()` stößt man auf das Problem, dass die Faktorstufen einer Variable, die `as.factor` definiert ist, anscheinend einer festen Reihenfolge unterliegen, die sich nicht ganz so schnell ändern lässt - zumindest nicht durch z.B. sortieren des Datensatzes.
+
+Man beachte bei diesem Beispiel, dass die Reihenfolge (a, b, c) im Datensatz selbst stimmt und sogar genau so in den `as.factor()` Befehl eingegeben wurde. Dennoch ordnet R die Stufen automatisch alphabetisch, was man sowohl im plot, als auch mit dem `levels()` Befehl sehen kann:
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+```
+
+```{r}
+dat <- data.frame(fkt = as.factor(c("a", "c", "b")),
+                  num = c(21, 20, 22))
+```
+<div class = "row"> <div class = "col-md-6">
+```{r}
+dat
+levels(dat$fkt)
+```
+</div> <div class = "col-md-6">
+```{r, out.width = '60%', fig.align='center', fig.height=3, fig.width=3}
+ggplot(data=dat, aes(y=num, x=fkt)) + 
+  geom_point(size=3)
+```
+</div> </div>
+
+Tatsächlich ist die Reihenfolge der Faktorstufen mit im Objekt abgespeichert und meist standardmäßig alphabetisch angeordnet. Es gibt mehrere Möglichkeiten um diese Reihenfolge zu ändern. Ich selbst nutze seit einiger Zeit das `forcats` package.
+
+### Manuell anordnen
+Will man eine manuelle Reihenfolge bestimmen, so geht das mit dem Befehl `fct_relevel`:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+library(forcats)
+
+dat <- dat %>%
+  mutate(fkt=fct_relevel(fkt, c("a","c","b")))
+
+levels(dat$fkt)
+```
+</div> <div class = "col-md-6">
+```{r, out.width = '60%', fig.align='center', fig.height=3, fig.width=3}
+ggplot(data=dat, aes(y=num, x=fkt)) + 
+  geom_point(size=3, color="olivedrab")
+```
+</div> </div>
+
+### Nach einer anderen Variable ordnen lassen
+Will man die Faktorstufen lieber nach z.B. der y-Variable (`num`) des Plots ordnen, so geht das mit `fct_reorder`:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+library(forcats)
+
+dat <- dat %>%
+  mutate(fkt=fct_reorder(fkt, num, .desc=TRUE))
+
+levels(dat$fkt)
+```
+</div> <div class = "col-md-6">
+```{r, out.width = '60%', fig.align='center', fig.height=3, fig.width=3}
+ggplot(data=dat, aes(y=num, x=fkt)) + 
+  geom_point(size=3, color="firebrick")
+```
+</div> </div>
+
+
 
 

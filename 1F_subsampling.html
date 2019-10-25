@@ -11,7 +11,7 @@
 
 
 
-<title>Logistische Regression</title>
+<title>Sub-Sampling</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -516,108 +516,143 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Logistische Regression</h1>
+<h1 class="title toc-ignore">Sub-Sampling</h1>
 
 </div>
 
 
-<p>Mit <strong>logistischer Regression</strong> oder <strong>Logit-Modell</strong> (von <strong>log</strong>istic un<strong>it</strong>) sind in der Regel Regressionsmodelle gemeint, die binäre Zielvariablen (z.B. <em>Ja/Nein</em>) modellieren. Streng genommen fallen aber auch die multinomiale (<em>deutsch/englisch/spanisch</em>; multinomial logistic regression) oder geordnete (<em>schlecht/mittel/gut</em>; ordered logit model) logistische Regressionen, also alle Regressionen mit diskreten Zielvariablen, in die Klasse der logistischen Regressionen, welche wiederum eine Untergruppe der generalisierten linearen Modelle sind.</p>
+<blockquote>
+<p>Dieses Beispiel entspricht Example 9 aus dem Skript zur Vorlesung “Mixed models for metric data” von <a href="https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en">Prof. Dr. Piepho</a>. In dem Skript finden sich weitere Erläuterungen, sowie SAS Codes.</p>
+</blockquote>
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
-<p>Es wurde von insgesamt 18 Personen die Körpergröße in cm ermittelt. Unter den Personen waren 11 Frauen und 7 Männer:</p>
+<p>In einem Gewächshausversuch mit Sorghum wurde untersucht wie sich das Entfernen von Blättern auf das Tausendkorngewicht (TKG) auswirkt. Dazu wurden den Pflanzen entweder (i) alle bis auf das oberste Blatt (<em>“Top1”</em>), (ii) alle bis auf die obersten 6 Blätter (<em>“Top6”</em>) oder (iii) keine Blätter (<em>“Ctrl”</em>) entfernt. Diese drei Behandlungsstufen wurden jeweils auf einem Tisch in 4 vollständigen Wiederholungen (<em>I-IV</em>) als randomisierte vollständige Blockanlage angelegt:</p>
+<p><img src="1F_subsampling_files/figure-html/unnamed-chunk-2-1.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>Das ist aber noch nicht alles. Bis hierhin könnten wir die Daten auswerten wie bei einer einfaktoriellen randomisierten, vollständigen Blockanlage wie <a href="1F_rcbd.html">in diesem Beispiel</a>, mit dem Unterschied, dass es nicht um Parzellen, sondern Tische ginge.</p>
+<p>Die Besonderheit dieses Versuchs besteht allerdings darin, dass auf den Tischen jeweils 10 Töpfe mit jeweils 1 Pflanze standen. Tatsächlich haben wir also 10 Messwerte von 10 verschiedenen Pflanzen auf demselben Tisch mit derselben Behandlungsstufe:</p>
+<p><img src="1F_subsampling_files/figure-html/unnamed-chunk-3-1.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>Es muss an diesem Punkt klar sein was hier anders ist als sonst: Nur weil wir doch nicht 4 Beobachtungen pro Behandlungsstufe haben, sondern 40, bedeutet das <strong>nicht</strong>, dass wir eine randomisierte, vollständige Blockanlage mit 40 Wiederholungen angelegt haben. Fakt ist, dass wir in diesem Versuch weiterhin nur von 4 vollständigen Blöcken/Wiederholungen sprechen können. Hätten wir wirklich einen Versuch mit den 40 Töpfen pro Behandlungsstufe als 40 Wiederholungen anlegen wollen, hätten wir sie auch dementsprechend im Versuchsdesign randomisieren müssen. Stattdessen wurden nur die Behandlungsstufen auf die Tische randomisiert und dann mehrfach pro Tisch gemessen. Das ist vergleichbar mit einem Szenario in dem man in einem Feldversuch dieselbe Parzelle mehrmals beprobt (z.B. Halmhöhe misst) - auch hier führen zusätzliche Datenpunkte nicht dazu, dass man zusätzlich Parzellen hat.</p>
+<p>Stattdessen spricht man in Fällen wie diesem entweder von <strong>Pseudo-Wiederholungen</strong>, weil man eben keine echten Wiederholungen aber auch keine Messwiederholungen (am selben Objekt über längere Zeit) hat, oder man spricht von <strong>Sub-Sampling</strong>, weil man quasi noch innerhalb seiner <em>samples</em> mehrere Beobachtungen vornimmt.</p>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Wie immer schauen wir uns ein paar deskriptive Statistiken an um ein Gefühl für die Daten zu bekommen.</p>
 <div class="row">
 <div class="col-md-6">
-<pre class="r"><code>heights</code></pre>
-<pre><code>##     gender height
-##  1:      F    165
-##  2:      F    170
-##  3:      F    159
-##  4:      F    176
-##  5:      F    172
-##  6:      F    179
-##  7:      F    174
-##  8:      F    171
-##  9:      F    173
-## 10:      F    161
-## 11:      F    160
-## 12:      M    172
-## 13:      M    190
-## 14:      M    181
-## 15:      M    175
-## 16:      M    183
-## 17:      M    189
-## 18:      M    177</code></pre>
+<pre class="r"><code>print(psr, nrows=10)</code></pre>
+<pre><code>##      treat block plant   TKG
+##   1:  Ctrl     I     1 41.89
+##   2:  Ctrl     I     2 29.97
+##   3:  Ctrl     I     3 27.82
+##   4:  Ctrl     I     4 29.68
+##   5:  Ctrl     I     5 27.84
+##  ---                        
+## 116:  Top6    IV     6 31.00
+## 117:  Top6    IV     7 31.36
+## 118:  Top6    IV     8 29.67
+## 119:  Top6    IV     9 30.12
+## 120:  Top6    IV    10 27.33</code></pre>
+<pre class="r"><code>plot(y=psr$TKG, x=psr$treat)</code></pre>
+<p><img src="1F_subsampling_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div class="col-md-6">
-<pre class="r"><code>summary(heights)</code></pre>
-<pre><code>##  gender     height     
-##  F:11   Min.   :159.0  
-##  M: 7   1st Qu.:170.2  
-##         Median :173.5  
-##         Mean   :173.7  
-##         3rd Qu.:178.5  
-##         Max.   :190.0</code></pre>
-<pre class="r"><code>str(heights)</code></pre>
-<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   18 obs. of  2 variables:
-##  $ gender: Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;:..
-##  $ height: int  165 170 159 176 172 17..
+<pre class="r"><code>str(psr)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   120 obs. of  4 variables:
+##  $ treat: Factor w/ 3 levels &quot;Ctrl&quot;,&quot;&quot;..
+##  $ block: Factor w/ 4 levels &quot;I&quot;,&quot;II&quot;&quot;..
+##  $ plant: Factor w/ 10 levels &quot;1&quot;,&quot;2&quot;&quot;..
+##  $ TKG  : num  41.9 30 27.8 29.7 27.8 ..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+<pre class="r"><code>ggplot(data=psr, 
+       aes(y=TKG, x=treat, color=treat)) +
+  geom_jitter(aes(shape=block), 
+              width=0.2, height=0, size=2) + 
+  scale_color_manual(values=Farben) +
+  ylim(c(0, max(psr$TKG))) +
+  stat_summary(fun.y=&quot;mean&quot;, colour=&quot;red&quot;, 
+               size=2, geom=&quot;point&quot;) +
+  guides(color=FALSE) + theme_classic() +
+  labs(caption=&quot;Roter Punkt entspricht arithmetischem Mittelwert&quot;)</code></pre>
+<p><img src="1F_subsampling_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<p>Ziel der Analyse ist es, basierend auf der Körpergröße einer Person ihr Geschlecht zu schätzen. Anstelle eines Boxplots, sollen die Daten in diesem Fall wie folgt dargestellt werden:</p>
-<pre class="r"><code>library(ggplot2)
-ggplot(data=heights, aes(x=height, y=gender, color=gender)) +
-  geom_point() + theme_classic() +
-  theme(legend.position = c(.9,.2),
-        legend.box.background = element_rect(color = &quot;black&quot;))</code></pre>
-<p><img src="stat_logisticregression_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
-<div id="analyse" class="section level1">
-<h1>Analyse</h1>
-<p>Um für solch einen Datensatz eine Regression anzupassen, werden die Einträge der binären Zielvariable vorerst durch 0 und 1 ersetzt (sogenannte dummy-Codierung) und in der neuen Spalte <code>dummy.gender</code> gespeichert:</p>
-<pre class="r"><code>library(dplyr)
-heights &lt;- heights %&gt;%
-  mutate(dummy.gender = as.numeric(gender)-1)
-heights[9:14,] # Zeige Zeilen 9-14</code></pre>
-<pre><code>##    gender height dummy.gender
-## 9       F    173            0
-## 10      F    161            0
-## 11      F    160            0
-## 12      M    172            1
-## 13      M    190            1
-## 14      M    181            1</code></pre>
-<p>Weil unsere Zielvariable binär ist, also nur zwei verschiedene Werte annehmen kann (erst <em>F/M</em>, jetzt <em>0/1</em>) wird klar, dass eine einfache Regression (<span class="math inline">\(y=\alpha+\beta x\)</span>) keinen Sinn ergäbe, vor allem weil die Regression auch Werte &lt;0% und &gt;100% vorhersagen würde:</p>
-<pre class="r"><code>ggplot(data=heights, aes(x=height, y=dummy.gender)) + 
-  theme_classic() +
-  stat_smooth(method=&quot;lm&quot;, se=FALSE, color=&quot;red&quot;) +
-  geom_point(aes(color=gender)) +
-  ylab(&quot;Probability of person being male&quot;) +
-  xlab(&quot;Person&#39;s height [cm]&quot;) +
-  theme(legend.position=c(.9,.2),
-        legend.box.background = element_rect(color = &quot;black&quot;))</code></pre>
-<p><img src="stat_logisticregression_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
-<p>Stattdessen wird bei der logistischen Regression dafür gesorgt, dass <em>quasi der Output der linearen Regression mittels der logistischen Regression zwischen 0 und 1 gequetscht wird</em>. Die logistische Regression ist definiert als</p>
-<p><span class="math display">\[ logistic(\eta) = \frac{1}{1+exp(-\eta)} \]</span></p>
-<p>wobei <span class="math inline">\(\eta\)</span> der lineare Prädiktor ist. In R kann eine logistische Regression mittels der <code>glm</code> Funktion und dem Argument <code>family=binomial</code> angepasst werden:</p>
-<pre class="r"><code>logit.mod &lt;- glm(dummy.gender ~ height, 
-                 family = binomial,
-                 data = heights)</code></pre>
-<p>Auch die Darstellung im Plot ist leicht mit <code>ggplot()</code> möglich:</p>
-<pre class="r"><code>ggplot(data=heights, aes(x=height, y=dummy.gender)) + 
-  theme_classic() +
-  stat_smooth(method=&quot;glm&quot;, method.args=list(family=&quot;binomial&quot;), 
-              se=FALSE, color=&quot;darkgrey&quot;) +
-  geom_point(aes(color=gender)) +
-  ylab(&quot;Probability of person being male&quot;) +
-  xlab(&quot;Person&#39;s height [cm]&quot;) +
-  theme(legend.position=c(.9,.2),
-        legend.box.background = element_rect(color = &quot;black&quot;))</code></pre>
-<p><img src="stat_logisticregression_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
-<p>Das Modell kann nun also genutzt werden um anhand der Körpergröße einer Person zu schätzen ob diese Person ein Mann oder eine Frau ist. Als Beispiel können wir uns vom Modell vorhersagen lassen mit was für einer Wahrscheinlichkeit eine Person, die 180cm groß ist, ein Mann ist:</p>
-<pre class="r"><code>predict(logit.mod, data.frame(height=180), type=&quot;response&quot;)</code></pre>
-<pre><code>##         1 
-## 0.7744626</code></pre>
-<p>Die Antwortet lautet also: mit 77,4%iger Wahrscheinlichkeit.</p>
+<div id="schlieende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="einfache-losung" class="section level2">
+<h2>Einfache Lösung</h2>
+<p>Um das Problem der Pseudowiederholungen zu umgehen, kann einfach der Mittelwert eines jeden Tischs - also das arithmetische Mittel über die jeweils 10 Pflanzen - gebildet werden und die Daten wie eine einfache randomisierte, vollständige Blockanlage ausgewertet werden. Das ist möglich, da man so wieder nur einen Wert pro Tisch hat und somit der Tisch, also die Kombination aus Behandlung und Wiederholung, die Versuchseinheit ist. Man verliert dabei aber die Informationen darüber wie sehr die Werte zwischen den 10 Pflanzen geschwankt haben. Anders ausgedrückt geht ein großer Teil des Mehraufwands durch das häufigere Messen wieder verloren noch bevor man zur schließenden Statistik kommt.</p>
+</div>
+<div id="bessere-losung" class="section level2">
+<h2>Bessere Lösung</h2>
+<p>Um die Daten so zu modellieren wie man sie erfasst hat, gilt es also die Mehrfachmessungen am gleichen Tisch zu berücksichtigen. Anders ausgedrückt, sollte das Modell sowohl <em>Noise</em> zwischen den verschiedenen Tischen, als auch zwischen den verschiedenen Pflanzen auf demselben Tisch berücksichtigen. Die Versuchseinheit, also in diesem Versuch die Einzelpflanze, wird dabei ja sowieso durch den Versuchsfehler aufgefangen. Es gilt also lediglich sich um den zusätzlichen Störfaktor Tisch zu kümmern. Das ist möglich, indem die Tische als zufällige Effekte ins Modell aufgenommen werden.</p>
+<p>Wir haben aktuell noch keine Spalte im Datensatz, die einzelne Tische identifiziert. Wir wissen aber, dass es 12 Tische gibt, nämlich einer pro Block-Behandlung-Kombination. Wir können also einfach den Effekt also <code>block:treat</code> ins Modell schreiben und so einen Effekt pro Tisch schätzen. Da dies aber oft zu Verwirrungen führt, weil der Bezug zu Interaktionseffekte zwischen Behandlungen hergestellt wird, zeige ich hier auch noch die intuitivere Lösung bei der vorerst eine Spalte “Tisch” erzeugt wird. Wir passen letztendlich aber zwei Mal das gleiche Modell an:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>#
+#
+#
+library(lme4)
+m1&lt;-lmer(TKG ~ treat + block + (1|block:treat),
+         data=psr)
+
+print(VarCorr(m1), comp=&quot;Variance&quot;)</code></pre>
+<pre><code>##  Groups      Name        Variance
+##  block:treat (Intercept)  1.2815 
+##  Residual                34.3446</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>psr$Tisch &lt;- paste0(psr$block, psr$treat) %&gt;%
+  as.factor
+
+library(lme4)
+m2&lt;-lmer(TKG ~ treat + block + (1|Tisch),
+         data=psr)
+
+print(VarCorr(m2), comp=&quot;Variance&quot;)</code></pre>
+<pre><code>##  Groups   Name        Variance
+##  Tisch    (Intercept)  1.2815 
+##  Residual             34.3446</code></pre>
+</div>
+</div>
+<div id="anova" class="section level3">
+<h3>ANOVA</h3>
+<pre class="r"><code>library(car)
+Anova(m1, type=&quot;III&quot;, test.statistic=&quot;F&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type III Wald F tests with Kenward-Roger df)
+## 
+## Response: TKG
+##                    F Df Df.res    Pr(&gt;F)    
+## (Intercept) 453.4624  1 5.6147 1.383e-06 ***
+## treat         1.4265  2 5.9920    0.3114    
+## block         1.1123  3 5.9689    0.4153    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Laut ANOVA unterscheiden sich die Behandlung nicht signifikant voneinander. Dennoch schauen wir uns zum Schluss auch noch die Mittelwertvergleiche an.</p>
+<pre class="r"><code>library(emmeans)
+emmeans(m1, pairwise ~ &quot;treat&quot;)</code></pre>
+<pre><code>## $emmeans
+##  treat   emmean       SE   df lower.CL upper.CL
+##  Ctrl  33.13925 1.096617 5.39 30.37989 35.89861
+##  Top6  31.16909 1.154736 6.61 28.40525 33.93293
+##  Top1  30.61694 1.128888 6.06 27.86164 33.37224
+## 
+## Results are averaged over the levels of: block 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast     estimate       SE   df t.ratio p.value
+##  Ctrl - Top6 1.9701656 1.592404 5.97 1.237   0.4766 
+##  Ctrl - Top1 2.5223069 1.573835 5.72 1.603   0.3180 
+##  Top6 - Top1 0.5521413 1.614869 6.33 0.342   0.9382 
+## 
+## Results are averaged over the levels of: block 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<p>Auch hier ist wie erwartet kein signifikanter Unterschied gefunden worden. Das bestätigt den Eindruck aus der deskriptiven Statistik.</p>
+</div>
+</div>
 </div>
 
 

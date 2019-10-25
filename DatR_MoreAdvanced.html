@@ -479,6 +479,9 @@ div.tocify {
       <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
     </li>
     <li>
+      <a href="stat_GemischteModelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
       <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
     </li>
     <li>
@@ -631,6 +634,70 @@ mtcars %&gt;%
 ## 4:   4 auto  3
 ## 5:   6 manu  3
 ## 6:   8 manu  2</code></pre>
+</div>
+</div>
+</div>
+<div id="faktorstufen-ordnen" class="section level1">
+<h1>Faktorstufen ordnen</h1>
+<p>Spätestens beim Erstellen von Plots mit <code>ggplot()</code> stößt man auf das Problem, dass die Faktorstufen einer Variable, die <code>as.factor</code> definiert ist, anscheinend einer festen Reihenfolge unterliegen, die sich nicht ganz so schnell ändern lässt - zumindest nicht durch z.B. sortieren des Datensatzes.</p>
+<p>Man beachte bei diesem Beispiel, dass die Reihenfolge (a, b, c) im Datensatz selbst stimmt und sogar genau so in den <code>as.factor()</code> Befehl eingegeben wurde. Dennoch ordnet R die Stufen automatisch alphabetisch, was man sowohl im plot, als auch mit dem <code>levels()</code> Befehl sehen kann:</p>
+<pre class="r"><code>dat &lt;- data.frame(fkt = as.factor(c(&quot;a&quot;, &quot;c&quot;, &quot;b&quot;)),
+                  num = c(21, 20, 22))</code></pre>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>dat</code></pre>
+<pre><code>##   fkt num
+## 1   a  21
+## 2   c  20
+## 3   b  22</code></pre>
+<pre class="r"><code>levels(dat$fkt)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>ggplot(data=dat, aes(y=num, x=fkt)) + 
+  geom_point(size=3)</code></pre>
+<p><img src="DatR_MoreAdvanced_files/figure-html/unnamed-chunk-19-1.png" width="60%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<p>Tatsächlich ist die Reihenfolge der Faktorstufen mit im Objekt abgespeichert und meist standardmäßig alphabetisch angeordnet. Es gibt mehrere Möglichkeiten um diese Reihenfolge zu ändern. Ich selbst nutze seit einiger Zeit das <code>forcats</code> package.</p>
+<div id="manuell-anordnen" class="section level3">
+<h3>Manuell anordnen</h3>
+<p>Will man eine manuelle Reihenfolge bestimmen, so geht das mit dem Befehl <code>fct_relevel</code>:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>library(forcats)
+
+dat &lt;- dat %&gt;%
+  mutate(fkt=fct_relevel(fkt, c(&quot;a&quot;,&quot;c&quot;,&quot;b&quot;)))
+
+levels(dat$fkt)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;c&quot; &quot;b&quot;</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>ggplot(data=dat, aes(y=num, x=fkt)) + 
+  geom_point(size=3, color=&quot;olivedrab&quot;)</code></pre>
+<p><img src="DatR_MoreAdvanced_files/figure-html/unnamed-chunk-21-1.png" width="60%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="nach-einer-anderen-variable-ordnen-lassen" class="section level3">
+<h3>Nach einer anderen Variable ordnen lassen</h3>
+<p>Will man die Faktorstufen lieber nach z.B. der y-Variable (<code>num</code>) des Plots ordnen, so geht das mit <code>fct_reorder</code>:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>library(forcats)
+
+dat &lt;- dat %&gt;%
+  mutate(fkt=fct_reorder(fkt, num, .desc=TRUE))
+
+levels(dat$fkt)</code></pre>
+<pre><code>## [1] &quot;b&quot; &quot;a&quot; &quot;c&quot;</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>ggplot(data=dat, aes(y=num, x=fkt)) + 
+  geom_point(size=3, color=&quot;firebrick&quot;)</code></pre>
+<p><img src="DatR_MoreAdvanced_files/figure-html/unnamed-chunk-23-1.png" width="60%" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 </div>
 </div>

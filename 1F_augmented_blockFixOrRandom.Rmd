@@ -16,7 +16,7 @@ patt <- read_xlsx("D:/RKurse/MyDatasets/augmentedPattersen.xlsx") %>%
   mutate_if(is.character, as.factor) %>% data.table
 ```
 
-> Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung "Mixed models for metric data" von [Prof. Dr. Piepho](https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en). In dem Skript finden sich detailliertere Erläuterungen, sowie SAS Codes.
+> Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung "Mixed models for metric data" von [Prof. Dr. Piepho](https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en). In dem Skript finden sich weitere Erläuterungen, sowie SAS Codes.
 
 # Datensatz
 Die Daten in diesem Beispiel stammen von einem Versuch, der als die einfachste Form eines **augmented Designs** angelegt wurde. Der Versuch hat 6 Blöcke (I-VI; mit je 8 Parzellen) und es wurde der Ertrag von Sorten geprüft. Allerdings wurden im Gegensatz zu einer einfachen randomisierten, vollständigen Blockanlage nicht jede Sorte in jedem Block angebaut - einige aber schon:
@@ -106,4 +106,6 @@ mean(dif.ranBl$SE)
 ```
 </div> </div>
 
-Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können.
+Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können. **Wichtig bei diesem Vergleich ist**, dass die s.e.d. der adjustierten Mittelwertdifferenzen für das gemischte Modelle unbedingt mit einer Approximation wie z.B. der Kenward-Roger-Methode oder Satterthwaite-Methode berechnet werden sollten - dies wird von der `emmeans()` Funktion allerdings standardmäßig getan. Mehr zu dem Thema im [Kapitel zu gemischten Modellen](stat_GemischteModelle.html).
+
+Demnach würden wir ab hier wie in den vorangegangenen Beispielen (eine ANOVA durchführen um zu prüfen ob der Sorteneffekt signifikant ist und) post-hoc-Tests für die Sortenmittelwertvergleiche durchführen.
