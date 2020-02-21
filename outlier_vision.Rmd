@@ -27,7 +27,7 @@ str(dat, width=40, strict.width="cut")
 </div> </div>
 
 # Fragestellung
-Genau wie im [Alkohol-Beispiel](regcorr_drinks.html) könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die *zwei numerischen Variablen* `Ages` und `Vision` beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum [Alkohol-Beispiel](regcorr_drinks.html) soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.
+Genau wie im [Alkohol-Beispiel](1N_Drinks.html) könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die *zwei numerischen Variablen* `Ages` und `Vision` beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum [Alkohol-Beispiel](1N_Drinks.html) soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.
 
 # Deskriptive Statistik
 Um ein Gefühl für die Daten zu bekommen, betrachten wir einige Kennzahlen zu den Daten, sowie einen Plot.

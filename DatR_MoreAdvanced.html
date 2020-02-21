@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -521,10 +488,10 @@ div.tocify {
 </div>
 
 
-<p>Hier sind weitere, nützliche Tipps, die ich gerne sehr viel früjer gewusst hätte.</p>
+<p>Hier sind weitere, nützliche Tipps, die ich gerne sehr viel früher gewusst hätte.</p>
 <div id="dplyr-pipes" class="section level1">
-<h1>dplyr pipes</h1>
-<p>Manchmal möchte man mehrere Befehle nacheinander auf ein R-Objekt anwenden. Das werden dann entweder mehrere Befehle, die man nacheinander in mehreren Zeilen ausführt oder ein sehr großer, geschachtelter Befehl. Unser Beispieldatensatz ist derselbe wie im <a href="DatR_descriptiveStats.html">Kapitel zur deskriptiven Statistik</a>:</p>
+<h1>dplyr pipes %&gt;%</h1>
+<p>Manchmal möchte man mehrere Befehle nacheinander auf ein R-Objekt anwenden. Das werden dann entweder mehrere Befehle, die man nacheinander in mehreren Zeilen ausführt oder ein sehr großer, geschachtelter Befehl. Unser Beispieldatensatz ist derselbe wie im <a href="DatR_DescriptiveStats.html">Kapitel zur deskriptiven Statistik</a>:</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>head(mtcars) # Erste Zeilen</code></pre>
@@ -550,12 +517,10 @@ div.tocify {
 mtcars3 &lt;- subset(mtcars2, cyl != &quot;4&quot;)
 mtcars4 &lt;- mtcars3$hp
 sort(mtcars4)</code></pre>
-<pre><code>##  [1] 105 123 123 150 150 175 175 175 180 180 180 205 215 230 245 245 264
-## [18] 335</code></pre>
+<pre><code>##  [1] 105 123 123 150 150 175 175 175 180 180 180 205 215 230 245 245 264 335</code></pre>
 <p>Man könnte es auch in einen einzigen Befehl schachteln:</p>
 <pre class="r"><code>sort(subset(subset(mtcars, mpg &lt; 20), cyl != &quot;4&quot;)$hp)</code></pre>
-<pre><code>##  [1] 105 123 123 150 150 175 175 175 180 180 180 205 215 230 245 245 264
-## [18] 335</code></pre>
+<pre><code>##  [1] 105 123 123 150 150 175 175 175 180 180 180 205 215 230 245 245 264 335</code></pre>
 <p>Der erste Ansatz hat den Vorteil, dass man mehr Kontrolle über die einzelnen Schritte hat - also z.B. einen Zwischenschritt schnell entfernen kann. Der zweite Ansatz nimmt weniger Platz ein.</p>
 <p>Die <em>dplyr pipes</em> aus dem <code>dplyr</code> package versuchen das Beste aus beiden Ansätzen zu kombinieren. Anstatt mehrere Funktionen ineinander schachteln zu müssen, kann man sie mit den <code>%&gt;%</code> Operatoren aneinanderknüpfen. Eine detaillierte Einleitung dazu gibt es z.B. <a href="https://seananderson.ca/2014/09/13/dplyr-intro/">hier</a>. Man würde es also wie folgt umsetzen:</p>
 <pre class="r"><code>library(dplyr)
@@ -564,8 +529,7 @@ mtcars %&gt;%
   subset(cyl != &quot;4&quot;) %&gt;%
   pull(hp) %&gt;%
   sort</code></pre>
-<pre><code>##  [1] 105 123 123 150 150 175 175 175 180 180 180 205 215 230 245 245 264
-## [18] 335</code></pre>
+<pre><code>##  [1] 105 123 123 150 150 175 175 175 180 180 180 205 215 230 245 245 264 335</code></pre>
 <blockquote>
 <p>Der Befehle <code>pull()</code> extrahiert eine Spalte aus einem Datensatz direkt in das Format eines Vektors. Will man eine oder mehrere Spalten extrahieren aber weiterhin im Spaltenformat lassen, kann man stattdessen den <code>select()</code> Befehl nutzen.</p>
 </blockquote>
@@ -604,9 +568,9 @@ somecars$cyl %not_in% c(&quot;4&quot;, &quot;6&quot;)</code></pre>
 </div>
 </div>
 </div>
-<div id="pivot-artige-haufigkeitsliste" class="section level1">
+<div id="pivot-artige-häufigkeitsliste" class="section level1">
 <h1>Pivot-artige Häufigkeitsliste</h1>
-<p>Die <code>table()</code> Funktion im <a href="DatR_descriptiveStats.html">Kapitel zur deskriptiven Statistik</a> ist zwar nützlich, aber oft brauche ich sie in einem <em>long-format</em>, also mit einer einzigen Spalte aller Anzahlen. Ich hätte die Anzahlen also gerne ähnlich aufbereitet wie man es in Excel mit Pivot-Tabellen kann. Dafür nutze ich folgende Kombination aus <code>dplyr</code> und <code>data.table</code> Befehlen:</p>
+<p>Die <code>table()</code> Funktion im <a href="DatR_DescriptiveStats.html">Kapitel zur deskriptiven Statistik</a> ist zwar nützlich, aber oft brauche ich sie in einem <em>long-format</em>, also mit einer einzigen Spalte aller Anzahlen. Ich hätte die Anzahlen also gerne ähnlich aufbereitet wie man es in Excel mit Pivot-Tabellen kann. Dafür nutze ich folgende Kombination aus <code>dplyr</code> und <code>data.table</code> Befehlen:</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code># mit einer Spalte
@@ -701,6 +665,27 @@ levels(dat$fkt)</code></pre>
 </div>
 </div>
 </div>
+<div id="pacman-package" class="section level1">
+<h1>pacman package</h1>
+<p>Will man oft viele packages laden und/oder einige davon sogar erst noch installieren, weil man z.B. auf verschiedenen PCs arbeitet, dann bietet sich die <code>p_load</code> Funktion des <code>pacman</code> package an. Es lädt <strong>und installiert, wenn nötig</strong> eine vorgegebene Liste an packages:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code># Ohne pacman package:
+library(data.table)
+library(dplyr)
+library(forcats) 
+library(ggplot2)
+library(ggfortify)
+library(lme4)
+library(lmerTest)</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code># Mit pacman package:
+library(pacman)
+p_load(data.table, dplyr, forcats, ggplot2, ggfortify, lme4, lmerTest)</code></pre>
+</div>
+</div>
+</div>
 
 
 
@@ -720,6 +705,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

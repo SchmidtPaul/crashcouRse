@@ -53,7 +53,7 @@ str(splitplot, width=40, strict.width="cut")
 </div> </div>
 
 # Deskriptive Statistik
-Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](appendix_desplot.html).
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](DatR_Desplot.html).
 
 ```{r}
 boxplot(yield ~ N*G, col=brewer.pal(6, "Dark2"), data=splitplot, las=2) # las=2 dreht Achsenbeschriftung

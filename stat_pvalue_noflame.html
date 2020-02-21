@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -575,7 +542,7 @@ div.tocify {
 <h3>Wieso 0.05?</h3>
 <p>Nun ist also klar: Ein kleiner p-Wert bedeutet, dass es unwahrscheinlich ist das vorliegende Ergebnis zu finden, wenn doch eigentlich angeblich die Nullhypothese gilt. Im Umkehrschluss kann man sich also bei einem <em>zu kleinen</em> p-Wert entscheiden der Nullhypothese nicht länger zu glauben. Genau das passiert, wenn der p-Wert kleiner 0.05 (5%) ist und man das Ergebnis als <em>statistisch signifikant</em> einstuft. Wieso sich diese Grenze nun genau bei 0.05 eingependelt hat ist nicht unbedingt klar. Sie gilt mittlerweile schlichtweg als gängig und ist in den meisten Statistikprogrammen als <em>default</em> eingestellt. Man kann aber selbstverständlich auch manuell eine andere Grenze setzen wie z.B. <code>p=0.001</code> und das wird ab und an auch getan.</p>
 </div>
-<div id="der-p-wert-hangt-vom-stichprobenumfang-ab" class="section level3">
+<div id="der-p-wert-hängt-vom-stichprobenumfang-ab" class="section level3">
 <h3>Der p-Wert hängt vom Stichprobenumfang ab!</h3>
 <p>Es ist ein wichtiger erster Schritt zu verstehen was ein p-Wert genau bedeutet um Ergebnisse richtig einordnen zu können. Genau so wichtig ist aber auch zu verstehen wovon der p-Wert abhängt. Das sind vor allem (aber nicht ausschließlich):</p>
 <ul>
@@ -585,7 +552,7 @@ div.tocify {
 <p>Zur Erklärung dieser beiden Punkte können wir wieder auf das Beispiel oben verweisen. Wieder gegeben der Nullhypothese, dass Arne und Tim gleich schnell sind ist es unwahrscheinlich, dass wir Stichprobenmittelwerte <span class="math inline">\(\bar{x}_{Arne}=12,0s\)</span> und <span class="math inline">\(\bar{x}_{Tim}=10,0s\)</span> finden. Man kann sich aber schnell vorstellen, dass dies in Ausnahmefällen mal passiert, wenn die beiden z.B. nur an zwei Tagen gelaufen sind und aus bestimmten Gründen es eben zu diesen Werten kam. Das waren dann eben zwei verrückte Tage für diese Messungen. Es wird aber sehr schnell sehr viel unwahrscheinlicher diese Stichprobenmittelwerte zu finden, wenn die beiden 100 Tage gemessen haben. Genau so funktioniert auch der p-Wert: Bei <code>n=2</code> wir der p-Wert zwar klein sein, da wir Werte von 11,0s erwarten, aber bei <code>n=100</code> wird er gegen 0 gehen. Wir würden die Nullhypothese ablehnen und nicht länger glauben, dass Arne und Tim gleich schnell sind - schließlich sind sie ganze 100 mal gegeneinander angetreten und es liegen im Schnitt ganze 2 Sekunden zwischen ihren Zeiten.</p>
 <p>Auch der zweite Punkt, nämlich die Streuung der Daten, beeinflusst den p-Wert. Würden Arnes und Timis Zeiten immer nur 0,1s von ihrem Stichprobenmittelwert abweichen, wäre es schließlich auch viel deutlicher zu sagen wer schneller ist, als wenn beide immer mal 5s schneller oder langsamer sind.</p>
 </div>
-<div id="ein-test-kann-nichts-auer-die-nullhypothese-ablehnen" class="section level3">
+<div id="ein-test-kann-nichts-außer-die-nullhypothese-ablehnen" class="section level3">
 <h3>Ein Test kann nichts außer die Nullhypothese ablehnen!</h3>
 <p>Aus dem vorangegangen Abschnitt ergibt sich eine weitere Interpretationsweise des p-Werts:</p>
 </br>
@@ -643,6 +610,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

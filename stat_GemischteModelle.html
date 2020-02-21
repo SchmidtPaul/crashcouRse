@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>stat_GemischteModelle.utf8.md</title>
+<title>stat_GemischteModelle.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -520,13 +487,13 @@ div.tocify {
 </div>
 
 
-<div id="was-ist-uberhaupt-ein-zufalliger-effekt" class="section level1">
+<div id="was-ist-überhaupt-ein-zufälliger-effekt" class="section level1">
 <h1>Was ist überhaupt ein zufälliger Effekt ?</h1>
 <p>Modelle mit zufälligen Effekten sind eine neuere Entwicklung (<a href="https://www.cambridge.org/core/journals/earth-and-environmental-science-transactions-of-royal-society-of-edinburgh/article/xvthe-correlation-between-relatives-on-the-supposition-of-mendelian-inheritance/A60675052E0FB78C561F66C670BC75DE">Fisher, 1919</a>) als Modelle mit festen Effekten (<a href="https://books.google.de/books/about/Nouvelles_m%C3%A9thodes_pour_la_d%C3%A9terminati.html?id=FRcOAAAAQAAJ&amp;redir_esc=y">Legendre, 1805</a>; <a href="https://www.beck-shop.de/gauss-theoria-motus-corporum-coelestium-sectionibus-conicis-solem-ambientium/product/10712705">Gauss, 1809</a>). Auch beim Erlernen statistischer Methoden folgt das Anwenden zufälliger Effekte - wenn überhaupt - nachdem einfache Regressionen angepasst und ANOVAs durchgeführt wurden. Noch heute kommt es daher vor, dass mit “einem Effekt” in der Regel ein fester Effekt gemeint ist, der zufällige Effekt also etwas besonderes ist und auch expizit als socher betitelt wird.</p>
 <p>Wo immer zufällige Effekte erläutert werden, wird zumeist damit begonnen, dass <em>sie zufällige Stichproben aus einer Population</em> darstellen oder, dass es sich um Faktoren handelt, <em>deren Stufen nicht wie bei festen Effekten bestimmt, sondern zufällig aus einer Gesamtheit ausgewählt wurden</em>.</p>
 <p>Ein anderer Punkt, der oft genannt wird, ist die Mindestanzahl an Faktorstufen, die vorhanden sein sollte bevor der Faktor als zufällig ins Modell genommen werden darf. Dabei schwanken die Empfehlungen meist zwischen 5 und 12.</p>
 <p>Es soll übrigens gesagt sein, dass der Fehlerterm (<span class="math inline">\(e\)</span>) in allen Modellen - also auch in Modellen mit sonst nur festen Effekten - eine Zufallsvariable, also eine zufällige, stochastische Komponente ist. Streng genommen sind also so gut wie alle Modelle <em>gemischte Modelle</em>, doch der Fehler nimmt hier eine besondere Rolle ein und wird somit nicht als zufälliger Effekt gezählt.</p>
-<div id="faustregeln-ein-faktor-ist-eher-zufallig-wenn" class="section level3">
+<div id="faustregeln-ein-faktor-ist-eher-zufällig-wenn" class="section level3">
 <h3>Faustregeln: Ein Faktor ist (eher) zufällig wenn</h3>
 <ul>
 <li><p>seine Stufen zufällig aus einer größeren Population gezogen wurden. <em>Beispiel: Ein paar Orte aus einer Zielregion</em></p></li>
@@ -640,6 +607,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

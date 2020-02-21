@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582282215494.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A18B5F4C",
+    "lastKnownWriteTime" : 1582283536,
+    "last_content_update" : 1582283536491,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/kontaktseite.Rmd",
+    "project_path" : "kontaktseite.Rmd",
+    "properties" : {
+        "cursorPosition" : "32,147",
+        "scrollLine" : "33"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -524,13 +491,13 @@ div.tocify {
 <p>Oft kommt es vor, dass verschiedene Datensätze aus mehreren Versuchen/Experimenten erhoben werden. In solche einem Fall ist es eventuell nötig</p>
 <ol style="list-style-type: decimal">
 <li>die Daten aus den verschiedenen Dateien zusammenzutragen und/oder</li>
-<li>die verschiedenen Datensätze separate auszuwerten.</li>
+<li>die verschiedenen Datensätze separat auszuwerten.</li>
 </ol>
-<div id="datensatze---3-auswertungen" class="section level1">
+<div id="datensätze---3-auswertungen" class="section level1">
 <h1>3 Datensätze - 3 Auswertungen</h1>
-<p>In diesem Beispiel liegen Daten von drei Feldversuchen vor, die sich prinzipiell recht ähnlich sind, aber an drei verschiedenen Orten (“L1”, “L2” und “L3”) stattgefunden haben. In den Versuchen wurden 89 verschiedene Sorten/Genotypen (“G1”-“G89”) in <a href="1F_rcbd.html">randomisierten, vollständigen Blockanlagen (RCBD)</a> angebaut und schließlich ihr Ertrag gemessen.</p>
+<p>In diesem Beispiel liegen Daten von drei Feldversuchen vor, die sich prinzipiell recht ähnlich sind, aber an drei verschiedenen Orten (“L1”, “L2” und “L3”) stattgefunden haben. In den Versuchen wurden 89 verschiedene Sorten/Genotypen (“G1”-“G89”) in randomisierten, vollständigen Blockanlagen (RCBD) angebaut und schließlich ihr Ertrag gemessen.</p>
 <p>Wir wollen hier nicht versuchen die Daten der 3 Orte gemeinsam auszuwerten, sondern separat. Prinzipiell soll also einfach die Auswertung einer einfaktoriellen RCBD, <a href="1F_rcbd.html">wie in diesem Beispiel</a> durchgeführt werden, nur eben 3 mal hintereinander jeweils pro Ort.</p>
-<p>Natürlich kann dies manuell erledigt werden, indem Beispielsweise eine R-Code Datei pro Datensatz angelegt wird und lediglich an bestimmten Stellen Kleinigkeiten geändert werden, sodass sich der Code auf die richtige Excel-Datei bezieht und am Ende auch die Ergebnisse korrekt abspeichert. Diese Vorgehensweise hat aber folgende Probleme:</p>
+<p>Natürlich kann dies manuell erledigt werden, indem Beispielsweise ein R-Code pro Datensatz angelegt wird und lediglich an bestimmten Stellen Kleinigkeiten geändert werden, sodass sich der Code auf die richtige Excel-Datei bezieht und am Ende auch die Ergebnisse korrekt abspeichert. Diese Vorgehensweise hat aber folgende Probleme:</p>
 <ol style="list-style-type: decimal">
 <li>Es wird natürlich mit steigender Anzahl Datensätze (also mehr als 3) schnell unübersichtlich und aufwendig und</li>
 <li>es muss bei einer nachträglichen Korrektur des Codes die Korrektur in allen R-Codes umgesetzt werden, was nur so nach Flüchtigkeitsfehlern schreit.</li>
@@ -539,7 +506,7 @@ div.tocify {
 </div>
 <div id="zur-umsetzung-der-analyse" class="section level1">
 <h1>Zur Umsetzung der Analyse</h1>
-<p>Sagen wir die 3 Dateien lägen alle im selben Ordner und hießen “Environment1.xlsx”, “Environment2.xlsx” und “Environment3.xlsx” und außerdem hieße das entsprechende Tabllenblatt innerhalb aller Excel-Dateien immer “Datenblatt”. Natürlich könnte man sie alle einzeln <a href="DatR_importexport.html">importieren</a>:</p>
+<p>Sagen wir die 3 Dateien lägen alle im selben Ordner und hießen “Environment1.xlsx”, “Environment2.xlsx” und “Environment3.xlsx” und außerdem hieße das entsprechende Tabllenblatt innerhalb aller Excel-Dateien immer “Datenblatt”. Natürlich könnte man sie alle einzeln <a href="DatR_ImportExport.html">importieren</a>:</p>
 <pre class="r"><code>library(readxl)
 
 dat1 &lt;- read_excel(&quot;Environment1.xlsx&quot;, sheet=&quot;Datenblatt&quot;)
@@ -571,14 +538,14 @@ dat3 &lt;- read_excel(&quot;Environment3.xlsx&quot;, sheet=&quot;Datenblatt&quot
 </div>
 <div id="list.files" class="section level2">
 <h2>list.files</h2>
-<p>In Wirklichkeit kann es passieren, dass die Dateien nicht mal mit schön einheitlichen Namen vorliegen. So auch hier, denn es gibt zwar die Datei “Environment1.xlsx”, aber die anderen beiden heißen “environment2.xlsx” und “Location3.xlsx”. Anstatt die Dateien nun händisch umzubenennen, wollen wir stattdessen einfach mit den Dateinamen arbeiten, die vorliegen. Eine nützliche Funktion ist dabei <code>list.files()</code> - sie listet alle Dateien in einem Ordner auf:</p>
+<p>In Wirklichkeit kann es passieren, dass die Dateien nicht mal mit einheitlichen Namen vorliegen. So auch hier, denn es gibt zwar die Datei “Environment1.xlsx”, aber die anderen beiden heißen “environment2.xlsx” und “Location3.xlsx”. Anstatt die Dateien nun händisch umzubenennen, wollen wir stattdessen einfach mit den Dateinamen arbeiten, die vorliegen. Eine nützliche Funktion ist dabei <code>list.files()</code> - sie listet alle Dateien in einem Ordner auf:</p>
 <pre class="r"><code>DatPfad &lt;- &quot;D:/RKurse/MyDatasets/example_multiplefiles/threedatasets/&quot;
 DatNamen &lt;- list.files(DatPfad)
 DatNamen # Zeige DatNamen</code></pre>
 <pre><code>## [1] &quot;Environment1.xlsx&quot; &quot;environment2.xlsx&quot; &quot;Location3.xlsx&quot;</code></pre>
 <p>Da wir die 3 Dateinamen nun im Vektor <code>DatNamen</code> abgespeichert haben, können wir sie auch einzeln mit einem Loop ansprechen:</p>
-<pre class="r"><code>for (i in c(1,2,3)){
-  print(paste0(DatPfad, DatNamen[i]))
+<pre class="r"><code>for (i in DatNamen){
+  print(paste0(DatPfad, i))
 }</code></pre>
 <pre><code>## [1] &quot;D:/RKurse/MyDatasets/example_multiplefiles/threedatasets/Environment1.xlsx&quot;
 ## [1] &quot;D:/RKurse/MyDatasets/example_multiplefiles/threedatasets/environment2.xlsx&quot;
@@ -593,18 +560,18 @@ library(readxl)
 
 DatListe &lt;- list() # Erstelle leere Liste
 
-for (i in c(1,2,3)){
-  DatListe[[i]] &lt;- read_excel(path  = paste0(DatPfad, DatNamen[i]),
+for (i in DatNamen){
+  DatListe[[i]] &lt;- read_excel(path  = paste0(DatPfad, i),
                               sheet = &quot;Datenblatt&quot;) %&gt;% data.table
 }</code></pre>
 <p>Nach dem Loop wurden die 3 Dateien als 3 Objekte im <code>data.table</code> Format in <code>Datliste</code> gespeichert (<a href="DatR_MoreAdvanced.html">mehr zu data.table und dem %&gt;% Befehl gibt’s hier</a>):</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>summary(DatListe) # Zeige Infos zur DatListe</code></pre>
-<pre><code>##      Length Class      Mode
-## [1,] 4      data.table list
-## [2,] 4      data.table list
-## [3,] 4      data.table list</code></pre>
+<pre><code>##                   Length Class      Mode
+## Environment1.xlsx 4      data.table list
+## environment2.xlsx 4      data.table list
+## Location3.xlsx    4      data.table list</code></pre>
 <p>Hinweis: <code>Length=4</code> meint hier die Anzahl Spalten des Datensatzes</p>
 <pre class="r"><code>DatListe[[1]] # Zeige nur erstes Objekt in DatListe</code></pre>
 <pre><code>##      loc gen rep   y
@@ -622,7 +589,7 @@ for (i in c(1,2,3)){
 </div>
 <div class="col-md-6">
 <pre class="r"><code>DatListe # Zeige gesamte DatListe</code></pre>
-<pre><code>## [[1]]
+<pre><code>## $Environment1.xlsx
 ##      loc gen rep   y
 ##   1:  L1  G1  R1 2.0
 ##   2:  L1  G1  R2 2.5
@@ -636,7 +603,7 @@ for (i in c(1,2,3)){
 ## 171:  L1 G89  R1 2.5
 ## 172:  L1 G89  R2 1.0
 ## 
-## [[2]]
+## $environment2.xlsx
 ##      loc gen rep   y
 ##   1:  L2  G1  R1 2.0
 ##   2:  L2  G1  R2 1.5
@@ -650,7 +617,7 @@ for (i in c(1,2,3)){
 ## 266:  L2 G89  R2 2.0
 ## 267:  L2 G89  R3 1.5
 ## 
-## [[3]]
+## $Location3.xlsx
 ##      loc gen rep   y
 ##   1:  L3  G1  R1 3.0
 ##   2:  L3  G1  R2 2.5
@@ -673,13 +640,13 @@ for (i in c(1,2,3)){
 <p>Da alle Versuche als einfaktorielle, randomisierte vollständige Blockanlage angelegt wurden, können wir sie mit dem gleichen Modell auswerten. Bei der Auswertung wollen wir uns hier der Einfachheit halber auf die Varianzanalyse beschränken. Auch die ANOVA Ergebnisse können wir direkt in einer Liste speichern:</p>
 <pre class="r"><code>ErgebnisListe &lt;- list() # Erstelle leere Liste
 
-for (i in c(1,2,3)){
+for (i in DatNamen){
   mod &lt;- lm(y ~ gen + rep, data=DatListe[[i]])
   ErgebnisListe[[i]] &lt;- anova(mod)
 }
 
 ErgebnisListe # Zeige ErgebnisListe</code></pre>
-<pre><code>## [[1]]
+<pre><code>## $Environment1.xlsx
 ## Analysis of Variance Table
 ## 
 ## Response: y
@@ -690,7 +657,7 @@ ErgebnisListe # Zeige ErgebnisListe</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## [[2]]
+## $environment2.xlsx
 ## Analysis of Variance Table
 ## 
 ## Response: y
@@ -701,7 +668,7 @@ ErgebnisListe # Zeige ErgebnisListe</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## [[3]]
+## $Location3.xlsx
 ## Analysis of Variance Table
 ## 
 ## Response: y
@@ -730,7 +697,7 @@ result_list # Zeige leere Liste</code></pre>
 ## environment2.xlsx NULL  NULL  NULL  NULL 
 ## Location3.xlsx    NULL  NULL  NULL  NULL</code></pre>
 <p>Man sieht, dass die Liste von vornherein in ihren Dimensionen definiert sein muss. In diesem Fall würde ich gerne für jeden Datensatz die Anzahl Beobachtungen <code>n_obs</code>, Anzahl Sorten <code>n_gen</code>, Anzahl Blöcke <code>n_rep</code> und die ANOVA Ergebnisse <code>ANOVA</code> festhalten. Außerdem habe ich die Zeilen und Spalten mit dem <code>dimnames=</code> Befehl entsprechend benannt. Nun können wir die leere Liste befüllen:</p>
-<pre class="r"><code>for (i in c(1,2,3)){
+<pre class="r"><code>for (i in DatNamen){
   result_list[[i, &quot;n_obs&quot; ]] &lt;- nrow(DatListe[[i]]) 
   result_list[[i, &quot;n_gen&quot; ]] &lt;- n_distinct(DatListe[[i]]$gen) 
   result_list[[i, &quot;n_rep&quot; ]] &lt;- n_distinct(DatListe[[i]]$rep) 
@@ -754,7 +721,7 @@ result_list</code></pre>
 ## Residuals 85 28.467  0.3349                     
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Man kann übrigens auch output von <code>ggplot()</code> in solchen Listen abspeichern. Zusammen mit der <a href="DatR_importexport.html">Export-Funktion in verschiedene Tabellenblätter derselben Excel-Datei</a> lässt sich so der Arbeitsprozess in bestimmten Fällen also deutlich effizienter gestalten.</p>
+<p>Man kann übrigens auch output von <code>ggplot()</code> in solchen Listen abspeichern. Zusammen mit der <a href="DatR_ImportExport.html">Export-Funktion in verschiedene Tabellenblätter derselben Excel-Datei</a> lässt sich so der Arbeitsprozess in bestimmten Fällen also deutlich effizienter gestalten.</p>
 </div>
 </div>
 
@@ -776,6 +743,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -548,7 +515,7 @@ div.tocify {
 </div>
 <div id="fragestellung" class="section level1">
 <h1>Fragestellung</h1>
-<p>Genau wie im <a href="regcorr_drinks.html">Alkohol-Beispiel</a> könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die <em>zwei numerischen Variablen</em> <code>Ages</code> und <code>Vision</code> beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum <a href="regcorr_drinks.html">Alkohol-Beispiel</a> soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.</p>
+<p>Genau wie im <a href="1N_Drinks.html">Alkohol-Beispiel</a> könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die <em>zwei numerischen Variablen</em> <code>Ages</code> und <code>Vision</code> beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum <a href="1N_Drinks.html">Alkohol-Beispiel</a> soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.</p>
 </div>
 <div id="deskriptive-statistik" class="section level1">
 <h1>Deskriptive Statistik</h1>
@@ -644,13 +611,13 @@ library(ggpubr) # Zusätzlicher Befehl &quot;stat_cor&quot; und &quot;stat_regli
   stat_cor(method=&quot;pearson&quot;, label.x=40, label.y=3) # Füge Korrelation mit p-Wert ein</code></pre>
 <p><img src="outlier_vision_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
-<div id="der-ausreier" class="section level1">
+<div id="der-ausreißer" class="section level1">
 <h1>Der Ausreißer</h1>
-<div id="schritt-1-finde-eventuelle-ausreier" class="section level3">
+<div id="schritt-1-finde-eventuelle-ausreißer" class="section level3">
 <h3>Schritt 1: Finde eventuelle Ausreißer</h3>
 <p>An diesem Punkt könnte man das Beispiel als abgehakt ansehen. Es fällt aber auf, dass ein Punkt deutlich aus der Reihe tanzt - nämlich die Person mit Sehvermögen von 3. Diese Person hat das mit Abstand schlechteste Sehvermögen (das zweitschlechteste liegt bei 6) und hinzukommt, dass die Person auch noch zu den jungen Personen gehört, sodass dieser Wert komplett gegen den Trend der restlichen Daten geht.</p>
 </div>
-<div id="schritt-2-mehr-uber-ausreier-erfahren" class="section level3">
+<div id="schritt-2-mehr-über-ausreißer-erfahren" class="section level3">
 <h3>Schritt 2: Mehr über Ausreißer erfahren</h3>
 <p>In solch einem Fall sollte immer erst mehr über den Ausreißer in Erfahrung gebracht werden:</p>
 <pre class="r"><code>subset(dat, Vision&lt;5) # Zeige nur Datenzeilen mit Vision &lt; 5</code></pre>
@@ -667,7 +634,7 @@ library(ggpubr) # Zusätzlicher Befehl &quot;stat_cor&quot; und &quot;stat_regli
   geom_text_repel(data=dat[Vision&lt;5], aes(label=Person), nudge_y=1, nudge_x=1) # Kennzeichne Rolando</code></pre>
 <p><img src="outlier_vision_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
-<div id="schritt-3-entscheide-uber-ausreier" class="section level3">
+<div id="schritt-3-entscheide-über-ausreißer" class="section level3">
 <h3>Schritt 3: Entscheide über Ausreißer</h3>
 <p>Hätten wir die Daten selbst erhoben, würde wir nun versuchen uns an Rolando zu erinnern.</p>
 <p><strong>Option 1: Klingt komisch, ist aber so:</strong> Würden wir direkt jemanden mit dicken Brillengläsern vor Augen haben und uns erinnern, dass er überraschend schlecht gesehen hat, hätten wir den auffälligen Wert bestätigt. Wir würden nichts am Wert ändern und er würde weiterhin dem generellen Trend widersprechen, aber das ändert nichts daran, dass er die Wahrheit abbildet.</p>
@@ -801,7 +768,7 @@ geom_smooth(method=&#39;lm&#39;, formula=y~x, se=F)</code></pre>
 </div>
 <p>Sicherlich ergibt es Sinn, dass die Gerade im Plot mit Rolando links etwas tiefer liegt - der Punkt von Rolando zieht sie quasi ein Stück weit zu sich. Insgesamt ist dieser Unterschied jedoch minimal. Es bleibt also die Frage wie jetzt zu bemessen ist, dass doch die Gerade ohne Rolando sehr viel besser zu der Gesamtheit aller Punkte passt, als die Gerade mit Rolando.</p>
 </div>
-<div id="bestimmtheitsma" class="section level3">
+<div id="bestimmtheitsmaß" class="section level3">
 <h3>Bestimmtheitsmaß</h3>
 <p>Dafür gibt es das <strong>Bestimmtheitsmaß</strong> <span class="math inline">\(R^2\)</span> (auch Determinationskoeffizient), welches auch in der vorletzten Zeile des <code>summary(reg)</code> Outputs angegeben ist. Es gibt an, wie viel Streuung in den Daten durch ein vorliegendes lineares Regressionsmodell „erklärt“ werden kann. Demnach wird es in Prozent gemessen, kann also Werte zwischen 0% und 100% annehmen. Hier werden wir nun also fündig, dass auch bei der Regression der Rauswurf von Rolando zu einer erheblichen Verbesserung des Bestimmtheißtsmaßes geführt hat, da es mit Rolando nur bei 24.7 % lag und ohne Rolando auf 48.5 % anstieg.</p>
 </div>
@@ -840,6 +807,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

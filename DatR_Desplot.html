@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -556,7 +523,7 @@ div.tocify {
 <pre class="r"><code>desplot(data=alpha, form= gen ~ col+row, 
         text=gen, shorten=&quot;no&quot;,
         main=&quot;&quot;, show.key=F)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <h2 id="ertrag-je-parzelle">Ertrag je Parzelle</h2>
@@ -564,10 +531,10 @@ div.tocify {
 <pre class="r"><code>desplot(data=alpha, form= yield ~ col+row, 
         num=yield, 
         main=&quot;&quot;, show.key=F)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="blocke-umranden" class="section level2">
+<div id="blöcke-umranden" class="section level2">
 <h2>Blöcke umranden</h2>
 <p>Mit den <code>out1 =</code> und <code>out2=</code> Argumenten kann angegeben werden um welche Gruppen von Parzellen Linien gezogen werden sollen. Dies ist z.B. für Blöcke sinnvoll.</p>
 <div class="row">
@@ -577,7 +544,7 @@ div.tocify {
         out1=rep,
         main=&quot;&quot;, 
         show.key=F)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>desplot(data=alpha, form= inc.block ~ col+row,
@@ -585,7 +552,7 @@ div.tocify {
         out1=rep, out2=inc.block, 
         out2.gpar=list(col=&quot;black&quot;),
         main=&quot;&quot;, show.key=F)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -609,7 +576,7 @@ desplot(data=alpha, form= inc.block ~ col+row,
         main=&quot;&quot;, show.key=F)</code></pre>
 </div>
 <div class="col-md-6">
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -646,7 +613,7 @@ desplot(data=alpha, form= inc.block ~ col+row,
         out1=block,
         out2=gen, out2.gpar=list(col=&quot;gray50&quot;),
         main=&quot;&quot;)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="beispiel-3" class="section level1">
 <h1>Beispiel 3</h1>
@@ -682,14 +649,14 @@ nuts$res &lt;- round(resid(mod),2)</code></pre>
         text=gen, cex=0.8,
         out1=block, show.key=F, 
         main=&quot;rand. compl. block design&quot;)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>desplot(data=nuts, form= res ~ col+row,
         text=res, cex=0.8, shorten=&quot;none&quot;,
         show.key=F,
         main=&quot;Residuen des RCBD Modells&quot;)</code></pre>
-<p><img src="appendix_desplot_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="DatR_Desplot_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <p>So fällt hier auf, dass das größte und kleinste Residuum direkt nebeneinander vorkommen. Ein Grund dafür könnte sein, dass die Ertragswerte dieser beiden Parzellen versehentlich vertauscht wurden.</p>
@@ -713,6 +680,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

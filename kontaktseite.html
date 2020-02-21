@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -521,17 +488,16 @@ div.tocify {
 </div>
 
 
-<p><img src="images/PauSch.jpg" style="width:25%; margin-right: 20px" align="left"></p>
-<div id="uber-mich" class="section level3">
+<p><img src="images/PauSch2.jpg" style="width:26%; margin-right: 20px" align="left"></p>
+<div id="über-mich" class="section level3">
 <h3>Über mich</h3>
-<p>Ich bin dabei meine <strong>Promotion</strong> im <a href="https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik">Fachgebiet Biostatistik</a> der Universität Hohenheim abzuschließen. Außerdem arbeite ich als <strong>Data Scientist</strong> bei <a href="https://www.biomath.de/">BioMath</a>. Desweiteren gebe ich <strong>Workshops</strong> in R für Einsteiger und Fortgeschrittene (siehe Tabelle unten).</p>
+<p>Ich habe 2019 meine <strong>Promotion</strong> im <a href="https://www.uni-hohenheim.de/organisation/einrichtung/fg-biostatistik">Fachgebiet Biostatistik</a> an der Universität Hohenheim abgeschlossen und arbeite seitdem als <strong>Data Scientist</strong> bei <a href="https://www.biomath.de/">BioMath</a>. Desweiteren gebe ich <strong>Workshops</strong> in R für Einsteiger und Fortgeschrittene (siehe Tabelle unten).</p>
 <p><a href="mailto:schmidtpaul@hotmail.de" class="email">schmidtpaul@hotmail.de</a></p>
 <p><a href="https://www.linkedin.com/in/schmidtpaul1989/">LinkedIn</a></p>
 <p><a href="https://www.xing.com/profile/Paul_Schmidt203/cv">Xing</a></p>
 <p><a href="https://www.researchgate.net/profile/Paul_Schmidt17/research">Publikationen (ResearchGate)</a></p>
 <p><a href="https://github.com/PaulSchmidtGit/Heritability">GitHub mit Resultaten aus Promotion</a></p>
-<p><br /></p>
-<p><br /></p>
+<p><br></p>
 </div>
 <div id="workshops" class="section level3">
 <h3>Workshops</h3>
@@ -576,7 +542,7 @@ div.tocify {
 <td>Thünen-Institut, Braunschweig</td>
 </tr>
 <tr class="odd">
-<td><a href="https://www.uni-rostock.de/en/research/support-of-early-career-researchers/graduate-academy/qualifizierungsprogramm/grundlagen-der-angewandten-statistik/">Essential basics of statistics</a></td>
+<td>Essential basics of statistics</td>
 <td>Sep 2019</td>
 <td>12 h</td>
 <td>Universität Rostock</td>
@@ -594,10 +560,28 @@ div.tocify {
 <td>Thünen-Institut, Braunschweig</td>
 </tr>
 <tr class="even">
-<td><a href="https://www.uni-rostock.de/en/research/support-of-early-career-researchers/graduate-academy/qualifizierungsprogramm/grundlagen-der-angewandten-statistik/">Basics of applied statistics</a></td>
+<td>Basics of applied statistics</td>
 <td>Dez 2019</td>
 <td>12 h</td>
 <td>Universität Rostock</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.uni-kassel.de/fb11agrar/fileadmin/datas/fb11/Tropenzentrum/Bilder/Realtime_consultation_on_statistics_Statistics_Workshop_for_PhDs_March_2020.pdf">Real-time consultation on statistics and linear mixed models in R</a></td>
+<td>Mar 2020</td>
+<td>9 h</td>
+<td>Universität Kassel</td>
+</tr>
+<tr class="even">
+<td><a href="https://biometrie-bmel.de/Kursinhalt?Kurs=2066">Data Science in den Naturwissenschaften mit R (Teil 1)</a></td>
+<td>Jun 2020</td>
+<td>16 h</td>
+<td>Thünen-Institut, Braunschweig</td>
+</tr>
+<tr class="odd">
+<td><a href="https://biometrie-bmel.de/Kursinhalt?Kurs=2069">Data Science in den Naturwissenschaften mit R (Teil 2)</a></td>
+<td>Oct 2020</td>
+<td>16 h</td>
+<td>Thünen-Institut, Braunschweig</td>
 </tr>
 </tbody>
 </table>
@@ -621,6 +605,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

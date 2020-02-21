@@ -25,7 +25,7 @@ str(dat, width=40, strict.width="cut")
 ```
 
 # Fragestellung
-Wir könnten nun verschiedene Fragen an diesen Datensatz stellen. Wir könnten z.B. fragen wer im Schnitt mehr `drinks` hatte (siehe dazu [das Kapitel zum Erstellen deskriptiver Statistiken](DatR_descriptiveStats.html)). In diesem Kapitel wollen wir uns allerdings **ausschließlich auf die beiden numerischen Variablen konzentrieren**, nämlich `drinks` und `blood_alc`, also die Anzahl Getränke und den Promillewert. Wir ignorieren dabei komplett ob ein Wert von Peter oder Max kommt.
+Wir könnten nun verschiedene Fragen an diesen Datensatz stellen. Wir könnten z.B. fragen wer im Schnitt mehr `drinks` hatte (siehe dazu [das Kapitel zum Erstellen deskriptiver Statistiken](DatR_DescriptiveStats.html)). In diesem Kapitel wollen wir uns allerdings **ausschließlich auf die beiden numerischen Variablen konzentrieren**, nämlich `drinks` und `blood_alc`, also die Anzahl Getränke und den Promillewert. Wir ignorieren dabei komplett ob ein Wert von Peter oder Max kommt.
 
 Demnach lautet unsere Frage in etwa: **Wie hängt der Promillewert mit der Anzahl Getränken zusammen?** und diese Frage beantworten wir in diesem Kapitel auf verschiedene Arten.
 

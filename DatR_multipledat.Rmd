@@ -5,14 +5,14 @@ title: "Arbeiten mit mehreren Datensätzen/Dateien"
 Oft kommt es vor, dass verschiedene Datensätze aus mehreren Versuchen/Experimenten erhoben werden. In solche einem Fall ist es eventuell nötig
 
 1. die Daten aus den verschiedenen Dateien zusammenzutragen und/oder
-2. die verschiedenen Datensätze separate auszuwerten.
+2. die verschiedenen Datensätze separat auszuwerten.
 
 # 3 Datensätze - 3 Auswertungen
-In diesem Beispiel liegen Daten von drei Feldversuchen vor, die sich prinzipiell recht ähnlich sind, aber an drei verschiedenen Orten ("L1", "L2" und "L3") stattgefunden haben. In den Versuchen wurden 89 verschiedene Sorten/Genotypen ("G1"-"G89") in [randomisierten, vollständigen Blockanlagen (RCBD)](1F_rcbd.html) angebaut und schließlich ihr Ertrag gemessen.
+In diesem Beispiel liegen Daten von drei Feldversuchen vor, die sich prinzipiell recht ähnlich sind, aber an drei verschiedenen Orten ("L1", "L2" und "L3") stattgefunden haben. In den Versuchen wurden 89 verschiedene Sorten/Genotypen ("G1"-"G89") in randomisierten, vollständigen Blockanlagen (RCBD) angebaut und schließlich ihr Ertrag gemessen.
 
 Wir wollen hier nicht versuchen die Daten der 3 Orte gemeinsam auszuwerten, sondern separat. Prinzipiell soll also einfach die Auswertung einer einfaktoriellen RCBD, [wie in diesem Beispiel](1F_rcbd.html) durchgeführt werden, nur eben 3 mal hintereinander jeweils pro Ort.
 
-Natürlich kann dies manuell erledigt werden, indem Beispielsweise eine R-Code Datei pro Datensatz angelegt wird und lediglich an bestimmten Stellen Kleinigkeiten geändert werden, sodass sich der Code auf die richtige Excel-Datei bezieht und am Ende auch die Ergebnisse korrekt abspeichert. Diese Vorgehensweise hat aber folgende Probleme:
+Natürlich kann dies manuell erledigt werden, indem Beispielsweise ein R-Code pro Datensatz angelegt wird und lediglich an bestimmten Stellen Kleinigkeiten geändert werden, sodass sich der Code auf die richtige Excel-Datei bezieht und am Ende auch die Ergebnisse korrekt abspeichert. Diese Vorgehensweise hat aber folgende Probleme:
 
 1. Es wird natürlich mit steigender Anzahl Datensätze (also mehr als 3) schnell unübersichtlich und aufwendig und
 2. es muss bei einer nachträglichen Korrektur des Codes die Korrektur in allen R-Codes umgesetzt werden, was nur so nach Flüchtigkeitsfehlern schreit.
@@ -20,7 +20,7 @@ Natürlich kann dies manuell erledigt werden, indem Beispielsweise eine R-Code D
 Deshalb bietet es sich manchmal an den R-Code so zu schreiben, dass man nur einen einzigen Code für die Auswertung aller Datensätze benötigt. Voraussetzung hierfür ist natürlich, dass die Datensätze und die Auswertungen sich alle sehr ähnlich sind. 
 
 # Zur Umsetzung der Analyse
-Sagen wir die 3 Dateien lägen alle im selben Ordner und hießen "Environment1.xlsx", "Environment2.xlsx" und "Environment3.xlsx" und außerdem hieße das entsprechende Tabllenblatt innerhalb aller Excel-Dateien immer "Datenblatt". Natürlich könnte man sie alle einzeln [importieren](DatR_importexport.html):
+Sagen wir die 3 Dateien lägen alle im selben Ordner und hießen "Environment1.xlsx", "Environment2.xlsx" und "Environment3.xlsx" und außerdem hieße das entsprechende Tabllenblatt innerhalb aller Excel-Dateien immer "Datenblatt". Natürlich könnte man sie alle einzeln [importieren](DatR_ImportExport.html):
 
 ```{r, eval=FALSE}
 library(readxl)
@@ -50,7 +50,7 @@ for (year in c(2019, 2020, 2021, 2022)){
 Wie man sieht wird für jedes Element eines Vektors (oben: *i* oder *year*) ausgeführt, was innerhalb der geschweiften Klammern steht. Es wird schnell klar, dass dies uns auch für den Fall mit Environment1 - Environment3 helfen kann. Wir wollen es uns allerdings noch ein wenig schwerer machen.
 
 ## list.files
-In Wirklichkeit kann es passieren, dass die Dateien nicht mal mit schön einheitlichen Namen vorliegen. So auch hier, denn es gibt zwar die Datei "Environment1.xlsx", aber die anderen beiden heißen "environment2.xlsx" und "Location3.xlsx". Anstatt die Dateien nun händisch umzubenennen, wollen wir stattdessen einfach mit den Dateinamen arbeiten, die vorliegen. Eine nützliche Funktion ist dabei `list.files()` - sie listet alle Dateien in einem Ordner auf:
+In Wirklichkeit kann es passieren, dass die Dateien nicht mal mit einheitlichen Namen vorliegen. So auch hier, denn es gibt zwar die Datei "Environment1.xlsx", aber die anderen beiden heißen "environment2.xlsx" und "Location3.xlsx". Anstatt die Dateien nun händisch umzubenennen, wollen wir stattdessen einfach mit den Dateinamen arbeiten, die vorliegen. Eine nützliche Funktion ist dabei `list.files()` - sie listet alle Dateien in einem Ordner auf:
 
 ```{r}
 DatPfad <- "D:/RKurse/MyDatasets/example_multiplefiles/threedatasets/"
@@ -61,8 +61,8 @@ DatNamen # Zeige DatNamen
 Da wir die 3 Dateinamen nun im Vektor `DatNamen` abgespeichert haben, können wir sie auch einzeln mit einem Loop ansprechen:
 
 ```{r}
-for (i in c(1,2,3)){
-  print(paste0(DatPfad, DatNamen[i]))
+for (i in DatNamen){
+  print(paste0(DatPfad, i))
 }
 ```
 
@@ -77,8 +77,8 @@ library(readxl)
 
 DatListe <- list() # Erstelle leere Liste
 
-for (i in c(1,2,3)){
-  DatListe[[i]] <- read_excel(path  = paste0(DatPfad, DatNamen[i]),
+for (i in DatNamen){
+  DatListe[[i]] <- read_excel(path  = paste0(DatPfad, i),
                               sheet = "Datenblatt") %>% data.table
 }
 ```
@@ -107,7 +107,7 @@ Da alle Versuche als einfaktorielle, randomisierte vollständige Blockanlage ang
 ```{r}
 ErgebnisListe <- list() # Erstelle leere Liste
 
-for (i in c(1,2,3)){
+for (i in DatNamen){
   mod <- lm(y ~ gen + rep, data=DatListe[[i]])
   ErgebnisListe[[i]] <- anova(mod)
 }
@@ -138,7 +138,7 @@ Man sieht, dass die Liste von vornherein in ihren Dimensionen definiert sein mus
 
 ```{r}
 
-for (i in c(1,2,3)){
+for (i in DatNamen){
   result_list[[i, "n_obs" ]] <- nrow(DatListe[[i]]) 
   result_list[[i, "n_gen" ]] <- n_distinct(DatListe[[i]]$gen) 
   result_list[[i, "n_rep" ]] <- n_distinct(DatListe[[i]]$rep) 
@@ -155,5 +155,5 @@ Die ersten drei Spalten werden praktischerweise ganz einfach wie eine Tabelle an
 result_list[["Environment1.xlsx", "ANOVA"]] # Zeigt nur ANOVA Ergbnisse des Datensates Environment1.xlsx. Übrigens funktioniert result_list[[1, "ANOVA"]] auch!
 ```
 
-Man kann übrigens auch output von `ggplot()` in solchen Listen abspeichern. Zusammen mit der [Export-Funktion in verschiedene Tabellenblätter derselben Excel-Datei](DatR_importexport.html) lässt sich so der Arbeitsprozess in bestimmten Fällen also deutlich effizienter gestalten.
+Man kann übrigens auch output von `ggplot()` in solchen Listen abspeichern. Zusammen mit der [Export-Funktion in verschiedene Tabellenblätter derselben Excel-Datei](DatR_ImportExport.html) lässt sich so der Arbeitsprozess in bestimmten Fällen also deutlich effizienter gestalten.
 

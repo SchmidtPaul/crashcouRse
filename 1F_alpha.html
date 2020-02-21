@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -531,7 +498,7 @@ library(lme4); library(lmerTest) # gemischtes Modell</code></pre>
 <p>Dieses Experiment wurde als ein <span class="math inline">\(\alpha\)</span>-lattice angelegt. Dies wurde im letzten Beispiel verschwiegen und stattdessen behauptet, es wäre eine randomisierte vollständige Blockanlage. In der Tat besitzt das eigentliche Experiment dieselben vollständigen Blöcke, allerdings gibt es innerhalb dieser noch jeweils 6 unvollständige Blöcke. Die ‘rep’ Spalte steht also weiterhin für die vollständigen Blöcke, zusätzlich gibt es jedoch noch eine ‘inc.block’ (<em>incomplete block</em>) Spalte für die unvollständigen Blöcke. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
 <div class="row">
 <div class="col-md-6">
-<p><img src="1F_alpha_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_alpha_files/figure-html/unnamed-chunk-13-2.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_alpha_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>print(alpha, nrows=10)</code></pre>
@@ -563,7 +530,7 @@ plot(y=alpha$yield, x=alpha$gen)</code></pre>
 ##  $ inc.block: Factor w/ 6 levels &quot;B1&quot;&quot;..
 ##  $ yield    : num  4.12 4.45 5.88 4.58..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
-<p><img src="1F_alpha_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(alpha)</code></pre>
@@ -576,11 +543,11 @@ plot(y=alpha$yield, x=alpha$gen)</code></pre>
 ##  G06    : 3             B6:12     Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=alpha$yield, x=alpha$rep)</code></pre>
-<p><img src="1F_alpha_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>
 <pre class="r"><code>boxplot(yield ~ rep + inc.block, data=alpha, las=2) #las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1F_alpha_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="Anmerkung1" class="section level1">
 <h1>Schließende Statistik</h1>
@@ -640,7 +607,7 @@ means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
   theme_bw() +
   annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1F_alpha_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="1F_alpha_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 
 
@@ -661,6 +628,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

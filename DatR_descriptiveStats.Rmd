@@ -1,5 +1,5 @@
 ---
-  title: "Deskriptive Statistik in R"
+title: "Deskriptive Statistik in R"
 ---
 > Ein zum Thema passendes Youtube Video gibt's [hier](https://youtu.be/kn83BA7cRNM)
 
@@ -15,7 +15,7 @@ Man kann Statistik in *deskriptive/erkundende* und *schließende/inferentielle/i
 
 Viele, die R (oder andere Statistiksoftware) für ihre schließende Statistik (*i.e.* ANOVA, *post-hoc* Tests, Regression *etc.*) nutzen, führen vrher die deskriptive Statistik (*i.e.* einfache Mittelwerte, Minimum, Maximum ausrechen) noch in Excel durch. Grund dafür ist, dass dies mit Excel-Funktionen wie `=MITTELWERT()` schlichtweg sehr schnell zu machen ist und die Ergebnisse dann direkt neben der Datentabelle zu sehen sind.
 
-Es gibt aber auch Argumente, die dafür sprechen selbst diese deskriptive Statistik schon in R durchzuführen. Zum einen kann das Einfügen von Mittelwerten neben den eigentlichen Datentabellen in einem Excel-Tabellenblatt dazu führen, dass der folgende [Import in R](DatR_importexport.html) auf Probleme stößt. Zum anderen kann selbst die Berechnung von einfachen Mittelwerten in Excel schnell mühsam werden, wenn z.B. ein Mittelwert pro Gruppe unter nicht-Berücksichtigunge bestimmter Werte durchgeführt werden soll.
+Es gibt aber auch Argumente, die dafür sprechen selbst diese deskriptive Statistik schon in R durchzuführen. Zum einen kann das Einfügen von Mittelwerten neben den eigentlichen Datentabellen in einem Excel-Tabellenblatt dazu führen, dass der folgende [Import in R](DatR_ImportExport.html) auf Probleme stößt. Zum anderen kann selbst die Berechnung von einfachen Mittelwerten in Excel schnell mühsam werden, wenn z.B. ein Mittelwert pro Gruppe unter nicht-Berücksichtigunge bestimmter Werte durchgeführt werden soll.
 
 Dieses Kapitel soll deshalb zeigen wie schnell und komfortabel deskriptive Statistiken in R erstellt werden können.
 

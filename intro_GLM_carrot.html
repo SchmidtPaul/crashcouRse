@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -87,7 +87,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -236,6 +235,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -248,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -303,6 +264,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -392,16 +359,16 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="DatR_ImportExport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="DatR_DescriptiveStats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="appendix_desplot.html">desplot package</a>
+      <a href="DatR_Desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_multipledat.html">Loops &amp; Listen</a>
+      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
     </li>
     <li>
       <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
@@ -416,7 +383,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="regcorr_drinks.html">Korrelation &amp; Regression</a>
+      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
@@ -603,7 +570,7 @@ autoplot(mod, which=1:2) </code></pre>
 <blockquote>
 <p><strong>Sieht das jetzt gut genug aus?</strong> <br /> Häufig wird bemängelt, dass eine Beurteilung von Residuenplots subjektiv ist: Gerade mit wenig Erfahrung fällt die Entscheidung schwer ob der jeweilige Plot nun gut aussieht oder nicht. Um Orientierungspunkte zu geben, sind hier ein paar Residuenplots zum Verlgeich dargestellt: [UNDER CONSTRUCTION]. <br /> Es soll auch darauf hingewiesen sein, dass es Tests gibt, die testen ob alle Voraussetzungen erfüllt sind. Allerdings bergen solche Tests das Problem, dass sie das Gesamtbild nur “schwarz-weiß” darstellen, also auf ein “ja” oder “nein” reduzieren, was zu einem Informationsverlust führt. Residuenplots können eben nicht nur <em>perfekt</em> oder <em>vollkommen daneben</em> aussehen und liefern somit eine genauere Aussage darüber ob bzw. wie gut die Voraussetzungen erfüllt sind.</p>
 </blockquote>
-<div id="losung-1-datentransformation" class="section level2">
+<div id="lösung-1-datentransformation" class="section level2">
 <h2>Lösung 1: Datentransformation</h2>
 <p>Wenn man nicht die gemessenen Werte selbst auswertet, sondern sie vor der Auswertung transformiert, kann dies dazu führen, dass die Annahmen der Varianzanalyse (besser als vorher) erfüllt sind und man doch eine “normale” Varianzanalyse durchführen darf - nur eben mit den transformierten Werten.</p>
 <p><em>Transformieren</em> heißt hier durch eine Funktion umrechnen wie z.B. die Wurzel ziehen oder logarithmieren. Wenn also ein Fall wie der oben auftritt würde man also tatsächlich versuchen nicht den prozentualen Befall selbst (<code>anteil</code>) auszuwerten, sondern eine neue Spalte erstellen in der man beispielsweise <code>log(anteil)</code> berechnet und diese Werte dann auswertet. Auf den ersten Blick mag dies nicht logisch bzw. zielführend erscheinen (zumindest ging es mir so), da man so nicht mehr die natürliche Skala analysiert. Doch tatsächlich können dieselben biologisch relevanten Schlussfolgerungen, also z.B. <em>“Sorte 1 ist anfälliger als Sorte 3”</em> genauso gut auf Basis von logarithmierten Werten wie auf nicht logarithmierten Werten stattfinden - wobei “genauso gut” eben nicht stimmt, wenn die untransformierten Werte die Varianzanalyseannahmen nicht erfüllen, die transformierten Werte aber schon. In solch einem Fall sollte man also die transformierten Werte auswerten.</p>
@@ -640,7 +607,7 @@ autoplot(mod.arcsin, which=1:2)</code></pre>
 <p>Für weiterführende, aber dennoch eingängig formulierte Informationen mit direktem Bezug zu R empfehle ich <a href="https://cran.r-project.org/doc/contrib/Dormann+Kuehn_AngewandteStatistik.pdf">Kapitel 3.3 von Doormann &amp; Kühn</a>.</p>
 </div>
 </div>
-<div id="losung-2-generalisierte-modelle" class="section level2">
+<div id="lösung-2-generalisierte-modelle" class="section level2">
 <h2>Lösung 2: Generalisierte Modelle</h2>
 <p>Hin und wieder müssen Daten analysiert werden, bei denen selbst verschiedene Transformationen zu keiner zufriedenstellenden Verbesserung hinsichtlich der Annahmen einer Varianzanalyse führen. In solch einem Fall können <strong>Generalisierte lineare Modelle (GLM)</strong> angewendet werden. Bisher haben wir nur einfache, oder auch “generelle lineare Modelle (gLM)” genutzt.</p>
 <p><em>Generalisiert</em> meint hier, dass zwei der Annahmen, nämlich die der <em>Varianzhomogenität</em> und der <em>Normalverteilung der Fehler</em> wegfallen. Es können nämlich andere Verteilungen wie z.B. die Poisson-Verteilung, die Binomial-Verteilung oder die Gammaverteilung angenommen werden. Und ja, die Varianzen müssen nicht länger homogen sein, aber es muss die Beziehung zwischen Erwartungswert und Varianz bekannt sein bzw. geraten werden, d.h. es muss eine Varianzfunktion angegeben werden.</p>
@@ -731,7 +698,7 @@ anova(mod.glm, test=&quot;Chisq&quot;) # Option 1</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Laut der Devianzanalyse-Tabelle gibt es also eine signifikante Wechselwirkung zwischen den beiden Behandlungseffekten. Demnach müsste man im Anschluss die adjustierten Mittelwerte aller Genotype-Treatment-Kombinationen berechnen und miteinander (via post-hoc Tests) vergleichen wie z.B. in <a href="2F_rcbd.html">Kapitel 4</a> oder <a href="2F_splitplot.html">Kapitel 5</a>.</p>
 </div>
-<div id="uber--und-unterdispersion" class="section level3">
+<div id="über--und-unterdispersion" class="section level3">
 <h3>Über- und Unterdispersion</h3>
 <p>Wir wollen uns allerdings noch eines weiteren Aspektes der GLM zuwenden - dem Dispersionsparameter. Wie schon gesagt gibt es für jede Verteilung eine zugehörige Varianzfunktion und somit eine erwartete Varianz. Tatsächlich sind die beobachteten Varianzen aber manchmal größer oder kleiner als ihr Erwartungswert laut Varianzfunktion. Dieses Phänomen wird dann entsprechend als Über- und Unterdispersion bezeichnet.</p>
 <p>Sollte solch ein Fall vorliegen, kann im Modell ein zusätzlicher <em>Dispersionsparameter</em> <span class="math inline">\(\phi\)</span> angepasst werden, der die Über- oder Unterdispersion sozusagen auffängt. Läge weder Über- noch Unterdispersion vor, so wäre <span class="math inline">\(\phi=1\)</span>. Bei Unterdispersion ist <span class="math inline">\(\phi&lt;1\)</span> und bei Überdispersion ist <span class="math inline">\(\phi&gt;1\)</span>.</p>
@@ -781,6 +748,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

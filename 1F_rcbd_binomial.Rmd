@@ -52,7 +52,7 @@ str(wheat, width=40, strict.width="cut")
 
 # Deskriptive Statistik
 
-Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor `genfarben` gespeichert - [mehr Infos dazu hier](appendix_desplot.html). 
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor `genfarben` gespeichert - [mehr Infos dazu hier](DatR_Desplot.html). 
 
 ```{r, fig.height = 4, fig.width = 5, fig.align = "center"}
 boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2) # las=2 dreht die Achsenbeschriftung
