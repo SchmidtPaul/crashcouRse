@@ -2,7 +2,7 @@
 title: "Paul Schmidt"
 ---
 
-<img src="images/PauSch2.jpg" style="width:26%; margin-right: 20px" align="left">
+<img src="images/PauSch.jpg" style="width:25%; margin-right: 20px" align="left">
 
 ### Über mich
 
