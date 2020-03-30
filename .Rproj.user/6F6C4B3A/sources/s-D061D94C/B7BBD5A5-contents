@@ -8,9 +8,9 @@ navbar:
     - text: "R Anwendung"
       menu:
         - text: "Import & Export"
-          href: DatR_ImportExport.html
+          href: DatR_importexport.html
         - text: "Deskriptive Statistik"
-          href: DatR_DescriptiveStats.html        
+          href: DatR_descriptiveStats.html        
         - text: "desplot package"
           href: DatR_Desplot.html
         - text: "Loops & Listen"
