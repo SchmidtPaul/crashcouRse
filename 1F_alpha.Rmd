@@ -23,7 +23,7 @@ library(emmeans) # adjustierte Mittelwerte
 library(lme4); library(lmerTest) # gemischtes Modell
 ```
 
-Dieses Beispiel ist den Beispielen "1F_crd" und vor allem "1F_rcbd" sehr ähnlich und baut darauf auf. Tatsächlich handelt es sich um den gleichen Datensatz wie in "1F_rcbd". Es ist ein Beispieldatensatz mit dem Namen `john.alpha` aus dem `agridat` package.
+Dieses Beispiel ist den Beispielen "1f_crd" und vor allem "1F_rcbd" sehr ähnlich und baut darauf auf. Tatsächlich handelt es sich um den gleichen Datensatz wie in "1F_rcbd". Es ist ein Beispieldatensatz mit dem Namen `john.alpha` aus dem `agridat` package.
 
 Dieses Experiment wurde als ein $\alpha$-lattice angelegt. Dies wurde im letzten Beispiel verschwiegen und stattdessen behauptet, es wäre eine randomisierte vollständige Blockanlage. In der Tat besitzt das eigentliche Experiment dieselben vollständigen Blöcke, allerdings gibt es innerhalb dieser noch jeweils 6 unvollständige Blöcke. Die 'rep' Spalte steht also weiterhin für die vollständigen Blöcke, zusätzlich gibt es jedoch noch eine 'inc.block' (*incomplete block*) Spalte für die unvollständigen Blöcke. [Hier mehr Infos zu Versuchsdesigns](appendix_designs.html)
 

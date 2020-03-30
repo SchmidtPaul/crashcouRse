@@ -53,7 +53,7 @@ str(splitplot, width=40, strict.width="cut")
 </div> </div>
 
 # Deskriptive Statistik
-Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](DatR_Desplot.html).
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](datr_desplot.html).
 
 ```{r}
 boxplot(yield ~ N*G, col=brewer.pal(6, "Dark2"), data=splitplot, las=2) # las=2 dreht Achsenbeschriftung
@@ -73,7 +73,7 @@ mod <- lmer(yield ~ G + N + G:N + rep + (1|rep:mainplot), data=splitplot)
 
 Zunächst sollten nun die Residuenplots evaluiert werden - beispielsweise mit `plot(mod)` und `qqnorm(resid(mod)); qqline(resid(mod))`. Erst danach ist eine Varianzanalyse zulässig.
 
-> Die Spalte 'mainplot' ist in diesem Beispiel übrigens prinzipiell überflüssig. Das liegt daran, dass man die 3x6 main plots anstatt mit 'rep:mainplot' auch mit 'rep:N' hätte modellieren können, da ein main plot immer einer N-Stufe entspricht (siehe Feldplan oben). Um es aber leichter verständlich zu machen, nutzen wir hier eine extra 'mainplot' Spalte. Siehe außerdem die Anmerkung aus [dem vorigen Beispiel](1F_alpha.html).
+> Die Spalte 'mainplot' ist in diesem Beispiel übrigens prinzipiell überflüssig. Das liegt daran, dass man die 3x6 main plots anstatt mit 'rep:mainplot' auch mit 'rep:N' hätte modellieren können, da ein main plot immer einer N-Stufe entspricht (siehe Feldplan oben). Um es aber leichter verständlich zu machen, nutzen wir hier eine extra 'mainplot' Spalte. Siehe außerdem die Anmerkung aus [dem vorigen Beispiel](1f_alpha.html).
 
 ## Varianzanalyse
 ```{r, warning=FALSE, message=FALSE, error=FALSE}

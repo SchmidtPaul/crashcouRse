@@ -52,7 +52,7 @@ str(wheat, width=40, strict.width="cut")
 
 # Deskriptive Statistik
 
-Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor `genfarben` gespeichert - [mehr Infos dazu hier](DatR_Desplot.html). 
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor `genfarben` gespeichert - [mehr Infos dazu hier](datr_desplot.html). 
 
 ```{r, fig.height = 4, fig.width = 5, fig.align = "center"}
 boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2) # las=2 dreht die Achsenbeschriftung
@@ -62,7 +62,7 @@ boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2) # las=2 dreht die Achsen
 
 ## Generalisiertes Modell
 
-Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (*i.e.* 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Dies geht z.B. mit der `glm()` Funktion. Bezüglich der Effekte im Modell verfahren wir wie bei einer [einfaktoriellen ANOVA in einem RCBD](1F_rcbd.html). 
+Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (*i.e.* 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen ([mehr dazu hier](appendix_nichtnormalverteilt.html)). Dies geht z.B. mit der `glm()` Funktion. Bezüglich der Effekte im Modell verfahren wir wie bei einer [einfaktoriellen ANOVA in einem RCBD](1f_rcbd.html). 
 
 ```{r}
 mod <- glm(y/n ~ block + gen, weights=n, family=quasibinomial(link="logit"), data=wheat)

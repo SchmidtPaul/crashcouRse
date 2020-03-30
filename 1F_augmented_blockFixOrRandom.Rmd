@@ -106,6 +106,6 @@ mean(dif.ranBl$SE)
 ```
 </div> </div>
 
-Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können. **Wichtig bei diesem Vergleich ist**, dass die s.e.d. der adjustierten Mittelwertdifferenzen für das gemischte Modelle unbedingt mit einer Approximation wie z.B. der Kenward-Roger-Methode oder Satterthwaite-Methode berechnet werden sollten - dies wird von der `emmeans()` Funktion allerdings standardmäßig getan. Mehr zu dem Thema im [Kapitel zu gemischten Modellen](stat_GemischteModelle.html).
+Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können. **Wichtig bei diesem Vergleich ist**, dass die s.e.d. der adjustierten Mittelwertdifferenzen für das gemischte Modelle unbedingt mit einer Approximation wie z.B. der Kenward-Roger-Methode oder Satterthwaite-Methode berechnet werden sollten - dies wird von der `emmeans()` Funktion allerdings standardmäßig getan. Mehr zu dem Thema im [Kapitel zu gemischten Modellen](stat_gemischtemodelle.html).
 
 Demnach würden wir ab hier wie in den vorangegangenen Beispielen (eine ANOVA durchführen um zu prüfen ob der Sorteneffekt signifikant ist und) post-hoc-Tests für die Sortenmittelwertvergleiche durchführen.

@@ -46,7 +46,7 @@ str(riceRCBD, width=40, strict.width="cut")
 </div> </div>
 
 # Deskriptive Statistik
-Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](DatR_Desplot.html).
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](datr_desplot.html).
 
 ```{r}
 boxplot(yield ~ N*G, col=brewer.pal(6, "Dark2"), data=riceRCBD, las=2) # las=2 dreht die Achsenbeschriftung
@@ -56,7 +56,7 @@ Es fällt auf, dass sich das Muster der Werte der verschiedenen N-Stufen für So
 
 # Schließende Statistik
 ## Lineares Modell
-Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Das Modell ist dem aus dem [vorangegangen Beispiel mit RCBD](1F_rcbd.html) ähnlich, muss jedoch aufgrund des zweiten Behandlungsfaktors erweitert werden. Wir beginnen mit dem vollen Modell um die *backward elimination* anzuwenden ( [mehr Infos dazu hier](appendix_interaktionen.html)).
+Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Das Modell ist dem aus dem [vorangegangen Beispiel mit RCBD](1f_rcbd.html) ähnlich, muss jedoch aufgrund des zweiten Behandlungsfaktors erweitert werden. Wir beginnen mit dem vollen Modell um die *backward elimination* anzuwenden ( [mehr Infos dazu hier](appendix_interaktionen.html)).
 
 ```{r}
 mod <- lm(yield ~ N + G + N:G + rep, data=riceRCBD)

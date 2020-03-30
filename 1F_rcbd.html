@@ -359,19 +359,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="DatR_importexport.html">Import &amp; Export</a>
+      <a href="datr_importexport.html">Import &amp; Export</a>
     </li>
     <li>
-      <a href="DatR_descriptiveStats.html">Deskriptive Statistik</a>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
     </li>
     <li>
-      <a href="DatR_Desplot.html">desplot package</a>
+      <a href="datr_desplot.html">desplot package</a>
     </li>
     <li>
-      <a href="DatR_MultipleDat.html">Loops &amp; Listen</a>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
     </li>
     <li>
-      <a href="DatR_MoreAdvanced.html">Weitere Tipps</a>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
     </li>
   </ul>
 </li>
@@ -383,37 +383,37 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="1N_Drinks.html">Korrelation &amp; Regression</a>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
     </li>
     <li>
       <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
     </li>
     <li>
-      <a href="1F_crd.html">1F crd</a>
+      <a href="1f_crd.html">1F crd</a>
     </li>
     <li>
-      <a href="1F_rcbd.html">1F rcbd</a>
+      <a href="1f_rcbd.html">1F rcbd</a>
     </li>
     <li>
-      <a href="1F_alpha.html">1F alpha</a>
+      <a href="1f_alpha.html">1F alpha</a>
     </li>
     <li>
-      <a href="2F_rcbd.html">2F rcbd</a>
+      <a href="2f_rcbd.html">2F rcbd</a>
     </li>
     <li>
-      <a href="2F_splitplot.html">2F split-plot</a>
+      <a href="2f_splitplot.html">2F split-plot</a>
     </li>
     <li>
-      <a href="1F_augmented_blockFixOrRandom.html">1F augmented</a>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
     </li>
     <li>
-      <a href="1F_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
     </li>
     <li>
-      <a href="1F_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
     </li>
     <li>
-      <a href="1F_latsq_poisson.html">1F lat square Zählwerte</a>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
     </li>
   </ul>
 </li>
@@ -425,10 +425,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="stat_Korrelation.html">Korrelation</a>
+      <a href="stat_korrelation.html">Korrelation</a>
     </li>
     <li>
-      <a href="stat_Regression.html">Regression</a>
+      <a href="stat_regression.html">Regression</a>
     </li>
     <li>
       <a href="appendix_designs.html">Versuchsdesigns</a>
@@ -446,16 +446,16 @@ div.tocify {
       <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
     </li>
     <li>
-      <a href="stat_GemischteModelle.html">Gemischte Modelle</a>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
     </li>
     <li>
       <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
     </li>
     <li>
-      <a href="3F_MET_Regions.html">Kovarianzstrukturen 2</a>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
     </li>
     <li>
-      <a href="intro_GLM_carrot.html">Nicht-Normalverteilte Daten</a>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
     </li>
     <li>
       <a href="stat_logisticregression.html">Logistische Regression</a>
@@ -493,10 +493,10 @@ div.tocify {
 <pre class="r"><code>library(data.table) # bessere Datenmanipulation
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
-<p>Dieses Beispiel ist dem Beispiel “1F_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<p>Dieses Beispiel ist dem Beispiel “1f_crd” sehr ähnlich und baut darauf auf. In diesem Feldversuch wurde allerdings der Ertrag von 24 Sorten gemessen, welche auch in 3 Wiederholungen, aber als <strong>randomisierte vollständige Blockanlage</strong> (=<strong>R</strong>andomized <strong>C</strong>omplete <strong>B</strong>lock <strong>D</strong>esign) angelegt wurden. Demnach gibt es nun eine zusätzliche Spalte im Datensatz, die Informationen zu den vollständigen Blöcken enthält. Diese Spalte heißt hier “rep” (<em>replicate</em>), da vollständige Blöcke auch oft <em>Wiederholungen</em> genannt werden. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
 <div class="row">
 <div class="col-md-6">
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1F_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
+<p><img src="1f_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /><img src="1f_rcbd_files/figure-html/unnamed-chunk-3-2.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>print(rcbd, nrows=10)</code></pre>
@@ -517,7 +517,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 </div>
 <div id="deskriptive-statistik" class="section level1">
 <h1>Deskriptive Statistik</h1>
-<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1F_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie zwei Plots. Im Vergleich zu dem Beispiel “1f_crd” erstellen wir diesmal auch einen Boxplot für die Blöcke.</p>
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>str(rcbd)</code></pre>
@@ -527,7 +527,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ##  $ yield: num  4.12 4.45 5.88 4.58 4.6..
 ##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$gen, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="1f_rcbd_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>summary(rcbd)</code></pre>
@@ -540,7 +540,7 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 ##  G06    : 3             Max.   :5.876  
 ##  (Other):54</code></pre>
 <pre class="r"><code>plot(y=rcbd$yield, x=rcbd$rep)</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="1f_rcbd_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -586,7 +586,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 ## 4: G01 - G05 0.09813333 0.2995396 46 0.3276139 1.000000e+00
 ## 5: G01 - G06 0.45216667 0.2995396 46 1.5095388 9.967593e-01
 ## 6: G01 - G07 1.03256667 0.2995396 46 3.4471791 1.376011e-01</code></pre>
-<p>Im Vergleich zum Beispiel “1F_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
+<p>Im Vergleich zum Beispiel “1f_crd” gibt es hier deutlich mehr Differenzen/paarweise Vergleiche. Das liegt daran, dass wir dort nur 3 Sortenmittelwerte miteinander verglichen haben, während es hier 24 sind. Mit steigender Sortenanzahl <em>n</em> steigt die Anzahl aller möglichen Sortenvergleiche <em>n(n-1)/2</em> sehr schnell an. Beim Betrachten der p-Werte fällt außerdem wieder auf, dass nicht alle Differenzen signifikant sind. Bei dieser größeren Anzahl Sorten wird deutlich wie hilfreich die Buchstabendarstellung ist, welche wir erneut mit dem <code>CLD()</code> statement erzeugen können.</p>
 <pre class="r"><code>means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
 <pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
 ## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
@@ -602,7 +602,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">
 <h1>Ergebnisaufbereitung</h1>
-<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1F_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
+<p>Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Diesmal nutzen wir aber mehr <code>ggplot</code>-Funktionen als im Beispiel “1f_crd”. So kann man generell mit dem <code>theme()</code> statement <a href="https://ggplot2.tidyverse.org/reference/theme.html">sehr viele</a> Dinge am Aussehen eines ggplots ändern. Um aber nicht jede Linie, Füllfarbe usw. einzeln bearbeiten zu müssen, kann man auch <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">vorgefertigte Themes</a> nutzen, wie wir hier das <code>theme_bw()</code>. Desweiteren lassen wir die Fehlerbalken diesmal nicht ± Standardfehler abbilden, sondern die Spanne des 95% Konfidenzintervall, die auch schon im <code>emmeans()</code> statement berechnet wurden. Außerdem ordnen wir die Sorten auf der x-Achse diesmal nicht nach Namen, sondern nach ihrem adjustierten Mittelwert. mit dem <code>reorder()</code> statement in der ersten Zeile. Schließlich lassen wir die Information zur Interpretation der Buchstabendarstellung diesmal nicht als <code>caption=</code> unter der Grafik erscheinen, sondern fügen mittles <code>annotate()</code>eine Textbox innerhalb des Diagramms ein. Der Text wird automatisch auf der angegebenen x/y-Koordinate zentriert. Im Satz fügen wir einen Absatz mit der Zeichenfolge <em>\n</em> ein.</p>
 <pre class="r"><code>ggplot(data=means$emmeans, aes(x=reorder(gen, emmean))) +
   geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
   geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
@@ -611,7 +611,7 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
   theme_bw() +
   annotate(geom=&quot;label&quot;, y=1, x=12, size=3, color=&quot;grey50&quot;, fill=&quot;white&quot;,
   label=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
-<p><img src="1F_rcbd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="1f_rcbd_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 
 

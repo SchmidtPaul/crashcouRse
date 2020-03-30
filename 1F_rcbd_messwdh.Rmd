@@ -53,7 +53,7 @@ str(repmes, width=40, strict.width="cut")
 # Schließende Statistik
 ## Analyse einer einzelnen Woche
 
-Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( [siehe Beispiel](1F_rcbd.html) ).
+Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( [siehe Beispiel](1f_rcbd.html) ).
 
 ### Manuelles wählen der Woche
 
@@ -144,7 +144,7 @@ Schließlich können wir wie gewohnt eine ANOVA durchführen, um den F-Test für
 anova(mod.ar1)
 ```
 
-Alle Effekte sind laut F-Test signifikant, relevant ist dabei aber vor allem `week:gen`. Analog zur Vorgehensweise bei einer signifikanten Wechselwirkung von zwei Behandlungseffekten ([siehe hier](2F_splitplot.html)) gilt auch hier, dass die adjustierten Mittelwerte für `week:gen` und nicht für `gen` berechnet werden sollten.
+Alle Effekte sind laut F-Test signifikant, relevant ist dabei aber vor allem `week:gen`. Analog zur Vorgehensweise bei einer signifikanten Wechselwirkung von zwei Behandlungseffekten ([siehe hier](2f_splitplot.html)) gilt auch hier, dass die adjustierten Mittelwerte für `week:gen` und nicht für `gen` berechnet werden sollten.
 
 ### Multipler Mittelwertvergleich
 
@@ -158,7 +158,7 @@ Wie der im F-Test signifikante `week:gen` Effekt schon vermuten ließ, finden wi
 
 # Ergebnisaufbereitung
 
-Analog zu [diesem Beispiel](2F_splitplot.html) können wir die Ergebnisse grafisch wie folgt aufbereiten:
+Analog zu [diesem Beispiel](2f_splitplot.html) können wir die Ergebnisse grafisch wie folgt aufbereiten:
 
 ```{r}
 means.plot <- as.data.table(means$emmeans) # korrektes Format für ggplot

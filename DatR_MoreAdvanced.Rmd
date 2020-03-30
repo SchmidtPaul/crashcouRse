@@ -5,7 +5,7 @@ title: "Weitere Tipps"
 Hier sind weitere, nützliche Tipps, die ich gerne sehr viel früher gewusst hätte.
 
 # dplyr pipes %>%
-Manchmal möchte man mehrere Befehle nacheinander auf ein R-Objekt anwenden. Das werden dann entweder mehrere Befehle, die man nacheinander in mehreren Zeilen ausführt oder ein sehr großer, geschachtelter Befehl. Unser Beispieldatensatz ist derselbe wie im [Kapitel zur deskriptiven Statistik](DatR_DescriptiveStats.html):
+Manchmal möchte man mehrere Befehle nacheinander auf ein R-Objekt anwenden. Das werden dann entweder mehrere Befehle, die man nacheinander in mehreren Zeilen ausführt oder ein sehr großer, geschachtelter Befehl. Unser Beispieldatensatz ist derselbe wie im [Kapitel zur deskriptiven Statistik](datr_descriptivestats.html):
 
 ```{r, include=FALSE}
 library(data.table)
@@ -107,7 +107,7 @@ somecars$cyl %not_in% c("4", "6")
 </div> </div>
 
 # Pivot-artige Häufigkeitsliste
-Die `table()` Funktion im [Kapitel zur deskriptiven Statistik](DatR_DescriptiveStats.html) ist zwar nützlich, aber oft brauche ich sie in einem *long-format*, also mit einer einzigen Spalte aller Anzahlen. Ich hätte die Anzahlen also gerne ähnlich aufbereitet wie man es in Excel mit Pivot-Tabellen kann. Dafür nutze ich folgende Kombination aus `dplyr` und `data.table` Befehlen:
+Die `table()` Funktion im [Kapitel zur deskriptiven Statistik](datr_descriptivestats.html) ist zwar nützlich, aber oft brauche ich sie in einem *long-format*, also mit einer einzigen Spalte aller Anzahlen. Ich hätte die Anzahlen also gerne ähnlich aufbereitet wie man es in Excel mit Pivot-Tabellen kann. Dafür nutze ich folgende Kombination aus `dplyr` und `data.table` Befehlen:
 
 <div class = "row"> <div class = "col-md-6">
 ```{r}

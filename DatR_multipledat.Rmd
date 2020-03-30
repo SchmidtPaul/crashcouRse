@@ -10,7 +10,7 @@ Oft kommt es vor, dass verschiedene Datensätze aus mehreren Versuchen/Experimen
 # 3 Datensätze - 3 Auswertungen
 In diesem Beispiel liegen Daten von drei Feldversuchen vor, die sich prinzipiell recht ähnlich sind, aber an drei verschiedenen Orten ("L1", "L2" und "L3") stattgefunden haben. In den Versuchen wurden 89 verschiedene Sorten/Genotypen ("G1"-"G89") in randomisierten, vollständigen Blockanlagen (RCBD) angebaut und schließlich ihr Ertrag gemessen.
 
-Wir wollen hier nicht versuchen die Daten der 3 Orte gemeinsam auszuwerten, sondern separat. Prinzipiell soll also einfach die Auswertung einer einfaktoriellen RCBD, [wie in diesem Beispiel](1F_rcbd.html) durchgeführt werden, nur eben 3 mal hintereinander jeweils pro Ort.
+Wir wollen hier nicht versuchen die Daten der 3 Orte gemeinsam auszuwerten, sondern separat. Prinzipiell soll also einfach die Auswertung einer einfaktoriellen RCBD, [wie in diesem Beispiel](1f_rcbd.html) durchgeführt werden, nur eben 3 mal hintereinander jeweils pro Ort.
 
 Natürlich kann dies manuell erledigt werden, indem Beispielsweise ein R-Code pro Datensatz angelegt wird und lediglich an bestimmten Stellen Kleinigkeiten geändert werden, sodass sich der Code auf die richtige Excel-Datei bezieht und am Ende auch die Ergebnisse korrekt abspeichert. Diese Vorgehensweise hat aber folgende Probleme:
 
@@ -20,7 +20,7 @@ Natürlich kann dies manuell erledigt werden, indem Beispielsweise ein R-Code pr
 Deshalb bietet es sich manchmal an den R-Code so zu schreiben, dass man nur einen einzigen Code für die Auswertung aller Datensätze benötigt. Voraussetzung hierfür ist natürlich, dass die Datensätze und die Auswertungen sich alle sehr ähnlich sind. 
 
 # Zur Umsetzung der Analyse
-Sagen wir die 3 Dateien lägen alle im selben Ordner und hießen "Environment1.xlsx", "Environment2.xlsx" und "Environment3.xlsx" und außerdem hieße das entsprechende Tabllenblatt innerhalb aller Excel-Dateien immer "Datenblatt". Natürlich könnte man sie alle einzeln [importieren](DatR_ImportExport.html):
+Sagen wir die 3 Dateien lägen alle im selben Ordner und hießen "Environment1.xlsx", "Environment2.xlsx" und "Environment3.xlsx" und außerdem hieße das entsprechende Tabllenblatt innerhalb aller Excel-Dateien immer "Datenblatt". Natürlich könnte man sie alle einzeln [importieren](datr_importexport.html):
 
 ```{r, eval=FALSE}
 library(readxl)
@@ -83,7 +83,7 @@ for (i in DatNamen){
 }
 ```
 
-Nach dem Loop wurden die 3 Dateien als 3 Objekte im `data.table` Format in `Datliste` gespeichert ([mehr zu data.table und dem %>% Befehl gibt's hier](DatR_MoreAdvanced.html)):
+Nach dem Loop wurden die 3 Dateien als 3 Objekte im `data.table` Format in `Datliste` gespeichert ([mehr zu data.table und dem %>% Befehl gibt's hier](datr_moreadvanced.html)):
 
 <div class = "row"> <div class = "col-md-6">
 ```{r}
@@ -155,5 +155,5 @@ Die ersten drei Spalten werden praktischerweise ganz einfach wie eine Tabelle an
 result_list[["Environment1.xlsx", "ANOVA"]] # Zeigt nur ANOVA Ergbnisse des Datensates Environment1.xlsx. Übrigens funktioniert result_list[[1, "ANOVA"]] auch!
 ```
 
-Man kann übrigens auch output von `ggplot()` in solchen Listen abspeichern. Zusammen mit der [Export-Funktion in verschiedene Tabellenblätter derselben Excel-Datei](DatR_ImportExport.html) lässt sich so der Arbeitsprozess in bestimmten Fällen also deutlich effizienter gestalten.
+Man kann übrigens auch output von `ggplot()` in solchen Listen abspeichern. Zusammen mit der [Export-Funktion in verschiedene Tabellenblätter derselben Excel-Datei](datr_importexport.html) lässt sich so der Arbeitsprozess in bestimmten Fällen also deutlich effizienter gestalten.
 

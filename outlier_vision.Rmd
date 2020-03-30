@@ -27,7 +27,7 @@ str(dat, width=40, strict.width="cut")
 </div> </div>
 
 # Fragestellung
-Genau wie im [Alkohol-Beispiel](1N_Drinks.html) könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die *zwei numerischen Variablen* `Ages` und `Vision` beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum [Alkohol-Beispiel](1N_Drinks.html) soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.
+Genau wie im [Alkohol-Beispiel](1n_drinks.html) könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die *zwei numerischen Variablen* `Ages` und `Vision` beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum [Alkohol-Beispiel](1n_drinks.html) soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.
 
 # Deskriptive Statistik
 Um ein Gefühl für die Daten zu bekommen, betrachten wir einige Kennzahlen zu den Daten, sowie einen Plot.
@@ -51,7 +51,7 @@ subset(dat, is.na(Ages)) # Zeige nur die Daten mit Fehlwert in der Ages-Splate
 
 Für Enrique haben wir demnach keine weitere Angabe außer seinen Namen. In solch einem Fall würden wir nun versuchen uns zu erinnern warum das so ist und ob wir die Daten nicht doch noch nachträglich beschaffen könnten. Wenn uns aber beispielsweise einfällt, dass Enrique während der Datenaufnahme unerwartet abbrechen musste und wir ihn so schnell auch nicht wieder erreichen können, dann ist dieser Datenpunkt zumindest für diese Analyse komplett wertlos. Tatsächlich kann man sogar argumentieren, dass er verwirrt, da der Datensatz 29 Zeilen hat, in den Analysen aber nur 28 davon brauchbar sein werden. Wir entscheiden uns also in diesem Fall die Datenzeile deshalb sicherheitshalber zu löschen.
 
-An dieser Stelle zeige ich gleich drei verschiedene Möglichkeiten alle Datenzeilen zu löschen, die Fehlwerte in der `Ages` Spalte haben (= die eine Zeile mit Enrqiue). Für mehr Infos zur zweiten und dritten Methode siehe [das Kapitel mit weiteren Tipps zu R](DatR_MoreAdvanced.html):
+An dieser Stelle zeige ich gleich drei verschiedene Möglichkeiten alle Datenzeilen zu löschen, die Fehlwerte in der `Ages` Spalte haben (= die eine Zeile mit Enrqiue). Für mehr Infos zur zweiten und dritten Methode siehe [das Kapitel mit weiteren Tipps zu R](datr_moreadvanced.html):
 
 ```{r, include=FALSE}
 dat <- dat[!is.na(Ages)]

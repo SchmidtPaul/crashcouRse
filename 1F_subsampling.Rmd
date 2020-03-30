@@ -32,7 +32,7 @@ desplot(treat ~ col+row|block, psr,
         main="", show.key=TRUE, flip=TRUE)
 ```
 
-Das ist aber noch nicht alles. Bis hierhin könnten wir die Daten auswerten wie bei einer einfaktoriellen randomisierten, vollständigen Blockanlage wie [in diesem Beispiel](1F_rcbd.html), mit dem Unterschied, dass es nicht um Parzellen, sondern Tische ginge.
+Das ist aber noch nicht alles. Bis hierhin könnten wir die Daten auswerten wie bei einer einfaktoriellen randomisierten, vollständigen Blockanlage wie [in diesem Beispiel](1f_rcbd.html), mit dem Unterschied, dass es nicht um Parzellen, sondern Tische ginge.
 
 Die Besonderheit dieses Versuchs besteht allerdings darin, dass auf den Tischen jeweils 10 Töpfe mit jeweils 1 Pflanze standen. Tatsächlich haben wir also 10 Messwerte von 10 verschiedenen Pflanzen auf demselben Tisch mit derselben Behandlungsstufe:
 

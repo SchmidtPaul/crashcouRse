@@ -25,7 +25,7 @@ str(dat, width=40, strict.width="cut")
 ```
 
 # Fragestellung
-Wir könnten nun verschiedene Fragen an diesen Datensatz stellen. Wir könnten z.B. fragen wer im Schnitt mehr `drinks` hatte (siehe dazu [das Kapitel zum Erstellen deskriptiver Statistiken](DatR_DescriptiveStats.html)). In diesem Kapitel wollen wir uns allerdings **ausschließlich auf die beiden numerischen Variablen konzentrieren**, nämlich `drinks` und `blood_alc`, also die Anzahl Getränke und den Promillewert. Wir ignorieren dabei komplett ob ein Wert von Peter oder Max kommt.
+Wir könnten nun verschiedene Fragen an diesen Datensatz stellen. Wir könnten z.B. fragen wer im Schnitt mehr `drinks` hatte (siehe dazu [das Kapitel zum Erstellen deskriptiver Statistiken](datr_descriptivestats.html)). In diesem Kapitel wollen wir uns allerdings **ausschließlich auf die beiden numerischen Variablen konzentrieren**, nämlich `drinks` und `blood_alc`, also die Anzahl Getränke und den Promillewert. Wir ignorieren dabei komplett ob ein Wert von Peter oder Max kommt.
 
 Demnach lautet unsere Frage in etwa: **Wie hängt der Promillewert mit der Anzahl Getränken zusammen?** und diese Frage beantworten wir in diesem Kapitel auf verschiedene Arten.
 
@@ -45,7 +45,7 @@ plot(x=dat$drinks, y=dat$blood_alc)
 Wir erkennen also schon jetzt in welchen Bereichen sich die Werte bewegen und, dass es einen Trend zu geben scheint: Je mehr Getränke eine Person hatte, desto höher war ihr Promillewert. 
 
 # Korrelation
-Um solch eine Beziehung zwischen zwei numerischen Variablen in Zahlen ausdrücken zu können, eignet sich die Korrelation - [Hier eine kurze Zusammenfassung was Korrelation ist](stat_Korrelation.html). Um einfach nur die geschätzte Korrelation zu erhalten reicht der Befehl `cor()`, für einen umfangreicheren Output nehmen wir `cor.test()`:
+Um solch eine Beziehung zwischen zwei numerischen Variablen in Zahlen ausdrücken zu können, eignet sich die Korrelation - [Hier eine kurze Zusammenfassung was Korrelation ist](stat_korrelation.html). Um einfach nur die geschätzte Korrelation zu erhalten reicht der Befehl `cor()`, für einen umfangreicheren Output nehmen wir `cor.test()`:
 
 <div class = "row"> <div class = "col-md-6">
 ```{r}
@@ -57,7 +57,7 @@ cor.test(dat$drinks, dat$blood_alc)
 ```
 </div> </div>
 
-Wir finden also eine geschätzten Korrelationskoeffizient $r \approx$ `r round(cor(dat$drinks, dat$blood_alc),2)`, also eine hohe, positive Korrelation. Das Ergebins passt zu unserem Plot. Auch wenn das Ergebnise in diesem Fall recht klar ist, wollen wir noch prüfen ob die Korrelation signifikant ist. (Siehe [das Kapitel zur Korrelation](stat_Korrelation.html) um zu verstehen was genau das bedeutet). Wie wir im Output sehen ist der p-Wert $=$ `5.089e-11` $< 0.0001$ und demnach ist die Korrelation signifikant (von Null verschieden). Dies wäre in vielen Fällen bereits alles was bzgl. der Korrelation verlangt bzw. gezeigt wird. Als Ergebnissatz würde z.B. geschrieben werden 
+Wir finden also eine geschätzten Korrelationskoeffizient $r \approx$ `r round(cor(dat$drinks, dat$blood_alc),2)`, also eine hohe, positive Korrelation. Das Ergebins passt zu unserem Plot. Auch wenn das Ergebnise in diesem Fall recht klar ist, wollen wir noch prüfen ob die Korrelation signifikant ist. (Siehe [das Kapitel zur Korrelation](stat_korrelation.html) um zu verstehen was genau das bedeutet). Wie wir im Output sehen ist der p-Wert $=$ `5.089e-11` $< 0.0001$ und demnach ist die Korrelation signifikant (von Null verschieden). Dies wäre in vielen Fällen bereits alles was bzgl. der Korrelation verlangt bzw. gezeigt wird. Als Ergebnissatz würde z.B. geschrieben werden 
 
 *"Es wurde eine signifikante (p = 5.09 10^(-11) < 0.0001) Korrelation r=0.96 zwischen dem Promillewert und der Anzahl Getränke gefunden."* 
 
@@ -77,7 +77,7 @@ ggplot(data=dat, aes(x=drinks, y=blood_alc)) + # Definiere Daten
 ```
 
 # Regression
-Neben der Korrelation können noch andere statistische Methoden angewendet werden um die Beziehung zwischen zwei numerischen Variablen besser fassen zu können. Eine dieser Methoden ist die Regression und in diesem Fall genauer: die simple lineare Regression - [Hier eine kurze Zusammenfassung was eine Regression ist](stat_Regression.html).
+Neben der Korrelation können noch andere statistische Methoden angewendet werden um die Beziehung zwischen zwei numerischen Variablen besser fassen zu können. Eine dieser Methoden ist die Regression und in diesem Fall genauer: die simple lineare Regression - [Hier eine kurze Zusammenfassung was eine Regression ist](stat_regression.html).
 
 ```{r}
 reg <- lm(data = dat, formula = blood_alc ~ drinks) # Regressionsmodell y = a + bx

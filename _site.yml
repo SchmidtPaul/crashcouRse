@@ -8,45 +8,45 @@ navbar:
     - text: "R Anwendung"
       menu:
         - text: "Import & Export"
-          href: DatR_importexport.html
+          href: datr_importexport.html
         - text: "Deskriptive Statistik"
-          href: DatR_descriptiveStats.html        
+          href: datr_descriptivestats.html        
         - text: "desplot package"
-          href: DatR_Desplot.html
+          href: datr_desplot.html
         - text: "Loops & Listen"
-          href: DatR_MultipleDat.html
+          href: datr_multipledat.html
         - text: "Weitere Tipps"
-          href: DatR_MoreAdvanced.html
+          href: datr_moreadvanced.html
     - text: "Auswertungen"
       menu:
         - text: "Korrelation & Regression"
-          href: 1N_Drinks.html
+          href: 1n_drinks.html
         - text: "Ausreisser (Korr & Reg pt.2)"
           href: outlier_vision.html
         - text: "1F crd"
-          href: 1F_crd.html
+          href: 1f_crd.html
         - text: "1F rcbd"
-          href: 1F_rcbd.html
+          href: 1f_rcbd.html
         - text: "1F alpha"
-          href: 1F_alpha.html
+          href: 1f_alpha.html
         - text: "2F rcbd"
-          href: 2F_rcbd.html
+          href: 2f_rcbd.html
         - text: "2F split-plot"
-          href: 2F_splitplot.html
+          href: 2f_splitplot.html
         - text: "1F augmented"
-          href: 1F_augmented_blockFixOrRandom.html
+          href: 1f_augmented_blockfixorrandom.html
         - text: "1F rcbd Messwiederholungen"
-          href: 1F_rcbd_messwdh.html
+          href: 1f_rcbd_messwdh.html
         - text: "1F rcbd Prozentwerte"
-          href: 1F_rcbd_binomial.html
+          href: 1f_rcbd_binomial.html
         - text: "1F lat square Zählwerte"
-          href: 1F_latsq_poisson.html
+          href: 1f_latsq_poisson.html
     - text: "Statistik"
       menu:
         - text: "Korrelation"
-          href: stat_Korrelation.html      
+          href: stat_korrelation.html      
         - text: "Regression"
-          href: stat_Regression.html 
+          href: stat_regression.html 
         - text: "Versuchsdesigns"
           href: appendix_designs.html   
         - text: "ANOVA & Post Hoc"
@@ -58,13 +58,13 @@ navbar:
         - text: "p-Werte & Signifikanz"
           href: stat_pvalue.html
         - text: "Gemischte Modelle"
-          href: stat_GemischteModelle.html
+          href: stat_gemischtemodelle.html
         - text: "Kovarianzstrukturen 1"
           href: appendix_kovarstrukt.html
         - text: "Kovarianzstrukturen 2" 
-          href: 3F_MET_Regions.html
+          href: 3f_met_regions.html
         - text: "Nicht-Normalverteilte Daten"
-          href: intro_GLM_carrot.html
+          href: intro_glm_carrot.html
         - text: "Logistische Regression"
           href: stat_logisticregression.html
         - text: "Modelle aufstellen"

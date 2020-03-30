@@ -69,7 +69,7 @@ boxplot(anteil ~ trt, data=carrot, las=2)
 Beim Betrachten der Boxplots fällt auf, dass die Genotypen 1 und 2 einen höheren Anteil befallener Möhren aufweisen und somit anfälliger scheinen. 
 
 # Problemfall Prozentzahlen in einem linearen Modell
-Wäre in diesem Experiment ein anderes Merkmal wie z.B. der Ertrag gemessen worden, würde die Auswertung jetzt wie bei einer "normalen" zweifaktoriellen Varianzanalyse in einem randomisierten vollständigen Blockdesign laufen (siehe [Kapitel 4](2F_rcbd.html)). Die Besonderheit an der Auswertung von Prozentzahlen ist, dass oft mindestens eine der folgenden Annahmen einer Varianzanalyse verletzt wird (Die angegebene Reihenfolge der Voraussetzungen entspricht dabei ihrer Wichtigkeit):
+Wäre in diesem Experiment ein anderes Merkmal wie z.B. der Ertrag gemessen worden, würde die Auswertung jetzt wie bei einer "normalen" zweifaktoriellen Varianzanalyse in einem randomisierten vollständigen Blockdesign laufen (siehe [Kapitel 4](2f_rcbd.html)). Die Besonderheit an der Auswertung von Prozentzahlen ist, dass oft mindestens eine der folgenden Annahmen einer Varianzanalyse verletzt wird (Die angegebene Reihenfolge der Voraussetzungen entspricht dabei ihrer Wichtigkeit):
 
 1. Additivität der systematischen Effekte
 2. Varianzhomogenität 
@@ -77,7 +77,7 @@ Wäre in diesem Experiment ein anderes Merkmal wie z.B. der Ertrag gemessen word
 
 Warum das so ist kann man sich z.B. vorstellen indem man sich vergegenwärtigt, dass Werte einer Sorte weniger schwanken, wenn sie gegen 0% oder 100% gehen. Die Werte einer mittelmäßig anfälligen Sorte hingegen schwanken wahrscheinlich mehr - sowohl über als auch unter 50%. Demnach ist die Varianz bei mittlerem Befall am größten, während sie bei kleinem oder hohem Befall sinkt. Anders ausgedrückt besteht ein direkter Zusammenhang zwischen dem Erwartungswert (einer Sorte) und der Varianz, was der Annahme der Varianzhomogenität widerspricht, weil laut dieser die Varianzen immer gleich sein müssten, egal wie hoch der Erwartungswert (der Sorte).
 
-Um dies zu prüfen können wir ein einfaches, lineares Modell wie in [Kapitel 4](2F_rcbd.html) aufstellen und uns die Residuenplots anschauen. Tatsächlich deutet der linke Plot ganz und gar nicht auf Varianzhomogenität hin:
+Um dies zu prüfen können wir ein einfaches, lineares Modell wie in [Kapitel 4](2f_rcbd.html) aufstellen und uns die Residuenplots anschauen. Tatsächlich deutet der linke Plot ganz und gar nicht auf Varianzhomogenität hin:
 
 ```{r, fig.height = 3, fig.width = 7, fig.align = "center", warning=FALSE, message=FALSE, error=FALSE}
 # Modell für zweifaktorielle Varianzanalyse in rand. vollst. Blockanlage
@@ -140,7 +140,7 @@ mod.arcsin <- lm(arcsin.anteil ~ block + gen + trt + gen:trt, data=carrot)
 autoplot(mod.arcsin, which=1:2)
 ```
 
-Tatsächlich sieht die Varianz homogener als noch im vorigen Residuenplot aus. Hinsichtlich der Annahme der Varianzhomogenität könnte man nun schon eher mit der Varianzanalyse fortfahren und ggf. Mittelwertvergleiche durchführen wie in [Kapitel 4](2F_rcbd.html). Es soll noch angemerkt sein, dass man am Ende der Auswertung die adjustierten Mittelwerte auch wieder zurücktransformieren kann, sodass sie wieder der natürlichen Skala entsprechen und somit (sowohl in einer Tabelle als auch in Graphen) intuitiver verständlich sind. Es sollte dann aber deutlich vermerkt werden, dass die Varianzanalyse und post-hoc Tests auf einer anderen, nämlich der transformierten Skala, stattgefunden haben.
+Tatsächlich sieht die Varianz homogener als noch im vorigen Residuenplot aus. Hinsichtlich der Annahme der Varianzhomogenität könnte man nun schon eher mit der Varianzanalyse fortfahren und ggf. Mittelwertvergleiche durchführen wie in [Kapitel 4](2f_rcbd.html). Es soll noch angemerkt sein, dass man am Ende der Auswertung die adjustierten Mittelwerte auch wieder zurücktransformieren kann, sodass sie wieder der natürlichen Skala entsprechen und somit (sowohl in einer Tabelle als auch in Graphen) intuitiver verständlich sind. Es sollte dann aber deutlich vermerkt werden, dass die Varianzanalyse und post-hoc Tests auf einer anderen, nämlich der transformierten Skala, stattgefunden haben.
 
 Oft verbessert eine Transformation die Daten übrigens nicht nur hinsichtlich einer Annahme, sondern aller Annahmen. Das kann man sich so erklären, dass wenn man einen fiktiven Datensatz mit perfekter Einhaltung der Annahmen transformieren würde, er wahrscheinlich nicht nur hinsichtlich einer Annahme Abstriche machen muss. 
 
@@ -232,7 +232,7 @@ autoplot(mod.glm, which=1:2)
 Tatsächlich müssen wir die Residuenplots ja aber eben nicht betrachten um Normalverteilung und Varianzhomogenität zu beurteilen, da diese bei einem GLM ja nicht mehr angenommen werden müssen. 
 
 ### Devianzanalyse
-Sobald wir mit unserem Modell zufrieden sind, würden wir gerne wie in [Kapitel 4](2F_rcbd.html) als nächstes mittels F-Test einer zweifaktoriellen Varianzanalyse prüfen wollen welche Behandlungseffekte signifikant sind. Bei GLM werden Varianzanalyse-Tabellen allerdings durch Devianzanalyse-Tabellen ersetzt. Praktischerweise macht dies für den Anwender keinen großen Unterschied in der Codierung und Interpretation der Ergebnisse.
+Sobald wir mit unserem Modell zufrieden sind, würden wir gerne wie in [Kapitel 4](2f_rcbd.html) als nächstes mittels F-Test einer zweifaktoriellen Varianzanalyse prüfen wollen welche Behandlungseffekte signifikant sind. Bei GLM werden Varianzanalyse-Tabellen allerdings durch Devianzanalyse-Tabellen ersetzt. Praktischerweise macht dies für den Anwender keinen großen Unterschied in der Codierung und Interpretation der Ergebnisse.
 
 ```{r, warning=FALSE, message=FALSE, error=FALSE}
 library(car)
@@ -240,7 +240,7 @@ anova(mod.glm, test="Chisq") # Option 1
 Anova(mod.glm, test.statistic="Wald") # Option 2
 ```
 
-Laut der Devianzanalyse-Tabelle gibt es also eine signifikante Wechselwirkung zwischen den beiden Behandlungseffekten. Demnach müsste man im Anschluss die adjustierten Mittelwerte aller Genotype-Treatment-Kombinationen berechnen und miteinander (via post-hoc Tests) vergleichen wie z.B. in [Kapitel 4](2F_rcbd.html) oder [Kapitel 5](2F_splitplot.html).
+Laut der Devianzanalyse-Tabelle gibt es also eine signifikante Wechselwirkung zwischen den beiden Behandlungseffekten. Demnach müsste man im Anschluss die adjustierten Mittelwerte aller Genotype-Treatment-Kombinationen berechnen und miteinander (via post-hoc Tests) vergleichen wie z.B. in [Kapitel 4](2f_rcbd.html) oder [Kapitel 5](2f_splitplot.html).
 
 ### Über- und Unterdispersion
 Wir wollen uns allerdings noch eines weiteren Aspektes der GLM zuwenden - dem Dispersionsparameter. Wie schon gesagt gibt es für jede Verteilung eine zugehörige Varianzfunktion und somit eine erwartete Varianz. Tatsächlich sind die beobachteten Varianzen aber manchmal größer oder kleiner als ihr Erwartungswert laut Varianzfunktion. Dieses Phänomen wird dann entsprechend als Über- und Unterdispersion bezeichnet.
