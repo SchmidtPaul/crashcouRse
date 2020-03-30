@@ -608,12 +608,9 @@ ggplot(data=METdat, aes(y=Ertrag, x=Ort)) +
 <p><strong>Mehr zu solchen Versuchsserien und deren Modellen:</strong> <br> Piepho, H. P., and J. Möhring. <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/45/3/1151">“Best linear unbiased prediction of cultivar effects for subdivided target regions.”</a> Crop Science 45.3 (2005): 1151-1159. <br> Damesa, T. M., Möhring, J., Worku, M., &amp; Piepho, H. P. (2017). <a href="https://dl.sciencesocieties.org/publications/aj/abstracts/109/3/845">One step at a time: stage-wise analysis of a series of experiments.</a> Agronomy Journal, 109(3), 845-857. <br> Piepho, Hans‐Peter, et al. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.201100219?casa_token=SUAQpFVm3WkAAAAA:QtMKChq-04ZiO7bsGFVQiYl7edOmbt9y6HW0CwHPcp0BL2k6sjaOSx6BHA7ecoetiqGwHbZBfEwWRAA">“A stage‐wise approach for the analysis of multi‐environment trials.”</a> Biometrical Journal 54.6 (2012): 844-860. <br> Schmidt, P., et al. <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/58/4/1508">“More, larger, simpler: How comparable are on-farm and on-station trials for cultivar evaluation?.”</a> Crop Science 58.4 (2018): 1508-1518.</p>
 </blockquote>
 <p>Wir können solch ein Modell wie folgt aufstellen:</p>
-<pre class="r"><code>library(glmmTMB)</code></pre>
-<pre><code>## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
-## TMB was built with Matrix version 1.2.17
-## Current Matrix version is 1.2.18
-## Please re-install &#39;TMB&#39; from source using install.packages(&#39;TMB&#39;, type = &#39;source&#39;) or ask CRAN for a binary version of &#39;TMB&#39; matching CRAN&#39;s &#39;Matrix&#39; package</code></pre>
-<pre class="r"><code>mod1 &lt;- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
+<pre class="r"><code>library(glmmTMB)
+
+mod1 &lt;- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
                 (1|Sorte:Ort) + (1|Sorte:Jahr) + (1|Jahr:Ort),
                 data=METdat)</code></pre>
 <div class="row">
