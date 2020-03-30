@@ -1,0 +1,144 @@
+---
+title: "Von p-Werten und Signifikanzen"
+---
+
+> Dieses Kapitel ist zwar weniger ernst geschrieben als die anderen, ist aber mindestens genau so wichtig!
+  
+Das Thema, das in diesem Kapitel diskutiert wird, hat gerade in den letzten Jahren unter Statistikern zu [einer aufgeheizten Debatte](https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XInvWyPMzyW) geführt. Tatsächlich ist das nicht korrekt formuliert, da alle Statistiker sich zu dem Thema sehr einig sind, ihnen aber das Herz blutet, wenn sie sehen wie p-Werte und Signifikanzen aus statistischen Analysen fehlinterpretiert oder gar manipuliert werden. Deshalb würde ich als Einstieg gerne die [Formulierung von Jenny Brian](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/) entsprechend abwandeln und sagen:
+
+<center>
+**Wenn es dir nur darum geht, dass deine Ergebnisse signifikant sind, </br>
+weil du ja sonst "nichts gefunden" hast, </br>
+dann komm ich in dein Büro und ZÜNDE DEINEN COMPUTER AN** 🔥
+</center>
+
+# Damals: Die Idee
+Die Geschichte des p-Wertes geht [bis ins 17.Jh.](https://www.wikiwand.com/en/P-value#/History) zurück. Es war schließlich R.A. Fisher, der in seinen Büchern  [Statistical Methods for Research Workers (1925)](https://www.wikiwand.com/en/Statistical_Methods_for_Research_Workers) und [The Design of Experiments (1935)](https://www.wikiwand.com/en/The_Design_of_Experiments) den p-Wert nicht nur populärer gemacht, sondern auch das heute gängige Signifikanzniveau `p=0.05` vorgeschlagen hat. Bis dahin gab es auch noch kein Problem, da Fisher den p-Wert bzw. die Grenze 0.05 als Hilfsmittel angesehen hat - so wie jede andere statistische Maßzahl.
+
+# Heute: Das Streben nach Signifikanz
+Wissenschaft ist anstrengend. Viel Mühe und Zeit fließt in die Planung, Durchführung und Auswertung von Experimenten. Wenn das Experiment dann noch durch eine Vermutung/Hypothese motiviert ist wie *"Mittel A führt bestimmt zu höheren Werten als Mittel B"*, dann ist von Anfang an eine Erwartungshaltung da: Der Unterschied soll gefunden und wissenschaftliche belegt werden. Es wäre ja auch peinlich eine Hypothese aufzustellen, die am Ende gar nicht stimmt, oder?
+
+Oft werden jungen Wissenschaftlern in diesem Kontext schon früh Worte wie "statistisch signifikant" zusammen mit positiven Gefühlen vermittelt oder die `0.05` als magische Grenze dafür ob ein Ergebnis etwas wert ist, bzw. ein Versuch überhaupt was gebracht hat. In gewisser Hinsicht kann dies dem einzelnen älteren Wissenschaftler/Betreuer auch nicht verübelt werden, da wissenschaftliche Artikel mit statistisch signifikantem Ergebnis es heutzutage eher zur Publikation schaffen, als gleichwertige Artikel ohne statistische Signifikanz. Im Umkehrschluss führt das aber dazu, dass ggf. zwar mehr Experimente zu einer Hypothese keinen (signifikanten) Unterschied gefunden haben, aber nur die wenigen Resultate veröffentlicht werden, in denen es doch zu (signifikanten) Unterschieden kam. Dieses Problem nennt man den [Publication Bias](https://www.wikiwand.com/de/Publikationsbias) und es verzerrt natürlich den Blick auf die Wahrheit. 
+
+<center>
+**Tatsächlich kann ein p-Wert durchaus gewisse zusätzliche Informationen liefern, </br>
+er wird aber leider oft überbewertet, missverstanden und/oder missbraucht.**
+</center>
+</br>
+ 
+# Was ist der p-Wert wirklich?
+Der p-Wert (*p* für *probability*) wird auch *Überschreitungswahrscheinlichkeit*, *Signifikanzwert* genannt und ist wie folgt definiert: 
+
+</br><center>
+**Der p-Wert ist die Wahrscheinlichkeit dafür, </br> 
+dass man das vorliegende oder ein noch extremeres Ergebnis findet, </br>
+gegeben dem Fall, dass die Nullhypothese wahr ist.
+**
+</center></br> 
+
+Der Satz ist zwar kompliziert, aber viel kompakter kann man ihn m.E. nicht schreiben. Wollen wir ihn also genauer betrachten:
+
++ Der p-Wert ist eine Wahrscheinlichkeit, kann also nur **Werte zwischen 0 und 1** (bzw. 0% und 100%) annehmen.
++ Der p-Wert **geht davon aus, dass die Nullhypothese wahr ist**. 
+  + *Zur Erinnerung:* Wenn man einen Test durchführt, stellt man vorher eine zu testende Nullhypothese ($H_0$) und die entsprechende Alternativhypothese ($H_A$) auf. Die Nullhypothese hängt vom jeweiligen Test ab, besagt aber in der Regel, dass es keinen Effekt/Unterschied gibt. Bei einem t-test zum Mittelwertvergleich zweier Stichproben z.B. besagt sie, dass beide Mittelwerte gleich sind $H_0: \mu_1=\mu_2$ während die Alternativhypothese sagt, dass die beiden Mittelwerte nicht gleich sind $H_A: \mu_1\neq\mu_2$. 
+  + Der p-Wert geht demzufolge davon aus, dass $H_0$ wahr und es somit keinen Effekt/Unterschied gibt. 
++ Der p-Wert zeigt wie wahrscheinlich es ist **die vorhandenen Ergebnisse oder noch extremere Ergebnisse** zu finden.
+  + "Noch extremer" meint dabei *noch mehr der Nullhypothese widersprechend*. Deuten die Ergebnisse also auf einen Unterschied hin, ist der p-Wert nicht nur die Wahrscheinlichkeit genau diesen Unterschied zu finden, sondern auch alle möglichen noch größeren Unterschiede.
+
+Demnach gilt, dass je kleiner ein p-Wert, desto mehr widersprechen die Ergebnisse der Nullhypothese. Da die Nullhypothese meist behauptet, dass es keinen Effekt gibt, bedeutet es dementsprechend in diesen Fällen auch: Je kleiner der p-Wert, desto mehr widersprechen die Ergebnisse der Behauptung, dass es in Wirklichkeit keinen Effekt gibt. 
+
+Außerdem kann man den p-Wert auch so betrachten: Sagen wir, wir erhalten in einem Test `p=0.04`, also 4%. Das bedeutet, dass wenn wir das Experiment 100 mal durchführen würden und - gegeben der Nullhypothese (=dass es keinen Effekt/Unterschied gibt) - nur 4 mal ein solches, oder ein noch extremeres Ergebnis finden würden. Wir haben das Experiment natürlich nur 1 mal durchgeführt.
+
+### Ein Beispiel
+Sagen wir die Zwillinge Arne und Tim sind exakt gleich gebaut und exakt gleich schnell im 100-m-Lauf: sie brauchen beide im Schnitt genau 11 Sekunden. Nichtsdestotrotz treten beide jeden Tag gegeneinander an um zu sehen wer schneller ist und notieren die Zeiten. Nach ein paar Tagen nehmen sie ihre Stichprobe und führen einen t-test durch um zu vergleichen ob es einen signifikanten Unterschied zwischen ihren Durchschnittszeiten gibt. Die Nullhypothese besagt, dass es keinen gibt $H_0: \mu_{Arne}=\mu_{Tim}$, während die Alternativhypothese das Gegenteil behauptet $H_A: \mu_{Arne}\neq\mu_{Tim}$ (Der Alternativhypothese ist demnach auch egal wer von beiden schneller ist).
+
+In diesem fiktiven Beispiel kennen wir die absolute Wahrheit, nämlich dass beide Mittelwerte gleich sind: $\mu_{Arne}=\mu_{Tim}=11,0s$. Das entspricht also der Nullhypothese. Aufgrund der jeweiligen Tagesform der beiden, aber auch der Messungenauigkeit der Stoppuhr, wird es allerdings niemals der Fall sein, dass alle gemessenen Zeit genau 11,0s sind. Stattdessen werden die Zeiten leicht um 11,0s schwanken. Demnach werden auch die Stichprobenmittelwerte ($\bar{x}_{Arne}$ und $\bar{x}_{Tim}$) so gut wie nie genau 11,0s sein, sondern vielleicht $\bar{x}_{Arne}=11,002s$ und $\bar{x}_{Tim}=10,996s$ für Tim. Und das obwohl wir hier sogar wissen, dass Arne und Tim in Wahrheit exakt gleich schnell sind.
+
+Würde man nun also schließen, dass Tim wirklich ein schnellerer Läufer ist als Arne? Wie wäre es bei $\bar{x}_{Arne}=11,00000000000001s$ und $\bar{x}_{Tim}=10,9999999999999999s$? Oder wie wäre es bei $\bar{x}_{Arne}=12,0s$ und $\bar{x}_{Tim}=10,0s$? Die Entscheidung wo hier die Grenze gezogen werden soll ist schwer zu treffen und vor allem subjektiv. Genau hier soll der p-Wert helfen - Die Betonung liegt auf helfen und nicht komplett die Entscheidung abnehmen.
+
+Da wir in diesem Beispiel nun *wissen*, dass für die wahren Mittelwerte gilt $\mu_{Arne}=\mu_{Tim}=11,0s$, wäre es schon sehr eigenartig, wenn in unseren Stichproben rauskommt, dass $\bar{x}_{Arne}=12,0s$ und $\bar{x}_{Tim}=10,0s$. Tatsächlich wäre es nicht nur eigenartig, es wäre schlichtweg unwahrscheinlich: der p-Wert für solch einen Fall wäre klein. Noch extremer: Die Wahrscheinlichkeit dafür, dass Arne beispielsweise sogar 100s und Tim nur 1s benötigt, geht demnach gegen 0% und der entsprechende p-Wert also auch.
+
+### Wieso 0.05?
+Nun ist also klar: Ein kleiner p-Wert bedeutet, dass es unwahrscheinlich ist das vorliegende Ergebnis zu finden, wenn doch eigentlich angeblich die Nullhypothese gilt. Im Umkehrschluss kann man sich also bei einem *zu kleinen* p-Wert entscheiden der Nullhypothese nicht länger zu glauben. Genau das passiert, wenn der p-Wert kleiner 0.05 (5%) ist und man das Ergebnis als *statistisch signifikant* einstuft. Wieso sich diese Grenze nun genau bei 0.05 eingependelt hat ist nicht unbedingt klar. Sie gilt mittlerweile schlichtweg als gängig und ist in den meisten Statistikprogrammen als *default* eingestellt. Man kann aber selbstverständlich auch manuell eine andere Grenze setzen wie z.B. `p=0.001` und das wird ab und an auch getan. 
+
+### Der p-Wert hängt vom Stichprobenumfang ab!
+Es ist ein wichtiger erster Schritt zu verstehen was ein p-Wert genau bedeutet um Ergebnisse richtig einordnen zu können. Genau so wichtig ist aber auch zu verstehen wovon der p-Wert abhängt. Das sind vor allem (aber nicht ausschließlich):
+
++ die Stichprobengröße bzw. Datenmenge
++ wie sehr die Daten aus unerklärlichen Gründen streuen (= Noise)
+
+Zur Erklärung dieser beiden Punkte können wir wieder auf das Beispiel oben verweisen. Wieder gegeben der Nullhypothese, dass Arne und Tim gleich schnell sind ist es unwahrscheinlich, dass wir Stichprobenmittelwerte $\bar{x}_{Arne}=12,0s$ und $\bar{x}_{Tim}=10,0s$ finden. Man kann sich aber schnell vorstellen, dass dies in Ausnahmefällen mal passiert, wenn die beiden z.B. nur an zwei Tagen gelaufen sind und aus bestimmten Gründen es eben zu diesen Werten kam. Das waren dann eben zwei verrückte Tage für diese Messungen. Es wird aber sehr schnell sehr viel unwahrscheinlicher diese Stichprobenmittelwerte zu finden, wenn die beiden 100 Tage gemessen haben. Genau so funktioniert auch der p-Wert: Bei `n=2` wir der p-Wert zwar klein sein, da wir Werte von 11,0s erwarten, aber bei `n=100` wird er gegen 0 gehen. Wir würden die Nullhypothese ablehnen und nicht länger glauben, dass Arne und Tim gleich schnell sind - schließlich sind sie ganze 100 mal gegeneinander angetreten und es liegen im Schnitt ganze 2 Sekunden zwischen ihren Zeiten.
+
+Auch der zweite Punkt, nämlich die Streuung der Daten, beeinflusst den p-Wert. Würden Arnes und Timis Zeiten immer nur 0,1s von ihrem Stichprobenmittelwert abweichen, wäre es schließlich auch viel deutlicher zu sagen wer schneller ist, als wenn beide immer mal 5s schneller oder langsamer sind. 
+
+### Ein Test kann nichts außer die Nullhypothese ablehnen!
+Aus dem vorangegangen Abschnitt ergibt sich eine weitere Interpretationsweise des p-Werts:
+
+</br><center>
+**Der p-Wert drückt (indirekt) aus wie viel Evidenz wir haben </br> 
+um die Nullhypothese abzulehnen.**
+</center></br> 
+
+Je kleiner der p-Wert, desto sicherer sind wir uns, dass die Nullhypothese nicht stimmt. Wichtig ist, dass dies auch tatsächlich die einzige Entscheidung ist, die wir bei einem Test treffen können. Wenn der p-Wert größer als 0.05 ist und demnach nicht signifikant, dann lehnen wir die Nullhypothese nicht ab. 
+
+</br><center>
+**Die Nullhypothese nicht ablehnen zu können (p>0.05) bedeutet nicht unbedingt, dass die Nullhypothese wahr ist!**
+</center></br> 
+
+Stattdessen kann es zwei Gründe geben warum man die Nullhypothese nicht ablehnen konnte:
+
+1. Die Nullhypothese ist tatsächlich nicht wahr.
+2. Wir hatte nicht genug Evidenz (z.B. zu kleine Stichprobengröße) um die Nullhypothese abzulehnen.
+
+Wenn man wirklich testen möchte ob z.B. zwei Mittelwerte gleich sind, dann könnte man einen Äquivalenztest anstelle eines t-tests durchführen. Mehr zum Thema z.B. [hier](https://en.wikivet.net/Hypothesis_testing)
+
+# Signifikanz $\neq$ Relevanz
+Wenn man das alles mal sacken lässt und ein Gefühl dafür bekommt was ein p-Wert nun wirklich ausdrücken kann, was er nicht ausdrücken kann und wie man ihn durch z.B die Stichprobengröße beeinflussen kann, dann wird es Zeit für eine Anekdote. Was jetzt folgt ist wirklich passiert und wohl auch der Grund warum ich hier ab und an von brennenden Computern 🔥 spreche:
+
+Eine Doktorandin aus der biologischen Fakultät kommt für eine statistische Beratung zu uns, da sie demnächst ein Experiment durchführen möchte um zu prüfen ob ein Mittel zu einem erhöhten Wachstum bei Pflanzen führt. Sie will demnach einigen Pflanzen das Mittel verarbreichen und anderen nicht und nach einer bestimmten Zeit messen wie hoch die Pflanzen gewachsen sind.</br>
+**Doktorandin:** "Wie viele Wiederholungen sollte ich machen um Unterschiede zu finden?"</br>
+**Wir:** "Das kommt darauf an was für Unterschiede du finden möchtest."</br>
+**Doktorandin:** "Na signifikante Unterschiede natürlich!"</br>
+**Wir:** "Naja, statistisch signifikant kriegen wie jeden Unterschied, wenn wir nur genug Wiederholungen machen. Ich meinte eher wie viel mm oder cm Unterschied in der Pflanzenhöhe für dich ein echter, also biologisch relevanter Unterschied wäre. Das müsst ihr als Experten auf dem Gebiet festlegen, damit die Statistik helfen kann diesen zu finden."</br>
+**Doktorandin:** "Achso? Darüber habe ich noch nicht nachgedacht - ich frage mal meinen Professor."</br>
+*[Treffen vorbei, ein paar Tage kein Kontakt.]*</br>
+**Email Doktorandin:** "Hallo Paul! Ich habe noch keine Antwort auf deine Frage ab wann genau es für uns ein echter Unterschied wäre, aber mein Professor hat gesagt, dass wie vier Wiederholungen machen werden, weil wir das immer so machen. Danke nochmal!"
+
+Diese Konversation fasst für mich bis heute sehr gut zusammen was *Statistische Signifikanz* $\neq$ *Biologische Relevanz* ausdrücken soll. Der ursprünglich als Hilfsmittel gedachte p-Wert wird missbraucht indem er die eigentliche Fachexpertise völlig ersetzt. Mehr zum Thema beispielsweise [hier](https://efsa.onlinelibrary.wiley.com/doi/pdf/10.2903/j.efsa.2011.2372) und [hier](https://pubs.acs.org/doi/pdf/10.1021/jf401124y)
+
+
+# Fehlinterpretationen des p-Werts
+Achtung, hier tauchen ein paar **falsche** Aussagen über den p-Wert auf. Bitte nicht im Kopf durcheinanderbringen mit der korrekten Interpretation. Falls du in Zukunft eine der folgenden Aussagen in deine Arbeiten schreibst, dann komm ich in dein Büro und ZÜNDE DEINEN COMPUTER AN 🔥
+
+
+<span style="color:red"> **FALSCH:** Wenn `p=0.05`, dann ist die Chance, dass die Nullhypothese wahr ist, nur 5%. </span> 
+</br>
+<span style="color:ForestGreen"> **RICHTIG:** Der p-Wert geht sowieso immer davon aus, dass die Nullhypothese stimmt. </span> 
+
+
+<span style="color:red"> **FALSCH:** Ein nicht-signifikanter Unterschied bedeutet, dass die Mittelwerte gleich sind oder es keinen Effekt gibt. </span> 
+</br>
+<span style="color:ForestGreen"> **RICHTIG:** Die Nullhypothese nicht ablehnen zu können bedeutet nicht unbedingt, dass die Nullhypothese wahr ist. </span> 
+
+
+<span style="color:red"> **FALSCH:** Nur ein signifikanter Unterschied bedeutet, dass das Ergebnis in der
+Realität wichtig ist. </span> 
+</br>
+<span style="color:ForestGreen"> **RICHTIG:** Statistische Signifikanz ist nicht gleichzusetzen mit biologischer Relevanz. </span> 
+
+Weitere Falschaussagen mit Korrekturen finden sich z.B. [hier](http://www.biometrische-gesellschaft.de/fileadmin/AG_Daten/Landwirtschaft/PDFs/Tuchscherer_Vortrag_2019.pdf). 
+
+> **Mehr zum Thema:** </br>
+[Wikipedia: Misuse of p-values](https://www.wikiwand.com/en/Misuse_of_p-values) </br>
+[Wikipedia: p-Hacking](https://www.wikiwand.com/de/P-Hacking) </br>
+[Most relevant Youtube Videos: p-hacking](https://www.youtube.com/results?search_query=p+hacking) </br>
+[The ASA Statement on p-Values: Context, Process and Purpose (2016)](https://amstat.tandfonline.com/doi/full/10.1080/00031305.2016.1154108#.XWZIPegzaUn) </br>
+[ASA List of papers on p-values](https://www.tandfonline.com/toc/utas20/73/sup1?nav=tocList) </br>
+[Schmidt et al. (2016): Enhancing the interpretation of statistical P values in toxicology studies](https://link.springer.com/article/10.1007/s00204-015-1487-8) </br>
+[Nature (2019): It’s time to talk about ditching statistical significance](https://www.nature.com/articles/d41586-019-00874-8) </br>
+[Nature (2019): Scientists rise up against statistical significance](https://www.nature.com/articles/d41586-019-00857-9) </br>
+[Süddeutsche (2019): Signifikanter Unfug](https://www.sueddeutsche.de/wissen/statistik-p-wert-signifikanz-hypothese-nullhypothese-1.4375636)
+
+
+
+

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>1 Beh.faktor - Split-Plot Design</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">1 Beh.faktor - Split-Plot Design</h1>
+
+</div>
+
+
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte
+library(lme4); library(lmerTest) # gemischtes Modell
+library(RColorBrewer) # bessere Farben</code></pre>
+<p>In diesem Experiment wurden die Auswirkungen von 6 Stickstoffdüngern (N) auf den Ertrag von 4 Reissorten (G) untersucht. Demnach gab es zwei Behandlungsfaktoren mit insgesamt 6x4=24 Behandlungsfaktorstufenkombinationen. Diese 24 Kombinationen wurden 3 mal in vollständigen Blöcken wiederholt. Innerhalb der vollständigen Blöcke wurden die Kombinationen allerdings nicht wie bei einem RCBD vollständig randomisiert. Grund hierfür war, dass es beim Anlegen des Feldversuchs und speziell beim Ausbringen der Dünger praktischer ist, wenn die Parzellen mit demselben Dünger in einer Fahrtrichtung liegen. Deshalb wurden die vollständigen Blöcke erst in 6 Spalten (=<em>main plots</em>) unterteilt, auf welche die 6 N-Stufen randomisert wurden. Erst dann, wurden die 4 Sorten den 4 Zeilen innerhalb jeder Spalte (=<em>sub plots</em>) zufällig zugeordnet. Solch eine Versuchsanlage nennt man <strong>split-plot design</strong>. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<p><img src="2f_splitplot_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>print(splitplot, nrows=10)</code></pre>
+<pre><code>##      N G  rep mainplot yield
+##  1: N1 A rep1      mp1  4520
+##  2: N2 A rep1      mp2  5598
+##  3: N4 A rep1      mp3  6192
+##  4: N6 A rep1      mp4  8542
+##  5: N3 A rep1      mp5  5806
+## ---                         
+## 68: N6 D rep3     mp14  1744
+## 69: N3 D rep3     mp15  4236
+## 70: N1 D rep3     mp16  5016
+## 71: N2 D rep3     mp17  4382
+## 72: N5 D rep3     mp18  2856</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(splitplot)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72 obs. of  5 variables:
+##  $ N       : Factor w/ 6 levels &quot;N1&quot;,&quot;..
+##  $ G       : Factor w/ 4 levels &quot;A&quot;,&quot;&quot;..
+##  $ rep     : Factor w/ 3 levels &quot;rep1&quot;..
+##  $ mainplot: Factor w/ 18 levels &quot;mp1&quot;..
+##  $ yield   : int  4520 5598 6192 8542 ..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des <code>col=</code> statements der <code>boxplot()</code> Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - <a href="datr_desplot.html">mehr Infos dazu hier</a>.</p>
+<pre class="r"><code>boxplot(yield ~ N*G, col=brewer.pal(6, &quot;Dark2&quot;), data=splitplot, las=2) # las=2 dreht Achsenbeschriftung</code></pre>
+<p><img src="2f_splitplot_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Es fällt auf, dass sich das Muster der Werte der verschiedenen N-Stufen für Sorte D deutlich von denen der anderen 3 Sorten unterscheiden. Dies deutet auf Wechselwirkungen zwischen den beiden Behandlungsfaktoren hin.</p>
+</div>
+<div id="schließende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="gemischtes-modell" class="section level2">
+<h2>Gemischtes Modell</h2>
+<p>Wir können uns nun entschließen die Daten mittels eines Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘G’ und ‘N’ sind beides qualitative Behandlungsfaktoren. Um eine möglich Wechselwirkung der beiden zu modellieren, ergibt sich der <em>treament part</em> des Modell als <code>G + N + G*N</code>. Für die vollständigen Blöcke haben wir den festen Effekt ‘rep’ im Modell. Desweiteren müssen wir zufällige Effekte für die main plots ins Modell aufnehmen, da diese als zusätzliche Randomisationseinheit fungierten. Die andere, kleinste Randomisationseinheit des sub plots (=Parzelle) wird durch den üblichen Fehlerterm abgebildet. Der <em>design part</em> des Modells ist also <code>rep + (1|rep:mainplot)</code>. Somit haben wir gleichzeitig feste und zufällige Effekte im Modell und demnach ein gemischtes Modell, welches wir wieder mit <code>lmer()</code> aus dem <code>lme4</code> package modellieren.</p>
+<pre class="r"><code>mod &lt;- lmer(yield ~ G + N + G:N + rep + (1|rep:mainplot), data=splitplot)</code></pre>
+<p>Zunächst sollten nun die Residuenplots evaluiert werden - beispielsweise mit <code>plot(mod)</code> und <code>qqnorm(resid(mod)); qqline(resid(mod))</code>. Erst danach ist eine Varianzanalyse zulässig.</p>
+<blockquote>
+<p>Die Spalte ‘mainplot’ ist in diesem Beispiel übrigens prinzipiell überflüssig. Das liegt daran, dass man die 3x6 main plots anstatt mit ‘rep:mainplot’ auch mit ‘rep:N’ hätte modellieren können, da ein main plot immer einer N-Stufe entspricht (siehe Feldplan oben). Um es aber leichter verständlich zu machen, nutzen wir hier eine extra ‘mainplot’ Spalte. Siehe außerdem die Anmerkung aus <a href="1f_alpha.html">dem vorigen Beispiel</a>.</p>
+</blockquote>
+</div>
+<div id="varianzanalyse" class="section level2">
+<h2>Varianzanalyse</h2>
+<pre class="r"><code>library(car)
+Anova(mod, test.statistic=&quot;F&quot;, type=&quot;III&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type III Wald F tests with Kenward-Roger df)
+## 
+## Response: yield
+##                    F Df Df.res    Pr(&gt;F)    
+## (Intercept) 115.2210  1 37.500 5.429e-13 ***
+## G             3.0166  3 36.000    0.0424 *  
+## N            17.5989  5 41.916 2.293e-09 ***
+## rep           0.9774  2 10.000    0.4095    
+## G:N          13.2360 15 36.000 2.078e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zuallererst den F-Test für die Wechselwirkung (mehr Infos <a href="appendix_interaktionen.html">hier</a>). Der signifikante p-Wert von <code>G:N</code> deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und <em>nicht</em> die der beiden Haupteffekte.</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Mit <code>emmeans()</code> können wir auch adjustierte Mittelwerte für Wechselwirkungseffekte berechnen. Das geht entweder mit <code>pairwise ~ N : G</code> oder <code>pairwise ~ N | G</code>. Im beiden Fällen werden wie erwartet Mittelwerte für alle Kombinationen errechnet. Der Unterschied zwischen den beiden Befehlen besteht darin welche Differenzen zwischen den Mittelwerten berechnet werden. Im ersten Fall (<code>N:G</code>) werden <strong>alle</strong> Mittelwerte miteinander verglichen. Im zweiten Fall (<code>N|G</code>), werden nur N-Stufen innerhalb einer Sorte miteinander verglichen. Natürlich können ‘N’ und ‘G’ hier auch ausgetauscht werden. Es kommt auf die Versuchsfrage an, welche Mittelwertvergleiche von Interesse sind. Wir wollen uns hier auf die Vergleiche der N-Mittelwerte getrennt pro Sorte fokussieren.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ N | G, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
+means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
+<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
+## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+<pre class="r"><code>means$emmeans # N-Mittelwerte pro Sorte</code></pre>
+<pre><code>## G = A:
+##  N    emmean       SE    df lower.CL upper.CL .group
+##  N1 4252.667 365.5222 41.92 3514.969 4990.364  a    
+##  N2 5672.000 365.5222 41.92 4934.303 6409.697  ab   
+##  N3 6400.000 365.5222 41.92 5662.303 7137.697   bc  
+##  N4 6732.667 365.5222 41.92 5994.969 7470.364   bc  
+##  N5 7563.333 365.5222 41.92 6825.636 8301.031    cd 
+##  N6 8700.667 365.5222 41.92 7962.969 9438.364     d 
+## 
+## G = B:
+##  N    emmean       SE    df lower.CL upper.CL .group
+##  N1 4306.000 365.5222 41.92 3568.303 5043.697  a    
+##  N2 5982.000 365.5222 41.92 5244.303 6719.697   b   
+##  N3 6259.000 365.5222 41.92 5521.303 6996.697   b   
+##  N6 6540.333 365.5222 41.92 5802.636 7278.031   b   
+##  N4 6895.000 365.5222 41.92 6157.303 7632.697   b   
+##  N5 6950.667 365.5222 41.92 6212.969 7688.364   b   
+## 
+## G = C:
+##  N    emmean       SE    df lower.CL upper.CL .group
+##  N1 3177.333 365.5222 41.92 2439.636 3915.031  a    
+##  N2 5442.667 365.5222 41.92 4704.969 6180.364   b   
+##  N3 5994.000 365.5222 41.92 5256.303 6731.697   b   
+##  N4 6014.000 365.5222 41.92 5276.303 6751.697   b   
+##  N6 6065.333 365.5222 41.92 5327.636 6803.031   b   
+##  N5 6687.333 365.5222 41.92 5949.636 7425.031   b   
+## 
+## G = D:
+##  N    emmean       SE    df lower.CL upper.CL .group
+##  N6 1880.667 365.5222 41.92 1142.969 2618.364  a    
+##  N5 2046.667 365.5222 41.92 1308.969 2784.364  a    
+##  N4 3816.000 365.5222 41.92 3078.303 4553.697   b   
+##  N1 4481.333 365.5222 41.92 3743.636 5219.031   b   
+##  N3 4812.000 365.5222 41.92 4074.303 5549.697   b   
+##  N2 4816.000 365.5222 41.92 4078.303 5553.697   b   
+## 
+## Results are averaged over the levels of: rep 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 6 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<pre class="r"><code>means$comparisons # N-Mittelwertdifferenzen pro Sorte</code></pre>
+<pre><code>## G = A:
+##  contrast estimate       SE    df t.ratio p.value
+##  N2 - N1  1419.333 516.9264 41.92 2.746   0.0873 
+##  N3 - N1  2147.333 516.9264 41.92 4.154   0.0020 
+##  N3 - N2   728.000 516.9264 41.92 1.408   0.7218 
+##  N4 - N1  2480.000 516.9264 41.92 4.798   0.0003 
+##  N4 - N2  1060.667 516.9264 41.92 2.052   0.3317 
+##  N4 - N3   332.667 516.9264 41.92 0.644   0.9869 
+##  N5 - N1  3310.667 516.9264 41.92 6.405   &lt;.0001 
+##  N5 - N2  1891.333 516.9264 41.92 3.659   0.0086 
+##  N5 - N3  1163.333 516.9264 41.92 2.250   0.2373 
+##  N5 - N4   830.667 516.9264 41.92 1.607   0.5987 
+##  N6 - N1  4448.000 516.9264 41.92 8.605   &lt;.0001 
+##  N6 - N2  3028.667 516.9264 41.92 5.859   &lt;.0001 
+##  N6 - N3  2300.667 516.9264 41.92 4.451   0.0008 
+##  N6 - N4  1968.000 516.9264 41.92 3.807   0.0056 
+##  N6 - N5  1137.333 516.9264 41.92 2.200   0.2593 
+## 
+## G = B:
+##  contrast estimate       SE    df t.ratio p.value
+##  N2 - N1  1676.000 516.9264 41.92 3.242   0.0264 
+##  N3 - N1  1953.000 516.9264 41.92 3.778   0.0061 
+##  N3 - N2   277.000 516.9264 41.92 0.536   0.9943 
+##  N6 - N1  2234.333 516.9264 41.92 4.322   0.0012 
+##  N6 - N2   558.333 516.9264 41.92 1.080   0.8865 
+##  N6 - N3   281.333 516.9264 41.92 0.544   0.9939 
+##  N4 - N1  2589.000 516.9264 41.92 5.008   0.0001 
+##  N4 - N2   913.000 516.9264 41.92 1.766   0.4977 
+##  N4 - N3   636.000 516.9264 41.92 1.230   0.8195 
+##  N4 - N6   354.667 516.9264 41.92 0.686   0.9825 
+##  N5 - N1  2644.667 516.9264 41.92 5.116   0.0001 
+##  N5 - N2   968.667 516.9264 41.92 1.874   0.4319 
+##  N5 - N3   691.667 516.9264 41.92 1.338   0.7624 
+##  N5 - N6   410.333 516.9264 41.92 0.794   0.9671 
+##  N5 - N4    55.667 516.9264 41.92 0.108   1.0000 
+## 
+## G = C:
+##  contrast estimate       SE    df t.ratio p.value
+##  N2 - N1  2265.333 516.9264 41.92 4.382   0.0010 
+##  N3 - N1  2816.667 516.9264 41.92 5.449   &lt;.0001 
+##  N3 - N2   551.333 516.9264 41.92 1.067   0.8917 
+##  N4 - N1  2836.667 516.9264 41.92 5.488   &lt;.0001 
+##  N4 - N2   571.333 516.9264 41.92 1.105   0.8765 
+##  N4 - N3    20.000 516.9264 41.92 0.039   1.0000 
+##  N6 - N1  2888.000 516.9264 41.92 5.587   &lt;.0001 
+##  N6 - N2   622.667 516.9264 41.92 1.205   0.8322 
+##  N6 - N3    71.333 516.9264 41.92 0.138   1.0000 
+##  N6 - N4    51.333 516.9264 41.92 0.099   1.0000 
+##  N5 - N1  3510.000 516.9264 41.92 6.790   &lt;.0001 
+##  N5 - N2  1244.667 516.9264 41.92 2.408   0.1769 
+##  N5 - N3   693.333 516.9264 41.92 1.341   0.7606 
+##  N5 - N4   673.333 516.9264 41.92 1.303   0.7819 
+##  N5 - N6   622.000 516.9264 41.92 1.203   0.8328 
+## 
+## G = D:
+##  contrast estimate       SE    df t.ratio p.value
+##  N5 - N6   166.000 516.9264 41.92 0.321   0.9995 
+##  N4 - N6  1935.333 516.9264 41.92 3.744   0.0068 
+##  N4 - N5  1769.333 516.9264 41.92 3.423   0.0164 
+##  N1 - N6  2600.667 516.9264 41.92 5.031   0.0001 
+##  N1 - N5  2434.667 516.9264 41.92 4.710   0.0004 
+##  N1 - N4   665.333 516.9264 41.92 1.287   0.7903 
+##  N3 - N6  2931.333 516.9264 41.92 5.671   &lt;.0001 
+##  N3 - N5  2765.333 516.9264 41.92 5.350   &lt;.0001 
+##  N3 - N4   996.000 516.9264 41.92 1.927   0.4008 
+##  N3 - N1   330.667 516.9264 41.92 0.640   0.9872 
+##  N2 - N6  2935.333 516.9264 41.92 5.678   &lt;.0001 
+##  N2 - N5  2769.333 516.9264 41.92 5.357   &lt;.0001 
+##  N2 - N4  1000.000 516.9264 41.92 1.935   0.3963 
+##  N2 - N1   334.667 516.9264 41.92 0.647   0.9865 
+##  N2 - N3     4.000 516.9264 41.92 0.008   1.0000 
+## 
+## Results are averaged over the levels of: rep 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 6 estimates</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Wir wollen die Ergebnisse abschließend in einem Balkendiagramm darstellen. Weil wir aber die N-Vergleiche isoliert pro Sorte konzentrieren wollen, können wir uns entscheiden ein Balkendiagramm pro Sorte zu erstellen. In solch einer Situation kann in der <code>ggplot()</code> Funktion das <code>facet_wrap()</code> statement genutzt werden.</p>
+<p>Außerdem wollen wir die Balken wieder mit denselben Farben versehen, die die N-Stufen bereits im Feldplan und dem Boxplot hatten. Dazu fügen wir zuerst dem <code>geom_bar()</code> statement <code>fill=N</code> hinzu. Nun bekommt jede N-Stufe eine andere Farbe. Um nicht die default Farben zu nehmen, sondern selbst zu bestimmen welche Farben es sein sollen, schreiben wir zusätzlich noch <code>scale_fill_manual(values=...)</code> in die Funktion. Um die dann automatisch generierte Legende zu unterdrücken (weil sie in diesem Fall keine zusätzlichen Informationen bringt), fügen wir außerdem <code>guides(fill=FALSE)</code> hinzu.</p>
+<pre class="r"><code>means.plot &lt;- as.data.table(means$emmeans) # korrektes Format für ggplot
+print(means.plot, nrows=2)</code></pre>
+<pre><code>##      N G   emmean       SE       df lower.CL upper.CL .group
+##  1: N1 A 4252.667 365.5222 41.91632 3514.969 4990.364   a   
+##  2: N2 A 5672.000 365.5222 41.91632 4934.303 6409.697   ab  
+##  3: N3 A 6400.000 365.5222 41.91632 5662.303 7137.697    bc 
+##  4: N4 A 6732.667 365.5222 41.91632 5994.969 7470.364    bc 
+##  5: N5 A 7563.333 365.5222 41.91632 6825.636 8301.031     cd
+## ---                                                         
+## 20: N5 D 2046.667 365.5222 41.91632 1308.969 2784.364     a 
+## 21: N4 D 3816.000 365.5222 41.91632 3078.303 4553.697      b
+## 22: N1 D 4481.333 365.5222 41.91632 3743.636 5219.031      b
+## 23: N3 D 4812.000 365.5222 41.91632 4074.303 5549.697      b
+## 24: N2 D 4816.000 365.5222 41.91632 4078.303 5553.697      b</code></pre>
+<pre class="r"><code>ggplot(data=means.plot, aes(x=N)) +
+  geom_bar(aes(y=emmean, fill=N), stat=&quot;identity&quot;, width=0.8) +
+    scale_fill_manual(values=brewer.pal(6, &quot;Dark2&quot;)) + guides(fill=FALSE) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=emmean+1500, label=.group)) +
+  facet_wrap(~G) + # ein plot pro Sorte
+  theme_bw() +
+  labs(main=&quot;Adj. N-Mittelwerte pro Sorte&quot;,
+       y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;N-Dünger&quot;,
+       caption=&quot;Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="2f_splitplot_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

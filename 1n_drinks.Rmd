@@ -1,0 +1,158 @@
+---
+title: "Korrelation, Regression und Alkohol"
+---
+
+# Datensatz
+
+<img src="images/drinkspetermax.PNG" style="width:33%; margin-left: 20px" align="right">
+
+In diesem Beispiel haben Peter und Max an mehreren Abenden aufgeschrieben wie viele Getränke sie getrunken haben und was für einen Promillewert sie am Ende des Abends hatten. Demnach haben wir einen Datensatz mit u.a. **zwei numerischen Spalten/Variablen**:
+
+```{r, include=FALSE}
+library(data.table)
+dat <- fread("D:/RKurse/MyDatasets/drinks (other) LM.txt")
+dat$Person <- as.factor(dat$Person)
+```
+
+```{r}
+head(dat) # Erste Zeilen des Datensatzes
+```
+```{r, eval=FALSE}
+str(dat) # Struktur des Datensatzes
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(dat, width=40, strict.width="cut")
+```
+
+# Fragestellung
+Wir könnten nun verschiedene Fragen an diesen Datensatz stellen. Wir könnten z.B. fragen wer im Schnitt mehr `drinks` hatte (siehe dazu [das Kapitel zum Erstellen deskriptiver Statistiken](datr_descriptivestats.html)). In diesem Kapitel wollen wir uns allerdings **ausschließlich auf die beiden numerischen Variablen konzentrieren**, nämlich `drinks` und `blood_alc`, also die Anzahl Getränke und den Promillewert. Wir ignorieren dabei komplett ob ein Wert von Peter oder Max kommt.
+
+Demnach lautet unsere Frage in etwa: **Wie hängt der Promillewert mit der Anzahl Getränken zusammen?** und diese Frage beantworten wir in diesem Kapitel auf verschiedene Arten.
+
+# Deskriptive Statistik
+Um ein Gefühl für die Daten zu bekommen, betrachten wir einige Kennzahlen zu den Daten, sowie einen Plot.
+
+<div class = "row"> <div class = "col-md-6">
+```{r, fig.height = 3, fig.width = 4, fig.align = "center"}
+summary(dat)
+```
+</div> <div class = "col-md-6">
+```{r}
+plot(x=dat$drinks, y=dat$blood_alc)
+```
+</div> </div>
+
+Wir erkennen also schon jetzt in welchen Bereichen sich die Werte bewegen und, dass es einen Trend zu geben scheint: Je mehr Getränke eine Person hatte, desto höher war ihr Promillewert. 
+
+# Korrelation
+Um solch eine Beziehung zwischen zwei numerischen Variablen in Zahlen ausdrücken zu können, eignet sich die Korrelation - [Hier eine kurze Zusammenfassung was Korrelation ist](stat_korrelation.html). Um einfach nur die geschätzte Korrelation zu erhalten reicht der Befehl `cor()`, für einen umfangreicheren Output nehmen wir `cor.test()`:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+cor(dat$drinks, dat$blood_alc)
+```
+</div> <div class = "col-md-6">
+```{r}
+cor.test(dat$drinks, dat$blood_alc)
+```
+</div> </div>
+
+Wir finden also eine geschätzten Korrelationskoeffizient $r \approx$ `r round(cor(dat$drinks, dat$blood_alc),2)`, also eine hohe, positive Korrelation. Das Ergebins passt zu unserem Plot. Auch wenn das Ergebnise in diesem Fall recht klar ist, wollen wir noch prüfen ob die Korrelation signifikant ist. (Siehe [das Kapitel zur Korrelation](stat_korrelation.html) um zu verstehen was genau das bedeutet). Wie wir im Output sehen ist der p-Wert $=$ `5.089e-11` $< 0.0001$ und demnach ist die Korrelation signifikant (von Null verschieden). Dies wäre in vielen Fällen bereits alles was bzgl. der Korrelation verlangt bzw. gezeigt wird. Als Ergebnissatz würde z.B. geschrieben werden 
+
+*"Es wurde eine signifikante (p = 5.09 10^(-11) < 0.0001) Korrelation r=0.96 zwischen dem Promillewert und der Anzahl Getränke gefunden."* 
+
+Oft unterbewertet wird m.E. außerdem die Information zum 95% Konfidenzintervall, welches hier von `r round(cor.test(dat$drinks, dat$blood_alc)$conf.int[1],2)` bis `r round(cor.test(dat$drinks, dat$blood_alc)$conf.int[2],2)` reicht. Desweiteren findet man das Ergebnis zusätzlich direkt im Plot abgebildet, weswegen wir hier zum Abschluss einen etwas schöneren Plot samt Ergebnis mit `ggplot2` und `ggpubr` erstellen wollen.
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2) # Erzeugt Plot
+library(ggpubr) # Zusätzlicher Befehl "stat_cor" (siehe unten)
+```
+```{r}
+ggplot(data=dat, aes(x=drinks, y=blood_alc)) + # Definiere Daten
+  geom_point(size=3) + # Scatter plot mit Punkten der Größe 3
+  scale_x_continuous(name="Anzahl Getränke", limits=c(0, 9), breaks=seq(0, 9, by=1)) + # x-Achse
+  scale_y_continuous(name="Promillewert", limits=c(0, 1.5)) + # y-Achse
+  theme_classic() + # Simple, klassische Formatierung
+  stat_cor(method="pearson", label.x=1, label.y=1) # Füge Korrelation mit p-Wert ein
+```
+
+# Regression
+Neben der Korrelation können noch andere statistische Methoden angewendet werden um die Beziehung zwischen zwei numerischen Variablen besser fassen zu können. Eine dieser Methoden ist die Regression und in diesem Fall genauer: die simple lineare Regression - [Hier eine kurze Zusammenfassung was eine Regression ist](stat_regression.html).
+
+```{r}
+reg <- lm(data = dat, formula = blood_alc ~ drinks) # Regressionsmodell y = a + bx
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+reg # Zeige Ergebnisse (kompakt)
+```
+</div> <div class = "col-md-6">
+```{r}
+plot(x=dat$drinks, y=dat$blood_alc) # Wie oben
+abline(reg) # Füge Regressionslinie hinzu
+```
+</div> </div>
+
+```{r}
+summary(reg) # Zeige Ergebnisse (detailliert)
+```
+
+Die Schätzer für die Regressionskoeffizienten sind also $a=$ `r reg$coefficients[1]` und $b=$ `r reg$coefficients[2]`, sodass unser Regressionsmodell lautet:
+
+$$ bloodalc = `r round(reg$coefficients[1],2)` + `r round(reg$coefficients[2],2)` drinks $$
+
+### Stimmt was nicht?
+Die Werte erscheinen stimmig und auch die dementsprechend eingezeichnete Regressionsgerade scheint gut in den Plot zu passen. Bevor wir uns aber den weiteren Output genauer anschauen sollte sich genauer angeschaut werden was dieses Modell für die Praxis bedeutet. Speziell die Frage *"Was passiert, wenn jemande kein Alkohol getrunken hat?"* führt hier nämlich zu Probleme, da wir eine Promillewert-Vorhersage von 0.05 erhalten, wenn wir 0 drinks einsetzen. 
+
+Wo liegt hier also das Problem? Vorneweg: Der R-Code stimmt und R selbst hat sich auch nicht verrechnet: Die Statistik stimmt auch. Wenn hier etwas als *falsch* angesehen werden kann, dann ist es nicht die Antwort, die R uns gegeben hat, sondern die Frage, die wir an R gestellt haben. Mit dem `lm()` Befehl oben haben wir nach einer klassischen Regressionsgeraden mit Achsenabschnitt $a$ und Steigung $b$ gefragt. Tatsächlich wussten wir als Anwender aber bereits, dass es keinen Achsenabschnitt geben kann, da kein Alkohol im Blut sein sollte, wenn kein Alkohol aufgenommen wurde. Der Grund warum dennoch ein Achsenabschnitt geschätzt wurde ist lediglich, dass die Messwerte nicht so präzise waren, dass $a$ auch wirklich auf genau 0.0 geschätzt wurde. Das wird in der Regel auch niemals so sein. Schauen wir uns den Output genauer an, realisieren wir auch, dass zum einen $a=0.049$ nahe 0 ist und zum anderen, dass der Schätzer einen p-Wert von 0.243 hat, also >0.05 und demnach nicht signifikant von 0 verschieden. Locker gesagt hat also sogar R bzw. die Statistik uns darauf hingewiesen, dass hier *in Wahrheit* gar keinen Achsenabschnitt gibt.
+
+### Nochmal, aber anders
+Wir wollen nun also eine neue Regression anpassen, allerdings die Sonderform $y=bx$ , also ohne Achsenabschnitt. Dazu müssen wir lediglich `0 +` ins Modell an die Stelle schreiben, an der R sonst quasi standardmäßig einen Achsenabschnitt anpasst:
+
+```{r}
+reg_bx <- lm(data = dat, formula = blood_alc ~ 0 + drinks) # Regressionsmodell y = bx
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+reg_bx # Zeige Ergebnisse (kompakt)
+```
+</div> <div class = "col-md-6">
+```{r}
+plot(x=dat$drinks, y=dat$blood_alc) # Wie oben
+abline(reg_bx) # Füge Regressionslinie hinzu
+```
+</div> </div>
+
+```{r}
+summary(reg_bx) # Zeige Ergebnisse (detailliert)
+```
+
+Gleich sieht man, dass im Output kein `Intercept`, also kein Achsenabschnitt mehr auftaucht. Außerdem ist der Schätzer für die Steigung ein kleines bisschen größer geworden und auch die eingezeichnete Gerade hat sich ein wenig verschoben. Dies sind nun also die Ergebnisse, die zwar statistisch genau so korrekt sind wie die vorangegangenen, die aber biologisch mehr Sinn ergeben. 
+
+Zum Abschluss wollen wir auch für die Regressionsergebnisse einen Plot mit `ggplot()` erstellen:
+
+```{r}
+ggplot(data=dat, aes(x=drinks, y=blood_alc)) + # Definiere Daten
+  ggtitle("Angepasstes Modell: y = a + bx") + # Titel über Plot
+  geom_point(size=3) + # Scatter plot mit Punkten der Größe 3
+  scale_x_continuous(name="Anzahl Getränke", limits=c(0, 9), breaks=seq(0, 9, by=1)) + # x-Achse
+  scale_y_continuous(name="Promillewert", limits=c(0, 1.5)) + # y-Achse
+  theme_classic() + # Simple, klassische Formatierung
+  geom_smooth(method='lm', formula=y~x, se=FALSE ) + # Füge Gerade ein
+  stat_regline_equation(label.x=1, label.y=1) # Füge Gleichung ein
+```
+
+```{r}
+ggplot(data=dat, aes(x=drinks, y=blood_alc)) + # Definiere Daten
+  ggtitle("Angepasstes Modell: y = bx") + # Titel über Plot
+  geom_point(size=3) + # Scatter plot mit Punkten der Größe 3
+  scale_x_continuous(name="Anzahl Getränke", limits=c(0, 9), breaks=seq(0, 9, by=1)) + # x-Achse
+  scale_y_continuous(name="Promillewert", limits=c(0, 1.5)) + # y-Achse
+  theme_classic() + # Simple, klassische Formatierung
+  geom_smooth(method='lm', formula=y~0+x, se=FALSE ) + # Füge Gerade ein
+  # Füge Gleichung manuell ein, ohne ggpubr package
+  annotate("text", x=1, y=1, label=paste("y =", round(reg_bx$coefficients,2), "x")) 
+```
+

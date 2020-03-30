@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Augmented Design - Blockeffekt fest oder zufällig?</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Augmented Design - Blockeffekt fest oder zufällig?</h1>
+
+</div>
+
+
+<blockquote>
+<p>Dieses Beispiel entspricht Example 4 aus dem Skript zur Vorlesung “Mixed models for metric data” von <a href="https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en">Prof. Dr. Piepho</a>. In dem Skript finden sich weitere Erläuterungen, sowie SAS Codes.</p>
+</blockquote>
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<p>Die Daten in diesem Beispiel stammen von einem Versuch, der als die einfachste Form eines <strong>augmented Designs</strong> angelegt wurde. Der Versuch hat 6 Blöcke (I-VI; mit je 8 Parzellen) und es wurde der Ertrag von Sorten geprüft. Allerdings wurden im Gegensatz zu einer einfachen randomisierten, vollständigen Blockanlage nicht jede Sorte in jedem Block angebaut - einige aber schon:</p>
+<p><img src="1f_augmented_blockfixorrandom_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Wie man sieht, tauchen die drei Sorten <em>ci</em>, <em>st</em> und <em>wa</em> (orange) in jedem Block auf, alle anderen Sorten (<em>01-30</em>, blau) wurden aber nur je ein einziges Mal geprüft. Somit gibt es also insgesamt 33 Sorten, allerdings nur 3 davon in 6 Wiederholungen und alle anderen in einer Wiederholung.</p>
+<p>Die Idee hinter dem Design ist, dass mittels der wiederholten Sorten (auch <em>Standards</em> genannt) die Blockeffekte geschätzt werden können und dann die eigentlich zu prüfenden Sorten über die Standards geschätzt werden. Man könnte auch sagen, dass die Sorten quasi an den Standards gemessen werden, weswegen übrigens für die Standards in der Regel meist sehr bekannte, gängige Sorten genommen werden. Klar ist, dass man auf diese Weise nicht so gute Schätzungen für die Sorten erhält, wie wenn man sie wiederholt geprüft hätte. Immerhin erhält man aber Schätzungen und zwar für relativ viele Sorten auf relativ wenig Parzellen. Genau dies ist eine Hauptmotivation für ein augmented Design: (i) Es erlaubt das Prüfen von sehr vielen Prüfgliedern wenn die Versuchskapazitäten begrenzt sind. Andersherum erlaubt es aber auch z.B. (ii) das prüfen von neuen Sorten, für die noch nicht genug Saatgut vorhanden ist um mehrere Parzellen anzulegen.</p>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Beim betrachten von deskriptiven Statistiken muss sich in diesem Beispiel vor Augen geführt werden, dass wir z.B. keinen Mittelwert für die Sorten <em>01-30</em> berechnen können, da wir schlichtweg nur eine Beobachtung pro Sorte haben. Um sich dies endgültig zu verdeutlichen wählen wir den Plot hierunter.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>print(patt, nrows=10)</code></pre>
+<pre><code>##     gen yield block
+##  1:  st  2972     I
+##  2:  14  2405     I
+##  3:  26  2855     I
+##  4:  ci  2592     I
+##  5:  17  2572     I
+## ---                
+## 44:  ci  3483    VI
+## 45:  01  3013    VI
+## 46:  wa  3400    VI
+## 47:  12  2385    VI
+## 48:  19  3643    VI</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(patt)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   48 obs. of  3 variables:
+##  $ gen  : Factor w/ 33 levels &quot;01&quot;,&quot;0&quot;..
+##  $ yield: num  2972 2405 2855 2592 257..
+##  $ block: Factor w/ 6 levels &quot;I&quot;,&quot;II&quot;&quot;..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+<pre class="r"><code>ggplot(data=patt, aes(y=yield, x=gen, color=gen, shape=block)) +
+  geom_point(size=2) +
+  scale_color_manual(values=StandardFarben) + # Vektor mit Farben wurde vorher definiert
+  guides(color = FALSE) + # Verstecke Legende zu Colors, aber nicht zu Shapes
+  theme_classic() + theme(legend.position = &quot;top&quot;)</code></pre>
+<p><img src="1f_augmented_blockfixorrandom_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Was wir an diesem Plot auch erkennen können ist, dass Block V anscheinend generell schlechtere Wachstumsbedingungen für die Sorten geboten hat. Man könnte auf den ersten Blick vermuten, dass die Sorten <em>02, 08, 10, 16</em> und <em>21</em> schlichtweg nicht so hohe Erträge liefern, jedoch liefern auch die drei Standards deutlich schlechtere Erträge in Block V verglichen mit den anderen Blöcken. Gemessen an den Standards wirkt speziell Sorte <em>21</em> also doch vielversprechend - auch wenn wir dieser Vermutung nur eine einzige Beobachtung zugrunde legen.</p>
+</div>
+<div id="schließende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<p>Das Modell für die Daten lautet</p>
+<p><span class="math display">\[ yield_{ij} = \mu + gen_i + block_j + e_{ij} \]</span></p>
+<p>Da wir die Sorten miteinander vergleichen wollen, nehmen wir sie als festen Effekt. Bei den Blöcken ist die Entscheidung nicht ganz so schnell gefällt: Zum Einen kann es bei unvollständigen Blöcken von Vorteil sein sie als zufällig ins Modell zu nehmen, zum Anderen gibt es aber auch die Faustregel, dass man Blockeffekte erst ab 8 Blöcken als zufällig nehmen sollte. Wir wollen in diesem Beispiel beide Modelle anpassen und dann entscheiden welches Modell wir nehmen sollten. Dies können wir davon abhängig machen in welchem der Modelle der mittlere <em>s.e.d.</em> (standard error of a difference) der Differenzen zwischen den adjustierten Sortenmittelwerten kleiner ist. Je kleiner dieser s.e.d., desto präziser können wir nämlich die Sortenunterschiede schätzen - und das ist was uns in diesem Versuch interessiert: Ein Vergleich der Sorten. Zur Klarstellung: Es gibt Standardfehler für jeden der adjustierten Mittelwerte selbst (standard error of a mean), aber wir möchten hier die Standardfehler der Differenzen zwischen den adjustierten Mittelwerten betrachten!</p>
+<div id="vergleich-beider-modelle" class="section level2">
+<h2>Vergleich beider Modelle</h2>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code># Fester Blockeffekt
+mod.fixBl &lt;- lm(yield ~ gen + block, 
+                data=patt)</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>library(lme4) # Zufälliger Blockeffekt
+mod.ranBl &lt;- lmer(yield ~ gen + (1|block), 
+                  data=patt)</code></pre>
+</div>
+</div>
+<p>Wir überspringen hier also mal die ANOVA und ermitteln direkt die mittleren s.e.d. der beiden Modelle. Dazu berechnen wir voererstwie gehabt die adjustierten Mittelwerte und alle Kontraste zwischen ihnen mit dem <code>emmeans</code> package. Im Anschluss ziehen wir uns aber nur die Spalte mit allen s.e.d. raus und berechnen jeweils den Mittelwert.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>emm.fixBl &lt;- emmeans(mod.fixBl, pairwise~&quot;gen&quot;)
+print(as.data.table(emm.fixBl$emmeans)[,1:3], nrows=10)</code></pre>
+<pre><code>##     gen   emmean       SE
+##  1:  01 2260.222 341.1876
+##  2:  02 2329.889 341.1876
+##  3:  03 2901.889 341.1876
+##  4:  04 2864.889 341.1876
+##  5:  05 2024.222 341.1876
+## ---                      
+## 29:  29 2162.222 341.1876
+## 30:  30 2801.889 341.1876
+## 31:  ci 2725.667 123.2225
+## 32:  st 2759.167 123.2225
+## 33:  wa 2677.833 123.2225</code></pre>
+<pre class="r"><code>dif.fixBl &lt;- as.data.table(emm.fixBl$contrasts)
+print(dif.fixBl[,1:3], nrows=10)</code></pre>
+<pre><code>##      contrast   estimate       SE
+##   1:  01 - 02  -69.66667 492.8899
+##   2:  01 - 03 -641.66667 492.8899
+##   3:  01 - 04 -604.66667 492.8899
+##   4:  01 - 05  236.00000 492.8899
+##   5:  01 - 06  437.33333 492.8899
+##  ---                             
+## 524:  30 - st   42.72222 362.7571
+## 525:  30 - wa  124.05556 362.7571
+## 526:  ci - st  -33.50000 174.2629
+## 527:  ci - wa   47.83333 174.2629
+## 528:  st - wa   81.33333 174.2629</code></pre>
+<pre class="r"><code>mean(dif.fixBl$SE)</code></pre>
+<pre><code>## [1] 461.3938</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>emm.ranBl &lt;- emmeans(mod.ranBl, pairwise~&quot;gen&quot;)
+print(as.data.table(emm.ranBl$emmeans)[,1:3], nrows=10)</code></pre>
+<pre><code>##     gen   emmean       SE
+##  1:  01 2309.430 434.8634
+##  2:  02 2246.552 434.8634
+##  3:  03 2911.897 434.8634
+##  4:  04 2874.897 434.8634
+##  5:  05 2026.888 434.8634
+## ---                      
+## 29:  29 2211.430 434.8634
+## 30:  30 2811.897 434.8634
+## 31:  ci 2725.667 295.8887
+## 32:  st 2759.167 295.8887
+## 33:  wa 2677.833 295.8887</code></pre>
+<pre class="r"><code>dif.ranBl &lt;- as.data.table(emm.ranBl$contrasts)
+dif.ranBl[,1:3]</code></pre>
+<pre><code>##      contrast   estimate       SE
+##   1:  01 - 02   62.87705 493.6947
+##   2:  01 - 03 -602.46789 493.6947
+##   3:  01 - 04 -565.46789 493.6947
+##   4:  01 - 05  282.54174 493.6947
+##   5:  01 - 06  465.28888 493.6947
+##  ---                             
+## 524:  30 - st   52.73073 363.2128
+## 525:  30 - wa  134.06406 363.2128
+## 526:  ci - st  -33.50000 174.2629
+## 527:  ci - wa   47.83333 174.2629
+## 528:  st - wa   81.33333 174.2629</code></pre>
+<pre class="r"><code>mean(dif.ranBl$SE)</code></pre>
+<pre><code>## [1] 462.0431</code></pre>
+</div>
+</div>
+<p>Schließlich sehen wir, dass der mittlere s.e.d. im Modell mit festem Blockeffekt ein wenig kleiner ist, sodass wir uns für dieses Modell entscheiden würden um möglichst präzise die Sorten miteinander vergleichen zu können. <strong>Wichtig bei diesem Vergleich ist</strong>, dass die s.e.d. der adjustierten Mittelwertdifferenzen für das gemischte Modelle unbedingt mit einer Approximation wie z.B. der Kenward-Roger-Methode oder Satterthwaite-Methode berechnet werden sollten - dies wird von der <code>emmeans()</code> Funktion allerdings standardmäßig getan. Mehr zu dem Thema im <a href="stat_gemischtemodelle.html">Kapitel zu gemischten Modellen</a>.</p>
+<p>Demnach würden wir ab hier wie in den vorangegangenen Beispielen (eine ANOVA durchführen um zu prüfen ob der Sorteneffekt signifikant ist und) post-hoc-Tests für die Sortenmittelwertvergleiche durchführen.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

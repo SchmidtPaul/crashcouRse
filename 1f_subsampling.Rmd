@@ -1,0 +1,127 @@
+---
+title: "Sub-Sampling"
+---
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(emmeans)
+library(data.table)
+library(desplot)
+library(dplyr)
+library(ggplot2)
+library(forcats)
+library(lme4)
+library(readxl)
+
+psr <- fread("D:/RKurse/MyDatasets/subsampling sorghum.txt",
+             stringsAsFactors=TRUE) %>%
+  mutate(plant = as.factor(plant),
+         treat = fct_relevel(treat, c("Ctrl", "Top6", "Top1"))) %>% data.table
+
+Farben <- c(Ctrl="seagreen", Top6="seagreen3" , Top1="seagreen2")
+
+
+```
+
+> Dieses Beispiel entspricht Example 9 aus dem Skript zur Vorlesung "Mixed models for metric data" von [Prof. Dr. Piepho](https://biostatistik.uni-hohenheim.de/en/116899/hans-peter-piepho-en). In dem Skript finden sich weitere Erläuterungen, sowie SAS Codes.
+
+# Datensatz
+In einem Gewächshausversuch mit Sorghum wurde untersucht wie sich das Entfernen von Blättern auf das Tausendkorngewicht (TKG) auswirkt. Dazu wurden den Pflanzen entweder (i) alle bis auf das oberste Blatt (*"Top1"*), (ii) alle bis auf die obersten 6 Blätter (*"Top6"*) oder (iii) keine Blätter (*"Ctrl"*) entfernt. Diese drei Behandlungsstufen wurden jeweils auf einem Tisch in 4 vollständigen Wiederholungen (*I-IV*) als randomisierte vollständige Blockanlage angelegt:
+
+```{r, echo=FALSE, out.width = '50%', fig.align='center'}
+desplot(treat ~ col+row|block, psr, 
+        col.regions = Farben,
+        main="", show.key=TRUE, flip=TRUE)
+```
+
+Das ist aber noch nicht alles. Bis hierhin könnten wir die Daten auswerten wie bei einer einfaktoriellen randomisierten, vollständigen Blockanlage wie [in diesem Beispiel](1f_rcbd.html), mit dem Unterschied, dass es nicht um Parzellen, sondern Tische ginge.
+
+Die Besonderheit dieses Versuchs besteht allerdings darin, dass auf den Tischen jeweils 10 Töpfe mit jeweils 1 Pflanze standen. Tatsächlich haben wir also 10 Messwerte von 10 verschiedenen Pflanzen auf demselben Tisch mit derselben Behandlungsstufe:
+
+```{r, echo=FALSE, out.width='50%', fig.align='center'}
+desplot(treat ~ col+row|block, psr, 
+        col.regions = Farben,
+        text=plant, cex=1, 
+        out2=plant, out2.gpar=list(col="darkgrey"),
+        main="", show.key=TRUE, flip=TRUE)
+
+psr$row <- NULL
+psr$col <- NULL
+```
+
+Es muss an diesem Punkt klar sein was hier anders ist als sonst: Nur weil wir doch nicht 4 Beobachtungen pro Behandlungsstufe haben, sondern 40, bedeutet das **nicht**, dass wir eine randomisierte, vollständige Blockanlage mit 40 Wiederholungen angelegt haben. Fakt ist, dass wir in diesem Versuch weiterhin nur von 4 vollständigen Blöcken/Wiederholungen sprechen können. Hätten wir wirklich einen Versuch mit den 40 Töpfen pro Behandlungsstufe als 40 Wiederholungen anlegen wollen, hätten wir sie auch dementsprechend im Versuchsdesign randomisieren müssen. Stattdessen wurden nur die Behandlungsstufen auf die Tische randomisiert und dann mehrfach pro Tisch gemessen. Das ist vergleichbar mit einem Szenario in dem man in einem Feldversuch dieselbe Parzelle mehrmals beprobt (z.B. Halmhöhe misst) - auch hier führen zusätzliche Datenpunkte nicht dazu, dass man zusätzlich Parzellen hat. 
+
+Stattdessen spricht man in Fällen wie diesem entweder von **Pseudo-Wiederholungen**, weil man eben keine echten Wiederholungen aber auch keine Messwiederholungen (am selben Objekt über längere Zeit) hat, oder man spricht von **Sub-Sampling**, weil man quasi noch innerhalb seiner *samples* mehrere Beobachtungen vornimmt.
+
+# Deskriptive Statistik
+Wie immer schauen wir uns ein paar deskriptive Statistiken an um ein Gefühl für die Daten zu bekommen.
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(psr, nrows=10)
+plot(y=psr$TKG, x=psr$treat)
+```
+</div> <div class = "col-md-6">
+```{r, eval=FALSE}
+str(psr)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(psr, width=40, strict.width="cut")
+```
+```{r, warning=FALSE, fig.align='center', fig.height=3, fig.width=4}
+ggplot(data=psr, 
+       aes(y=TKG, x=treat, color=treat)) +
+  geom_jitter(aes(shape=block), 
+              width=0.2, height=0, size=2) + 
+  scale_color_manual(values=Farben) +
+  ylim(c(0, max(psr$TKG))) +
+  stat_summary(fun.y="mean", colour="red", 
+               size=2, geom="point") +
+  guides(color=FALSE) + theme_classic() +
+  labs(caption="Roter Punkt entspricht arithmetischem Mittelwert")
+```
+</div> </div>
+
+# Schließende Statistik
+## Einfache Lösung
+Um das Problem der Pseudowiederholungen zu umgehen, kann einfach der Mittelwert eines jeden Tischs - also das arithmetische Mittel über die jeweils 10 Pflanzen - gebildet werden und die Daten wie eine einfache randomisierte, vollständige Blockanlage ausgewertet werden. Das ist möglich, da man so wieder nur einen Wert pro Tisch hat und somit der Tisch, also die Kombination aus Behandlung und Wiederholung, die Versuchseinheit ist. Man verliert dabei aber die Informationen darüber wie sehr die Werte zwischen den 10 Pflanzen geschwankt haben. Anders ausgedrückt geht ein großer Teil des Mehraufwands durch das häufigere Messen wieder verloren noch bevor man zur schließenden Statistik kommt.
+
+## Bessere Lösung
+Um die Daten so zu modellieren wie man sie erfasst hat, gilt es also die Mehrfachmessungen am gleichen Tisch zu berücksichtigen. Anders ausgedrückt, sollte das Modell sowohl *Noise* zwischen den verschiedenen Tischen, als auch zwischen den verschiedenen Pflanzen auf demselben Tisch berücksichtigen. Die Versuchseinheit, also in diesem Versuch die Einzelpflanze, wird dabei ja sowieso durch den Versuchsfehler aufgefangen. Es gilt also lediglich sich um den zusätzlichen Störfaktor Tisch zu kümmern. Das ist möglich, indem die Tische als zufällige Effekte ins Modell aufgenommen werden. 
+
+Wir haben aktuell noch keine Spalte im Datensatz, die einzelne Tische identifiziert. Wir wissen aber, dass es 12 Tische gibt, nämlich einer pro Block-Behandlung-Kombination. Wir können also einfach den Effekt also `block:treat` ins Modell schreiben und so einen Effekt pro Tisch schätzen. Da dies aber oft zu Verwirrungen führt, weil der Bezug zu Interaktionseffekte zwischen Behandlungen hergestellt wird, zeige ich hier auch noch die intuitivere Lösung bei der vorerst eine Spalte "Tisch" erzeugt wird. Wir passen letztendlich aber zwei Mal das gleiche Modell an:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+#
+#
+#
+library(lme4)
+m1<-lmer(TKG ~ treat + block + (1|block:treat),
+         data=psr)
+
+print(VarCorr(m1), comp="Variance")
+```
+</div> <div class = "col-md-6">
+```{r}
+psr$Tisch <- paste0(psr$block, psr$treat) %>%
+  as.factor
+
+library(lme4)
+m2<-lmer(TKG ~ treat + block + (1|Tisch),
+         data=psr)
+
+print(VarCorr(m2), comp="Variance")
+```
+</div> </div>
+
+### ANOVA
+```{r, warning=FALSE, message=FALSE}
+library(car)
+Anova(m1, type="III", test.statistic="F")
+```
+Laut ANOVA unterscheiden sich die Behandlung nicht signifikant voneinander. Dennoch schauen wir uns zum Schluss auch noch die Mittelwertvergleiche an.
+
+```{r}
+library(emmeans)
+emmeans(m1, pairwise ~ "treat")
+```
+Auch hier ist wie erwartet kein signifikanter Unterschied gefunden worden. Das bestätigt den Eindruck aus der deskriptiven Statistik.

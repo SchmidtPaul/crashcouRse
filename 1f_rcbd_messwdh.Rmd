@@ -1,0 +1,194 @@
+---
+title: "1 Beh.faktor - RCBD - Messwiederholungen"
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table)
+library(desplot)
+library(emmeans)
+library(ggplot2)
+library(nlme)
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/sorghum repmes.rda")
+```
+
+```{r, eval=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(nlme)    # generalisiertes Modell package
+library(emmeans) # adjustierte Mittelwerte
+library(ggplot2) # bessere Plots
+```
+
+# Datensatz
+
+In diesem Experiment wurde in einer randomisierten vollständigen Blockanlage (RCBD) mit 5 Wiederholungen der Blattflächenindex von 4 Sorghumsorten verglichen. Allerdings wurde der Blattflächenindex mehrfach, nämlich in 5 aufeinanderfolgenden Wochen, gemessen, sodass Messwiederholungen vorliegen. 
+
+> Dieses Beispiel basiert auf *Example 4* des `agriTutorial` packages und der dazugehörigen Veröffentlichung
+> <br />
+> Piepho, H. P., & Edmondson, R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science.
+
+```{r, fig.height = 2, fig.width = 4, fig.align = "center", echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+desplot(data=repmes[week=="1"], form= gen ~ col+row, 
+        text=gen, shorten="no", cex=1,
+        out1=rep,
+        main="", flip = T, show.key=F)
+repmes$row <- NULL
+repmes$col <- NULL
+```
+
+Messwiederholungen werfen eine Neuerung gegenüber den vorangegangenen Beispielen auf: zum ersten Mal ist die kleinste Randomisationseinheit (=Parzelle) nicht gleichzeitig die Beobachtungseinheit, da wir mehrere Beobachtungen pro Parzelle haben. Der wichtige Punkt hier ist, dass der Faktor Woche nicht randomisiert werden kann. Statt der üblichen Annahme von unabhängigen Messwerten, sind Messwerte derselben Parzelle von aufeinanderfolgenden Wochen wahrscheinlich miteinander korreliert. Um dies zu modellieren, soll im ersten Schritt vorerst das Modell für die Analyse einer einzelnen Woche aufgestellt werden.   
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(repmes, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r, eval=FALSE}
+str(repmes)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(repmes, width=40, strict.width="cut")
+```
+</div> </div>
+
+# Schließende Statistik
+## Analyse einer einzelnen Woche
+
+Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( [siehe Beispiel](1f_rcbd.html) ).
+
+### Manuelles wählen der Woche
+
+Dann müssen wir lediglich einen Teildatensatz mit den Daten von nur einer Woche erstellen und auswerten.
+
+```{r}
+repmes.wk1 <- repmes[week=="1"] # Nur Daten der ersten Woche
+mod.wk1 <- lm(y ~ gen + rep, data=repmes.wk1)
+anova(mod.wk1)
+```
+
+So erhalten wir also die Ergebnisse der Varianzanalyse für die erste Woche und könnten wie gewohnt fortfahren indem wir adjustierte Mittelwerte für den signifikanten Faktor Sorte berechnen. 
+
+### Analyse in einem Loop
+
+Anstatt die 5 Teildatensätze der 5 Wochen separat und manuell zu erstellen, können wir eine Schleife (*Loop*) schreiben, die automatisch eine Woche nach der anderen analysiert. Zusätzlich können wir in R eine *Liste* erstellen, in der die Ergebnisse aller durch den Loop generierten Varianzanalysen gespeichert werden.
+
+```{r}
+anova.liste <- list() # erstelle ein leeres Listenobjekt
+
+for (wochen.nr in c("1", "2", "3", "4", "5")){ # Loop Anfang
+  repmes.wkX <- repmes[week==wochen.nr]
+  mod.wkX <- lm(y ~ gen + rep, data=repmes.wkX)
+  anova.liste[[wochen.nr]] <- anova(mod.wkX)
+} # Loop Ende
+
+anova.liste[["1"]] # Zeige ANOVA der 1. Woche
+anova.liste[["5"]] # Zeige ANOVA der 5. Woche
+```
+
+## Analyse des gesamten Datensatzes
+
+<img src="images/fig6corerr.PNG" style="width:50%" align="right"> Der Nachteil der separaten Analyse einzelner Wochen wird besonders deutlich, wenn wir uns vorstellen, dass wir Messwerte von sehr viel mehr Wochen hätten, deren ANOVAs nicht immer die gleichen Signifikanzen zeigen: Es kann schwierig sein eine wochenübergreifende Antwort zu geben. Außerdem wurde durch das separate Analysieren auch immer nur ein Bruchteil der Informationen genutzt. Demnach ist es erstrebenswert den Datensatz als Ganzes mit einem geeigneten Modell auszuwerten. Dafür müssen wir Korrelationen zwischen den Fehlertermen verschiedener Wochen erlauben. Die Grafik, die aus dem oben erwähnten Artikel stammt, soll dies verdeutlichen. 
+
+### Die AR1 Kovarianzstruktur
+
+Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (*independent and identically distributed*, kurz *IID*). Um also nun korrelierte Fehler zu modellieren, kann man eine Kovarianzstruktur für die Fehler annehmen. Es gibt verschiedene Kovarianzstrukturen ( [siehe hier](appendix_kovarstrukt.html) ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen *first order autoregressive*, kurz *AR1* trägt.
+
+Um lineare Modelle anzupassen, die eine andere Kovarianzstruktur als *IID* annehmen, wird die *Verallgemeinerte Kleinste-Quadrat-Schätzung* (engl. *generalized least squares* kurz *GLS*) angewandt. Das `nlme` package hat dafür die Funktion `gls()`. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: `y ~ gen + rep`. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept $\mu$ angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, können wir jeden Effekt (also auch $\mu$) zusätzlich wochenspezifisch definieren: `y ~ week + gen + week*gen + rep + week*rep`. Wir erhalten nun also zusätzlich je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche. Man kann die Syntax für dieses Modell wie folgt abkürzen und trotzdem dieselben Effekte anpassen lassen:
+
+```{r}
+mod.iid <- gls(y ~ week * (gen + rep),
+               data = repmes)
+```
+
+Schließlich wollen wir noch dafür sorgen, dass die Fehler derselben Parzelle zwsichen den Wochen autokorreliert sind, was mit dem Argument `corr = corExp(form = ~ week|plot)` funktioniert.
+
+```{r}
+mod.ar1 <- gls(y ~ week * (gen + rep),
+               corr = corExp(form = ~ week|plot),
+               data = repmes)
+```
+
+Wir können die geschätzten Fehlervarianzen und -korrelationen einsehen:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+mod.iid$sigma^2 # IID.var 
+```
+</div> <div class = "col-md-6">
+```{r}
+mod.ar1$sigma^2 # AR1.var 
+```
+</div> </div>
+```{r}
+as.numeric(exp(-1/coef(mod.ar1$modelStruct$corStruct, unconstrained=F))) # AR1.cor
+```
+
+Die Korrelation wurde also auf 0.78 (und somit ganz und gar nicht 0) geschätzt, was darauf hindeutet, dass diese Kovarianzstruktur in der Tat für die Modellierung der Daten geeignet ist. Um in solchen Fällen zu entscheiden ob das AR1-Modell tatsächlich dem IID-Modell vorzuziehen ist, können hier die AIC (*Akaike Information Criterion*) Werte der beiden Modelle verglichen werden. Dabei gilt, dass das Modell mit dem kleineren AIC-Wert das bessere ist. Zu beachten ist außerdem, dass nur Modelle, die die gleichen festen Effekte haben und dieselben Daten auswerten, mittels AIC-Wert verglichen werden sollten. Da das hier der Fall ist, können wir das demnach tun.
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+AIC(mod.iid)
+```
+</div> <div class = "col-md-6">
+```{r}
+AIC(mod.ar1)
+```
+</div> </div>
+
+Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit [anderen Kovarianzstrukturen](appendix_kovarstrukt.html) verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.
+
+### Varianzanalyse
+
+Schließlich können wir wie gewohnt eine ANOVA durchführen, um den F-Test für den Behandlungsfaktor durchzuführen - nur eben für das selektierte AR1-Modell. Residuenplots kann man für `gls()` Objekte z.B. via `plot(mod.ar)` und `qqnorm(resid(mod.ar)); qqline(resid(mod.ar))` erhalten.
+
+```{r}
+anova(mod.ar1)
+```
+
+Alle Effekte sind laut F-Test signifikant, relevant ist dabei aber vor allem `week:gen`. Analog zur Vorgehensweise bei einer signifikanten Wechselwirkung von zwei Behandlungseffekten ([siehe hier](2f_splitplot.html)) gilt auch hier, dass die adjustierten Mittelwerte für `week:gen` und nicht für `gen` berechnet werden sollten.
+
+### Multipler Mittelwertvergleich
+
+```{r, warning=FALSE}
+means <- emmeans(mod.ar1, pairwise ~ gen|week, adjust="tukey") # adjust="none" für t-test
+means <- CLD(means$emmeans, details=TRUE, Letters=letters)
+means$emmeans # Sorten-Mittelwerte pro Woche
+```
+
+Wie der im F-Test signifikante `week:gen` Effekt schon vermuten ließ, finden wir für die Sortenmittelwerte je Woche unterschiedliche Buchstabendarstellungen oder anders gesagt: Wochen-spezifische Unterschiede zwischen den Sorten. Allerdings sehen wir beispielsweise auch, dass Sorte A **in jeder Woche** signifikant schlechter ist als alle anderen Sorten. 
+
+# Ergebnisaufbereitung
+
+Analog zu [diesem Beispiel](2f_splitplot.html) können wir die Ergebnisse grafisch wie folgt aufbereiten:
+
+```{r}
+means.plot <- as.data.table(means$emmeans) # korrektes Format für ggplot
+
+ggplot(data=means.plot, aes(x=gen)) +
+  geom_bar(aes(y=emmean, fill=gen), stat="identity", width=0.8) + 
+  guides(fill=FALSE) + 
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=emmean*1.1, label=.group)) +
+  facet_wrap(~week) + # ein Plot pro Woche
+  theme_bw() +
+  labs(main="Adj. Sortenmittelwerte pro Woche",
+       y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="Sorte",
+       caption="Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+```
+
+oder alternativ:
+
+```{r}
+ggplot() +
+  # Rohdaten (lemna)
+  geom_jitter( data=repmes, aes(x=gen, y=y, fill=gen), width=0.15, height=0, shape=21) +
+  # Ergebnisse (plot.means)
+  geom_point(   data=means.plot, aes(x=as.numeric(gen)+0.4, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=means.plot, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col="red", width=0.3) +
+  geom_text(    data=means.plot, aes(x=gen, y=6.5, label =.group), col="red") +
+  facet_wrap(~week) + # ein Plot pro Woche
+  theme_bw() +
+  labs(main="Adj. Sortenmittelwerte pro Woche",
+       y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="Sorte",
+       caption="Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+```
+

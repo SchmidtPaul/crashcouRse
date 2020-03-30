@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Mehr Details zur Vorgehensweise</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Mehr Details zur Vorgehensweise</h1>
+
+</div>
+
+
+<p>An dieser Stelle sollen einige Punkten der vorgestellten allgemeinen Vorgehensweisen etwas diskutiert werden.</p>
+<div id="mittelwertvergleich-nach-anova" class="section level1">
+<h1>Mittelwertvergleich nach ANOVA</h1>
+<p>In den Beispielen dieser Seite folgen wir immer der Standardprozedur:</p>
+<ol style="list-style-type: decimal">
+<li>Das korrekte Modell (<code>lm()</code>, <code>gls()</code>, <code>glm()</code>, <code>lmer()</code> etc.) aufstellen</li>
+<li>Eine ANOVA durchführen (<code>anova()</code>) und danach für die signifikanten Behandlungsfaktoren</li>
+<li>Mittelwerte schätzen und diese vergleichen (<code>emmeans()</code>).</li>
+</ol>
+<p>Schritt 3 wird als logischer nächster Schritt angesehen, da wir nach der ANOVA lediglich wissen, <strong>dass</strong> es signifikante Unterschiede zwischen Behandlungen gibt. Wir wissen dadurch aber noch nicht, <strong>welche</strong> Behandlungen sich unterscheiden. Ob Schritt 3 tatsächlich nur auf Signifikanzen in Schritt 2 folgen darf, hängt sowohl von den Daten/dem Modell/der Testmethode ab, als auch von den Ansichten des Statistikers, der die Analyse durchführt.</p>
+<blockquote>
+<p>Wenn der F-Test einer Behandlung in der ANOVA signifikant sein <strong>muss</strong>, bevor man einen t-test durchführen <strong>darf</strong>, spricht man auch vom <em>protected LSD test</em>. Wenn man paarweise Mittelwerte auch unabhängig vom Ergebnis des F-Tests mittels t-test Vergleich durchführen darf, spricht man dementsprechend auch vom <em>Unprotected LSD test</em>.</p>
+</blockquote>
+</div>
+<div id="post-hoc-t-test-tukey-test" class="section level1">
+<h1><em>Post hoc</em>: t-test, Tukey Test …?</h1>
+<p>Es gibt mehrere Methoden um multiple Mittelwertvergleiche durchzuführen, z.B.:</p>
+<ul>
+<li>Multipler t-Test (Fisher 1940)</li>
+<li>Tukey-Test (John Tukey, 1949)</li>
+<li>Dunnett Test (Charles Dunnett, 1955)</li>
+<li>Scheffe Test (Henry Scheffe, 1959)</li>
+<li>Holm-Bonferroni Test (Sture Holm &amp; Carlo Emilio Bonferroni, 1979)</li>
+</ul>
+<p>Vorneweg soll gesagt sein, dass es keinen einzigen besten Test gibt, sondern, dass jeder der Tests verschiedene Vor- und Nachteile hat. Wir wollen erstmal nur zwei Methoden betrachten: Den multiplen t-Test und den Tukey-Test. Die Gegenüberstellung beider Methoden ist in folgender Tabelle zusammengefasst:</p>
+<table>
+<colgroup>
+<col width="6%" />
+<col width="58%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>.</th>
+<th>Multipler t-test</th>
+<th>Tukey Test</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alternative Namen</td>
+<td>Fishers LSD-Test</td>
+<td>HSD-Test Tukey-Kramer Methode</td>
+</tr>
+<tr class="even">
+<td>Grenzdifferenz Name</td>
+<td><strong>L</strong>east <strong>S</strong>ignificant <strong>D</strong>ifference</td>
+<td><strong>H</strong>onestly <strong>S</strong>ignificant <strong>D</strong>ifference</td>
+</tr>
+<tr class="odd">
+<td>GrenzdifferenzFormel</td>
+<td>Kapitel 4.5.1 Statistikskript</td>
+<td>Kapitel 4.5.3 Statistikskript</td>
+</tr>
+<tr class="even">
+<td>Fehler 1. Art (<span class="math inline">\(\alpha\)</span>-Fehler) wird eingehalten für</td>
+<td>den einzelnen Vergleich - “vergleichsbezogen”</td>
+<td>Die Gesamtheit aller Vergleiche - “versuchsbezogen”</td>
+</tr>
+<tr class="odd">
+<td>Korrigiert der Test dafür, dass es mehrere Vergleiche gibt?</td>
+<td>Nein</td>
+<td>Ja</td>
+</tr>
+</tbody>
+</table>
+<p>Beide Tests berechnen eine <em>Grenzdifferenz</em>, an der dann die Differenzen zwischen den Behandlungsstufen-Mittelwerten gemessen werden. Sind letztere größer als die Grenzdifferenz, gelten sie als <em>statistisch signifikant</em>.</p>
+<p>Was ist also der Unterschied zwischen mutliplem t-test und Tukey Test? Der Unterschied liegt in ihrer Umgangsweise mit dem <em>Fehler 1. Art</em>, auch <span class="math inline">\(\alpha\)</span>-Fehler genannt (siehe dazu Kapitel 3.13 Statistikskript). Als kurze Zusammenfassung: Statistische Tests sind nie perfekt und es können Fehler passieren, sodass das Ergebnis des Tests eventuell nicht die Wahrheit abbildet. Es gibt zwei Arten von Fehlern, die passieren können: Die Nullhypothese ist eigentlich wahr, wird aber vom Test fälschlicherweise verworfen (Fehler 1. Art) oder die Nullhypothese ist eigentlich falsch, wird aber vom Test fälschlicherweise beibehalten (Fehler 2. Art) – siehe dazu die Tabelle.</p>
+<p><img src="images/alphabeta.jpg" style="width:80%" align="center"></p>
+<p>Die Wahrscheinlichkeit, dass solche Fehler passieren (Irrtumswahrscheinlichkeit), kann man kontrollieren, aber ganz verhindern kann man es nicht. Die beiden Fehler bedingen sich auch noch gegenseitig, sodass der eine größer wird, wenn man den anderen klein halten möchte. Dies ist einer der Gründe warum oft <span class="math inline">\(\alpha\)</span> = 0.05 gewählt wird. Es bedeutet einfach, dass die Wahrscheinlichkeit, dass dem Test ein Fehler 1. Art unterläuft bei 5% liegt und dies scheint in den meisten Fällen ein guter Kompromiss zu sein.</p>
+<div id="wie-also-gehen-der-multiple-t-test-und-der-tukey-test-mit-dem-fehler-1.-art-um" class="section level2">
+<h2>Wie also gehen der multiple t-Test und der Tukey-Test mit dem Fehler 1. Art um?</h2>
+<p>Der multiple t-Test fixiert die Wahrscheinlichkeit für einen Fehler 1. Art (= <span class="math inline">\(\alpha\)</span>) pro paarweisem Vergleich. Das heißt für jeden einzelnen Vergleich gilt, dass die Wahrscheinlichkeit einen <span class="math inline">\(\alpha\)</span>-Fehler zu begehen nicht über <span class="math inline">\(\alpha\)</span> = 5% liegt. Andersherum heißt das, dass wir mit 95% Wahrscheinlichkeit eine Nullhypothese korrekterweise beibehalten. Würden wir also beispielsweise genau 100 paarweise Vergleiche durchführen in denen in Wirklichkeit die Nullhypothese gilt, würden wir erwartungsgemäß leider 5 mal ein falsches Testergebnis erhalten.</p>
+<p>Man könnte sich auch fragen wie hoch die Wahrscheinlichkeit liegt, dass wir bei <strong>allen</strong> paarweisen Vergleichen die Nullhypothese korrekterweise beibehalten. Bei den 100 Vergleichen wäre das <span class="math inline">\((1-\alpha)^{100}=0.95^{100}=0,006=0,6%\)</span>. Demnach beträgt die Wahrscheinlichkeit bei den 100 Vergleichen mindestens einen <span class="math inline">\(\alpha\)</span>-Fehler zu begehen in diesem Fall erschreckende 99,4%. Dieses Problem wird „Multiple comparison problem“ oder auch „Alphafehler-Kumulierung“ genannt. Sicherlich sind 100 Vergleiche eine extremes Beispiel, doch es muss klar sein, wie schnell die Anzahl der Vergleiche in Abhängigkeit von der Anzahl der zu vergleichenden Behandglungsstufen steigt. Schon bei 4 Behandlungsstufen (z.B. 4 Sorten) gibt es 6 Vergleiche, sodass <span class="math inline">\((1-\alpha)^{6}=0.95^{6}=0,735=73,6%\)</span>. Also liegt selbst hier die Wahrscheinlichkeit mindestens einen <span class="math inline">\(\alpha\)</span>-Fehler zu begehen schon bei 26,5%.</p>
+<p>Im Gegensatz zum multiplen t-Test korrigiert der Tukey-Test dafür, dass es mehrere Vergleiche gibt. Er fixiert die Wahrscheinlichkeit für einen Fehler 1. Art <strong>pro Versuch - also über alle paarweisen Vergleiche</strong>. Die Grenzdifferenz wird schlichtweg so berechnet, dass die Wahrscheinlichkeit im ganzen Versuch mindestens einen <span class="math inline">\(\alpha\)</span>-Fehler zu begehen eben nicht bei 99,4% oder 26,5% liegt, sondern den Wert von 5% nicht überschreitet.</p>
+<p>Aus diesem Grund ist die HSD stets größer als die LSD, sodass mit dem Tukey-Test weniger Behandlungsunterschiede als signifikant eingestuft werden als mit dem multiplen t-Test. Es wird quasi „auf Nummer sicher gegangen um weniger Fehler zu begehen“. Man spricht deshalb davon, dass der Tukey-Test konservativer ist als der multiple t-Test.</p>
+</div>
+<div id="fazit" class="section level2">
+<h2>Fazit</h2>
+<p>Nachdem dies nun alles besprochen wurde, hätte man gerne eine klare, finale Faustregel zur Vorgehensweise. Wenn es allerdings eine gäbe, hätten wir uns diesen ganzen Exkurs auch sparen und nur den besseren der beiden Tests anschauen können. Stattdessen hier zum Abschluss das Zitat aus Kapitel 4.5.2 des Statistikskripts:</p>
+<blockquote>
+<p>„Es ist eine schwierige Frage, welche der beiden Irrtumswahrscheinlichkeiten eingehalten werden soll. Es gibt hierzu kaum eine einfache Regel. Aussagen, die unter Einhaltung der versuchsbezogenen Irrtumswahrscheinlichkeit getroffen werden, sind stärker abgesichert. Allerdings ist diese Absicherung nicht umsonst: Sie geht bei Tests zu Lasten eines größeren Fehlers 2. Art (Alternativhypothese fälschlicherweise verworfen). […] Eine denkbare Strategie besteht darin, zu Beginn eines Projektes, wenn noch nach interessanten, weiter zu verfolgenden Zusammenhängen gesucht wird, eher vergleichsbezogen zu testen, während zu Projektende eine stärkere Absicherung durch versuchsbezogene Tests angestrebt wird.“</p>
+</blockquote>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

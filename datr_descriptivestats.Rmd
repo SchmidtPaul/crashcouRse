@@ -1,0 +1,203 @@
+---
+title: "Deskriptive Statistik in R"
+---
+> Ein zum Thema passendes Youtube Video gibt's [hier](https://youtu.be/kn83BA7cRNM)
+
+Man kann Statistik in *deskriptive/erkundende* und *schließende/inferentielle/induktive/mathematische* Statistik unterteilen. Erstere beschreibt die Daten im Prinzip nur und versucht sie zusammenfassend darzustellen. Zweitere nutzt Methode und Verfahren um die Daten anhand von Tests zu analysieren und Entscheidungen zu treffen. Im Data Science Bereich formuliert Hadley Wickham die Unterteilung wie folgt: 
+
+*It’s possible to divide data analysis into two camps: hypothesis generation and hypothesis confirmation (sometimes called confirmatory analysis).* 
+
++ *Within the former, you’ll look deeply at the data and, in combination with your subject knowledge, generate many interesting hypotheses to help explain why the data behaves the way it does.* 
++ *The complement of hypothesis generation is hypothesis confirmation. Hypothesis confirmation is hard for two reasons:* 
+  1. *You need a precise mathematical model in order to generate falsifiable predictions. This often requires considerable statistical sophistication.*
+  2. *You can only use an observation once to confirm a hypothesis. As soon as you use it more than once you’re back to doing exploratory analysis. This means to do hypothesis confirmation you need to “preregister” (write out in advance) your analysis plan, and not deviate from it even when you have seen the data.*
+
+
+Viele, die R (oder andere Statistiksoftware) für ihre schließende Statistik (*i.e.* ANOVA, *post-hoc* Tests, Regression *etc.*) nutzen, führen vrher die deskriptive Statistik (*i.e.* einfache Mittelwerte, Minimum, Maximum ausrechen) noch in Excel durch. Grund dafür ist, dass dies mit Excel-Funktionen wie `=MITTELWERT()` schlichtweg sehr schnell zu machen ist und die Ergebnisse dann direkt neben der Datentabelle zu sehen sind.
+
+Es gibt aber auch Argumente, die dafür sprechen selbst diese deskriptive Statistik schon in R durchzuführen. Zum einen kann das Einfügen von Mittelwerten neben den eigentlichen Datentabellen in einem Excel-Tabellenblatt dazu führen, dass der folgende [Import in R](datr_importexport.html) auf Probleme stößt. Zum anderen kann selbst die Berechnung von einfachen Mittelwerten in Excel schnell mühsam werden, wenn z.B. ein Mittelwert pro Gruppe unter nicht-Berücksichtigunge bestimmter Werte durchgeführt werden soll.
+
+Dieses Kapitel soll deshalb zeigen wie schnell und komfortabel deskriptive Statistiken in R erstellt werden können.
+
+# Beispieldatensatz
+Als Beispiel nehmen wir hier den in R hinterlegten Datensatz `mtcars`: *The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and other aspects of automobile design and performance for 32 automobiles (1973–74 models).*
+
+In den Spalten sind folgende Informationen enthalten:
+
++ mpg:	Miles/(US) gallon
++ hp:	Gross horsepower
++ am:	Transmission (automatic, manual)
++ cyl: Number of cylinders
+
+Noch bevor man deskriptive Statistiken anfertigt, sollte man sich den Datensatz stets genau anschauen um sicherzustellen, dass er vollständig ist und der Import in R korrekt funktioniert hat:
+
+```{r, include=FALSE}
+library(data.table)
+library(dplyr)
+
+data(mtcars)
+mtcars2 <- within(mtcars, {
+   vs <- factor(vs, labels = c("V", "S"))
+   am <- factor(am, labels = c("auto", "manu"))
+   gear <- ordered(gear)
+   carb <- ordered(carb)
+})
+mtcars2$cyl <- as.factor(mtcars2$cyl)
+mtcars <- mtcars2 %>% select(mpg, hp, am, cyl)
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+mtcars # Ganzer Datensatz
+```
+</div> <div class = "col-md-6">
+```{r}
+nrow(mtcars) # Anzahl Zeilen
+ncol(mtcars) # Anzahl Spalten
+names(mtcars) # Spaltennamen
+```
+```{r, eval=FALSE}
+str(mtcars) # Struktur des Datensatzes
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(mtcars, width=40, strict.width="cut")
+```
+```{r}
+head(mtcars) # Erste 6 Zeilen
+```
+</div> </div>
+
+# Gesamtstatistiken
+## summary
+Natürlich gibt es in R mit `mean()` das Gegenstück zu `=MITTELWERT()` in Excel und wir könnten so Mittelwerte je Spalte berechnen und danach mit `min()`, `max()` usw. fortfahren. Dies und noch mehr wird allerdings auf einen Schlag mit der Funktion `summary()` abgedeckt:
+
+```{r}
+summary(mtcars$mpg) # Summary einer Spalte
+summary(mtcars) # Summary des ganzen Datensatzes
+```
+
+Es fällt auf, dass die Funktion für die unterschiedlichen Spaltentypen auch unterschiedliche Infos ausgibt: 
+
++ Für die numerischen `mpg` & `hp`: Minimum, Erstes Quartil, Median, Mittelwert, Drittes Quartil, Maximum
++ Für die Faktoren `am` $ `cyl`: Die Häufigkeit/Frequenz der jeweiligen Faktorstufen
+
+## table
+Gerade für die Kombinationen aus Stufen mehrerer Faktoren ist es oft interessant die absolute/relative Häufigkeit zu betrachten. Dies geht mit `table()` bzw. `prop.table()`:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+table(mtcars$am) # Absolut
+table(mtcars$am, mtcars$cyl) # Absolut
+```
+</div> <div class = "col-md-6">
+```{r}
+prop.table(table(mtcars$am))
+prop.table(table(mtcars$am, mtcars$cyl))
+```
+</div> </div>
+
+# Summary Statistics Tables
+Oft soll die Deskriptive aber nicht nur über den ganzen Datensatz, sondern z.B. pro Faktorstufe erstellt werden, sodass *Summary Statistics Tables* erzeugt werden. Ein detaillierter Vergleich mehrerer packages zur Erzeugung solcher findet sich [hier](https://thatdatatho.com/2018/08/20/easily-create-descriptive-summary-statistic-tables-r-studio/). 
+Hier ist nur kurz das `tab` [package](https://cran.r-project.org/web/packages/tab/index.html) exemplarisch vorgestellt, welches die Deskriptive sowohl pro Gruppe, als auch über den gesamten Datensatz zusammen darstellt und standardmäßig Mittelwerte und Standardabweichungen berechnet:
+
+```{r, message=FALSE, warning=FALSE}
+library(tab) 
+tabmulti(data = mtcars,
+         xvarname  = "am",
+         yvarnames = c("mpg", "hp"),
+         columns   = c("overall", "xgroups"))
+```
+
+## data.table
+Ich selbst nutze in der Regel aber keines der packages oben, sondern die Funktionen vom `data.table` [package](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html). Das liegt nicht unbedingt daran, dass es das beste package für diesen speziellen Zweck der deskriptiven Statistik ist, sondern viel mehr daran, dass es diesen Zweck für meine Bedürfnisse vollständig erfüllt und ich es sowieso auch an vielen anderen Stellen benutze.
+
+### Das by= statement
+
+```{r, message=FALSE, warning=FALSE}
+library(data.table)
+mtcarsDT <- as.data.table(mtcars) # Umwandeln in data.table Format
+```
+<div class = "row"> <div class = "col-md-6">
+```{r}
+# mpg MW insgesamt
+mtcarsDT[, mean(mpg)] 
+# mpg MW pro "am"-Faktorstufe
+mtcarsDT[, mean(mpg), by=am] 
+```
+</div> <div class = "col-md-6">
+```{r}
+# mpg MW pro "am"-"cyl"-Kombination
+mtcarsDT[, mean(mpg), by=c("am", "cyl")] 
+```
+</div> </div>
+
+Wie zu sehen, kann ein als `data.table` formatiertes R-Objekt mittels der eckigen Klammern im Anschluss anders behandelt werden als die standardmäßigen `data.frame` Objekte ([hier](https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf) das data.table Cheat Sheet). Wir nutzen es hier also so, dass wir vor dem ersten Komma nichts schreiben (Infos dazu weiter unten), zwischen dem ersten und dem zweiten Komma die gewünschte Funktion der gewünschten Spalte und nach dem zweiten Komma ein `by=` statement um anzugeben nach welchen Faktorstufen sortiert werden soll.
+
+### Mehrere Spalten erzeugen
+
+Wir können mittels einer `.()` (= Abkürzung für `list()`) Klammer auch direkt mehrere Spalten auf einmal erzeugen und im gleichen Schritt die erstellte Spalte benennen, anstatt sie beim default Namen `V1` zu belassen. Außerdem wollen wir noch den Mittelwert auf eine Stelle nach dem Komma runden:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+# mpg MW, Min & Max insgesamt
+mtcarsDT[, .(mw  = round(mean(mpg),1), 
+             min = min(mpg),
+             max = max(mpg))]
+# mpg MW pro "am"-Faktorstufe
+mtcarsDT[, .(mw  = round(mean(mpg),1), 
+             min = min(mpg),
+             max = max(mpg)), 
+         by=am] 
+```
+</div> <div class = "col-md-6">
+```{r}
+# mpg MW pro "am"-"cyl"-Kombination
+mtcarsDT[, .(mw  = round(mean(mpg),1), 
+             min = min(mpg),
+             max = max(mpg)), 
+         by=c("am", "cyl")] 
+```
+</div> </div>
+
+### Bestimmte Werte ausschließen
+In bestimmten Situationen kann es gewünscht sein die Deskriptive nur einen Teil der Daten durchzuführen. Hier könnte es z.B. von Interesse sein nur die Autos zu betrachten, die einen Verbrauch von unter 25 miles per gallon haben. Nun könnte natürlich standardmäßig z.B. mit dem Befehl `subset(mtcarsDT, mpg<25)` ein neues R-Objekt erstellt (z.B. `mtcars2`) und mit diesem dann die gleichen Befehle wie oben durchgeführt werden.
+
+Mit einem `data.table` Objekt geht das in dieser Situation allerdings noch leichter, nämlich mit dem Bereich vor dem ersten Komma:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+# mpg MW, Min & Max insgesamt
+# nur für Autos mit mpg < 25
+mtcarsDT[mpg <25, 
+           .(mw  = round(mean(mpg),1), 
+             min = min(mpg),
+             max = max(mpg))]
+# mpg MW pro "am"-Faktorstufe
+# nur für Autos mit mpg < 25
+mtcarsDT[mpg<25,
+           .(mw  = round(mean(mpg),1), 
+             min = min(mpg),
+             max = max(mpg)), 
+         by=am] 
+```
+</div> <div class = "col-md-6">
+```{r}
+# mpg MW pro "am"-"cyl"-Kombination
+# nur für Autos mit mpg < 25
+mtcarsDT[mpg<25,
+           .(mw  = round(mean(mpg),1), 
+             min = min(mpg),
+             max = max(mpg)), 
+         by=c("am", "cyl")] 
+```
+</div> </div>
+
+Schließlich kann man auch mehrere Bedingungen und mehrere Spalten für die Deskriptive einbeziehen:
+
+```{r}
+# mpg und hp MW nur für Autos mit mpg<25 und hp>90
+mtcarsDT[mpg<25 & hp>90,
+           .(mw_mpg = round(mean(mpg),1), 
+             mw_hp  = round(mean(hp), 1)), 
+         by=c("am", "cyl")] 
+```

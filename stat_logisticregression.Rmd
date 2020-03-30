@@ -1,0 +1,96 @@
+---
+title: "Logistische Regression"
+---
+
+Mit **logistischer Regression** oder **Logit-Modell** (von **log**istic un**it**) sind in der Regel Regressionsmodelle gemeint, die binäre Zielvariablen (z.B. *Ja/Nein*) modellieren. Streng genommen fallen aber auch die multinomiale (*deutsch/englisch/spanisch*; multinomial logistic regression) oder geordnete (*schlecht/mittel/gut*; ordered logit model) logistische Regressionen, also alle Regressionen mit diskreten Zielvariablen, in die Klasse der logistischen Regressionen, welche wiederum eine Untergruppe der generalisierten linearen Modelle sind.
+
+# Datensatz
+```{r, echo=FALSE}
+library(data.table)
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/heights.rda")
+```
+
+Es wurde von insgesamt 18 Personen die Körpergröße in cm ermittelt. Unter den Personen waren 11 Frauen und 7 Männer:
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+heights
+```
+</div> <div class = "col-md-6">
+```{r}
+summary(heights)
+```
+```{r, eval=FALSE}
+str(heights)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(heights, width=40, strict.width="cut")
+```
+</div> </div>
+
+Ziel der Analyse ist es, basierend auf der Körpergröße einer Person ihr Geschlecht zu schätzen. Anstelle eines Boxplots, sollen die Daten in diesem Fall wie folgt dargestellt werden:
+
+```{r, fig.align='center', fig.height=3, fig.width=4, warning=FALSE, message=FALSE}
+library(ggplot2)
+ggplot(data=heights, aes(x=height, y=gender, color=gender)) +
+  geom_point() + theme_classic() +
+  theme(legend.position = c(.9,.2),
+        legend.box.background = element_rect(color = "black"))
+```
+
+# Analyse
+Um für solch einen Datensatz eine Regression anzupassen, werden die Einträge der binären Zielvariable vorerst durch 0 und 1 ersetzt (sogenannte dummy-Codierung) und in der neuen Spalte `dummy.gender` gespeichert:
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+heights <- heights %>%
+  mutate(dummy.gender = as.numeric(gender)-1)
+heights[9:14,] # Zeige Zeilen 9-14
+```
+
+Weil unsere Zielvariable binär ist, also nur zwei verschiedene Werte annehmen kann (erst *F/M*, jetzt *0/1*) wird klar, dass eine einfache Regression ($y=\alpha+\beta x$) keinen Sinn ergäbe, vor allem weil die Regression auch Werte <0% und >100% vorhersagen würde:
+
+```{r, fig.align='center', fig.height=3, fig.width=4, warning=FALSE, message=FALSE}
+ggplot(data=heights, aes(x=height, y=dummy.gender)) + 
+  theme_classic() +
+  stat_smooth(method="lm", se=FALSE, color="red") +
+  geom_point(aes(color=gender)) +
+  ylab("Probability of person being male") +
+  xlab("Person's height [cm]") +
+  theme(legend.position=c(.9,.2),
+        legend.box.background = element_rect(color = "black"))
+```
+
+Stattdessen wird bei der logistischen Regression dafür gesorgt, dass *quasi der Output der linearen Regression mittels der logistischen Regression zwischen 0 und 1 gequetscht wird*. Die logistische Regression ist definiert als
+
+$$ logistic(\eta) = \frac{1}{1+exp(-\eta)} $$
+
+wobei $\eta$ der lineare Prädiktor ist. In R kann eine logistische Regression mittels der `glm` Funktion und dem Argument `family=binomial` angepasst werden:
+
+```{r}
+logit.mod <- glm(dummy.gender ~ height, 
+                 family = binomial,
+                 data = heights)
+```
+
+Auch die Darstellung im Plot ist leicht mit `ggplot()` möglich:
+
+```{r, fig.align='center', fig.height=3, fig.width=4, warning=FALSE, message=FALSE}
+ggplot(data=heights, aes(x=height, y=dummy.gender)) + 
+  theme_classic() +
+  stat_smooth(method="glm", method.args=list(family="binomial"), 
+              se=FALSE, color="darkgrey") +
+  geom_point(aes(color=gender)) +
+  ylab("Probability of person being male") +
+  xlab("Person's height [cm]") +
+  theme(legend.position=c(.9,.2),
+        legend.box.background = element_rect(color = "black"))
+```
+
+Das Modell kann nun also genutzt werden um anhand der Körpergröße einer Person zu schätzen ob diese Person ein Mann oder eine Frau ist. Als Beispiel können wir uns vom Modell vorhersagen lassen mit was für einer Wahrscheinlichkeit eine Person, die 180cm groß ist, ein Mann ist:
+
+```{r}
+predict(logit.mod, data.frame(height=180), type="response")
+```
+
+Die Antwortet lautet also: mit 77,4%iger Wahrscheinlichkeit. 

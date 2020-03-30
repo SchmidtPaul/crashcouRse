@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Zufällige Effekte mit Varianzstrukturen</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Zufällige Effekte mit Varianzstrukturen</h1>
+
+</div>
+
+
+<p>In diesem Beispiel soll gezeigt werden wir mit dem <code>glmmTMB</code> package Varianzstrukturen für zufällige Effekte (also nicht für den Fehlerterm wie z.B. bei Messwiederholungen) genutzt werden können. Für mehr Infos</p>
+<blockquote>
+<p>Die Idee für dieses Anwendungsbeispiel basiert auf der MSc Thesis “Statistical data analysis of cultivar trials with subdivided target regions: what does this mean for heritability?” von <a href="https://www.researchgate.net/profile/Muhammad_Afzal118">Muhammad Afzal</a></p>
+</blockquote>
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<p>In den Jahren 2002 und 2003 wurden an mehreren Standorten Versuche mit Papaya-Sorten gemacht. Dabei wurde an jedem der insgesamt 24 Orte ein randomisierter Versuch mit Wiederholungen durchgeführt. Was genau für ein Versuchsdesign je Ort vorlag, ist aber für uns nicht mehr relavant, da wir in unserem Datensatz bereits nur noch die adjustierten Ertrags-Mittelwerte der insgesamt 51 Sorten je Ort vorliegen haben. Es handelt sich hier also um eine Versuchsserie, oder auch Multi-Environment-Trial (MET), wobei Environment/Umwelt jeweils für eine Jahr-Ort-Kombination steht.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>METdat</code></pre>
+<pre><code>##       Jahr      Ort   Sorte  Region   Ertrag
+##    1: 2002 Shanghai  Sorte1 Region2 185.8420
+##    2: 2002 Shanghai  Sorte3 Region2 185.5780
+##    3: 2002 Shanghai  Sorte5 Region2 172.9940
+##    4: 2002 Shanghai  Sorte6 Region2 181.9040
+##    5: 2002 Shanghai  Sorte7 Region2 182.3715
+##   ---                                       
+## 1120: 2003 Kinshasa Sorte40 Region3 205.4880
+## 1121: 2003 Kinshasa Sorte41 Region3 229.9300
+## 1122: 2003 Kinshasa Sorte47 Region3 208.8100
+## 1123: 2003 Kinshasa Sorte48 Region3 220.1730
+## 1124: 2003 Kinshasa Sorte50 Region3 207.5395</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(METdat)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   1124 obs. of  5 variables:
+##  $ Jahr  : Factor w/ 2 levels &quot;2002&quot;,&quot;..
+##  $ Ort   : Factor w/ 24 levels &quot;Shang&quot;..
+##  $ Sorte : Factor w/ 51 levels &quot;Sorte&quot;..
+##  $ Region: Factor w/ 4 levels &quot;Region&quot;..
+##  $ Ertrag: num  186 186 173 182 182 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+<p>Die Daten können auf viele Weisen deskriptiv ausgewertet werden. In folgendem Plot wird beispielsweise deutlich, dass das Jahr 2002 zu höheren Erträgen geführt hat als 2003. Außerdem eignen sich die Orte unterschiedlich gut für den Papayaanbau und nicht an jedem Ort wurde auch in beiden Jahren ein Versuch durchgeführt.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=METdat, aes(y=Ertrag, x=Ort)) + 
+  geom_jitter(aes(color=Jahr), width=0.1, alpha=0.5) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5),
+        legend.position = &quot;top&quot;)</code></pre>
+<p><img src="3f_met_regions_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Außerdem sind die Versuchsstandorte verschiedenen Regionen zugeordnet. Die Regionen wurden ehemals so eingeteilt, dass in derselben Region immer ähnliche Wachstumsbedingungen herrschen. Es ist also zumindest zu erwarten, dass Papayas an Orten innerhalb derselben Region ähnlich gut wachsen.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code># Anzahl Sortenmittelwerte je Ort-Jahr-Kombination
+METdat %&gt;% select(Ort, Jahr) %&gt;% table</code></pre>
+<pre><code>##                   Jahr
+## Ort                2002 2003
+##   Shanghai           28   23
+##   Karachi            46   38
+##   Buenos Aires       28   23
+##   Manila             18   38
+##   Soul               28    0
+##   Sao Paulo          46   38
+##   Istanbul           28   23
+##   Lagos              28   23
+##   Mexico City        28   23
+##   Tokyo              28   23
+##   New York           28   23
+##   Kinshasa           18   15
+##   London             18    0
+##   Tehran             28   23
+##   Dhaka              28   23
+##   Lahore              0   23
+##   Rio de Janeiro     28   23
+##   Santiago           28   23
+##   Calcutta           28   23
+##   Rangoon            28    0
+##   Riyadh             28   23
+##   Chongqing          28    0
+##   Saint Petersburg   28   23
+##   Chengdu            28    0</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code># Zugehörigkeit der Orte zu Regionen
+METdat %&gt;% select(Ort, Region) %&gt;% unique %&gt;% arrange(Region)</code></pre>
+<pre><code>##                 Ort   Region
+## 1              Soul Region11
+## 2    Rio de Janeiro Region11
+## 3         Chongqing Region11
+## 4           Chengdu Region11
+## 5            Lahore Region11
+## 6          Shanghai  Region2
+## 7      Buenos Aires  Region2
+## 8         Sao Paulo  Region2
+## 9       Mexico City  Region2
+## 10            Tokyo  Region2
+## 11            Dhaka  Region2
+## 12          Rangoon  Region2
+## 13 Saint Petersburg  Region2
+## 14           London  Region2
+## 15          Karachi  Region3
+## 16           Tehran  Region3
+## 17         Santiago  Region3
+## 18           Manila  Region3
+## 19         Kinshasa  Region3
+## 20         Istanbul  Region6
+## 21            Lagos  Region6
+## 22         New York  Region6
+## 23         Calcutta  Region6
+## 24           Riyadh  Region6</code></pre>
+</div>
+</div>
+<pre class="r"><code>library(ggplot2)
+ggplot(data=METdat, aes(y=Ertrag, x=Ort)) + 
+  geom_jitter(aes(color=Region), width=0.1, alpha=0.5) +
+  geom_boxplot(alpha=0.5) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5),
+        legend.position = &quot;top&quot;)</code></pre>
+<p><img src="3f_met_regions_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="versuchsserien-modell" class="section level1">
+<h1>Versuchsserien-Modell</h1>
+<p>Mit Daten wie diesen wird oft ein Modell aufgestellt, dass je einen Haupteffekt für Sorte, Ort und Jahr hat, sowie all deren Interaktionseffekte. Desweiteren werden diese Effekte wenn möglich auch als zufällige Effekte ins Modell aufgenommen. Selbst wenn alle dieser Effekte zufällig sind, gibt es jedoch weiterhin <span class="math inline">\(\mu\)</span> im Modell, welches ein fester Effekt ist, sodass es sich so oder so um ein gemischtes lineares Modell handelt.</p>
+<blockquote>
+<p><strong>Mehr zu solchen Versuchsserien und deren Modellen:</strong> <br> Piepho, H. P., and J. Möhring. <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/45/3/1151">“Best linear unbiased prediction of cultivar effects for subdivided target regions.”</a> Crop Science 45.3 (2005): 1151-1159. <br> Damesa, T. M., Möhring, J., Worku, M., &amp; Piepho, H. P. (2017). <a href="https://dl.sciencesocieties.org/publications/aj/abstracts/109/3/845">One step at a time: stage-wise analysis of a series of experiments.</a> Agronomy Journal, 109(3), 845-857. <br> Piepho, Hans‐Peter, et al. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.201100219?casa_token=SUAQpFVm3WkAAAAA:QtMKChq-04ZiO7bsGFVQiYl7edOmbt9y6HW0CwHPcp0BL2k6sjaOSx6BHA7ecoetiqGwHbZBfEwWRAA">“A stage‐wise approach for the analysis of multi‐environment trials.”</a> Biometrical Journal 54.6 (2012): 844-860. <br> Schmidt, P., et al. <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/58/4/1508">“More, larger, simpler: How comparable are on-farm and on-station trials for cultivar evaluation?.”</a> Crop Science 58.4 (2018): 1508-1518.</p>
+</blockquote>
+<p>Wir können solch ein Modell wie folgt aufstellen:</p>
+<pre class="r"><code>library(glmmTMB)</code></pre>
+<pre><code>## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
+## TMB was built with Matrix version 1.2.17
+## Current Matrix version is 1.2.18
+## Please re-install &#39;TMB&#39; from source using install.packages(&#39;TMB&#39;, type = &#39;source&#39;) or ask CRAN for a binary version of &#39;TMB&#39; matching CRAN&#39;s &#39;Matrix&#39; package</code></pre>
+<pre class="r"><code>mod1 &lt;- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
+                (1|Sorte:Ort) + (1|Sorte:Jahr) + (1|Jahr:Ort),
+                data=METdat)</code></pre>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>AIC(mod1)   # AIC-Wert</code></pre>
+<pre><code>## [1] 9116.258</code></pre>
+<pre class="r"><code>fixef(mod1) # Lösung feste Effekte (hier nur mu)</code></pre>
+<pre><code>## 
+## Conditional model:
+## (Intercept)  
+##         206</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>VarCorr(mod1) # Varianzkomponenten (bzw. deren Wurzel -&gt; Std.Abw.)</code></pre>
+<pre><code>## 
+## Conditional model:
+##  Groups     Name        Std.Dev.
+##  Sorte      (Intercept)  7.8281 
+##  Ort        (Intercept) 21.2584 
+##  Jahr       (Intercept) 16.4211 
+##  Sorte:Ort  (Intercept)  3.8693 
+##  Sorte:Jahr (Intercept)  5.1317 
+##  Jahr:Ort   (Intercept) 16.4701 
+##  Residual               11.2212</code></pre>
+</div>
+</div>
+<div id="erweiterung-um-regions-effekte" class="section level2">
+<h2>Erweiterung um Regions-Effekte</h2>
+<p>Anstatt ein Modell wie das oben anzupassen, welches nur eine Varianzkomponente für alle Sorten an allen Orten zulässt, könnten wir die Informationen zu den Regionen mit ins Modell aufnehmen. Zunächst können wir einfach <code>Region</code> als (festen) Effekt mit ins Modell nehmen und zwar so, dass jeder <code>Ort</code>-Effekt nun immer geschachtel im <code>Region</code> Effekt vorkommt (mehr dazu <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/45/3/1151">hier</a>):</p>
+<pre class="r"><code>mod2 &lt;- glmmTMB(Ertrag ~ Region + (1|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+AIC(mod2)   # AIC-Wert</code></pre>
+<pre><code>## [1] 9116.053</code></pre>
+<pre class="r"><code>fixef(mod2) # Lösung feste Effekte</code></pre>
+<pre><code>## 
+## Conditional model:
+##   (Intercept)  RegionRegion2  RegionRegion3  RegionRegion6  
+##        186.73          20.11          37.18          15.73</code></pre>
+<pre class="r"><code>VarCorr(mod2) # Varianzkomponenten (bzw. deren Wurzel -&gt; Std.Abw.)</code></pre>
+<pre><code>## 
+## Conditional model:
+##  Groups           Name        Std.Dev.
+##  Sorte            (Intercept)  7.827  
+##  Ort:Region       (Intercept) 17.806  
+##  Jahr             (Intercept) 16.775  
+##  Jahr:Ort:Region  (Intercept) 16.271  
+##  Sorte:Ort:Region (Intercept)  3.871  
+##  Sorte:Jahr       (Intercept)  5.132  
+##  Residual                     11.221</code></pre>
+<pre class="r"><code>VarCorr(mod2)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
+<pre><code>##             (Intercept)
+## (Intercept)    61.26244
+## attr(,&quot;stddev&quot;)
+## (Intercept) 
+##    7.827033 
+## attr(,&quot;correlation&quot;)
+##             (Intercept)
+## (Intercept)           1
+## attr(,&quot;blockCode&quot;)
+## us 
+##  1</code></pre>
+<p>Soweit so gut - jetzt kommt der interessante Teil dieses Beispiels. Zusätzlich können wir anstelle von einer Varianzkomponente für den zufälligen Sorten-Haupteffekt einen pro Region anpassen. Das ist aus biologischer Sicht naheliegend, weil wir so erlauben, dass die Sorten je Region unterschiedlich variieren - im Sinne von streuen. Dies lässt sich mit folgender Syntax umsetzen:</p>
+<pre class="r"><code>mod3 &lt;- glmmTMB(Ertrag ~ Region + diag(0+Region|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+
+AIC(mod3)   # AIC-Wert</code></pre>
+<pre><code>## [1] 9121.651</code></pre>
+<pre class="r"><code>fixef(mod3) # Lösung feste Effekte</code></pre>
+<pre><code>## 
+## Conditional model:
+##   (Intercept)  RegionRegion2  RegionRegion3  RegionRegion6  
+##        187.18          20.38          37.30          15.77</code></pre>
+<pre class="r"><code>VarCorr(mod3) # Varianzkomponenten (bzw. deren Wurzel -&gt; Std.Abw.)</code></pre>
+<pre><code>## 
+## Conditional model:
+##  Groups           Name           Std.Dev.   Corr              
+##  Sorte            RegionRegion11 2.2860e+00                   
+##                   RegionRegion2  3.5148e+00 0.000             
+##                   RegionRegion3  4.7569e+00 0.000 0.000       
+##                   RegionRegion6  3.6831e-05 0.000 0.000 0.000 
+##  Ort:Region       (Intercept)    1.7846e+01                   
+##  Jahr             (Intercept)    1.6007e+01                   
+##  Jahr:Ort:Region  (Intercept)    1.6276e+01                   
+##  Sorte:Ort:Region (Intercept)    2.9010e+00                   
+##  Sorte:Jahr       (Intercept)    8.5520e+00                   
+##  Residual                        1.1213e+01</code></pre>
+<pre class="r"><code>VarCorr(mod3)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
+<pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
+## RegionRegion11       5.225861       0.00000       0.00000  0.000000e+00
+## RegionRegion2        0.000000      12.35414       0.00000  0.000000e+00
+## RegionRegion3        0.000000       0.00000      22.62825  0.000000e+00
+## RegionRegion6        0.000000       0.00000       0.00000  1.356524e-09
+## attr(,&quot;stddev&quot;)
+## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
+##   2.286014e+00   3.514846e+00   4.756916e+00   3.683102e-05 
+## attr(,&quot;correlation&quot;)
+##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
+## RegionRegion11              1             0             0             0
+## RegionRegion2               0             1             0             0
+## RegionRegion3               0             0             1             0
+## RegionRegion6               0             0             0             1
+## attr(,&quot;blockCode&quot;)
+## diag 
+##    0</code></pre>
+<p>Wir können aber noch weiter gehen und nun auch noch Korrelation zwischen den Regionen erlauben. Demnach passen wir einen zufälligen Sortenhaupteffekt mit regionsspezifischen Varianzkomponenten und sogar Kovarianz zwischen den Regionen an. Allerdings wählen wir vorerst die <code>cs</code> (Compound Symmetry) Varianzstruktur, welche von ein und derselben Korrelation zwischen allen Regionen ausgeht:</p>
+<pre class="r"><code>mod4 &lt;- glmmTMB(Ertrag ~ Region + cs(0+Region|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+
+AIC(mod4)   # AIC-Wert</code></pre>
+<pre><code>## [1] 9116.188</code></pre>
+<pre class="r"><code>fixef(mod4) # Lösung feste Effekte</code></pre>
+<pre><code>## 
+## Conditional model:
+##   (Intercept)  RegionRegion2  RegionRegion3  RegionRegion6  
+##        186.65          20.29          37.25          15.79</code></pre>
+<pre class="r"><code>VarCorr(mod4) # Varianzkomponenten (bzw. deren Wurzel -&gt; Std.Abw.)</code></pre>
+<pre><code>## 
+## Conditional model:
+##  Groups           Name           Std.Dev. Corr      
+##  Sorte            RegionRegion11  7.4341  0.896 (cs)
+##  Ort:Region       (Intercept)    17.8314            
+##  Jahr             (Intercept)    16.7889            
+##  Jahr:Ort:Region  (Intercept)    16.3030            
+##  Sorte:Ort:Region (Intercept)     2.9777            
+##  Sorte:Jahr       (Intercept)     5.1023            
+##  Residual                        11.2447</code></pre>
+<pre class="r"><code>VarCorr(mod4)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
+<pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
+## RegionRegion11       55.26590      50.71245      64.81051      45.12382
+## RegionRegion2        50.71245      57.90508      66.33995      46.18868
+## RegionRegion3        64.81051      66.33995      94.57545      59.02914
+## RegionRegion6        45.12382      46.18868      59.02914      45.84577
+## attr(,&quot;stddev&quot;)
+## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
+##       7.434104       7.609539       9.724991       6.770950 
+## attr(,&quot;correlation&quot;)
+##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
+## RegionRegion11      1.0000000     0.8964532     0.8964532     0.8964532
+## RegionRegion2       0.8964532     1.0000000     0.8964532     0.8964532
+## RegionRegion3       0.8964532     0.8964532     1.0000000     0.8964532
+## RegionRegion6       0.8964532     0.8964532     0.8964532     1.0000000
+## attr(,&quot;blockCode&quot;)
+## cs 
+##  2</code></pre>
+<p>Schließlich probieren wir zumindest noch die flexibelste Varianzstruktur <code>us()</code> (Unstructured) - heterogene Varianzen je Region und heterogene Kovarianzen zwischen Regionen:</p>
+<pre class="r"><code>mod5 &lt;- glmmTMB(Ertrag ~ Region + us(0+Region|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)</code></pre>
+<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
+<pre class="r"><code>AIC(mod5)   # AIC-Wert</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>fixef(mod5) # Lösung feste Effekte</code></pre>
+<pre><code>## 
+## Conditional model:
+##   (Intercept)  RegionRegion2  RegionRegion3  RegionRegion6  
+##        187.26          20.22          37.16          15.52</code></pre>
+<pre class="r"><code>VarCorr(mod5) # Varianzkomponenten (bzw. deren Wurzel -&gt; Std.Abw.)</code></pre>
+<pre><code>## 
+## Conditional model:
+##  Groups           Name           Std.Dev.   Corr                 
+##  Sorte            RegionRegion11 2.3078e-10                      
+##                   RegionRegion2  4.5173e+00 -0.999               
+##                   RegionRegion3  7.1367e+00 -0.587  0.588        
+##                   RegionRegion6  3.1882e+00 -0.567  0.568  1.000 
+##  Ort:Region       (Intercept)    1.7860e+01                      
+##  Jahr             (Intercept)    1.6086e+01                      
+##  Jahr:Ort:Region  (Intercept)    1.6270e+01                      
+##  Sorte:Ort:Region (Intercept)    2.7470e+00                      
+##  Sorte:Jahr       (Intercept)    7.9203e+00                      
+##  Residual                        1.1219e+01</code></pre>
+<pre class="r"><code>VarCorr(mod5)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
+<pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
+## RegionRegion11   5.326119e-20 -1.041125e-09 -9.673759e-10 -4.172753e-10
+## RegionRegion2   -1.041125e-09  2.040614e+01  1.897220e+01  8.183874e+00
+## RegionRegion3   -9.673759e-10  1.897220e+01  5.093267e+01  2.274389e+01
+## RegionRegion6   -4.172753e-10  8.183874e+00  2.274389e+01  1.016468e+01
+## attr(,&quot;stddev&quot;)
+## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
+##   2.307839e-10   4.517315e+00   7.136713e+00   3.188210e+00 
+## attr(,&quot;correlation&quot;)
+##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
+## RegionRegion11      1.0000000    -0.9986584    -0.5873427    -0.5671139
+## RegionRegion2      -0.9986584     1.0000000     0.5884899     0.5682398
+## RegionRegion3      -0.5873427     0.5884899     1.0000000     0.9995847
+## RegionRegion6      -0.5671139     0.5682398     0.9995847     1.0000000
+## attr(,&quot;blockCode&quot;)
+## us 
+##  1</code></pre>
+<p>Mehr zu Varianzstrukturen gibt’s <a href="appendix_kovarstrukt.html">hier</a>.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

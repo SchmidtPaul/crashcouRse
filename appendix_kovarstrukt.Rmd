@@ -1,0 +1,171 @@
+---
+title: "Kovarianzstrukturen"
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table)
+library(nlme)
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/sorghum repmes.rda")
+```
+
+```{r, eval=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(nlme)   # gemischtes Modell package 1
+library(asreml) # gemischtes Modell package 2 - benötigt R version 3.2.3. und Lizenz
+```
+
+# Datensatz
+
+In diesem Experiment wurde in einer randomisierten vollständigen Blockanlage (RCBD) mit 5 Wiederholungen der Blattflächenindex von 5 Sorghumsorten verglichen. Allerdings wurde der Blattflächenindex mehrfach, nämlich in 5 aufeinanderfolgenden Wochen, gemessen, sodass Messwiederholungen vorliegen. 
+
+> Dieses Beispiel basiert auf *Example 4* des `agriTutorial` packages und der dazugehörigen Veröffentlichung
+> <br />
+> Piepho, H. P., & Edmondson, R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science.
+
+Messwiederholungen werfen eine Neuerung gegenüber den vorangegangenen Beispielen auf: zum ersten Mal ist die kleinste Randomisationseinheit (=Parzelle) nicht gleichzeitig die Beobachtungseinheit, da wir mehrere Beobachtungen pro Parzelle haben. Der wichtige Punkt hier ist, dass der Faktor Woche nicht randomisiert werden kann. Statt der üblichen Annahme von unabhängigen Messwerten, sind Messwerte derselben Parzelle von aufeinanderfolgenden Wochen wahrscheinlich miteinander korreliert. Um dies zu modellieren, soll im ersten Schritt vorerst das Modell für die Analyse einer einzelnen Woche aufgestellt werden.   
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(repmes, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r}
+str(repmes, width=40, strict.width="cut")
+```
+</div> </div>
+
+# Kovarianzstrukturen
+
+<img src="images/fig6corerr.PNG" style="width:50%" align="center"> 
+
+## nlme & asreml-R
+
+Wir werden hier die Modelle mit der `gls()` Funktion aus dem `nlme` package anpassen. Zu jedem Modell wird auch das Gegenstück in `asreml()` Syntax gezeigt, allerdings nicht ausgeführt. Das asreml-R version 3.0 package funktioniert nur mit älteren R-Version 3.2.3, die man [hier](https://cran.r-project.org/bin/windows/base/old/3.2.3/) herunterladen kann. Außerdem muss man eine Lizenz besitzen. An der Universität Hohenheim gibt es diese im ILIAS und man muss auch nach der Installation mit dem Hohenheimer VPN verbunden sein, damit das package funktioniert. Der Code dieses Beispiels ist auch [hier](https://github.com/SchmidtPaul/useful/tree/master/nlmeVSasreml) auf meinem GitHub verfügbar. 
+
+Mehr Infos zu Varianzstrukturen gibt es beispielsweise in [Prof. Piephos Skript zu gemischten Modellen](https://github.com/SchmidtPaul/R-SAS.Introductory.Courses/blob/master/Lecture%20Notes%20Piepho%20et%20al/4%20Mixed%20models%20for%20metric%20data%20%5Beng%5D.pdf) Kapitel 6.
+
+## ID: unabhängige, homogene Varianzen
+
+<div class = "row"> <div class = "col-md-6">
+
+### nlme
+
+```{r}
+gls.id <- gls(y ~ week + week*gen + week*rep,
+              data=repmes)
+gls.id$sigma^2 # ID.var
+```
+</div> <div class = "col-md-6">
+
+### asreml-R v3
+
+```{r, eval=FALSE}
+asr.id <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep)
+summary(asr.id)$varcomp[,c(2,3,5)] # ID.var
+```
+</div> </div>
+
+## DIAG: unabhängige, heterogene Varianzen
+
+<div class = "row"> <div class = "col-md-6">
+
+### nlme
+
+```{r}
+gls.dg <- gls(y ~ week + week*gen + week*rep,
+              weights = varIdent(form = ~ 1|week),
+              data=repmes)
+gls.dg$sigma^2 * c(1, coef(gls.dg$modelStruct$varStruct, unc=F))^2 # DG.vars
+```
+</div> <div class = "col-md-6">
+
+### asreml-R v3
+
+```{r, eval=FALSE}
+asr.dg <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ at(week):plot)
+summary(asr.dg)$varcomp[,c(2,3,5)] # DG.vars
+```
+</div> </div>
+
+## AR1: first order autoregressive
+
+<div class = "row"> <div class = "col-md-6">
+
+### nlme
+
+```{r}
+gls.ar <- gls(y ~ week + week*gen + week*rep,
+              corr = corExp(form = ~ week|plot),
+              data=repmes)
+gls.ar$sigma^2 # AR1.var 
+as.numeric(exp(-1/coef(gls.ar$modelStruct$corStruct, unconstrained=F))) # AR1.cor
+```
+</div> <div class = "col-md-6">
+
+### asreml-R v3
+
+```{r, eval=FALSE}
+asr.ar <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ ar1(week):plot)
+summary(asr.ar)$varcomp[,c(2,3,5)] # AR var + cor
+```
+</div> </div>
+
+## CS: compound symmetry
+
+<div class = "row"> <div class = "col-md-6">
+
+### nlme
+
+```{r}
+gls.cs <- gls(y ~ week + week*gen + week*rep,
+              corr  = corCompSymm(form = ~ week|plot),
+              data=repmes)
+gls.cs$sigma^2 # CS.var 
+as.numeric(coef(gls.cs$modelStruct$corStruct, unconstrained=F)) # CS.cor
+```
+</div> <div class = "col-md-6">
+
+### asreml-R v3
+
+```{r, eval=FALSE}
+asr.cs <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ cor(week):plot)
+summary(asr.cs)$varcomp[,c(2,3,5)] # CS var + cor
+```
+</div> </div>
+
+## UN: unstrukturiert
+
+<div class = "row"> <div class = "col-md-6">
+
+### nlme
+
+```{r}
+gls.un <- gls(y ~ week + week*gen + week*rep,
+              corr    =  corSymm(form = ~ 1|plot),
+              weights = varIdent(form = ~ 1|week),
+              data=repmes)
+c(gls.un$sigma^2, coef(gls.un$modelStruct$varStruct, unconstrained=T)) # UN.vars
+gls.un$modelStruct$corStruct # UN.cors
+```
+</div> <div class = "col-md-6">
+
+### asreml-R v3
+
+```{r, eval=FALSE}
+asr.un <- asreml(data  = repmes,
+                 fixed = y ~ week + week:gen + week:rep,
+                 rcov  = ~ us(week):plot)
+summary(asr.un)$varcomp[, c(2,3,5)] # UN vars + cors
+```
+</div> </div>
+
+# Komplexere Kovarianzsstrukturen
+
+In `asreml`, nicht aber in `nlme`, ist es möglich komplexere Kovarianzsstrukturen zu erzeugen. So können bis zu 3 Kovarianzstrukturmatrizen mittels Kronecker-Produkt miteinander kombiniert werden. Siehe dazu Seite 11 der "asreml-R.pdf" package Dokumentation, sowie die Beispielcodes [hier](https://github.com/SchmidtPaul/useful/blob/master/nlmeVSasreml/VarCovStructures2.R).

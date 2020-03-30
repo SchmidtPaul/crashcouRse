@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Prozentwerte &amp; Proportionen</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Prozentwerte &amp; Proportionen</h1>
+
+</div>
+
+
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte</code></pre>
+<p>In diesem Beispiel wurden 16 Weizensorten in einer randomisierten vollständigen Blockanlage mit 4 Wiederholungen geprüft.</p>
+<blockquote>
+<p>Die Auswertung dieses Datensatzes ist auch <a href="https://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/viewer.htm#statug_glimmix_sect013.htm">hier</a> in der <code>PROC GLIMMIX</code> SAS Dokumentation beschrieben.</p>
+</blockquote>
+<p><img src="1f_rcbd_binomial_files/figure-html/unnamed-chunk-3-1.png" width="288" style="display: block; margin: auto;" /></p>
+<p>Allerdings wurde nicht wie so oft in den vorangegangenen Beispiel der Ertrag gemessen, sondern die Anfälligkeit gegen die Hessenfliege (<em>Mayetiola destructor</em>). Dies geschah indem in jeder Parzelle die Gesamtzahl an Pflanzen (<code>n</code>), sowie die Anzahl derer Pflanzen, die befallen waren (<code>y</code>) bestimmt wurden. Demnach repräsentiert der Anteil <code>y/n</code> die Anfälligkeit gegen die Hessenfliege und kann in % angegeben werden. Wir können eine neue Spalte erstellen, die diesen Anteil angibt.</p>
+<pre class="r"><code>wheat[, anteil := y/n] # erstelle Spalte &quot;anteil&quot;</code></pre>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>print(wheat, nrows=10)</code></pre>
+<pre><code>##     block gen  y  n    anteil
+##  1:    B1 G14  2  8 0.2500000
+##  2:    B1 G16  1  9 0.1111111
+##  3:    B1 G07  9 13 0.6923077
+##  4:    B1 G06  9  9 1.0000000
+##  5:    B1 G13  2  9 0.2222222
+## ---                          
+## 60:    B4 G10  6  6 1.0000000
+## 61:    B4 G02  8 12 0.6666667
+## 62:    B4 G11  7  9 0.7777778
+## 63:    B4 G05 10 11 0.9090909
+## 64:    B4 G16  7 15 0.4666667</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(wheat)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   64 obs. of  5 variables:
+##  $ block : Factor w/ 4 levels &quot;B1&quot;,&quot;B&quot;..
+##  $ gen   : Factor w/ 16 levels &quot;G01&quot;,&quot;..
+##  $ y     : int  2 1 9 9 2 7 6 8 7 8 ...
+##  $ n     : int  8 9 13 9 9 14 8 11 12 ..
+##  $ anteil: num  0.25 0.111 0.692 1 0.2..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Anteile der befallenen Pflanzen pro Sorte. Die Füllfarben die Boxen sind dieselben Farben wie im Feldplan und wurden zuvor von uns im Vektor <code>genfarben</code> gespeichert - <a href="datr_desplot.html">mehr Infos dazu hier</a>.</p>
+<pre class="r"><code>boxplot(anteil ~ gen, col=genfarben, data=wheat, las=2) # las=2 dreht die Achsenbeschriftung</code></pre>
+<p><img src="1f_rcbd_binomial_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="schließende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="generalisiertes-modell" class="section level2">
+<h2>Generalisiertes Modell</h2>
+<p>Da es sich in diesem Beispiel bei der Zielvariable um einen Prozentwert bzw. einen Anteil handelt, liegen die Werte zwischen 0 und 1 (<em>i.e.</em> 0-100%). Wir haben also binomialverteilte Daten und wollen ein generalisiertes lineares Modell anpassen (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Dies geht z.B. mit der <code>glm()</code> Funktion. Bezüglich der Effekte im Modell verfahren wir wie bei einer <a href="1f_rcbd.html">einfaktoriellen ANOVA in einem RCBD</a>.</p>
+<pre class="r"><code>mod &lt;- glm(y/n ~ block + gen, weights=n, family=quasibinomial(link=&quot;logit&quot;), data=wheat)</code></pre>
+<p>Wie man sehen kann, wäre das vorige Berechnen der <code>anteil</code>-Spalte für das Aufstellen des Modells nicht nötig gewesen, da wir direkt <code>y/n</code> als Zielvariable schreiben können. Wichtig ist dabei aber, dass wir dann auch immer noch <code>weights=n</code> dazuschreiben müssen! Als erwartete Verteilung schreiben wir hier <code>family=quasibinomial</code>, welche sozusagen eine generelle/robustere Version der genannten Binomialverteilung für die Fehler annimmt (<a href="appendix_nichtnormalverteilt.html">mehr dazu hier</a>). Der Zusatz <code>(link="logit")</code> ist hier eigentlich überflüssig, weil dies die standardmäßige Linkfunktion für binomialverteilte Daten ist. Sie wird hier lediglich zur Verdeutlichung mit ins Modell geschrieben. Da <code>glm()</code> eine Basis-Funktion von R ist - also kein extra package benötigt - können Residuenplots wieder einfach mit der <code>autoplot()</code> Funktion des <code>ggfortify</code> packages betrachtet werden:</p>
+<pre class="r"><code>autoplot(mod)[1:2] # Residuenplots</code></pre>
+<p><img src="1f_rcbd_binomial_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /> ## Test der festen Effekte</p>
+<pre class="r"><code>anova(mod, test=&quot;Chisq&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: quasibinomial, link: logit
+## 
+## Response: y/n
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##       Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                     63     258.68              
+## block  3     2.11        60     256.57     0.828    
+## gen   15   132.62        45     123.95 1.256e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>car::Anova(mod, test.statistic=&quot;Wald&quot;)</code></pre>
+<pre><code>## Analysis of Deviance Table (Type II tests)
+## 
+## Response: y/n
+##       Df   Chisq Pr(&gt;Chisq)    
+## block  3  1.7916  0.6167545    
+## gen   15 44.0151  0.0001094 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Es soll an diesem Punkt angemerkt werden, dass eine ANOVA im ursprünglichen Sinne (<em>i.e.</em> Quadratsummenzerlegung) nicht geeignet ist für generalisierte Modelle (Mehr dazu beispielsweise in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-3059.1999.00383.x">Piepho (1999)</a>). Dennoch kann die <code>anova()</code> Funktion in R auch für Modell-Objekte aus der <code>glm()</code> Funktion angewendet werden, da in diesem Fall eine andere Berechnung (<em>i.e.</em> Analysis of Deviance) durchgeführt wird. Um allerdings weiterhin p-Werte zu erhalten, muss hier z.B. das Argument <code>test="Chisq"</code> hinzugefügt werden (siehe <code>?anova.glm</code> für Details). Alternativ kann auch ein Wald-Test mit der <code>Anova()</code>-Funktion aus dem <code>car</code>-package und dem Argument <code>test.statistic="Wald"</code> durchgeführt werden.</p>
+<p>Der p-Wert für den Sorteneffekt weist in jedem Fall deutlich auf unterschiedliche Anfälligkeiten der Sorten hin.</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Auch für generalisierte lineare Modelle eignet sich das <code>emmeans()</code> package zur Schätzung der adjustierten Mittelwerte. Es ist sogar möglich direkt die rücktransformierten Mittelwerte schätzen zu lassen. Dazu muss lediglich <code>type="response"</code> hinzugefügt werden.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, type=&quot;response&quot;) # Mittelwertvergleiche
+means &lt;- CLD(means$emmeans, Letters = letters) # Buchstabenddarstellung
+means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Entferne Leerzeichen
+means</code></pre>
+<pre><code>##  gen      prob         SE  df asymp.LCL asymp.UCL .group
+##  G13 0.1096695 0.08015208 Inf 0.0240563 0.3810171 a     
+##  G16 0.1877818 0.08721538 Inf 0.0700935 0.4149056 a     
+##  G14 0.2653243 0.10621731 Inf 0.1104184 0.5123780 ab    
+##  G15 0.3474510 0.10066214 Inf 0.1823600 0.5596926 ab    
+##  G08 0.4591115 0.11377640 Inf 0.2569434 0.6756990 ab    
+##  G11 0.5078141 0.11096378 Inf 0.3017679 0.7112395 ab    
+##  G12 0.5105842 0.11528955 Inf 0.2969393 0.7204313 ab    
+##  G04 0.5189702 0.10163084 Inf 0.3269521 0.7055434 ab    
+##  G09 0.5239933 0.10227434 Inf 0.3301250 0.7108907 ab    
+##  G06 0.6401054 0.11281144 Inf 0.4051711 0.8228253 ab    
+##  G10 0.6987352 0.11784284 Inf 0.4363647 0.8741865 ab    
+##  G07 0.7028341 0.10621641 Inf 0.4660713 0.8650151 ab    
+##  G03 0.7303351 0.09944380 Inf 0.5016697 0.8793159 ab    
+##  G05 0.7881716 0.09706373 Inf 0.5435088 0.9208099 ab    
+##  G02 0.7933597 0.09051044 Inf 0.5654256 0.9188917 b     
+##  G01 0.8155320 0.09085289 Inf 0.5751050 0.9352342 b     
+## 
+## Results are averaged over the levels of: block 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## P value adjustment: tukey method for comparing a family of 16 estimates 
+## Tests are performed on the log odds ratio scale 
+## significance level used: alpha = 0.05</code></pre>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<pre class="r"><code>ggplot() + theme_classic() +
+   # Rohdaten (wheat)
+   geom_point(data=wheat, aes(x=gen, y=anteil), shape=1, size=1) +
+   # Ergebnisse (means)
+   geom_point(data=means, aes(x=gen, y=prob), col=&quot;red&quot;, shape=16, size=2) +
+   geom_errorbar(data=means, aes(x=gen, ymin=asymp.LCL, ymax=asymp.UCL), col=&quot;red&quot;, width=0.1) +
+   geom_text(data=means, aes(x=gen, y=1.05, label =.group), col=&quot;red&quot;) +
+  labs(y=&quot;Schwarz: Beobachtete Anfälligkeit\nRot: Rücktransformierter, adjustierter Mittelwert für die \nAnfälligkeit ± 95% asympt. Konfidenzintervall&quot;, x=&quot;Sorte&quot;,
+       caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test auf der Logit-Skala nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1f_rcbd_binomial_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

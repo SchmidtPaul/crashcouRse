@@ -1,0 +1,160 @@
+---
+title: "Zufällige Effekte mit Varianzstrukturen"
+---
+
+In diesem Beispiel soll gezeigt werden wir mit dem `glmmTMB` package Varianzstrukturen für zufällige Effekte (also nicht für den Fehlerterm wie z.B. bei Messwiederholungen) genutzt werden können. Für mehr Infos 
+
+> Die Idee für dieses Anwendungsbeispiel basiert auf der MSc Thesis "Statistical data analysis of cultivar trials with subdivided target regions: what does this mean for heritability?" von [Muhammad Afzal](https://www.researchgate.net/profile/Muhammad_Afzal118)
+
+# Datensatz
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(data.table)
+
+load("D:/RKurse/MyDatasets/MuhammadMET/MET.rda")
+
+Regions <- MET %>% select(Ort, Region) %>% unique %>% 
+  select(Region) %>% table %>% data.table %>% 
+  arrange(-N) %>% filter(N>4) %>% select(-N) %>% pull
+METdat <- MET %>% filter(Region %in% Regions) %>% droplevels %>% data.table 
+```
+
+In den Jahren 2002 und 2003 wurden an mehreren Standorten Versuche mit Papaya-Sorten gemacht. Dabei wurde an jedem der insgesamt `r n_distinct(METdat$Ort)` Orte ein randomisierter Versuch mit Wiederholungen durchgeführt. Was genau für ein Versuchsdesign je Ort vorlag, ist aber für uns nicht mehr relavant, da wir in unserem Datensatz bereits nur noch die adjustierten Ertrags-Mittelwerte der insgesamt `r n_distinct(METdat$Sorte)` Sorten je Ort vorliegen haben. Es handelt sich hier also um eine Versuchsserie, oder auch Multi-Environment-Trial (MET), wobei Environment/Umwelt jeweils für eine Jahr-Ort-Kombination steht.
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+METdat
+```
+</div> <div class = "col-md-6">
+```{r, eval=FALSE}
+str(METdat)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(METdat, width=40, strict.width="cut")
+```
+</div> </div>
+
+Die Daten können auf viele Weisen deskriptiv ausgewertet werden. In folgendem Plot wird beispielsweise deutlich, dass das Jahr 2002 zu höheren Erträgen geführt hat als 2003. Außerdem eignen sich die Orte unterschiedlich gut für den Papayaanbau und nicht an jedem Ort wurde auch in beiden Jahren ein Versuch durchgeführt.
+
+```{r, warning=FALSE, message=FALSE, fig.align="center", fig.width=5, fig.height=4}
+library(ggplot2)
+ggplot(data=METdat, aes(y=Ertrag, x=Ort)) + 
+  geom_jitter(aes(color=Jahr), width=0.1, alpha=0.5) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5),
+        legend.position = "top")
+```
+
+Außerdem sind die Versuchsstandorte verschiedenen Regionen zugeordnet. Die Regionen wurden ehemals so eingeteilt, dass in derselben Region immer ähnliche Wachstumsbedingungen herrschen. Es ist also zumindest zu erwarten, dass Papayas an Orten innerhalb derselben Region ähnlich gut wachsen.
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+# Anzahl Sortenmittelwerte je Ort-Jahr-Kombination
+METdat %>% select(Ort, Jahr) %>% table
+```
+</div> <div class = "col-md-6">
+```{r}
+# Zugehörigkeit der Orte zu Regionen
+METdat %>% select(Ort, Region) %>% unique %>% arrange(Region)
+```
+</div> </div>
+
+```{r, warning=FALSE, message=FALSE, fig.align="center", fig.width=5, fig.height=4}
+library(ggplot2)
+ggplot(data=METdat, aes(y=Ertrag, x=Ort)) + 
+  geom_jitter(aes(color=Region), width=0.1, alpha=0.5) +
+  geom_boxplot(alpha=0.5) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, hjust=1, vjust=0.5),
+        legend.position = "top")
+```
+
+# Versuchsserien-Modell
+Mit Daten wie diesen wird oft ein Modell aufgestellt, dass je einen Haupteffekt für Sorte, Ort und Jahr hat, sowie all deren Interaktionseffekte. Desweiteren werden diese Effekte wenn möglich auch als zufällige Effekte ins Modell aufgenommen. Selbst wenn alle dieser Effekte zufällig sind, gibt es jedoch weiterhin $\mu$ im Modell, welches ein fester Effekt ist, sodass es sich so oder so um ein gemischtes lineares Modell handelt.
+
+> **Mehr zu solchen Versuchsserien und deren Modellen:**
+> <br>
+> Piepho, H. P., and J. Möhring. ["Best linear unbiased prediction of cultivar effects for subdivided target regions."](https://dl.sciencesocieties.org/publications/cs/abstracts/45/3/1151) Crop Science 45.3 (2005): 1151-1159.
+> <br>
+> Damesa, T. M., Möhring, J., Worku, M., & Piepho, H. P. (2017). [One step at a time: stage-wise analysis of a series of experiments.](https://dl.sciencesocieties.org/publications/aj/abstracts/109/3/845) Agronomy Journal, 109(3), 845-857.
+> <br>
+> Piepho, Hans‐Peter, et al. ["A stage‐wise approach for the analysis of multi‐environment trials."](https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.201100219?casa_token=SUAQpFVm3WkAAAAA:QtMKChq-04ZiO7bsGFVQiYl7edOmbt9y6HW0CwHPcp0BL2k6sjaOSx6BHA7ecoetiqGwHbZBfEwWRAA) Biometrical Journal 54.6 (2012): 844-860.
+> <br>
+> Schmidt, P., et al. ["More, larger, simpler: How comparable are on-farm and on-station trials for cultivar evaluation?."](https://dl.sciencesocieties.org/publications/cs/abstracts/58/4/1508) Crop Science 58.4 (2018): 1508-1518.
+
+Wir können solch ein Modell wie folgt aufstellen:
+```{r}
+library(glmmTMB)
+
+mod1 <- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
+                (1|Sorte:Ort) + (1|Sorte:Jahr) + (1|Jahr:Ort),
+                data=METdat)
+```
+<div class = "row"> <div class = "col-md-6">
+```{r}
+AIC(mod1)   # AIC-Wert
+fixef(mod1) # Lösung feste Effekte (hier nur mu)
+```
+</div> <div class = "col-md-6">
+```{r}
+VarCorr(mod1) # Varianzkomponenten (bzw. deren Wurzel -> Std.Abw.)
+```
+</div> </div>
+
+## Erweiterung um Regions-Effekte
+Anstatt ein Modell wie das oben anzupassen, welches nur eine Varianzkomponente für alle Sorten an allen Orten zulässt, könnten wir die Informationen zu den Regionen mit ins Modell aufnehmen. 
+Zunächst können wir einfach `Region` als (festen) Effekt mit ins Modell nehmen und zwar so, dass jeder `Ort`-Effekt nun immer geschachtel im `Region` Effekt vorkommt (mehr dazu [hier](https://dl.sciencesocieties.org/publications/cs/abstracts/45/3/1151)):
+
+```{r}
+mod2 <- glmmTMB(Ertrag ~ Region + (1|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+AIC(mod2)   # AIC-Wert
+fixef(mod2) # Lösung feste Effekte
+VarCorr(mod2) # Varianzkomponenten (bzw. deren Wurzel -> Std.Abw.)
+VarCorr(mod2)$cond$Sorte # Details zur Varianzkomponente für Sorte
+```
+
+Soweit so gut - jetzt kommt der interessante Teil dieses Beispiels. Zusätzlich können wir anstelle von einer Varianzkomponente für den zufälligen Sorten-Haupteffekt einen pro Region anpassen. Das ist aus biologischer Sicht naheliegend, weil wir so erlauben, dass die Sorten je Region unterschiedlich variieren - im Sinne von streuen. Dies lässt sich mit folgender Syntax umsetzen:
+
+```{r}
+mod3 <- glmmTMB(Ertrag ~ Region + diag(0+Region|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+
+AIC(mod3)   # AIC-Wert
+fixef(mod3) # Lösung feste Effekte
+VarCorr(mod3) # Varianzkomponenten (bzw. deren Wurzel -> Std.Abw.)
+VarCorr(mod3)$cond$Sorte # Details zur Varianzkomponente für Sorte
+```
+
+Wir können aber noch weiter gehen und nun auch noch Korrelation zwischen den Regionen erlauben. Demnach passen wir einen zufälligen Sortenhaupteffekt mit regionsspezifischen Varianzkomponenten und sogar Kovarianz zwischen den Regionen an. Allerdings wählen wir vorerst die `cs` (Compound Symmetry) Varianzstruktur, welche von ein und derselben Korrelation zwischen allen Regionen ausgeht:
+
+```{r}
+mod4 <- glmmTMB(Ertrag ~ Region + cs(0+Region|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+
+AIC(mod4)   # AIC-Wert
+fixef(mod4) # Lösung feste Effekte
+VarCorr(mod4) # Varianzkomponenten (bzw. deren Wurzel -> Std.Abw.)
+VarCorr(mod4)$cond$Sorte # Details zur Varianzkomponente für Sorte
+```
+
+Schließlich probieren wir zumindest noch die flexibelste Varianzstruktur `us()` (Unstructured) - heterogene Varianzen je Region und heterogene Kovarianzen zwischen Regionen:
+```{r}
+mod5 <- glmmTMB(Ertrag ~ Region + us(0+Region|Sorte) + (1|Ort:Region) + (1|Jahr) +
+                         (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
+                         (1|Sorte:Jahr),
+        data=METdat)
+
+AIC(mod5)   # AIC-Wert
+fixef(mod5) # Lösung feste Effekte
+VarCorr(mod5) # Varianzkomponenten (bzw. deren Wurzel -> Std.Abw.)
+VarCorr(mod5)$cond$Sorte # Details zur Varianzkomponente für Sorte
+```
+
+Mehr zu Varianzstrukturen gibt's [hier](appendix_kovarstrukt.html).

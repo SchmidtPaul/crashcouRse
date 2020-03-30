@@ -1,0 +1,127 @@
+---
+title: "2 Beh.faktoren - RCBD"
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table)
+library(desplot) # plotte Feldplan
+library(RColorBrewer) # Farben für Feldplan
+load("D:/RKurse/Dokumentation/crashcouRse/datasets/rice RCBD.rda")
+```
+
+# Datensatz
+
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(data.table) # bessere Datenmanipulation
+library(ggplot2) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte
+library(lme4); library(lmerTest) # gemischtes Modell
+library(RColorBrewer) # bessere Farben
+```
+
+In diesem Experiment wurden die Auswirkungen von 6 Stickstoffdüngern (N) auf den Ertrag von 4 Reissorten (G) untersucht. Demnach gab es zwei Behandlungsfaktoren mit insgesamt 6x4=24 Behandlungsstufenkombinationen. Diese 24 Kombinationen wurden 3 mal in vollständigen Blöcken wiederholt - wir haben also ein RCBD. [Hier mehr Infos zu Versuchsdesigns](appendix_designs.html)
+
+```{r, echo=F, fig.height = 3, fig.width = 5, fig.align = "center"}
+desplot(data=riceRCBD, form= rep ~ col+row|rep, flip=T,
+        text=G, cex=1, col=N,
+        col.regions=c("grey100", "grey90", "grey80"),
+        col.text=brewer.pal(6, "Dark2"),
+        main="Feldplan", key.cex = 0.6,
+        out1=row, out1.gpar=list(col="grey50", lwd=1, lty=1),
+        out2=col, out2.gpar=list(col="grey50", lwd=1, lty=1))
+riceRCBD <- riceRCBD[,c("N", "G", "rep", "yield")]
+```
+
+<div class = "row"> <div class = "col-md-6">
+```{r}
+print(riceRCBD, nrows=10)
+```
+</div> <div class = "col-md-6">
+```{r, eval=FALSE}
+str(riceRCBD)
+```
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+str(riceRCBD, width=40, strict.width="cut")
+```
+</div> </div>
+
+# Deskriptive Statistik
+Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einen Boxplot für die Stufenkombinationen der zwei Behandlungsfaktoren. Mittels des `col=` statements der `boxplot()` Funktion können wir angeben welche Füllfarben die Boxen haben sollen. Wir wählen dieselben Farben wie im Feldplan - [mehr Infos dazu hier](datr_desplot.html).
+
+```{r}
+boxplot(yield ~ N*G, col=brewer.pal(6, "Dark2"), data=riceRCBD, las=2) # las=2 dreht die Achsenbeschriftung
+```
+
+Es fällt auf, dass sich das Muster der Werte der verschiedenen N-Stufen für Sorte D deutlich von denen der anderen 3 Sorten unterscheiden. Dies deutet auf Wechselwirkungen zwischen den beiden Behandlungsfaktoren hin ( [mehr Infos dazu hier](appendix_interaktionen.html)). 
+
+# Schließende Statistik
+## Lineares Modell
+Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Das Modell ist dem aus dem [vorangegangen Beispiel mit RCBD](1f_rcbd.html) ähnlich, muss jedoch aufgrund des zweiten Behandlungsfaktors erweitert werden. Wir beginnen mit dem vollen Modell um die *backward elimination* anzuwenden ( [mehr Infos dazu hier](appendix_interaktionen.html)).
+
+```{r}
+mod <- lm(yield ~ N + G + N:G + rep, data=riceRCBD)
+```
+
+Zunächst sollten nun die Residuenplots (z.b. mit `autoplot(mod)`) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.
+
+## Varianzanalyse
+
+```{r, warning=FALSE, message=FALSE, error=FALSE}
+library(car)
+Anova(mod, test.statistic="F", type="III")
+```
+
+Da dies Ergebnisse einer mehrfaktorielle Varianzanalyse sind, betrachten zualleerst den F-Test für die Wechselwirkung. Der signifikante p-Wert von `G:N` deutet darauf hin, dass die beiden Behandlungsfaktoren nicht rein additiv wirken, sondern wechselwirken. Dies bestätigt die Vermutung aus dem Boxplot der Rohdaten oben. Das bedeutet außerdem, dass wir die adjustierten Mittelwerte der Wechselwirkungseffekte berechnen wollen und *nicht* die der beiden Haupteffekte.
+
+> Wäre der Wechselwirkungseffekt hier nicht signifikant gewesen, würden wir ihn im Rahmen der Backwards Elimination aus dem Modell nehmen und erneut eine ANOVA für das reduzierte Modell durchführen. Mehr dazu [hier](appendix_interaktionen.html).
+
+## Multipler Mittelwertvergleich
+
+Mit `emmeans()` können wir auch adjustierte Mittelwerte für Wechselwirkungseffekte berechnen. Das geht entweder mit `pairwise ~ N : G` oder `pairwise ~ N | G`. Im beiden Fällen werden wie erwartet Mittelwerte für alle Kombinationen errechnet. Der Unterschied besteht in der Anzahl der Differenzen zwischen den Mittelwerten, die berechnet werden. Im ersten Fall werden wie gewohnt alle Mittelwerte miteinander verglichen. Im zweiten Fall, werden nur N-Stufen innerhalb einer Sorte miteinander verglichen. Natürlich können 'N' und 'G' hier auch ausgetauscht werden. Es kommt auf die Versuchsfrage an, welche Mittelwertvergleiche von größerem Interesse sind. Wir wollen uns hier auf die Vergleiche der N-Mittelwerte getrennt pro Sorte fokussieren.
+
+```{r}
+means <- emmeans(mod, pairwise ~ N | G, adjust="tukey") # adjust="none" für t-test
+means <- CLD(means$emmeans, Letters=letters)
+means
+```
+
+# Ergebnisaufbereitung
+
+Erneut wollen wir die Ergebnisse abschließend in einem Balkendiagramm darstellen. Weil wir unser aber die N-Vergleiche isoliert pro Sorte konzentrieren wollen, können wir uns entscheiden ein Balkendiagramm pro Sorte zu erstellen. In solch einer Situation kann in der `ggplot()` Funktion das `facet_wrap()` statement genutzt werden. 
+
+Außerdem wollen wir die Balken wieder mit denselben Farben versehen, die die N-Stufen bereits im Feldplan und dem Boxplot hatten. Dazu fügen wir zuerst dem `geom_bar()` statement `fill=N` hinzu. Nun bekommt jede N-Stufe eine andere Farbe. Um nicht die default Farben zu nehmen, sondern selbst zu bestimmen welche Farben es sein sollen, schreiben wir zusätzlich noch `scale_fill_manual(values=...)` in die Funktion. Um die dann automatisch generierte Legende zu unterdrücken (weil sie in diesem Fall keine zusätzlichen Informationen bringt), fügen wir außerdem `guides(fill=FALSE)` hinzu.
+
+```{r}
+means.plot <- as.data.table(means) # korrektes Format für ggplot
+means.plot$.group <- gsub(" ", "", means.plot$.group, fixed = TRUE) # Entferne Leerzeichen
+print(means.plot, nrows=2)
+
+ggplot(data=means.plot, aes(x=N)) +
+  geom_bar(aes(y=emmean, fill=N), stat="identity", width=0.8) +
+    scale_fill_manual(values=brewer.pal(6, "Dark2")) + guides(fill=FALSE) +
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=emmean+1500, label=.group)) +
+  facet_wrap(~G) + # ein plot pro Sorte
+  theme_bw() +
+  labs(main="Adj. N-Mittelwerte pro Sorte",
+       y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="N-Dünger",
+       caption="Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+```
+
+oder alternativ
+
+```{r}
+ggplot() + theme_bw() +
+  # Rohdaten (crd)
+  geom_boxplot(data=riceRCBD, aes(x=N, y=yield), outlier.shape=NA, width=0.6) +
+  geom_jitter(data=riceRCBD, aes(x=N, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+  geom_point(data=means.plot, aes(x=as.numeric(N)+0.4, y=emmean), col="red", shape=16, size=2) +
+  geom_errorbar(data=means.plot, aes(x=as.numeric(N)+0.4, ymin=lower.CL, ymax=upper.CL), col="red", width=0.1) +  
+  geom_text(data=means.plot, aes(x=N, y=9600, label=.group), col="red") +
+  facet_wrap(~G) + # ein plot pro Sorte
+  ylim(0, 10000) +
+  labs(main="Adj. N-Mittelwerte pro Sorte",
+       y="Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall", x="N-Dünger",
+       caption="Getrennt für jede Sorte gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.")
+```

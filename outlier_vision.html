@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Ausreisser</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Ausreisser</h1>
+
+</div>
+
+
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<p>In diesem Beispiel wurden Name, Alter, Geschlecht und Sehvermögen (auf einer Skala von 1 bis 10) von ingsesamt 29 Personen aufgenommen. Wir wollen so tun als hätten wir selbst den Datensatz erhoben.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>head(dat) # Erste Zeilen des Datensatzes</code></pre>
+<pre><code>##      Person Ages Gender Vision
+## 1:   Andrés   25      M     10
+## 2:     Anja   29      F     10
+## 3:  Armando   31      M      9
+## 4:   Carlos   25      M      8
+## 5: Cristina   23      F     10
+## 6:    Delfa   39      F      6</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(dat) # Struktur des Datensatzes</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   29 obs. of  4 variables:
+##  $ Person: Factor w/ 28 levels &quot;André&quot;..
+##  $ Ages  : int  25 29 31 25 23 39 28 N..
+##  $ Gender: Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;:..
+##  $ Vision: int  10 10 9 8 10 6 8 NA 9 ..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+</div>
+<div id="fragestellung" class="section level1">
+<h1>Fragestellung</h1>
+<p>Genau wie im <a href="1n_drinks.html">Alkohol-Beispiel</a> könnten wir nun unterschiedliche Fragen an den Datensatz stellen, wie z.B. ob in dieser Stichprobe die Frauen oder Männer ein höheres Durchschnittsalter haben. Doch wieder wollen wir uns hier nur auf die <em>zwei numerischen Variablen</em> <code>Ages</code> und <code>Vision</code> beschränken und demnach fragen ob das Alter einer Person etwas mit dessen Sehvermögen zu tun hat. Ebenfalls analog zum <a href="1n_drinks.html">Alkohol-Beispiel</a> soll die Korrelation und eine Regressionsgerade geschätzt werden. Der Unterschied zum vorangegangenen Beispiel wird sich während der Analyse weiter unten zeigen.</p>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Um ein Gefühl für die Daten zu bekommen, betrachten wir einige Kennzahlen zu den Daten, sowie einen Plot.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>summary(dat[, c(&quot;Ages&quot;, &quot;Vision&quot;)])</code></pre>
+<pre><code>##       Ages           Vision      
+##  Min.   :22.00   Min.   : 3.000  
+##  1st Qu.:25.00   1st Qu.: 7.000  
+##  Median :26.00   Median : 9.000  
+##  Mean   :30.61   Mean   : 8.357  
+##  3rd Qu.:29.50   3rd Qu.:10.000  
+##  Max.   :55.00   Max.   :10.000  
+##  NA&#39;s   :1       NA&#39;s   :1</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>plot(x=dat$Ages, y=dat$Vision)</code></pre>
+<p><img src="outlier_vision_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="fehlwerte" class="section level3">
+<h3>Fehlwerte?</h3>
+<p>Beim Betrachten des <code>summary()</code> Outputs fällt auf, dass es Fehlwerte (=<code>NA</code>) im Datensatz gibt. Wir prüfen diese indem wir uns die Datenzeile näher anschauen.</p>
+<pre class="r"><code>subset(dat, is.na(Ages)) # Zeige nur die Daten mit Fehlwert in der Ages-Splate</code></pre>
+<pre><code>##     Person Ages Gender Vision
+## 1: Enrique   NA   &lt;NA&gt;     NA</code></pre>
+<p>Für Enrique haben wir demnach keine weitere Angabe außer seinen Namen. In solch einem Fall würden wir nun versuchen uns zu erinnern warum das so ist und ob wir die Daten nicht doch noch nachträglich beschaffen könnten. Wenn uns aber beispielsweise einfällt, dass Enrique während der Datenaufnahme unerwartet abbrechen musste und wir ihn so schnell auch nicht wieder erreichen können, dann ist dieser Datenpunkt zumindest für diese Analyse komplett wertlos. Tatsächlich kann man sogar argumentieren, dass er verwirrt, da der Datensatz 29 Zeilen hat, in den Analysen aber nur 28 davon brauchbar sein werden. Wir entscheiden uns also in diesem Fall die Datenzeile deshalb sicherheitshalber zu löschen.</p>
+<p>An dieser Stelle zeige ich gleich drei verschiedene Möglichkeiten alle Datenzeilen zu löschen, die Fehlwerte in der <code>Ages</code> Spalte haben (= die eine Zeile mit Enrqiue). Für mehr Infos zur zweiten und dritten Methode siehe <a href="datr_moreadvanced.html">das Kapitel mit weiteren Tipps zu R</a>:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>dat &lt;- subset(dat, !is.na(Ages)) # Basis R
+dat &lt;- dat[!is.na(Ages)] # data.table
+dat &lt;- dat %&gt;% subset(!is.na(Ages)) # dplyr</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>nrow(dat) # Anzahl Zeilen nach der Löschung</code></pre>
+<pre><code>## [1] 28</code></pre>
+</div>
+</div>
+</div>
+<div id="negativer-trend" class="section level3">
+<h3>Negativer Trend</h3>
+<p>Nun können wir uns die Deskriptive genauer anschauen und stellen beim Betrachten des Plots fest, dass es scheinbar einen negativen Trend gibt: Mit zunehmendem Alter sinkt das Sehvermögen. Was man sich an diesem Punkt auch vergegenwärtigen sollte ist, dass die jüngste Person 22 und die älteste 55 Jahre alt ist. Das bedeutet für uns, dass all unsere Ergebnisse am Ende streng genommen nur für Personen in dieser Altersspanne gelten. Nähmen wir z.B. das später geschätzte Regressionsmodell um das Sehvermögen einer 4-jährigen Person zu vorherzusagen, dann würden wir <em>“extrapolieren”</em>, da dieses Alter klar außerhalb der Daten liegt, welche zur Bildung des Modells vorhanden waren. Solche Vorhersagen sind natürlich stets mit Vorsicht zu genießen.</p>
+</div>
+</div>
+<div id="korrelation-regression" class="section level1">
+<h1>Korrelation &amp; Regression</h1>
+<p>Wie im vorangegangenen Kapitel wollen wir also Korrelation und Regression berechnen. Beim Betrachten des Plots oben können wir schon jetzt sagen, dass wir eine negative, wenn auch nicht ganz so starke Korrelation und eine negative Steigung erwarten:</p>
+<pre class="r"><code>cor &lt;- cor.test(dat$Ages, dat$Vision) # Korrelation
+cor</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  dat$Ages and dat$Vision
+## t = -2.923, df = 26, p-value = 0.007089
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.7341839 -0.1525579
+## sample estimates:
+##        cor 
+## -0.4973289</code></pre>
+<pre class="r"><code>reg &lt;- lm(data=dat, formula=Vision ~ Ages) # Regressionsmodell y = a + bx
+summary(reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Vision ~ Ages, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.7763 -0.6167  0.1790  1.1327  1.4966 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 11.14199    0.99646  11.182 1.97e-11 ***
+## Ages        -0.09099    0.03113  -2.923  0.00709 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.545 on 26 degrees of freedom
+## Multiple R-squared:  0.2473, Adjusted R-squared:  0.2184 
+## F-statistic: 8.544 on 1 and 26 DF,  p-value: 0.007089</code></pre>
+<p>Und wir stellen beides wieder in einem Plot mit <code>ggplot</code> dar:</p>
+<pre class="r"><code>library(ggplot2) # Erzeugt Plot
+library(ggpubr) # Zusätzlicher Befehl &quot;stat_cor&quot; und &quot;stat_regline_equation&quot; (siehe unten)</code></pre>
+<pre class="r"><code>ggplot(data=dat, aes(x=Ages, y=Vision)) + # Definiere Daten
+  geom_point(size=3) + # Scatter plot mit Punkten der Größe 3
+  scale_x_continuous(name=&quot;Alter&quot;,       limits=c(20, 60), breaks=seq(20, 60, by=10)) + # x-Achse
+  scale_y_continuous(name=&quot;Sehvermögen&quot;, limits=c( 0, 10), breaks=seq( 0, 10, by=1)) + # y-Achse
+  theme_classic() + # Simple, klassische Formatierung
+  geom_smooth(method=&#39;lm&#39;, formula=y~x, se=FALSE) + # Füge Gerade ein
+  stat_regline_equation(label.x=50, label.y=9) + # Füge Gleichung ein
+  stat_cor(method=&quot;pearson&quot;, label.x=40, label.y=3) # Füge Korrelation mit p-Wert ein</code></pre>
+<p><img src="outlier_vision_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="der-ausreißer" class="section level1">
+<h1>Der Ausreißer</h1>
+<div id="schritt-1-finde-eventuelle-ausreißer" class="section level3">
+<h3>Schritt 1: Finde eventuelle Ausreißer</h3>
+<p>An diesem Punkt könnte man das Beispiel als abgehakt ansehen. Es fällt aber auf, dass ein Punkt deutlich aus der Reihe tanzt - nämlich die Person mit Sehvermögen von 3. Diese Person hat das mit Abstand schlechteste Sehvermögen (das zweitschlechteste liegt bei 6) und hinzukommt, dass die Person auch noch zu den jungen Personen gehört, sodass dieser Wert komplett gegen den Trend der restlichen Daten geht.</p>
+</div>
+<div id="schritt-2-mehr-über-ausreißer-erfahren" class="section level3">
+<h3>Schritt 2: Mehr über Ausreißer erfahren</h3>
+<p>In solch einem Fall sollte immer erst mehr über den Ausreißer in Erfahrung gebracht werden:</p>
+<pre class="r"><code>subset(dat, Vision&lt;5) # Zeige nur Datenzeilen mit Vision &lt; 5</code></pre>
+<pre><code>##     Person Ages Gender Vision
+## 1: Rolando   26      M      3</code></pre>
+<p>Es handelt sich also um den 26-jährigen Mann namens Rolando. Hier eine Möglichkeit um ihn in <code>ggplot</code> mittels des packages <code>ggrepel</code> hervorzuheben. Im Code sieht man, dass nur die Punkte gekennzeichnet werden sollen, die eine Vision&lt;5 haben, sodass nur Rolando gekennzeichnet wird.</p>
+<pre class="r"><code>library(ggrepel) # Zusätzlicher Befehl &quot;geom_text_repel&quot; (siehe unten)</code></pre>
+<pre class="r"><code>ggplot(data=dat, aes(x=Ages, y=Vision)) + # Definiere Daten
+  geom_point(size=3) + # Scatter plot mit Punkten der Größe 3
+  scale_x_continuous(name=&quot;Alter&quot;,       limits=c(20, 60), breaks=seq(20, 60, by=10)) + # x-Achse
+  scale_y_continuous(name=&quot;Sehvermögen&quot;, limits=c( 0, 10), breaks=seq( 0, 10, by=1)) + # y-Achse
+  theme_classic() + # Simple, klassische Formatierung
+  geom_smooth(method=&#39;lm&#39;, formula=y~x, se=FALSE) + # Füge Gerade ein
+  geom_text_repel(data=dat[Vision&lt;5], aes(label=Person), nudge_y=1, nudge_x=1) # Kennzeichne Rolando</code></pre>
+<p><img src="outlier_vision_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="schritt-3-entscheide-über-ausreißer" class="section level3">
+<h3>Schritt 3: Entscheide über Ausreißer</h3>
+<p>Hätten wir die Daten selbst erhoben, würde wir nun versuchen uns an Rolando zu erinnern.</p>
+<p><strong>Option 1: Klingt komisch, ist aber so:</strong> Würden wir direkt jemanden mit dicken Brillengläsern vor Augen haben und uns erinnern, dass er überraschend schlecht gesehen hat, hätten wir den auffälligen Wert bestätigt. Wir würden nichts am Wert ändern und er würde weiterhin dem generellen Trend widersprechen, aber das ändert nichts daran, dass er die Wahrheit abbildet.</p>
+<p><strong>Option 2: Korrigiere den Fehler:</strong> Könnten wir uns allerdings an Rolando erinnern und wären uns ziemlich sicher, dass er eigentlich ein normales Sehrvermögen hatte, dann liegt ein Problem vor. Nicht selten kommt es vor, dass man sich z.B. bei der Dateneingabe vertippt und deshalb ein falscher Wert im Datensatz steht. Könnten wir nun zurück zu unseren schriftlichen Aufzeichnungen vom Tag der Datenerhebung gehen und dort Rolandos korrekten Wert für das Sehvermögen einsehen, so könnten wir nachträglich den Wert im Datensatz korrigieren und fortfahren.</p>
+<p><strong>Option 3: Lösche den Fehler:</strong> Es kann aber auch sein, dass wir uns wie bei Option 2 sicher sind, dass der Wert nicht bei 3 lag, wir aber keine Möglichkeit haben den korrekten Wert aufzutreiben. In solch einem Fall kann man sich dafür entscheiden den Wert zu löschen. Dann haben wir zwar weniger Daten, aber zumindest ist das Ergebnis nicht durch den offensichtlich falschen Wert verfälscht.</p>
+<blockquote>
+<p>Das Löschen von Ausreißern aus einem Datensatz ist eine sensible Angelegenheit und sollte nicht leichtfertig und schon gar nicht heimlich durchgeführt werden. Leider kommt es vor, dass selbst Wissenschaftler mehr oder weniger subjektiv entscheiden welche Werte “schlichtweg nicht wahr sein können” und diese dann aus dem Datensatz entfernen ohne es in der Publikation zu vermerken. In manchen Fällen führt dies sogar dazu, dass das Ergebnis erst danach signifikant wird. Mehr dazu im <a href="stat_pwert.html">Kapitel zum p(roblem)-Wert</a>.</p>
+</blockquote>
+</div>
+</div>
+<div id="korrelation-regression---nochmal" class="section level1">
+<h1>Korrelation &amp; Regression - nochmal</h1>
+<p>In diesem Beispiel wollen wir uns dazu entscheiden den Ausreißer zu löschen. Demnach entfernen wir Rolando aus dem Datensatz und führen beide Analysen nochmals durch. Wir speichern die Ergebnisse diesmal aber in neue R-Objekte, sodass wir die alten nicht überschreiben:</p>
+<pre class="r"><code>dat_noRolando &lt;- subset(dat, Person!=&quot;Rolando&quot;) # Entferne Rolando
+
+cor_noRolando &lt;- cor.test(dat_noRolando$Ages, dat_noRolando$Vision) # Korrelation
+reg_noRolando &lt;- lm(data=dat_noRolando, formula=Vision ~ Ages) # Regressionsmodell y = a + bx</code></pre>
+<div id="vergleich-korrelationen" class="section level3">
+<h3>Vergleich Korrelationen</h3>
+Zuerst vergleichen wir die Korrelationen mit und ohne Rolando:
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>cor # mit Rolando</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  dat$Ages and dat$Vision
+## t = -2.923, df = 26, p-value = 0.007089
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.7341839 -0.1525579
+## sample estimates:
+##        cor 
+## -0.4973289</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>cor_noRolando # ohne Rolando</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  dat_noRolando$Ages and dat_noRolando$Vision
+## t = -4.8515, df = 25, p-value = 5.475e-05
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.8511437 -0.4301958
+## sample estimates:
+##        cor 
+## -0.6963674</code></pre>
+</div>
+</div>
+<p>Die Korrelation ist natürlich auch ohne Rolando negativ, sie hat aber einen erheblichen Sprung gemacht. Vorher lag sie bei -0.5 und ohne Rolando bei -0.7. Der p-Wert war in diesem Beispiel zwar schon vorher signifikant, doch auch dieser wurde im rechten Output deutlich kleiner. Das ist erstaunlich, da wir nur eine einzige Beobachtung von 28 entfernt haben. Es wird also klar welchen Einfluss einzelne Ausreißer haben können.</p>
+</div>
+<div id="vergleich-regressionen" class="section level3">
+<h3>Vergleich Regressionen</h3>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>summary(reg) # mit Rolando</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Vision ~ Ages, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.7763 -0.6167  0.1790  1.1327  1.4966 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 11.14199    0.99646  11.182 1.97e-11 ***
+## Ages        -0.09099    0.03113  -2.923  0.00709 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.545 on 26 degrees of freedom
+## Multiple R-squared:  0.2473, Adjusted R-squared:  0.2184 
+## F-statistic: 8.544 on 1 and 26 DF,  p-value: 0.007089</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>summary(reg_noRolando) # ohne Rolando</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Vision ~ Ages, data = dat_noRolando)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.1466 -0.7145  0.1039  0.8534  1.2626 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 11.70395    0.67921  17.232 2.20e-15 ***
+## Ages        -0.10229    0.02109  -4.851 5.48e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.042 on 25 degrees of freedom
+## Multiple R-squared:  0.4849, Adjusted R-squared:  0.4643 
+## F-statistic: 23.54 on 1 and 25 DF,  p-value: 5.475e-05</code></pre>
+</div>
+</div>
+<p>Beim Vergleich der geschätzten Regressionsmodelle zeigt sich auf den ersten Blick kein so deutliches Bild wie bei der Korrelation: Der Schätzwert für die Achsenabschnitte änderte sich von 11.14 zu 11.7 und der der Steigung von -0.09 zu -0.1. Und tatsächlich muss man etwas genauer hinschauen wenn man die Geraden in Plots vergleicht:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code># Mit Rolando
+ggplot(data=dat, 
+       aes(x=Ages, y=Vision)) +
+geom_point(size=3) + 
+scale_x_continuous(name=&quot;Alter&quot;,       
+                   limits=c(20, 60), 
+                   breaks=seq(20, 60, by=10)) +
+scale_y_continuous(name=&quot;Sehvermögen&quot;, 
+                   limits=c( 0, 10), 
+                   breaks=seq( 0, 10, by=1)) +
+theme_classic() +
+geom_smooth(method=&#39;lm&#39;, formula=y~x, se=F)</code></pre>
+<p><img src="outlier_vision_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div class="col-md-6">
+<pre class="r"><code># Ohne Rolando
+ggplot(data=dat_noRolando, 
+       aes(x=Ages, y=Vision)) +
+geom_point(size=3) + 
+scale_x_continuous(name=&quot;Alter&quot;,       
+                   limits=c(20, 60), 
+                   breaks=seq(20, 60, by=10)) +
+scale_y_continuous(name=&quot;Sehvermögen&quot;, 
+                   limits=c( 0, 10), 
+                   breaks=seq( 0, 10, by=1)) +
+theme_classic() +
+geom_smooth(method=&#39;lm&#39;, formula=y~x, se=F)</code></pre>
+<p><img src="outlier_vision_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+<p>Sicherlich ergibt es Sinn, dass die Gerade im Plot mit Rolando links etwas tiefer liegt - der Punkt von Rolando zieht sie quasi ein Stück weit zu sich. Insgesamt ist dieser Unterschied jedoch minimal. Es bleibt also die Frage wie jetzt zu bemessen ist, dass doch die Gerade ohne Rolando sehr viel besser zu der Gesamtheit aller Punkte passt, als die Gerade mit Rolando.</p>
+</div>
+<div id="bestimmtheitsmaß" class="section level3">
+<h3>Bestimmtheitsmaß</h3>
+<p>Dafür gibt es das <strong>Bestimmtheitsmaß</strong> <span class="math inline">\(R^2\)</span> (auch Determinationskoeffizient), welches auch in der vorletzten Zeile des <code>summary(reg)</code> Outputs angegeben ist. Es gibt an, wie viel Streuung in den Daten durch ein vorliegendes lineares Regressionsmodell „erklärt“ werden kann. Demnach wird es in Prozent gemessen, kann also Werte zwischen 0% und 100% annehmen. Hier werden wir nun also fündig, dass auch bei der Regression der Rauswurf von Rolando zu einer erheblichen Verbesserung des Bestimmtheißtsmaßes geführt hat, da es mit Rolando nur bei 24.7 % lag und ohne Rolando auf 48.5 % anstieg.</p>
+</div>
+</div>
+<div id="endergebnis" class="section level1">
+<h1>Endergebnis</h1>
+<p>Schließlich wollen wir den Plot zum Abschlus ohne Rolando und mit allen Ergebnissen erstellen:</p>
+<pre class="r"><code>ggplot(data=dat_noRolando, aes(x=Ages, y=Vision)) + # Definiere Daten
+  geom_point(size=3, color=&quot;darkgrey&quot;) + # Scatter plot mit grauen Punkten der Größe 3
+  scale_x_continuous(name=&quot;Alter&quot;,       limits=c(20, 60), breaks=seq(20, 60, by=10)) + # x-Achse
+  scale_y_continuous(name=&quot;Sehvermögen&quot;, limits=c( 0, 10), breaks=seq( 0, 10, by=1)) + # y-Achse
+  theme_classic() + # Simple, klassische Formatierung
+  geom_smooth(method=&#39;lm&#39;, formula=y~x, se=FALSE, color=&quot;orange&quot;) + # Füge orange Gerade ein
+  stat_regline_equation(aes(label=paste(..eq.label.., ..rr.label.., sep = &quot;~`,`~~~&quot;)),
+                        label.x=50, label.y=9) + # Füge Gleichung inkl. R2 ein
+  stat_cor(method=&quot;pearson&quot;, label.x=40, label.y=3) + # Füge Korrelation mit p-Wert ein
+  labs(caption=&quot;Zwei Personen wurden afgrund von fehlenden oder fehlerhaften Werten aus dem Datensatz entfernt&quot;)</code></pre>
+<p><img src="outlier_vision_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

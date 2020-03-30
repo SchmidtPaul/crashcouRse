@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>1 Beh.faktor - RCBD - Messwiederholungen</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">1 Beh.faktor - RCBD - Messwiederholungen</h1>
+
+</div>
+
+
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(nlme)    # generalisiertes Modell package
+library(emmeans) # adjustierte Mittelwerte
+library(ggplot2) # bessere Plots</code></pre>
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<p>In diesem Experiment wurde in einer randomisierten vollständigen Blockanlage (RCBD) mit 5 Wiederholungen der Blattflächenindex von 4 Sorghumsorten verglichen. Allerdings wurde der Blattflächenindex mehrfach, nämlich in 5 aufeinanderfolgenden Wochen, gemessen, sodass Messwiederholungen vorliegen.</p>
+<blockquote>
+<p>Dieses Beispiel basiert auf <em>Example 4</em> des <code>agriTutorial</code> packages und der dazugehörigen Veröffentlichung <br /> Piepho, H. P., &amp; Edmondson, R. N. (2018). A tutorial on the statistical analysis of factorial experiments with qualitative and quantitative treatment factor levels. Journal of Agronomy and Crop Science.</p>
+</blockquote>
+<p><img src="1f_rcbd_messwdh_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>Messwiederholungen werfen eine Neuerung gegenüber den vorangegangenen Beispielen auf: zum ersten Mal ist die kleinste Randomisationseinheit (=Parzelle) nicht gleichzeitig die Beobachtungseinheit, da wir mehrere Beobachtungen pro Parzelle haben. Der wichtige Punkt hier ist, dass der Faktor Woche nicht randomisiert werden kann. Statt der üblichen Annahme von unabhängigen Messwerten, sind Messwerte derselben Parzelle von aufeinanderfolgenden Wochen wahrscheinlich miteinander korreliert. Um dies zu modellieren, soll im ersten Schritt vorerst das Modell für die Analyse einer einzelnen Woche aufgestellt werden.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>print(repmes, nrows=10)</code></pre>
+<pre><code>##      week gen  rep   plot    y
+##   1:    1   A rep1  plot1 5.00
+##   2:    1   D rep1  plot2 5.86
+##   3:    1   B rep1  plot3 5.82
+##   4:    1   C rep1  plot4 5.65
+##   5:    1   C rep2  plot5 5.39
+##  ---                          
+##  96:    5   B rep4 plot16 3.99
+##  97:    5   D rep5 plot17 2.96
+##  98:    5   C rep5 plot18 3.00
+##  99:    5   B rep5 plot19 2.95
+## 100:    5   A rep5 plot20 2.16</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>str(repmes)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   100 obs. of  5 variables:
+##  $ week: Factor w/ 5 levels &quot;1&quot;,&quot;2&quot;,&quot;&quot;..
+##  $ gen : Factor w/ 4 levels &quot;A&quot;,&quot;B&quot;,&quot;&quot;..
+##  $ rep : Factor w/ 5 levels &quot;rep1&quot;,&quot;r&quot;..
+##  $ plot: Factor w/ 20 levels &quot;plot1&quot;,&quot;..
+##  $ y   : num  5 5.86 5.82 5.65 5.39 4...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+</div>
+</div>
+<div id="schließende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="analyse-einer-einzelnen-woche" class="section level2">
+<h2>Analyse einer einzelnen Woche</h2>
+<p>Wenn wir jede Woche separat analysieren, umgehen wir das Problem der korrelierten Messwerte und können das übliche Modell für eine einfaktorielle Varianzanalyse in einem RCBD aufstellen ( <a href="1f_rcbd.html">siehe Beispiel</a> ).</p>
+<div id="manuelles-wählen-der-woche" class="section level3">
+<h3>Manuelles wählen der Woche</h3>
+<p>Dann müssen wir lediglich einen Teildatensatz mit den Daten von nur einer Woche erstellen und auswerten.</p>
+<pre class="r"><code>repmes.wk1 &lt;- repmes[week==&quot;1&quot;] # Nur Daten der ersten Woche
+mod.wk1 &lt;- lm(y ~ gen + rep, data=repmes.wk1)
+anova(mod.wk1)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen        3 2.7604 0.92012   46.59 6.918e-07 ***
+## rep        4 8.3190 2.07974  105.31 3.086e-09 ***
+## Residuals 12 0.2370 0.01975                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>So erhalten wir also die Ergebnisse der Varianzanalyse für die erste Woche und könnten wie gewohnt fortfahren indem wir adjustierte Mittelwerte für den signifikanten Faktor Sorte berechnen.</p>
+</div>
+<div id="analyse-in-einem-loop" class="section level3">
+<h3>Analyse in einem Loop</h3>
+<p>Anstatt die 5 Teildatensätze der 5 Wochen separat und manuell zu erstellen, können wir eine Schleife (<em>Loop</em>) schreiben, die automatisch eine Woche nach der anderen analysiert. Zusätzlich können wir in R eine <em>Liste</em> erstellen, in der die Ergebnisse aller durch den Loop generierten Varianzanalysen gespeichert werden.</p>
+<pre class="r"><code>anova.liste &lt;- list() # erstelle ein leeres Listenobjekt
+
+for (wochen.nr in c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;)){ # Loop Anfang
+  repmes.wkX &lt;- repmes[week==wochen.nr]
+  mod.wkX &lt;- lm(y ~ gen + rep, data=repmes.wkX)
+  anova.liste[[wochen.nr]] &lt;- anova(mod.wkX)
+} # Loop Ende
+
+anova.liste[[&quot;1&quot;]] # Zeige ANOVA der 1. Woche</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen        3 2.7604 0.92012   46.59 6.918e-07 ***
+## rep        4 8.3190 2.07974  105.31 3.086e-09 ***
+## Residuals 12 0.2370 0.01975                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova.liste[[&quot;5&quot;]] # Zeige ANOVA der 5. Woche</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: y
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## gen        3 5.9977 1.99924  97.196 1.099e-08 ***
+## rep        4 4.3410 1.08526  52.762 1.619e-07 ***
+## Residuals 12 0.2468 0.02057                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div id="analyse-des-gesamten-datensatzes" class="section level2">
+<h2>Analyse des gesamten Datensatzes</h2>
+<p><img src="images/fig6corerr.PNG" style="width:50%" align="right"> Der Nachteil der separaten Analyse einzelner Wochen wird besonders deutlich, wenn wir uns vorstellen, dass wir Messwerte von sehr viel mehr Wochen hätten, deren ANOVAs nicht immer die gleichen Signifikanzen zeigen: Es kann schwierig sein eine wochenübergreifende Antwort zu geben. Außerdem wurde durch das separate Analysieren auch immer nur ein Bruchteil der Informationen genutzt. Demnach ist es erstrebenswert den Datensatz als Ganzes mit einem geeigneten Modell auszuwerten. Dafür müssen wir Korrelationen zwischen den Fehlertermen verschiedener Wochen erlauben. Die Grafik, die aus dem oben erwähnten Artikel stammt, soll dies verdeutlichen.</p>
+<div id="die-ar1-kovarianzstruktur" class="section level3">
+<h3>Die AR1 Kovarianzstruktur</h3>
+<p>Standardmäßig haben lineare Modelle unabhängige, identisch verteilte Fehler (<em>independent and identically distributed</em>, kurz <em>IID</em>). Um also nun korrelierte Fehler zu modellieren, kann man eine Kovarianzstruktur für die Fehler annehmen. Es gibt verschiedene Kovarianzstrukturen ( <a href="appendix_kovarstrukt.html">siehe hier</a> ), wobei die wahrscheinlich populärste für Messwiederholungen den Namen <em>first order autoregressive</em>, kurz <em>AR1</em> trägt.</p>
+<p>Um lineare Modelle anzupassen, die eine andere Kovarianzstruktur als <em>IID</em> annehmen, wird die <em>Verallgemeinerte Kleinste-Quadrat-Schätzung</em> (engl. <em>generalized least squares</em> kurz <em>GLS</em>) angewandt. Das <code>nlme</code> package hat dafür die Funktion <code>gls()</code>. Um das hier benötigte Modell aufzustellen können wir vorerst mit dem dem Modell aus der separaten Analyse der Wochen beginnen: <code>y ~ gen + rep</code>. Zur Erinnerung: Auch wenn wir es nicht explizit ins Modell geschrieben haben, so wird standardmäßig auch ein Intercept <span class="math inline">\(\mu\)</span> angepasst. Um dieses Modell für die Analyse mehrere Wochen zu erweitern, können wir jeden Effekt (also auch <span class="math inline">\(\mu\)</span>) zusätzlich wochenspezifisch definieren: <code>y ~ week + gen + week*gen + rep + week*rep</code>. Wir erhalten nun also zusätzlich je ein Intercept, einen Genotyp-Effekt und einen Wiederholungseffekt pro Woche. Man kann die Syntax für dieses Modell wie folgt abkürzen und trotzdem dieselben Effekte anpassen lassen:</p>
+<pre class="r"><code>mod.iid &lt;- gls(y ~ week * (gen + rep),
+               data = repmes)</code></pre>
+<p>Schließlich wollen wir noch dafür sorgen, dass die Fehler derselben Parzelle zwsichen den Wochen autokorreliert sind, was mit dem Argument <code>corr = corExp(form = ~ week|plot)</code> funktioniert.</p>
+<pre class="r"><code>mod.ar1 &lt;- gls(y ~ week * (gen + rep),
+               corr = corExp(form = ~ week|plot),
+               data = repmes)</code></pre>
+<p>Wir können die geschätzten Fehlervarianzen und -korrelationen einsehen:</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>mod.iid$sigma^2 # IID.var </code></pre>
+<pre><code>## [1] 0.02317583</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>mod.ar1$sigma^2 # AR1.var </code></pre>
+<pre><code>## [1] 0.02317583</code></pre>
+</div>
+</div>
+<pre class="r"><code>as.numeric(exp(-1/coef(mod.ar1$modelStruct$corStruct, unconstrained=F))) # AR1.cor</code></pre>
+<pre><code>## [1] 0.7776763</code></pre>
+<p>Die Korrelation wurde also auf 0.78 (und somit ganz und gar nicht 0) geschätzt, was darauf hindeutet, dass diese Kovarianzstruktur in der Tat für die Modellierung der Daten geeignet ist. Um in solchen Fällen zu entscheiden ob das AR1-Modell tatsächlich dem IID-Modell vorzuziehen ist, können hier die AIC (<em>Akaike Information Criterion</em>) Werte der beiden Modelle verglichen werden. Dabei gilt, dass das Modell mit dem kleineren AIC-Wert das bessere ist. Zu beachten ist außerdem, dass nur Modelle, die die gleichen festen Effekte haben und dieselben Daten auswerten, mittels AIC-Wert verglichen werden sollten. Da das hier der Fall ist, können wir das demnach tun.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>AIC(mod.iid)</code></pre>
+<pre><code>## [1] 78.26137</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>AIC(mod.ar1)</code></pre>
+<pre><code>## [1] 38.37925</code></pre>
+</div>
+</div>
+<p>Der deutlich kleinere AIC-Wert bestätigt also die Vermutung, dass hier eine AR1 statt der üblichen IID Struktur für die Fehler angepasst werden sollte. Es muss klar sein, dass an dieser Stelle natürlich auch die AIC-Werte der Modelle mit <a href="appendix_kovarstrukt.html">anderen Kovarianzstrukturen</a> verglichen werden könnten. Dies soll hier allerdings nicht getan werden um das Beispiel kurz zu halten.</p>
+</div>
+<div id="varianzanalyse" class="section level3">
+<h3>Varianzanalyse</h3>
+<p>Schließlich können wir wie gewohnt eine ANOVA durchführen, um den F-Test für den Behandlungsfaktor durchzuführen - nur eben für das selektierte AR1-Modell. Residuenplots kann man für <code>gls()</code> Objekte z.B. via <code>plot(mod.ar)</code> und <code>qqnorm(resid(mod.ar)); qqline(resid(mod.ar))</code> erhalten.</p>
+<pre class="r"><code>anova(mod.ar1)</code></pre>
+<pre><code>## Denom. DF: 60 
+##             numDF   F-value p-value
+## (Intercept)     1 21284.944  &lt;.0001
+## week            4   738.198  &lt;.0001
+## gen             3    88.053  &lt;.0001
+## rep             4    94.361  &lt;.0001
+## week:gen       12    14.975  &lt;.0001
+## week:rep       16     6.077  &lt;.0001</code></pre>
+<p>Alle Effekte sind laut F-Test signifikant, relevant ist dabei aber vor allem <code>week:gen</code>. Analog zur Vorgehensweise bei einer signifikanten Wechselwirkung von zwei Behandlungseffekten (<a href="2f_splitplot.html">siehe hier</a>) gilt auch hier, dass die adjustierten Mittelwerte für <code>week:gen</code> und nicht für <code>gen</code> berechnet werden sollten.</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level3">
+<h3>Multipler Mittelwertvergleich</h3>
+<pre class="r"><code>means &lt;- emmeans(mod.ar1, pairwise ~ gen|week, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
+means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
+means$emmeans # Sorten-Mittelwerte pro Woche</code></pre>
+<pre><code>## week = 1:
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    4.242 0.06808206 18.22 4.099088 4.384912  a    
+##  C    4.888 0.06808206 19.51 4.745752 5.030248   b   
+##  B    5.148 0.06808206 19.51 5.005752 5.290248    c  
+##  D    5.154 0.06808206 18.22 5.011088 5.296912    c  
+## 
+## week = 2:
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    4.046 0.06808206 18.22 3.903088 4.188912  a    
+##  D    4.944 0.06808206 18.22 4.801088 5.086912   b   
+##  B    4.980 0.06808206 19.51 4.837752 5.122248   b   
+##  C    5.074 0.06808206 19.51 4.931752 5.216248   b   
+## 
+## week = 3:
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    3.406 0.06808206 18.22 3.263088 3.548912  a    
+##  B    4.594 0.06808206 19.51 4.451752 4.736248   b   
+##  D    4.706 0.06808206 18.22 4.563088 4.848912   b   
+##  C    4.714 0.06808206 19.51 4.571752 4.856248   b   
+## 
+## week = 4:
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    3.086 0.06808206 18.22 2.943088 3.228912  a    
+##  B    4.220 0.06808206 19.51 4.077752 4.362248   b   
+##  D    4.388 0.06808206 18.22 4.245088 4.530912   b   
+##  C    4.476 0.06808206 19.51 4.333752 4.618248   b   
+## 
+## week = 5:
+##  gen emmean         SE    df lower.CL upper.CL .group
+##  A    2.700 0.06808206 18.22 2.557088 2.842912  a    
+##  D    3.834 0.06808206 18.22 3.691088 3.976912   b   
+##  B    4.008 0.06808206 19.51 3.865752 4.150248   b   
+##  C    4.018 0.06808206 19.51 3.875752 4.160248   b   
+## 
+## Results are averaged over the levels of: rep 
+## Degrees-of-freedom method: satterthwaite 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>Wie der im F-Test signifikante <code>week:gen</code> Effekt schon vermuten ließ, finden wir für die Sortenmittelwerte je Woche unterschiedliche Buchstabendarstellungen oder anders gesagt: Wochen-spezifische Unterschiede zwischen den Sorten. Allerdings sehen wir beispielsweise auch, dass Sorte A <strong>in jeder Woche</strong> signifikant schlechter ist als alle anderen Sorten.</p>
+</div>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Analog zu <a href="2f_splitplot.html">diesem Beispiel</a> können wir die Ergebnisse grafisch wie folgt aufbereiten:</p>
+<pre class="r"><code>means.plot &lt;- as.data.table(means$emmeans) # korrektes Format für ggplot
+
+ggplot(data=means.plot, aes(x=gen)) +
+  geom_bar(aes(y=emmean, fill=gen), stat=&quot;identity&quot;, width=0.8) + 
+  guides(fill=FALSE) + 
+  geom_errorbar(aes(ymin=lower.CL, ymax=upper.CL), width=0.4) +
+  geom_text(aes(y=emmean*1.1, label=.group)) +
+  facet_wrap(~week) + # ein Plot pro Woche
+  theme_bw() +
+  labs(main=&quot;Adj. Sortenmittelwerte pro Woche&quot;,
+       y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;,
+       caption=&quot;Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1f_rcbd_messwdh_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>oder alternativ:</p>
+<pre class="r"><code>ggplot() +
+  # Rohdaten (lemna)
+  geom_jitter( data=repmes, aes(x=gen, y=y, fill=gen), width=0.15, height=0, shape=21) +
+  # Ergebnisse (plot.means)
+  geom_point(   data=means.plot, aes(x=as.numeric(gen)+0.4, y=emmean), col=&quot;red&quot;, shape=16, size=2) +
+  geom_errorbar(data=means.plot, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col=&quot;red&quot;, width=0.3) +
+  geom_text(    data=means.plot, aes(x=gen, y=6.5, label =.group), col=&quot;red&quot;) +
+  facet_wrap(~week) + # ein Plot pro Woche
+  theme_bw() +
+  labs(main=&quot;Adj. Sortenmittelwerte pro Woche&quot;,
+       y=&quot;Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;,
+       caption=&quot;Getrennt für jede Woche gilt: Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind,\n sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1f_rcbd_messwdh_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
