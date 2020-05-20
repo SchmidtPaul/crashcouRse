@@ -572,12 +572,12 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
 as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 <pre><code>##    gen   emmean        SE df lower.CL upper.CL
-## 1: G01 5.162500 0.2118065 46 4.736156 5.588844
-## 2: G02 4.514200 0.2118065 46 4.087856 4.940544
-## 3: G03 3.343067 0.2118065 46 2.916722 3.769411
-## 4: G04 4.400667 0.2118065 46 3.974322 4.827011
-## 5: G05 5.064367 0.2118065 46 4.638022 5.490711
-## 6: G06 4.710333 0.2118065 46 4.283989 5.136678</code></pre>
+## 1: G01 5.162500 0.2118065 46 4.473225 5.851775
+## 2: G02 4.514200 0.2118065 46 3.824925 5.203475
+## 3: G03 3.343067 0.2118065 46 2.653792 4.032342
+## 4: G04 4.400667 0.2118065 46 3.711392 5.089942
+## 5: G05 5.064367 0.2118065 46 4.375092 5.753642
+## 6: G06 4.710333 0.2118065 46 4.021058 5.399608</code></pre>
 <pre class="r"><code>as.data.table(means$contrasts)[1:6,] # 6 der 276 Differenzen</code></pre>
 <pre><code>##     contrast   estimate        SE df   t.ratio      p.value
 ## 1: G01 - G02 0.64830000 0.2995396 46 2.1643215 8.669495e-01
@@ -592,12 +592,12 @@ as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 ## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
 <pre class="r"><code>as.data.table(means$emmeans)[1:6,]</code></pre>
 <pre><code>##    gen   emmean        SE df lower.CL upper.CL .group
-## 1: G03 3.343067 0.2118065 46 2.916722 3.769411   a   
-## 2: G09 3.611600 0.2118065 46 3.185256 4.037944   ab  
-## 3: G20 3.784867 0.2118065 46 3.358522 4.211211   abc 
-## 4: G07 4.129933 0.2118065 46 3.703589 4.556278   abcd
-## 5: G23 4.136200 0.2118065 46 3.709856 4.562544   abcd
-## 6: G24 4.142367 0.2118065 46 3.716022 4.568711   abcd</code></pre>
+## 1: G03 3.343067 0.2118065 46 2.653792 4.032342   a   
+## 2: G09 3.611600 0.2118065 46 2.922325 4.300875   ab  
+## 3: G20 3.784867 0.2118065 46 3.095592 4.474142   abc 
+## 4: G07 4.129933 0.2118065 46 3.440658 4.819208   abcd
+## 5: G23 4.136200 0.2118065 46 3.446925 4.825475   abcd
+## 6: G24 4.142367 0.2118065 46 3.453092 4.831642   abcd</code></pre>
 </div>
 </div>
 <div id="ergebnisaufbereitung" class="section level1">

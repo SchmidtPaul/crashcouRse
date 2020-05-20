@@ -643,42 +643,43 @@ means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)
 means$emmeans # Sorten-Mittelwerte pro Woche</code></pre>
 <pre><code>## week = 1:
 ##  gen emmean         SE    df lower.CL upper.CL .group
-##  A    4.242 0.06808206 18.22 4.099088 4.384912  a    
-##  C    4.888 0.06808206 19.51 4.745752 5.030248   b   
-##  B    5.148 0.06808206 19.51 5.005752 5.290248    c  
-##  D    5.154 0.06808206 18.22 5.011088 5.296912    c  
+##  A    4.242 0.06808206 18.22 4.053961 4.430039  a    
+##  C    4.888 0.06808206 19.51 4.701289 5.074711   b   
+##  B    5.148 0.06808206 19.51 4.961289 5.334711    c  
+##  D    5.154 0.06808206 18.22 4.965961 5.342039    c  
 ## 
 ## week = 2:
 ##  gen emmean         SE    df lower.CL upper.CL .group
-##  A    4.046 0.06808206 18.22 3.903088 4.188912  a    
-##  D    4.944 0.06808206 18.22 4.801088 5.086912   b   
-##  B    4.980 0.06808206 19.51 4.837752 5.122248   b   
-##  C    5.074 0.06808206 19.51 4.931752 5.216248   b   
+##  A    4.046 0.06808206 18.22 3.857961 4.234039  a    
+##  D    4.944 0.06808206 18.22 4.755961 5.132039   b   
+##  B    4.980 0.06808206 19.51 4.793289 5.166711   b   
+##  C    5.074 0.06808206 19.51 4.887289 5.260711   b   
 ## 
 ## week = 3:
 ##  gen emmean         SE    df lower.CL upper.CL .group
-##  A    3.406 0.06808206 18.22 3.263088 3.548912  a    
-##  B    4.594 0.06808206 19.51 4.451752 4.736248   b   
-##  D    4.706 0.06808206 18.22 4.563088 4.848912   b   
-##  C    4.714 0.06808206 19.51 4.571752 4.856248   b   
+##  A    3.406 0.06808206 18.22 3.217961 3.594039  a    
+##  B    4.594 0.06808206 19.51 4.407289 4.780711   b   
+##  D    4.706 0.06808206 18.22 4.517961 4.894039   b   
+##  C    4.714 0.06808206 19.51 4.527289 4.900711   b   
 ## 
 ## week = 4:
 ##  gen emmean         SE    df lower.CL upper.CL .group
-##  A    3.086 0.06808206 18.22 2.943088 3.228912  a    
-##  B    4.220 0.06808206 19.51 4.077752 4.362248   b   
-##  D    4.388 0.06808206 18.22 4.245088 4.530912   b   
-##  C    4.476 0.06808206 19.51 4.333752 4.618248   b   
+##  A    3.086 0.06808206 18.22 2.897961 3.274039  a    
+##  B    4.220 0.06808206 19.51 4.033289 4.406711   b   
+##  D    4.388 0.06808206 18.22 4.199961 4.576039   b   
+##  C    4.476 0.06808206 19.51 4.289289 4.662711   b   
 ## 
 ## week = 5:
 ##  gen emmean         SE    df lower.CL upper.CL .group
-##  A    2.700 0.06808206 18.22 2.557088 2.842912  a    
-##  D    3.834 0.06808206 18.22 3.691088 3.976912   b   
-##  B    4.008 0.06808206 19.51 3.865752 4.150248   b   
-##  C    4.018 0.06808206 19.51 3.875752 4.160248   b   
+##  A    2.700 0.06808206 18.22 2.511961 2.888039  a    
+##  D    3.834 0.06808206 18.22 3.645961 4.022039   b   
+##  B    4.008 0.06808206 19.51 3.821289 4.194711   b   
+##  C    4.018 0.06808206 19.51 3.831289 4.204711   b   
 ## 
 ## Results are averaged over the levels of: rep 
 ## Degrees-of-freedom method: satterthwaite 
 ## Confidence level used: 0.95 
+## Conf-level adjustment: sidak method for 4 estimates 
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## significance level used: alpha = 0.05</code></pre>
 <p>Wie der im F-Test signifikante <code>week:gen</code> Effekt schon vermuten ließ, finden wir für die Sortenmittelwerte je Woche unterschiedliche Buchstabendarstellungen oder anders gesagt: Wochen-spezifische Unterschiede zwischen den Sorten. Allerdings sehen wir beispielsweise auch, dass Sorte A <strong>in jeder Woche</strong> signifikant schlechter ist als alle anderen Sorten.</p>

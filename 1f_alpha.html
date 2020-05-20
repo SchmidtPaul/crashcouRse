@@ -580,12 +580,12 @@ means &lt;- CLD(means$emmeans, details=TRUE, Letters=letters)</code></pre>
 ## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
 <pre class="r"><code>as.data.table(means$emmeans)[1:6,] # 6 der 24 Mittelwerte </code></pre>
 <pre><code>##    gen   emmean        SE       df lower.CL upper.CL .group
-## 1: G03 3.499200 0.1990122 44.32700 3.098200 3.900199   ab  
-## 2: G09 3.502181 0.1989050 44.28463 3.101387 3.902975   a c 
-## 3: G20 4.039985 0.1989050 44.28463 3.639191 4.440779   abcd
-## 4: G07 4.111136 0.1990122 44.32700 3.710137 4.512135   abcd
-## 5: G24 4.153874 0.1990122 44.32700 3.752875 4.554873   abcd
-## 6: G23 4.252449 0.1989050 44.28463 3.851655 4.653243   abcd</code></pre>
+## 1: G03 3.499200 0.1990122 44.32700 2.850106 4.148293   ab  
+## 2: G09 3.502181 0.1989050 44.28463 2.853399 4.150963   a c 
+## 3: G20 4.039985 0.1989050 44.28463 3.391203 4.688767   abcd
+## 4: G07 4.111136 0.1990122 44.32700 3.462043 4.760230   abcd
+## 5: G24 4.153874 0.1990122 44.32700 3.504780 4.802968   abcd
+## 6: G23 4.252449 0.1989050 44.28463 3.603667 4.901231   abcd</code></pre>
 <pre class="r"><code>as.data.table(means$comparisons)[1:6,] # 6 der 276 Differenzen</code></pre>
 <pre><code>##     contrast    estimate        SE       df    t.ratio   p.value
 ## 1: G09 - G03 0.002981402 0.2738997 38.45149 0.01088501 1.0000000

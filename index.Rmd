@@ -10,6 +10,8 @@ Diese Seite ist ein stetig wachsendes Skript zu Data Science in R. [Ich](kontakt
 
 Die Kategorien finden sich oben. Die Kapitel innerhalb der Kategorien können sowohl dort, als auch weiter unten in einem tabellarischem Inhaltsverzeichnis aufgerufen werden.
 
+Neben dieser Website, baue ich auch noch an [einer zweiten namens *MMFAIR - Mixed Models for Agriculture in R"](https://schmidtpaul.github.io/MMFAIR/).
+
 # Inhaltsverzeichnis
 Wie gesagt wird diese Seite stetig um Kapitel erweitert. Aus diesem Grund gibt es streng genommen keine klare Reihenfolge in der die Kapitel gelesen werden sollten. Um dennoch das richtige zu finden, soll diese tabellarische Übersicht weiterhelfen.
 

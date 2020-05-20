@@ -565,11 +565,12 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
 means$emmeans # Mittelwerte </code></pre>
 <pre><code>##  gen   emmean        SE df lower.CL upper.CL
-##  G01 5.162500 0.3023478  6 4.422682 5.902318
-##  G02 4.514200 0.3023478  6 3.774382 5.254018
-##  G03 3.343067 0.3023478  6 2.603248 4.082885
+##  G01 5.162500 0.3023478  6 4.172659 6.152341
+##  G02 4.514200 0.3023478  6 3.524359 5.504041
+##  G03 3.343067 0.3023478  6 2.353226 4.332908
 ## 
-## Confidence level used: 0.95</code></pre>
+## Confidence level used: 0.95 
+## Conf-level adjustment: sidak method for 3 estimates</code></pre>
 <pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
 <pre><code>##  contrast  estimate        SE df t.ratio p.value
 ##  G01 - G02 0.648300 0.4275844  6 1.516   0.3488 
@@ -583,11 +584,12 @@ means$emmeans # Mittelwerte </code></pre>
 ## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
 <pre class="r"><code>means</code></pre>
 <pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
-##  G03 3.343067 0.3023478  6 2.603248 4.082885  a    
-##  G02 4.514200 0.3023478  6 3.774382 5.254018  ab   
-##  G01 5.162500 0.3023478  6 4.422682 5.902318   b   
+##  G03 3.343067 0.3023478  6 2.353226 4.332908  a    
+##  G02 4.514200 0.3023478  6 3.524359 5.504041  ab   
+##  G01 5.162500 0.3023478  6 4.172659 6.152341   b   
 ## 
 ## Confidence level used: 0.95 
+## Conf-level adjustment: sidak method for 3 estimates 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
 ## significance level used: alpha = 0.05</code></pre>
 <p>Das <code>CLD()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> signifikant voneinander unterscheiden.</p>

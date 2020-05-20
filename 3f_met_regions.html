@@ -629,9 +629,9 @@ mod1 &lt;- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
 ## Conditional model:
 ##  Groups     Name        Std.Dev.
 ##  Sorte      (Intercept)  7.8281 
-##  Ort        (Intercept) 21.2584 
+##  Ort        (Intercept) 21.2585 
 ##  Jahr       (Intercept) 16.4211 
-##  Sorte:Ort  (Intercept)  3.8693 
+##  Sorte:Ort  (Intercept)  3.8692 
 ##  Sorte:Jahr (Intercept)  5.1317 
 ##  Jahr:Ort   (Intercept) 16.4701 
 ##  Residual               11.2212</code></pre>
@@ -655,19 +655,19 @@ AIC(mod2)   # AIC-Wert</code></pre>
 <pre><code>## 
 ## Conditional model:
 ##  Groups           Name        Std.Dev.
-##  Sorte            (Intercept)  7.827  
-##  Ort:Region       (Intercept) 17.806  
-##  Jahr             (Intercept) 16.775  
-##  Jahr:Ort:Region  (Intercept) 16.271  
-##  Sorte:Ort:Region (Intercept)  3.871  
-##  Sorte:Jahr       (Intercept)  5.132  
-##  Residual                     11.221</code></pre>
+##  Sorte            (Intercept)  7.8270 
+##  Ort:Region       (Intercept) 17.8059 
+##  Jahr             (Intercept) 16.7752 
+##  Jahr:Ort:Region  (Intercept) 16.2712 
+##  Sorte:Ort:Region (Intercept)  3.8710 
+##  Sorte:Jahr       (Intercept)  5.1321 
+##  Residual                     11.2206</code></pre>
 <pre class="r"><code>VarCorr(mod2)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##             (Intercept)
-## (Intercept)    61.26244
+## (Intercept)    61.26225
 ## attr(,&quot;stddev&quot;)
 ## (Intercept) 
-##    7.827033 
+##    7.827021 
 ## attr(,&quot;correlation&quot;)
 ##             (Intercept)
 ## (Intercept)           1
@@ -694,7 +694,7 @@ AIC(mod3)   # AIC-Wert</code></pre>
 ##  Sorte            RegionRegion11 2.2860e+00                   
 ##                   RegionRegion2  3.5148e+00 0.000             
 ##                   RegionRegion3  4.7569e+00 0.000 0.000       
-##                   RegionRegion6  3.6831e-05 0.000 0.000 0.000 
+##                   RegionRegion6  3.6829e-05 0.000 0.000 0.000 
 ##  Ort:Region       (Intercept)    1.7846e+01                   
 ##  Jahr             (Intercept)    1.6007e+01                   
 ##  Jahr:Ort:Region  (Intercept)    1.6276e+01                   
@@ -703,13 +703,13 @@ AIC(mod3)   # AIC-Wert</code></pre>
 ##  Residual                        1.1213e+01</code></pre>
 <pre class="r"><code>VarCorr(mod3)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11       5.225861       0.00000       0.00000  0.000000e+00
+## RegionRegion11       5.225863       0.00000       0.00000  0.000000e+00
 ## RegionRegion2        0.000000      12.35414       0.00000  0.000000e+00
-## RegionRegion3        0.000000       0.00000      22.62825  0.000000e+00
-## RegionRegion6        0.000000       0.00000       0.00000  1.356524e-09
+## RegionRegion3        0.000000       0.00000      22.62824  0.000000e+00
+## RegionRegion6        0.000000       0.00000       0.00000  1.356402e-09
 ## attr(,&quot;stddev&quot;)
 ## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
-##   2.286014e+00   3.514846e+00   4.756916e+00   3.683102e-05 
+##   2.286015e+00   3.514846e+00   4.756915e+00   3.682936e-05 
 ## attr(,&quot;correlation&quot;)
 ##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
 ## RegionRegion11              1             0             0             0
@@ -738,26 +738,26 @@ AIC(mod4)   # AIC-Wert</code></pre>
 ##  Groups           Name           Std.Dev. Corr      
 ##  Sorte            RegionRegion11  7.4341  0.896 (cs)
 ##  Ort:Region       (Intercept)    17.8314            
-##  Jahr             (Intercept)    16.7889            
-##  Jahr:Ort:Region  (Intercept)    16.3030            
+##  Jahr             (Intercept)    16.7890            
+##  Jahr:Ort:Region  (Intercept)    16.3031            
 ##  Sorte:Ort:Region (Intercept)     2.9777            
 ##  Sorte:Jahr       (Intercept)     5.1023            
 ##  Residual                        11.2447</code></pre>
 <pre class="r"><code>VarCorr(mod4)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11       55.26590      50.71245      64.81051      45.12382
-## RegionRegion2        50.71245      57.90508      66.33995      46.18868
-## RegionRegion3        64.81051      66.33995      94.57545      59.02914
-## RegionRegion6        45.12382      46.18868      59.02914      45.84577
+## RegionRegion11       55.26596      50.71277      64.81054      45.12390
+## RegionRegion2        50.71277      57.90555      66.34022      46.18892
+## RegionRegion3        64.81054      66.34022      94.57511      59.02910
+## RegionRegion6        45.12390      46.18892      59.02910      45.84571
 ## attr(,&quot;stddev&quot;)
 ## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
-##       7.434104       7.609539       9.724991       6.770950 
+##       7.434108       7.609570       9.724973       6.770946 
 ## attr(,&quot;correlation&quot;)
 ##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11      1.0000000     0.8964532     0.8964532     0.8964532
-## RegionRegion2       0.8964532     1.0000000     0.8964532     0.8964532
-## RegionRegion3       0.8964532     0.8964532     1.0000000     0.8964532
-## RegionRegion6       0.8964532     0.8964532     0.8964532     1.0000000
+## RegionRegion11      1.0000000     0.8964548     0.8964548     0.8964548
+## RegionRegion2       0.8964548     1.0000000     0.8964548     0.8964548
+## RegionRegion3       0.8964548     0.8964548     1.0000000     0.8964548
+## RegionRegion6       0.8964548     0.8964548     0.8964548     1.0000000
 ## attr(,&quot;blockCode&quot;)
 ## cs 
 ##  2</code></pre>
@@ -766,7 +766,8 @@ AIC(mod4)   # AIC-Wert</code></pre>
                          (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
                          (1|Sorte:Jahr),
         data=METdat)</code></pre>
-<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
+<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite Hessian
+## matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
 <pre class="r"><code>AIC(mod5)   # AIC-Wert</code></pre>
 <pre><code>## [1] NA</code></pre>
 <pre class="r"><code>fixef(mod5) # Lösung feste Effekte</code></pre>
@@ -790,13 +791,13 @@ AIC(mod4)   # AIC-Wert</code></pre>
 ##  Residual                        1.1219e+01</code></pre>
 <pre class="r"><code>VarCorr(mod5)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11   5.326119e-20 -1.041125e-09 -9.673759e-10 -4.172753e-10
-## RegionRegion2   -1.041125e-09  2.040614e+01  1.897220e+01  8.183874e+00
-## RegionRegion3   -9.673759e-10  1.897220e+01  5.093267e+01  2.274389e+01
-## RegionRegion6   -4.172753e-10  8.183874e+00  2.274389e+01  1.016468e+01
+## RegionRegion11   5.326086e-20 -1.041122e-09 -9.673728e-10 -4.172740e-10
+## RegionRegion2   -1.041122e-09  2.040614e+01  1.897220e+01  8.183874e+00
+## RegionRegion3   -9.673728e-10  1.897220e+01  5.093267e+01  2.274389e+01
+## RegionRegion6   -4.172740e-10  8.183874e+00  2.274389e+01  1.016468e+01
 ## attr(,&quot;stddev&quot;)
 ## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
-##   2.307839e-10   4.517315e+00   7.136713e+00   3.188210e+00 
+##   2.307831e-10   4.517315e+00   7.136713e+00   3.188210e+00 
 ## attr(,&quot;correlation&quot;)
 ##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
 ## RegionRegion11      1.0000000    -0.9986584    -0.5873427    -0.5671139
