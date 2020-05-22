@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Im- und Exportieren</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">crashcouRse</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Anwendung
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datr_importexport.html">Import &amp; Export</a>
+    </li>
+    <li>
+      <a href="datr_descriptivestats.html">Deskriptive Statistik</a>
+    </li>
+    <li>
+      <a href="datr_desplot.html">desplot package</a>
+    </li>
+    <li>
+      <a href="datr_multipledat.html">Loops &amp; Listen</a>
+    </li>
+    <li>
+      <a href="datr_moreadvanced.html">Weitere Tipps</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Auswertungen
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="1n_drinks.html">Korrelation &amp; Regression</a>
+    </li>
+    <li>
+      <a href="outlier_vision.html">Ausreisser (Korr &amp; Reg pt.2)</a>
+    </li>
+    <li>
+      <a href="1f_crd.html">1F crd</a>
+    </li>
+    <li>
+      <a href="1f_rcbd.html">1F rcbd</a>
+    </li>
+    <li>
+      <a href="1f_alpha.html">1F alpha</a>
+    </li>
+    <li>
+      <a href="2f_rcbd.html">2F rcbd</a>
+    </li>
+    <li>
+      <a href="2f_splitplot.html">2F split-plot</a>
+    </li>
+    <li>
+      <a href="1f_augmented_blockfixorrandom.html">1F augmented</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_messwdh.html">1F rcbd Messwiederholungen</a>
+    </li>
+    <li>
+      <a href="1f_rcbd_binomial.html">1F rcbd Prozentwerte</a>
+    </li>
+    <li>
+      <a href="1f_latsq_poisson.html">1F lat square Zählwerte</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistik
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="stat_korrelation.html">Korrelation</a>
+    </li>
+    <li>
+      <a href="stat_regression.html">Regression</a>
+    </li>
+    <li>
+      <a href="appendix_designs.html">Versuchsdesigns</a>
+    </li>
+    <li>
+      <a href="appendix_posthoc.html">ANOVA &amp; Post Hoc</a>
+    </li>
+    <li>
+      <a href="appendix_interaktionen.html">Interaktionen</a>
+    </li>
+    <li>
+      <a href="stat_adjmeans.html">Adj. Mittelwerte</a>
+    </li>
+    <li>
+      <a href="stat_pvalue.html">p-Werte &amp; Signifikanz</a>
+    </li>
+    <li>
+      <a href="stat_gemischtemodelle.html">Gemischte Modelle</a>
+    </li>
+    <li>
+      <a href="appendix_kovarstrukt.html">Kovarianzstrukturen 1</a>
+    </li>
+    <li>
+      <a href="3f_met_regions.html">Kovarianzstrukturen 2</a>
+    </li>
+    <li>
+      <a href="intro_glm_carrot.html">Nicht-Normalverteilte Daten</a>
+    </li>
+    <li>
+      <a href="stat_logisticregression.html">Logistische Regression</a>
+    </li>
+    <li>
+      <a href="appendix_modelrules.html">Modelle aufstellen</a>
+    </li>
+    <li>
+      <a href="stat_samplesize.html">Stichprobenplanung</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="kontaktseite.html">Kontakt</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Im- und Exportieren</h1>
+
+</div>
+
+
+<blockquote>
+<p>Eine umfangreichere, aber dennoch übersichtliche Zusammenfassung zum Im- und Export verschiedener Dateiformate via verschiedener packages gibt es <a href="https://cran.r-project.org/web/packages/rio/vignettes/rio.html">hier</a>.</p>
+</blockquote>
+<p>Hier werden kurz einige Möglichkeiten diskutiert</p>
+<ol style="list-style-type: decimal">
+<li>Daten in <code>R</code> zu importieren</li>
+<li>Abbildungen und Ergebnisse aus <code>R</code> zu exportieren</li>
+</ol>
+<div id="working-directory" class="section level1">
+<h1>Working Directory</h1>
+<p>Bevor man sich mit dem Im- und Exportieren beschäftigt, sollte klar sein, was eine <em>working directory (wd)</em> in <code>R</code> ist und wie man damit umgeht. Kurz gesagt ist es einfach der Ordner/der Pfad auf dem Computer, in welchem <code>R</code> arbeitet und wo es deshalb Dateien sucht und speichert. Es kann frei entschieden werden welcher Ordner das sein soll, aber irgendeiner muss es sein. Wenn man ihn nicht selbst aussucht, wählt <code>R</code> einen default-Ordner aus. Um herauszufinden welcher Ordner aktuell als working directory festgelegt ist, kann die Funktion <code>getwd()</code> genutzt werden.</p>
+<p>Es ist praktisch für jede Analyse/Arbeit einen bestimmten Ordner anzulegen und diesen mit <code>setwd()</code> als working directory festzulegen. Als Beispiel sagen wir unser Ordner heißt “Ordner2” und liegt im “Ordner1”, welcher wiederum auf dem Desktop liegt. Hier liegen alle Informationen, wie z.B. die Daten, die wir später importieren wollen. Der Pfad heißt also: <code>C:\Users\Paul\Desktop\Ordner1\Ordner2</code>. Würde dort die Datei <code>Daten.csv</code> liegen und man wollte sie mit <code>read.table()</code> importieren (siehe unten) würde das wie folge ablaufen:</p>
+<pre class="r"><code># Ohne working directory festzulegen
+read.table(&quot;C:/Users/Paul/Desktop/Ordner1/Ordner2/Daten.csv&quot;)
+
+# Vorher working directory festlegen
+setwd(&quot;C:/Users/Paul/Desktop/Ordner1/Ordner2/&quot;)
+read.table(&quot;Daten.csv&quot;)</code></pre>
+<p>Wenn es natürlich bei diesem einen Import bliebe, macht es keinen großen Unterschied. Da man in der Regel allerdings auch noch mindestens etwas exportiert, lohnt es sich schnell, da die working directory nur einmal festgelegt werden muss, sodass alle folgenden Pfade abgekürzt werden können.</p>
+</div>
+<div id="importieren" class="section level1">
+<h1>Importieren</h1>
+<div id="vergleich-dateiformate" class="section level2">
+<h2>Vergleich Dateiformate</h2>
+<p>Oft werden Daten in Programmen wie Excel, also Tabellenkalkulationssoftware, erfasst. Dies hat den großen Vorteil, dass die Eingabe und auch z.B. Sortierung der Daten schnell, interaktiv, intuitiv und übersichtlich ist. Excel-Dateien sind vom Typ <code>.xlsx</code>. Beschäftigt man sich allerdings mehr mit der Datenverarbeitung, fällt auf, dass dort Daten vom Typ <code>.csv</code> oder <code>.txt</code> bevorzugt werden. Dies sind in der Regel einfache Text-Dateien, deren Werte durch <a href="https://www.wikiwand.com/en/Delimiter-separated_values">bestimmte Zeichen</a> getrennt sind. Die Abkürzung <code>csv</code> steht sogar für <em>comma-separated values</em>, sodass also alle Einträge durch Kommas getrennt werden. Es können aber auch andere Zeichen als Trennzeichen zum Einsatz kommen wie z.B. Semikolon, Doppelpunkt, Tabulatorzeichen, Leerzeichen. Im Endeffekt geht es aber immer darum einen Datensatz in einem möglichst simplen und deshalb zugleich speicherplatzsparendem und fehlerunanfälligem Format abzuspeichern.</p>
+<p><img src="images/XLSXtoCSV.PNG" align="left"></p>
+<p>Am Beispielbild wird allerdings auch deutlich, dass einige Informationen wie z.B. farbliche Formatierungen verloren gehen, wenn in solche ein <em>delimited text file</em> Format umgewandelt wird. Nichtsdestotrotz gilt:</p>
+<p><strong>Dateien im delimited text file Format werden zum Im- und Export mit <code>R</code> bevorzugt, da der Prozess fehlerunanfällig und schnell funktioniert.</strong></p>
+</div>
+<div id="delimited-text-file-formate" class="section level2">
+<h2>Delimited Text File Formate</h2>
+<div id="basisfuntkion" class="section level3">
+<h3>Basisfuntkion</h3>
+<p>Die <strong>Basisfunktion</strong> in <code>R</code> zum Import von Daten im delimited text file Format ist <code>read.table</code>. Man kann sehr viel angeben, wie z.B. ob die vorhanden Daten mit oder ohne Spaltennamen vorliegen oder was für ein Trennzeichen vorhanden ist. Im europäischen Raum darf nicht in Vergessenheit geraten werden, dass nicht überall auf der Welt Kommas als Dezimaltrennstellen benutzt werden: <code>10,58</code> in Deutschland entspricht <code>10.58</code> in den USA. Dies führt oft zu Probleme beim Import und sollte deshalb auch explizit beim Import/Export angegeben werden. Schließlich gibt es Abwandlungen wie z.B. <code>read.csv</code>, <code>read.delim</code> oder <code>read.csv2</code>, die genau wie <code>read.table</code> funktionieren und lediglich <em>convenience functions</em> darstellen:</p>
+<pre class="r"><code>read.table(&quot;Beispiel.csv&quot;, sep=&quot;;&quot;) # Semikolon als Trennzeichen
+read.csv(&quot;Beispiel.csv&quot;) # Praktisch das gleiche wie der Befehl zuvor
+
+read.table(&quot;Beispiel.csv&quot;, sep=&quot;;&quot;, dec=&quot;,&quot;) # Zusätzlich Komma als Dezimaltrennzeichen
+read.csv2(&quot;Beispiel.csv&quot;) # Praktisch das gleiche wie der Befehl zuvor</code></pre>
+<p>Details finden sich z.B. <a href="https://cran.r-project.org/doc/manuals/R-data.html#Variations-on-read_002etable">hier</a>.</p>
+</div>
+<div id="import-mit-data.table" class="section level3">
+<h3>Import mit data.table</h3>
+<p>Das <code>data.table</code> <a href="https://cran.r-project.org/web/packages/data.table/index.html">package</a> bringt viele zusätzliche Funktionen mit sich. In diesem Kontext soll vor allem angemerkt werden, dass die Funktion <code>fread()</code> (fast read) im Prinzip eine schnellere und bequemere Version von <code>read.table</code> ist, was den Importprozess bei größeren Datensätzen schnell <a href="https://csgillespie.github.io/efficientR/5-3-importing-data.html#fast-data-reading">auf einen Bruchteil reduzieren kann</a>. Es muss allerdings klar sein, dass <code>fread()</code> die importierten Daten im <code>data.table</code> Format abspeichert und nicht wie <code>read.table()</code> imd <code>data.frame</code> Format. Das kann dem Nutzer oft egal sein, <a href="https://stackoverflow.com/questions/13618488/what-you-can-do-with-a-data-frame-that-you-cant-with-a-data-table">es gibt aber Unterschiede im Handling</a>.</p>
+<pre class="r"><code>library(data.table)
+fread(&quot;Beispiel.csv&quot;) # Gegenstück zum read.table() Beispiel oben
+# fread versteht die Argumente sep=&quot;;&quot; und dec=&quot;,&quot; erkennt die Trennzeichen in der Regel aber automatisch</code></pre>
+</div>
+</div>
+<div id="excel-.xlsx-dateien" class="section level2">
+<h2>Excel (.xlsx) Dateien</h2>
+<p>Da viele ihre Daten mit Excel aufnehmen bzw. am Ende in Excel vorliegen haben, mag es umständlich erscheinen eine Excel-Datei erst in eine <code>.csv</code> oder <code>.txt.</code> Datei umzuwandeln. Tatsächlich wurde dies aber vor allem in der Vergangenheit aus den oben genannten Gründen viel gemacht. Zwar gibt es schon länger Funktionen auch Excel-Dateien direkt zu importieren, doch diese führten schlichtweg frustrierend oft zu Fehlern. Auch heute wird oft noch vermittelt, dass das direkte Importieren einer Excel-Datei wenn dann mit Vorsicht zu genießen ist. Dennoch gibt es in <code>R</code> Möglichkeiten mit denen ich solide Erfahrungen gemacht habe. Momentan nutze ich dafür das <code>readxl</code> <a href="https://cran.r-project.org/web/packages/readxl/index.html">package</a>. Man kann sogar mit dem Argument <code>range=</code> nur einen Teil eines Tabellenblatts auswählen, also beispielsweise A4:C10 und mehr.</p>
+<pre class="r"><code>library(readxl)
+read_excel(&quot;Beispiel.xlsx&quot;, sheet=&quot;Blatt1&quot;) # Importiert das Tabellenblatt &quot;Blatt1&quot; aus der &quot;Beispiel.xlsx&quot; Datei</code></pre>
+</div>
+</div>
+<div id="exportieren" class="section level1">
+<h1>Exportieren</h1>
+<p>Wenn eine Abbildung/ein Plot in <code>R</code> erstellet wurde, kann dieser natürlich aus dem Vorschaufenster durch Klicken auf den “Export” Button abgespeichert werden. Hier soll aber gezeigt werden wie Plots auch ohne zusätzliches Klicken exportiert werden können.</p>
+<div id="ggplot2-graphen" class="section level2">
+<h2>ggplot2 Graphen</h2>
+<p>Für ggplot2 Objekte gibt es eine extrem praktische <a href="https://ggplot2.tidyverse.org/reference/ggsave.html">Funktion namens</a> <code>ggsave()</code>. Sie kann jeden Plot, der mit <code>ggplot()</code> erstellt wurde mit verschiedenen Optionen abspeichern. Wenn nicht explizit ein Objekt angegeben wird, das den <code>ggplot()</code> output enthält, wird einfach der zuletzt erstellte Plot gespeichert. Besonders nützlich ist, dass auch in Vektorgrafik-Formaten wie z.B. <code>.eps</code> abgespeichert und die genaue Größe in z.B. Pixeln oder cm vorgegeben werden kann</p>
+<pre class="r"><code>library(ggplot2)
+meinplot &lt;- ggplot(...) # Erstellen und speichern eines Plots
+ggsave(plot=meinplot, filename=&quot;PlotDateiName.png&quot;, width=20, height=20, units=&quot;cm&quot;) # Speichere Plot in 20cm x 20cm als png-Datei mit dem Namen &quot;PlotDateiName&quot;</code></pre>
+</div>
+<div id="tabellendaten" class="section level2">
+<h2>Tabellen/Daten</h2>
+<div id="basisfunktion-data.table" class="section level3">
+<h3>Basisfunktion &amp; data.table</h3>
+<p>Analog zu den oben gezeigten Importfunktionen <code>read.table</code> und <code>fread</code>, gibt es auch <code>write.table</code> und <code>fwrite</code>. Wieder können die <code>dec=</code> und <code>sep=</code> Funktionen genutzt werden:</p>
+<pre class="r"><code>write.table(x=myRobject, file=&quot;DateiName.csv&quot;)
+library(data.table)
+fwrite(x=myRobject, file=&quot;DateiName.csv&quot;)</code></pre>
+</div>
+<div id="excel-.xlsx-dateien-1" class="section level3">
+<h3>Excel (.xlsx) Dateien</h3>
+<p>Auch der Export direkt in Excel-Dateien ist möglich. Hierfür nutze ich momentan das <code>openxlsx</code> <a href="https://cran.r-project.org/web/packages/openxlsx/index.html">package</a> und somit ein anderes (!) als für den Import aus Excel. Der einfache Export einer Tabelle in eine Datei funktioniert mit <code>write.xlsx()</code> analog zu den anderen Funktionen:</p>
+<pre class="r"><code>library(openxlsx)
+write.xlsx(x=myRobject, file=&quot;DateiName.xlsx&quot;, sheetName=&quot;TabellenblattName&quot;)</code></pre>
+<p>Noch interessanter ist das package m.E. aber wenn es darum geht mehrere Tabellen in mehrere Tabellenblätter einer Datei zu schreiben. Das geschieht mit <code>saveWorkbook()</code>, indem erst ein <em>workbook</em> Objekt erstellt wird, welches nach und nach mit Tabellenblättern befüllt wird:</p>
+<pre class="r"><code>wb &lt;- createWorkbook()
+  addWorksheet(wb, &quot;TabellenblattName1&quot;)
+  writeData(wb, &quot;TabellenblattName1&quot;, myRobject1)
+  addWorksheet(wb, &quot;TabellenblattName2&quot;)
+  writeData(wb, &quot;TabellenblattName2&quot;, myRobject2)
+saveWorkbook(wb, file=&quot;DateiName.xlsx&quot;)</code></pre>
+<p>Es ist auch möglich bestimmte Formatierugen vorzunehmen. Beispielsweise können die einzelnen Spalten als unterschiedlich breit festgelegt werden:</p>
+<pre class="r"><code>setColWidths(wb, sheet=&quot;TabellenblattName1&quot;, 
+             cols = c(&quot;Spalte1&quot;, &quot;Spalte2&quot;, &quot;Spalte3&quot;), 
+             widths = c(25, 3, 3))</code></pre>
+<p>Oder auch farbliche Hervorhebungen usw. können schon beim Export in <code>R</code> vorgenommen werden:</p>
+<pre class="r"><code>hs &lt;- createStyle(fontColour=&quot;white&quot;, fontSize=14, textDecoration=&quot;bold&quot;,
+                  fgFill=&quot;green&quot;, 
+                  border=c(&quot;top&quot;, &quot;bottom&quot;), borderStyle=&quot;dotted&quot;, 
+                  halign=&quot;center&quot;, valign=&quot;center&quot;,
+                  textRotation=45)
+
+write.xlsx(x=myRobject, file=&quot;DateiName.xlsx&quot;, sheetName=&quot;TabellenblattName&quot;, 
+           borders=&quot;surrounding&quot;, headerStyle=hs)</code></pre>
+<p>Mehr Infos gibt es <a href="https://rdrr.io/cran/openxlsx/man/createStyle.html">hier</a> und <a href="https://cran.r-project.org/web/packages/openxlsx/vignettes/Introduction.pdf">hier</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
