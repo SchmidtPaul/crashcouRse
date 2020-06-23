@@ -1,5 +1,9 @@
 ---
 title: "Mehr Details zur Vorgehensweise"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 An dieser Stelle sollen einige Punkten der vorgestellten allgemeinen Vorgehensweisen etwas diskutiert werden. 

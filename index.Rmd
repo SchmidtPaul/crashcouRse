@@ -1,4 +1,11 @@
-<img src="images/Banner.png" style="width:100%">
+---
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
+---
+
+<img src="images/banner_crashcourse.jpg" style="width:100%">
 
 # Was ist diese Seite?
 

@@ -1,5 +1,9 @@
 ---
 title: "Logistische Regression"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 Mit **logistischer Regression** oder **Logit-Modell** (von **log**istic un**it**) sind in der Regel Regressionsmodelle gemeint, die binäre Zielvariablen (z.B. *Ja/Nein*) modellieren. Streng genommen fallen aber auch die multinomiale (*deutsch/englisch/spanisch*; multinomial logistic regression) oder geordnete (*schlecht/mittel/gut*; ordered logit model) logistische Regressionen, also alle Regressionen mit diskreten Zielvariablen, in die Klasse der logistischen Regressionen, welche wiederum eine Untergruppe der generalisierten linearen Modelle sind.

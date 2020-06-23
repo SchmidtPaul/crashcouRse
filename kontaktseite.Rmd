@@ -1,5 +1,9 @@
 ---
 title: "Paul Schmidt"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 <img src="images/PauSch.jpg" style="width:25%; margin-right: 20px" align="left">

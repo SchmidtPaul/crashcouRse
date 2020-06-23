@@ -1,6 +1,11 @@
 ---
 title: "Augmented Design - Blockeffekt fest oder zufällig?"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(emmeans)
 library(data.table)

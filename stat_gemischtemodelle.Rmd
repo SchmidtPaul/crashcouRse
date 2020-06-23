@@ -1,5 +1,9 @@
 ---
 Title: "Gemischte Modelle"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 # Was ist überhaupt ein zufälliger Effekt ?

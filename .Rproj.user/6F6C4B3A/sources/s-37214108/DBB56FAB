@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1592931960607.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1086768523",
+    "id" : "DBB56FAB",
+    "lastKnownWriteTime" : 1592931926,
+    "last_content_update" : 1592931926,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/stat_pvalue.Rmd",
+    "project_path" : "stat_pvalue.Rmd",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,5 +1,9 @@
 ---
 title: "Von p-Werten und Signifikanzen"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 > Dieses Kapitel ist zwar weniger ernst geschrieben als die anderen, ist aber mindestens genau so wichtig!

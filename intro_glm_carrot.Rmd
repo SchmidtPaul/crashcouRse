@@ -1,5 +1,9 @@
 ---
 title: "Einführung in generalisierte lineare Modelle"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 <style>

@@ -1,5 +1,9 @@
 ---
 title: "Arbeiten mit mehreren Datensätzen/Dateien"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 Oft kommt es vor, dass verschiedene Datensätze aus mehreren Versuchen/Experimenten erhoben werden. In solche einem Fall ist es eventuell nötig

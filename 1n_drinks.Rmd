@@ -1,5 +1,9 @@
 ---
 title: "Korrelation, Regression und Alkohol"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 # Datensatz

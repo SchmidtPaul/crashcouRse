@@ -1,5 +1,9 @@
 ---
 title: "Im- und Exportieren"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 > Eine umfangreichere, aber dennoch übersichtliche Zusammenfassung zum Im- und Export verschiedener Dateiformate via verschiedener packages gibt es [hier](https://cran.r-project.org/web/packages/rio/vignettes/rio.html).

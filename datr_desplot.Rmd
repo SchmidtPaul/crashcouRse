@@ -1,5 +1,9 @@
 ---
 title: "Feldpläne mit dem desplot package"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}

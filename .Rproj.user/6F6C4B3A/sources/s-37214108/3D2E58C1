@@ -1,24 +1,24 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1582282215494.000,
+    "created" : 1585570931202.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
-    "id" : "A18B5F4C",
-    "lastKnownWriteTime" : 1589987006,
-    "last_content_update" : 1589987006396,
-    "path" : "D:/RKurse/Dokumentation/crashcouRse/kontaktseite.Rmd",
-    "project_path" : "kontaktseite.Rmd",
+    "id" : "3D2E58C1",
+    "lastKnownWriteTime" : 1592932056,
+    "last_content_update" : 1592932056,
+    "path" : "D:/RKurse/Dokumentation/crashcouRse/datr_importexport.Rmd",
+    "project_path" : "datr_importexport.Rmd",
     "properties" : {
-        "cursorPosition" : "10,110",
+        "cursorPosition" : "12,30",
         "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
     ],
-    "relative_order" : 5,
+    "relative_order" : 7,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_markdown"

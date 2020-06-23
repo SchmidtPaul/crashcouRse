@@ -1,5 +1,9 @@
 ---
 title: "1 Beh.faktor - Alpha-Design"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 # Datensatz

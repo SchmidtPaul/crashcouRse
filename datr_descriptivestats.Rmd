@@ -1,6 +1,11 @@
 ---
 title: "Deskriptive Statistik in R"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
+
 > Ein zum Thema passendes Youtube Video gibt's [hier](https://youtu.be/kn83BA7cRNM)
 
 Man kann Statistik in *deskriptive/erkundende* und *schließende/inferentielle/induktive/mathematische* Statistik unterteilen. Erstere beschreibt die Daten im Prinzip nur und versucht sie zusammenfassend darzustellen. Zweitere nutzt Methode und Verfahren um die Daten anhand von Tests zu analysieren und Entscheidungen zu treffen. Im Data Science Bereich formuliert Hadley Wickham die Unterteilung wie folgt: 

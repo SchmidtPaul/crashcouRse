@@ -1,5 +1,9 @@
 ---
 title: "Korrelation"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 > Ein zum Thema passendes Youtube Video gibt's [hier](https://youtu.be/GtV-VYdNt_g)

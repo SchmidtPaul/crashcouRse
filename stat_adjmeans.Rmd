@@ -1,5 +1,9 @@
 ---
 title: "'Normal' means vs. adjusted means"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 Gerade bei Analysen von Daten mit qualitativen/kategorialen Effekten bzw. Faktoren  geht es am Ende oft darum die Mittelwerte der Faktorstufen (z.B. von Sorte "A" & "B") zu betrachten und miteinander zu vergleichen. So z.B. sind [post hoc Tests](appendix_posthoc.html) oft der letzte Schritt einer statistischen Auswertung, da sie die Differenzen zwischen den Mittelwerten als signifikant oder eben nicht signifikant einstufen.

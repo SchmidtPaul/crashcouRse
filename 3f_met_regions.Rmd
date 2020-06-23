@@ -1,5 +1,9 @@
 ---
 title: "Zufällige Effekte mit Varianzstrukturen"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 In diesem Beispiel soll gezeigt werden wir mit dem `glmmTMB` package Varianzstrukturen für zufällige Effekte (also nicht für den Fehlerterm wie z.B. bei Messwiederholungen) genutzt werden können. Für mehr Infos 

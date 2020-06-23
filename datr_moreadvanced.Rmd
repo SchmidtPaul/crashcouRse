@@ -1,5 +1,9 @@
 ---
 title: "Weitere Tipps"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
   
 Hier sind weitere, nützliche Tipps, die ich gerne sehr viel früher gewusst hätte.

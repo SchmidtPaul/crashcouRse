@@ -1,5 +1,9 @@
 ---
 title: "Modelle aufstellen"
+output: 
+  html_document:
+    includes:
+      after_body: footer.html 
 ---
 
 > Diese Regeln wurden mit Fokus auf Pflanzenbauwissenschaften aufgestellt. [Quelle hier](https://www.gpw.uni-kiel.de/de/jahrestagung/pre-conference-workshops/pre-conference-workshop-2016/workshop-2016-1)
