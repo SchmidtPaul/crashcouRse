@@ -26,6 +26,15 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -589,23 +598,23 @@ get.n &lt;- data.table(p1.perc = seq(1.6, 10.0, 0.1)) %&gt;% # 1,6% - 10,0% in 0
 <div class="row">
 <div class="col-md-6">
 <pre class="r"><code>head(get.n) # erste 6 Zeilen</code></pre>
-<pre><code>##   p1.perc    p1 d.perc     d     n
-## 1     1.6 0.016    0.1 0.001 60483
-## 2     1.7 0.017    0.2 0.002 16050
-## 3     1.8 0.018    0.3 0.003  7545
-## 4     1.9 0.019    0.4 0.004  4476
-## 5     2.0 0.020    0.5 0.005  3012
-## 6     2.1 0.021    0.6 0.006  2194</code></pre>
+<pre><code>##    p1.perc    p1 d.perc     d     n
+## 1:     1.6 0.016    0.1 0.001 60483
+## 2:     1.7 0.017    0.2 0.002 16050
+## 3:     1.8 0.018    0.3 0.003  7545
+## 4:     1.9 0.019    0.4 0.004  4476
+## 5:     2.0 0.020    0.5 0.005  3012
+## 6:     2.1 0.021    0.6 0.006  2194</code></pre>
 </div>
 <div class="col-md-6">
 <pre class="r"><code>tail(get.n) # letzte 6 Zeilen</code></pre>
 <pre><code>##    p1.perc    p1 d.perc     d  n
-## 80     9.5 0.095    8.0 0.080 52
-## 81     9.6 0.096    8.1 0.081 51
-## 82     9.7 0.097    8.2 0.082 51
-## 83     9.8 0.098    8.3 0.083 50
-## 84     9.9 0.099    8.4 0.084 49
-## 85    10.0 0.100    8.5 0.085 48</code></pre>
+## 1:     9.5 0.095    8.0 0.080 52
+## 2:     9.6 0.096    8.1 0.081 51
+## 3:     9.7 0.097    8.2 0.082 51
+## 4:     9.8 0.098    8.3 0.083 50
+## 5:     9.9 0.099    8.4 0.084 49
+## 6:    10.0 0.100    8.5 0.085 48</code></pre>
 </div>
 </div>
 </div>
@@ -621,21 +630,21 @@ get.n &lt;- data.table(p1.perc = seq(1.6, 10.0, 0.1)) %&gt;% # 1,6% - 10,0% in 0
          RR     = round(p1/(1.0/100),1)) # Relatives Risiko (annäherungsweise)
 
 head(get.n) # Erste 6 Zeilen</code></pre>
-<pre><code>##   p1.perc    p1 d.perc     d     n n.prot       U.KI       O.KI  RR
-## 1     1.6 0.016    0.1 0.001 60483    968 0.01500001 0.01699999 1.6
-## 2     1.7 0.017    0.2 0.002 16050    273 0.01500005 0.01899995 1.7
-## 3     1.8 0.018    0.3 0.003  7545    136 0.01500002 0.02099998 1.8
-## 4     1.9 0.019    0.4 0.004  4476     86 0.01500035 0.02299965 1.9
-## 5     2.0 0.020    0.5 0.005  3012     61 0.01500015 0.02499985 2.0
-## 6     2.1 0.021    0.6 0.006  2194     47 0.01500017 0.02699983 2.1</code></pre>
+<pre><code>##    p1.perc    p1 d.perc     d     n n.prot       U.KI       O.KI  RR
+## 1:     1.6 0.016    0.1 0.001 60483    968 0.01500001 0.01699999 1.6
+## 2:     1.7 0.017    0.2 0.002 16050    273 0.01500005 0.01899995 1.7
+## 3:     1.8 0.018    0.3 0.003  7545    136 0.01500002 0.02099998 1.8
+## 4:     1.9 0.019    0.4 0.004  4476     86 0.01500035 0.02299965 1.9
+## 5:     2.0 0.020    0.5 0.005  3012     61 0.01500015 0.02499985 2.0
+## 6:     2.1 0.021    0.6 0.006  2194     47 0.01500017 0.02699983 2.1</code></pre>
 <pre class="r"><code>tail(get.n) # Letzte 6 Zeilen</code></pre>
 <pre><code>##    p1.perc    p1 d.perc     d  n n.prot       U.KI      O.KI   RR
-## 80     9.5 0.095    8.0 0.080 52      5 0.01530327 0.1746967  9.5
-## 81     9.6 0.096    8.1 0.081 51      5 0.01514799 0.1768520  9.6
-## 82     9.7 0.097    8.2 0.082 51      5 0.01577294 0.1782271  9.7
-## 83     9.8 0.098    8.3 0.083 50      5 0.01558858 0.1804114  9.8
-## 84     9.9 0.099    8.4 0.084 49      5 0.01537464 0.1826254  9.9
-## 85    10.0 0.100    8.5 0.085 48      5 0.01512951 0.1848705 10.0</code></pre>
+## 1:     9.5 0.095    8.0 0.080 52      5 0.01530327 0.1746967  9.5
+## 2:     9.6 0.096    8.1 0.081 51      5 0.01514799 0.1768520  9.6
+## 3:     9.7 0.097    8.2 0.082 51      5 0.01577294 0.1782271  9.7
+## 4:     9.8 0.098    8.3 0.083 50      5 0.01558858 0.1804114  9.8
+## 5:     9.9 0.099    8.4 0.084 49      5 0.01537464 0.1826254  9.9
+## 6:    10.0 0.100    8.5 0.085 48      5 0.01512951 0.1848705 10.0</code></pre>
 <p>Die Spalte <code>n.prot</code> gibt die Anzahl protanoper Fahrer an, die in der Stichprobe mit Größe <span class="math inline">\(n\)</span> dem Anteil <span class="math inline">\(p_1\)</span> entspricht. Bezogen auf die erste Zeile bedeutet das: wenn mindestens 968 der 60.483 Unfallverursacher protanop wären, dann entspräche dies einem <span class="math inline">\(p_1\)</span> von mindestens 1,6% und dessen untere Grenze des Konfidenzintervalls würde die 1,5% nicht mehr miteinschließen (siehe auch Spalte <code>U.KI</code>).</p>
 <p>Das Relative Risiko (Risk Ratio), auf das hier nur sehr kurz eingegangen werden soll (mehr Infos z.B. <a href="https://www.wikiwand.com/de/Relatives_Risiko">hier</a>), wurde hier zusätzlich und nur annäherungsweise geschätzt. Die Annäherung rührt daher, dass man für dieses Maß auch den Anteil protanoper Männer an Autofahrern <em>ohne</em> Unfall benötigt. Dieser wurde zur Berechnung einfach auf die 1% gesetzt, was hier übrigens dazu führt, dass <span class="math inline">\(RR=p_1\)</span>. Ein relatives Risiko von 2 würde bedeuten, dass das Risiko einen Unfall zu verursachen unter protanopen Autofahrern 2-mal so hoch ist wie unter nicht-protanopen Autofahrern.</p>
 </div>
@@ -650,11 +659,11 @@ head(get.n) # Erste 6 Zeilen</code></pre>
   mutate(labeltext = paste0(&quot;n=&quot;,n,&quot;; RR=&quot;, RR)) # Erstellen eines Labels für jeden Wert
 
 label.tab</code></pre>
-<pre><code>##     n p1.perc  RR     labeltext
-## 1 937     2.5 2.5 n=937; RR=2.5
-## 2 497     3.0 3.0   n=497; RR=3
-## 3 149     5.0 5.0   n=149; RR=5
-## 4  67     8.0 8.0    n=67; RR=8</code></pre>
+<pre><code>##      n p1.perc  RR     labeltext
+## 1: 937     2.5 2.5 n=937; RR=2.5
+## 2: 497     3.0 3.0   n=497; RR=3
+## 3: 149     5.0 5.0   n=149; RR=5
+## 4:  67     8.0 8.0    n=67; RR=8</code></pre>
 <p>Der Plot wurde mit folgendem Code erstellt:</p>
 <pre class="r"><code>library(ggplot2)
 library(ggrepel) # package um einzelne Datenpunkte in einem Plot mit einem Label zu versehen
@@ -708,7 +717,7 @@ ggplot() +
     <a href="https://github.com/SchmidtPaul/" class="fa fa-github"></a>
 </p>
 
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2Findex.html" alt="Hits" class="center">
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2F&count_bg=%23003F75&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" class="center"/></a>
 
 &nbsp;
 
@@ -761,7 +770,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

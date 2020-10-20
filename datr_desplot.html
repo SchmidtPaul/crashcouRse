@@ -26,6 +26,15 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -523,6 +532,8 @@ div.tocify {
 <pre class="r"><code>desplot(data=alpha, form= gen ~ col+row, 
         text=gen, shorten=&quot;no&quot;,
         main=&quot;&quot;, show.key=F)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
@@ -531,6 +542,8 @@ div.tocify {
 <pre class="r"><code>desplot(data=alpha, form= yield ~ col+row, 
         num=yield, 
         main=&quot;&quot;, show.key=F)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -544,6 +557,8 @@ div.tocify {
         out1=rep,
         main=&quot;&quot;, 
         show.key=F)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
@@ -552,6 +567,8 @@ div.tocify {
         out1=rep, out2=inc.block, 
         out2.gpar=list(col=&quot;black&quot;),
         main=&quot;&quot;, show.key=F)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -576,6 +593,8 @@ desplot(data=alpha, form= inc.block ~ col+row,
         main=&quot;&quot;, show.key=F)</code></pre>
 </div>
 <div class="col-md-6">
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -613,6 +632,8 @@ desplot(data=alpha, form= inc.block ~ col+row,
         out1=block,
         out2=gen, out2.gpar=list(col=&quot;gray50&quot;),
         main=&quot;&quot;)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="beispiel-3" class="section level1">
@@ -649,6 +670,8 @@ nuts$res &lt;- round(resid(mod),2)</code></pre>
         text=gen, cex=0.8,
         out1=block, show.key=F, 
         main=&quot;rand. compl. block design&quot;)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 <div class="col-md-6">
@@ -656,6 +679,8 @@ nuts$res &lt;- round(resid(mod),2)</code></pre>
         text=res, cex=0.8, shorten=&quot;none&quot;,
         show.key=F,
         main=&quot;Residuen des RCBD Modells&quot;)</code></pre>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="datr_desplot_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -678,7 +703,7 @@ nuts$res &lt;- round(resid(mod),2)</code></pre>
     <a href="https://github.com/SchmidtPaul/" class="fa fa-github"></a>
 </p>
 
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2Findex.html" alt="Hits" class="center">
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2F&count_bg=%23003F75&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" class="center"/></a>
 
 &nbsp;
 
@@ -731,7 +756,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

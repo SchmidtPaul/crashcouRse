@@ -26,6 +26,15 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -494,6 +503,8 @@ div.tocify {
 library(ggplot2); library(ggfortify) # bessere Plots
 library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Wir haben einen Datensatz aus einem Feldversuch, in welchem der Ertrag von 3 Sorten geprüft wurde. Der Versuch hatte 3 Wiederholungen und wurde als <strong>vollständig randomisierte Anlage</strong> (=<strong>C</strong>ompletely <strong>R</strong>andomized <strong>D</strong>esign) angelegt. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="1f_crd_pdf_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
 <div class="row">
 <div class="col-md-6">
@@ -564,29 +575,29 @@ library(emmeans) # adjustierte Mittelwerte</code></pre>
 <p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
 means$emmeans # Mittelwerte </code></pre>
-<pre><code>##  gen emmean    SE df lower.CL upper.CL
-##  G01   5.16 0.302  6     4.17     6.15
-##  G02   4.51 0.302  6     3.52     5.50
-##  G03   3.34 0.302  6     2.35     4.33
+<pre><code>##  gen   emmean        SE df lower.CL upper.CL
+##  G01 5.162500 0.3023478  6 4.172659 6.152341
+##  G02 4.514200 0.3023478  6 3.524359 5.504041
+##  G03 3.343067 0.3023478  6 2.353226 4.332908
 ## 
 ## Confidence level used: 0.95 
 ## Conf-level adjustment: sidak method for 3 estimates</code></pre>
 <pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
-<pre><code>##  contrast  estimate    SE df t.ratio p.value
-##  G01 - G02    0.648 0.428  6 1.516   0.3488 
-##  G01 - G03    1.819 0.428  6 4.255   0.0127 
-##  G02 - G03    1.171 0.428  6 2.739   0.0754 
+<pre><code>##  contrast  estimate        SE df t.ratio p.value
+##  G01 - G02 0.648300 0.4275844  6 1.516   0.3488 
+##  G01 - G03 1.819433 0.4275844  6 4.255   0.0127 
+##  G02 - G03 1.171133 0.4275844  6 2.739   0.0754 
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
 <pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)</code></pre>
 <pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
-## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+## See &#39;?cld.emmGrid&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
 <pre class="r"><code>means</code></pre>
-<pre><code>##  gen emmean    SE df lower.CL upper.CL .group
-##  G03   3.34 0.302  6     2.35     4.33  a    
-##  G02   4.51 0.302  6     3.52     5.50  ab   
-##  G01   5.16 0.302  6     4.17     6.15   b   
+<pre><code>##  gen   emmean        SE df lower.CL upper.CL .group
+##  G03 3.343067 0.3023478  6 2.353226 4.332908  a    
+##  G02 4.514200 0.3023478  6 3.524359 5.504041  ab   
+##  G01 5.162500 0.3023478  6 4.172659 6.152341   b   
 ## 
 ## Confidence level used: 0.95 
 ## Conf-level adjustment: sidak method for 3 estimates 

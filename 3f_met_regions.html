@@ -26,6 +26,15 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -565,31 +574,32 @@ METdat %&gt;% select(Ort, Jahr) %&gt;% table</code></pre>
 <div class="col-md-6">
 <pre class="r"><code># Zugehörigkeit der Orte zu Regionen
 METdat %&gt;% select(Ort, Region) %&gt;% unique %&gt;% arrange(Region)</code></pre>
-<pre><code>##                 Ort   Region
-## 1              Soul Region11
-## 2    Rio de Janeiro Region11
-## 3         Chongqing Region11
-## 4           Chengdu Region11
-## 5            Lahore Region11
-## 6          Shanghai  Region2
-## 7      Buenos Aires  Region2
-## 8         Sao Paulo  Region2
-## 9       Mexico City  Region2
-## 10            Tokyo  Region2
-## 11            Dhaka  Region2
-## 12          Rangoon  Region2
-## 13 Saint Petersburg  Region2
-## 14           London  Region2
-## 15          Karachi  Region3
-## 16           Tehran  Region3
-## 17         Santiago  Region3
-## 18           Manila  Region3
-## 19         Kinshasa  Region3
-## 20         Istanbul  Region6
-## 21            Lagos  Region6
-## 22         New York  Region6
-## 23         Calcutta  Region6
-## 24           Riyadh  Region6</code></pre>
+<pre><code>##                  Ort   Region
+##  1:             Soul Region11
+##  2:   Rio de Janeiro Region11
+##  3:        Chongqing Region11
+##  4:          Chengdu Region11
+##  5:           Lahore Region11
+##  6:         Shanghai  Region2
+##  7:     Buenos Aires  Region2
+##  8:        Sao Paulo  Region2
+##  9:      Mexico City  Region2
+## 10:            Tokyo  Region2
+## 11:            Dhaka  Region2
+## 12:          Rangoon  Region2
+## 13: Saint Petersburg  Region2
+## 14:           London  Region2
+## 15:          Karachi  Region3
+## 16:           Tehran  Region3
+## 17:         Santiago  Region3
+## 18:           Manila  Region3
+## 19:         Kinshasa  Region3
+## 20:         Istanbul  Region6
+## 21:            Lagos  Region6
+## 22:         New York  Region6
+## 23:         Calcutta  Region6
+## 24:           Riyadh  Region6
+##                  Ort   Region</code></pre>
 </div>
 </div>
 <pre class="r"><code>library(ggplot2)
@@ -608,9 +618,9 @@ ggplot(data=METdat, aes(y=Ertrag, x=Ort)) +
 <p><strong>Mehr zu solchen Versuchsserien und deren Modellen:</strong> <br> Piepho, H. P., and J. Möhring. <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/45/3/1151">“Best linear unbiased prediction of cultivar effects for subdivided target regions.”</a> Crop Science 45.3 (2005): 1151-1159. <br> Damesa, T. M., Möhring, J., Worku, M., &amp; Piepho, H. P. (2017). <a href="https://dl.sciencesocieties.org/publications/aj/abstracts/109/3/845">One step at a time: stage-wise analysis of a series of experiments.</a> Agronomy Journal, 109(3), 845-857. <br> Piepho, Hans‐Peter, et al. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/bimj.201100219?casa_token=SUAQpFVm3WkAAAAA:QtMKChq-04ZiO7bsGFVQiYl7edOmbt9y6HW0CwHPcp0BL2k6sjaOSx6BHA7ecoetiqGwHbZBfEwWRAA">“A stage‐wise approach for the analysis of multi‐environment trials.”</a> Biometrical Journal 54.6 (2012): 844-860. <br> Schmidt, P., et al. <a href="https://dl.sciencesocieties.org/publications/cs/abstracts/58/4/1508">“More, larger, simpler: How comparable are on-farm and on-station trials for cultivar evaluation?.”</a> Crop Science 58.4 (2018): 1508-1518.</p>
 </blockquote>
 <p>Wir können solch ein Modell wie folgt aufstellen:</p>
-<pre class="r"><code>library(glmmTMB)
-
-mod1 &lt;- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
+<pre class="r"><code>library(glmmTMB)</code></pre>
+<pre><code>## Warning: package &#39;glmmTMB&#39; was built under R version 4.0.3</code></pre>
+<pre class="r"><code>mod1 &lt;- glmmTMB(Ertrag ~ (1|Sorte) + (1|Ort) + (1|Jahr) +
                 (1|Sorte:Ort) + (1|Sorte:Jahr) + (1|Jahr:Ort),
                 data=METdat)</code></pre>
 <div class="row">
@@ -655,19 +665,19 @@ AIC(mod2)   # AIC-Wert</code></pre>
 <pre><code>## 
 ## Conditional model:
 ##  Groups           Name        Std.Dev.
-##  Sorte            (Intercept)  7.8270 
-##  Ort:Region       (Intercept) 17.8059 
-##  Jahr             (Intercept) 16.7752 
-##  Jahr:Ort:Region  (Intercept) 16.2712 
-##  Sorte:Ort:Region (Intercept)  3.8710 
-##  Sorte:Jahr       (Intercept)  5.1321 
+##  Sorte            (Intercept)  7.8271 
+##  Ort:Region       (Intercept) 17.8058 
+##  Jahr             (Intercept) 16.7759 
+##  Jahr:Ort:Region  (Intercept) 16.2713 
+##  Sorte:Ort:Region (Intercept)  3.8709 
+##  Sorte:Jahr       (Intercept)  5.1320 
 ##  Residual                     11.2206</code></pre>
 <pre class="r"><code>VarCorr(mod2)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##             (Intercept)
-## (Intercept)    61.26225
+## (Intercept)    61.26284
 ## attr(,&quot;stddev&quot;)
 ## (Intercept) 
-##    7.827021 
+##    7.827058 
 ## attr(,&quot;correlation&quot;)
 ##             (Intercept)
 ## (Intercept)           1
@@ -694,7 +704,7 @@ AIC(mod3)   # AIC-Wert</code></pre>
 ##  Sorte            RegionRegion11 2.2860e+00                   
 ##                   RegionRegion2  3.5148e+00 0.000             
 ##                   RegionRegion3  4.7569e+00 0.000 0.000       
-##                   RegionRegion6  3.6829e-05 0.000 0.000 0.000 
+##                   RegionRegion6  3.6828e-05 0.000 0.000 0.000 
 ##  Ort:Region       (Intercept)    1.7846e+01                   
 ##  Jahr             (Intercept)    1.6007e+01                   
 ##  Jahr:Ort:Region  (Intercept)    1.6276e+01                   
@@ -703,13 +713,13 @@ AIC(mod3)   # AIC-Wert</code></pre>
 ##  Residual                        1.1213e+01</code></pre>
 <pre class="r"><code>VarCorr(mod3)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11       5.225863       0.00000       0.00000  0.000000e+00
+## RegionRegion11       5.225864       0.00000       0.00000  0.000000e+00
 ## RegionRegion2        0.000000      12.35414       0.00000  0.000000e+00
 ## RegionRegion3        0.000000       0.00000      22.62824  0.000000e+00
-## RegionRegion6        0.000000       0.00000       0.00000  1.356402e-09
+## RegionRegion6        0.000000       0.00000       0.00000  1.356324e-09
 ## attr(,&quot;stddev&quot;)
 ## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
-##   2.286015e+00   3.514846e+00   4.756915e+00   3.682936e-05 
+##   2.286015e+00   3.514846e+00   4.756915e+00   3.682831e-05 
 ## attr(,&quot;correlation&quot;)
 ##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
 ## RegionRegion11              1             0             0             0
@@ -736,28 +746,28 @@ AIC(mod4)   # AIC-Wert</code></pre>
 <pre><code>## 
 ## Conditional model:
 ##  Groups           Name           Std.Dev. Corr      
-##  Sorte            RegionRegion11  7.4341  0.896 (cs)
+##  Sorte            RegionRegion11  7.4340  0.896 (cs)
 ##  Ort:Region       (Intercept)    17.8314            
-##  Jahr             (Intercept)    16.7890            
-##  Jahr:Ort:Region  (Intercept)    16.3031            
-##  Sorte:Ort:Region (Intercept)     2.9777            
+##  Jahr             (Intercept)    16.7894            
+##  Jahr:Ort:Region  (Intercept)    16.3032            
+##  Sorte:Ort:Region (Intercept)     2.9776            
 ##  Sorte:Jahr       (Intercept)     5.1023            
 ##  Residual                        11.2447</code></pre>
 <pre class="r"><code>VarCorr(mod4)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11       55.26596      50.71277      64.81054      45.12390
-## RegionRegion2        50.71277      57.90555      66.34022      46.18892
-## RegionRegion3        64.81054      66.34022      94.57511      59.02910
-## RegionRegion6        45.12390      46.18892      59.02910      45.84571
+## RegionRegion11       55.26503      50.71199      64.80986      45.12340
+## RegionRegion2        50.71199      57.90495      66.33974      46.18856
+## RegionRegion3        64.80986      66.33974      94.57506      59.02893
+## RegionRegion6        45.12340      46.18856      59.02893      45.84563
 ## attr(,&quot;stddev&quot;)
 ## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
-##       7.434108       7.609570       9.724973       6.770946 
+##       7.434046       7.609530       9.724971       6.770940 
 ## attr(,&quot;correlation&quot;)
 ##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11      1.0000000     0.8964548     0.8964548     0.8964548
-## RegionRegion2       0.8964548     1.0000000     0.8964548     0.8964548
-## RegionRegion3       0.8964548     0.8964548     1.0000000     0.8964548
-## RegionRegion6       0.8964548     0.8964548     0.8964548     1.0000000
+## RegionRegion11      1.0000000     0.8964531     0.8964531     0.8964531
+## RegionRegion2       0.8964531     1.0000000     0.8964531     0.8964531
+## RegionRegion3       0.8964531     0.8964531     1.0000000     0.8964531
+## RegionRegion6       0.8964531     0.8964531     0.8964531     1.0000000
 ## attr(,&quot;blockCode&quot;)
 ## cs 
 ##  2</code></pre>
@@ -766,7 +776,8 @@ AIC(mod4)   # AIC-Wert</code></pre>
                          (1|Jahr:Ort:Region) + (1|Sorte:Ort:Region) +
                          (1|Sorte:Jahr),
         data=METdat)</code></pre>
-<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
+<pre><code>## Warning in fitTMB(TMBStruc): Model convergence problem; non-positive-definite
+## Hessian matrix. See vignette(&#39;troubleshooting&#39;)</code></pre>
 <pre class="r"><code>AIC(mod5)   # AIC-Wert</code></pre>
 <pre><code>## [1] NA</code></pre>
 <pre class="r"><code>fixef(mod5) # Lösung feste Effekte</code></pre>
@@ -790,19 +801,19 @@ AIC(mod4)   # AIC-Wert</code></pre>
 ##  Residual                        1.1219e+01</code></pre>
 <pre class="r"><code>VarCorr(mod5)$cond$Sorte # Details zur Varianzkomponente für Sorte</code></pre>
 <pre><code>##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11   5.326086e-20 -1.041122e-09 -9.673728e-10 -4.172740e-10
-## RegionRegion2   -1.041122e-09  2.040614e+01  1.897220e+01  8.183874e+00
-## RegionRegion3   -9.673728e-10  1.897220e+01  5.093267e+01  2.274389e+01
-## RegionRegion6   -4.172740e-10  8.183874e+00  2.274389e+01  1.016468e+01
+## RegionRegion11   5.325755e-20 -1.041089e-09 -9.673429e-10 -4.172610e-10
+## RegionRegion2   -1.041089e-09  2.040614e+01  1.897220e+01  8.183874e+00
+## RegionRegion3   -9.673429e-10  1.897220e+01  5.093267e+01  2.274389e+01
+## RegionRegion6   -4.172610e-10  8.183874e+00  2.274389e+01  1.016468e+01
 ## attr(,&quot;stddev&quot;)
 ## RegionRegion11  RegionRegion2  RegionRegion3  RegionRegion6 
-##   2.307831e-10   4.517315e+00   7.136713e+00   3.188210e+00 
+##   2.307760e-10   4.517315e+00   7.136713e+00   3.188210e+00 
 ## attr(,&quot;correlation&quot;)
 ##                RegionRegion11 RegionRegion2 RegionRegion3 RegionRegion6
-## RegionRegion11      1.0000000    -0.9986584    -0.5873427    -0.5671139
+## RegionRegion11      1.0000000    -0.9986584    -0.5873428    -0.5671140
 ## RegionRegion2      -0.9986584     1.0000000     0.5884899     0.5682398
-## RegionRegion3      -0.5873427     0.5884899     1.0000000     0.9995847
-## RegionRegion6      -0.5671139     0.5682398     0.9995847     1.0000000
+## RegionRegion3      -0.5873428     0.5884899     1.0000000     0.9995847
+## RegionRegion6      -0.5671140     0.5682398     0.9995847     1.0000000
 ## attr(,&quot;blockCode&quot;)
 ## us 
 ##  1</code></pre>
@@ -826,7 +837,7 @@ AIC(mod4)   # AIC-Wert</code></pre>
     <a href="https://github.com/SchmidtPaul/" class="fa fa-github"></a>
 </p>
 
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2Findex.html" alt="Hits" class="center">
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2F&count_bg=%23003F75&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" class="center"/></a>
 
 &nbsp;
 
@@ -879,7 +890,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

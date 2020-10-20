@@ -26,6 +26,15 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -494,9 +503,11 @@ div.tocify {
 <div id="datensatz" class="section level1">
 <h1>Datensatz</h1>
 <p>In einem Gewächshausversuch mit Sorghum wurde untersucht wie sich das Entfernen von Blättern auf das Tausendkorngewicht (TKG) auswirkt. Dazu wurden den Pflanzen entweder (i) alle bis auf das oberste Blatt (<em>“Top1”</em>), (ii) alle bis auf die obersten 6 Blätter (<em>“Top6”</em>) oder (iii) keine Blätter (<em>“Ctrl”</em>) entfernt. Diese drei Behandlungsstufen wurden jeweils auf einem Tisch in 4 vollständigen Wiederholungen (<em>I-IV</em>) als randomisierte vollständige Blockanlage angelegt:</p>
+<pre><code>## Please use desplot(data,form) instead of desplot(form,data)</code></pre>
 <p><img src="1f_subsampling_files/figure-html/unnamed-chunk-2-1.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>Das ist aber noch nicht alles. Bis hierhin könnten wir die Daten auswerten wie bei einer einfaktoriellen randomisierten, vollständigen Blockanlage wie <a href="1f_rcbd.html">in diesem Beispiel</a>, mit dem Unterschied, dass es nicht um Parzellen, sondern Tische ginge.</p>
 <p>Die Besonderheit dieses Versuchs besteht allerdings darin, dass auf den Tischen jeweils 10 Töpfe mit jeweils 1 Pflanze standen. Tatsächlich haben wir also 10 Messwerte von 10 verschiedenen Pflanzen auf demselben Tisch mit derselben Behandlungsstufe:</p>
+<pre><code>## Please use desplot(data,form) instead of desplot(form,data)</code></pre>
 <p><img src="1f_subsampling_files/figure-html/unnamed-chunk-3-1.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>Es muss an diesem Punkt klar sein was hier anders ist als sonst: Nur weil wir doch nicht 4 Beobachtungen pro Behandlungsstufe haben, sondern 40, bedeutet das <strong>nicht</strong>, dass wir eine randomisierte, vollständige Blockanlage mit 40 Wiederholungen angelegt haben. Fakt ist, dass wir in diesem Versuch weiterhin nur von 4 vollständigen Blöcken/Wiederholungen sprechen können. Hätten wir wirklich einen Versuch mit den 40 Töpfen pro Behandlungsstufe als 40 Wiederholungen anlegen wollen, hätten wir sie auch dementsprechend im Versuchsdesign randomisieren müssen. Stattdessen wurden nur die Behandlungsstufen auf die Tische randomisiert und dann mehrfach pro Tisch gemessen. Das ist vergleichbar mit einem Szenario in dem man in einem Feldversuch dieselbe Parzelle mehrmals beprobt (z.B. Halmhöhe misst) - auch hier führen zusätzliche Datenpunkte nicht dazu, dass man zusätzlich Parzellen hat.</p>
 <p>Stattdessen spricht man in Fällen wie diesem entweder von <strong>Pseudo-Wiederholungen</strong>, weil man eben keine echten Wiederholungen aber auch keine Messwiederholungen (am selben Objekt über längere Zeit) hat, oder man spricht von <strong>Sub-Sampling</strong>, weil man quasi noch innerhalb seiner <em>samples</em> mehrere Beobachtungen vornimmt.</p>
@@ -638,7 +649,7 @@ emmeans(m1, pairwise ~ &quot;treat&quot;)</code></pre>
     <a href="https://github.com/SchmidtPaul/" class="fa fa-github"></a>
 </p>
 
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2Findex.html" alt="Hits" class="center">
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2F&count_bg=%23003F75&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" class="center"/></a>
 
 &nbsp;
 
@@ -691,7 +702,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

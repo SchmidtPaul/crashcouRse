@@ -26,6 +26,15 @@
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -496,6 +505,8 @@ library(emmeans) # adjustierte Mittelwerte
 library(lme4); library(lmerTest) # gemischtes Modell
 library(RColorBrewer) # bessere Farben</code></pre>
 <p>In diesem Experiment wurden die Auswirkungen von 6 Stickstoffdüngern (N) auf den Ertrag von 4 Reissorten (G) untersucht. Demnach gab es zwei Behandlungsfaktoren mit insgesamt 6x4=24 Behandlungsstufenkombinationen. Diese 24 Kombinationen wurden 3 mal in vollständigen Blöcken wiederholt - wir haben also ein RCBD. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<pre><code>## Warning in if (class(data) == &quot;formula&quot;) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
 <p><img src="2f_rcbd_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" /></p>
 <div class="row">
 <div class="col-md-6">
@@ -566,7 +577,7 @@ Anova(mod, test.statistic=&quot;F&quot;, type=&quot;III&quot;)</code></pre>
 <pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ N | G, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
 means &lt;- CLD(means$emmeans, Letters=letters)</code></pre>
 <pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
-## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+## See &#39;?cld.emmGrid&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
 <pre class="r"><code>means</code></pre>
 <pre><code>## G = A:
 ##  N    emmean       SE df lower.CL upper.CL .group
@@ -674,7 +685,7 @@ print(means.plot, nrows=2)</code></pre>
     <a href="https://github.com/SchmidtPaul/" class="fa fa-github"></a>
 </p>
 
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2Findex.html" alt="Hits" class="center">
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fschmidtpaul.github.io%2FcrashcouRse%2F&count_bg=%23003F75&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" class="center"/></a>
 
 &nbsp;
 
@@ -727,7 +738,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
