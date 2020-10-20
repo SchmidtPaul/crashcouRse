@@ -1,9 +1,7 @@
 ---
 title: "1 Beh.faktor - CRD"
 output: 
-  html_document:
-    includes:
-      after_body: footer.html 
+  output: pdf_document
 ---
 
 # Datensatz

@@ -11,7 +11,7 @@
 
 
 
-<title>Paul Schmidt</title>
+<title>1 Beh.faktor - CRD</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,17 +25,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-      </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -494,378 +483,144 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Paul Schmidt</h1>
+<h1 class="title toc-ignore">1 Beh.faktor - CRD</h1>
 
 </div>
 
 
-<!-- hyperlink style -->
-<style>
-a:link {
-  color: #003f75ff;
-  background-color: transparent;
-  text-decoration: none;
-}
+<div id="datensatz" class="section level1">
+<h1>Datensatz</h1>
+<pre class="r"><code>library(data.table) # bessere Datenmanipulation
+library(ggplot2); library(ggfortify) # bessere Plots
+library(emmeans) # adjustierte Mittelwerte</code></pre>
+<p>Wir haben einen Datensatz aus einem Feldversuch, in welchem der Ertrag von 3 Sorten geprüft wurde. Der Versuch hatte 3 Wiederholungen und wurde als <strong>vollständig randomisierte Anlage</strong> (=<strong>C</strong>ompletely <strong>R</strong>andomized <strong>D</strong>esign) angelegt. <a href="appendix_designs.html">Hier mehr Infos zu Versuchsdesigns</a></p>
+<p><img src="1f_crd_pdf_files/figure-html/unnamed-chunk-3-1.png" width="384" style="display: block; margin: auto;" /></p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>str(crd)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   9 obs. of  2 variables:
+##  $ gen  : Factor w/ 3 levels &quot;G01&quot;,&quot;G&quot;..
+##  $ yield: num  4.33 3.34 5.12 3.8 5.72..
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;exter..</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>crd</code></pre>
+<pre><code>##    gen  yield
+## 1: G02 4.3350
+## 2: G03 3.3420
+## 3: G01 5.1202
+## 4: G03 3.7999
+## 5: G01 5.7161
+## 6: G02 5.1566
+## 7: G01 4.6512
+## 8: G02 4.0510
+## 9: G03 2.8873</code></pre>
+</div>
+</div>
+</div>
+<div id="deskriptive-statistik" class="section level1">
+<h1>Deskriptive Statistik</h1>
+<p>Erst wollen wir ein Gefühl für den Datensatz bekommen und betrachten einige Kennzahlen zu den Daten, sowie einen Plot.</p>
+<div class="row">
+<div class="col-md-6">
+<pre class="r"><code>summary(crd)</code></pre>
+<pre><code>##   gen        yield      
+##  G01:3   Min.   :2.887  
+##  G02:3   1st Qu.:3.800  
+##  G03:3   Median :4.335  
+##          Mean   :4.340  
+##          3rd Qu.:5.120  
+##          Max.   :5.716</code></pre>
+</div>
+<div class="col-md-6">
+<pre class="r"><code>plot(y=crd$yield, x=crd$gen)</code></pre>
+<p><img src="1f_crd_pdf_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="schließende-statistik" class="section level1">
+<h1>Schließende Statistik</h1>
+<div id="lineares-modell" class="section level2">
+<h2>Lineares Modell</h2>
+<p>Wir können uns nun entschließen die Daten mittels eines linearen Modells zu analysieren. Der Ertrag ist unsere metrische Zielvariable. ‘Sorte’ ist ein qualitativer Faktor.</p>
+<pre class="r"><code>mod &lt;- lm(yield ~ gen, data=crd)</code></pre>
+<p>Zunächst sollten nun die Residuenplots (z.b. mit <code>autoplot(mod)</code>) evaluiert werden, was hier aber übersprungen wird. Erst dann ist eine Varianzanalyse zulässig.</p>
+</div>
+<div id="varianzanalyse" class="section level2">
+<h2>Varianzanalyse</h2>
+<pre class="r"><code>anova(mod)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## gen        2 5.1022 2.55109  9.3023 0.0145 *
+## Residuals  6 1.6455 0.27424                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Der F-Test für den Faktor ‘Sorte’ zeigt einen p-Wert &lt; 0.05 und somit signifikante Unterschiede zwischen den Sorten. Demnach wissen wir nun, <strong>dass</strong> es mindestens einen signifikanten Unterschied zwischen den Sorten gibt, aber nicht zwischen <strong>welchen</strong> Sorten. Um dies herauszufinden ist es üblich multiple Mittelwertvergleiche durchzuführen (z.B. t-test oder Tukey-test; <a href="appendix_posthoc.html">mehr Infos zu <em>post hoc</em> Tests hier</a>).</p>
+</div>
+<div id="multipler-mittelwertvergleich" class="section level2">
+<h2>Multipler Mittelwertvergleich</h2>
+<p>Mit <code>emmeans()</code> erhalten wir in einem Zug sowowhl die adjustierten Mittelwerte (und deren Standardfehler) für jede Sorte, als auch die Differenzen zwischen allen Sortenmittelwerten.</p>
+<pre class="r"><code>means &lt;- emmeans(mod, pairwise ~ gen, adjust=&quot;tukey&quot;) # adjust=&quot;none&quot; für t-test
+means$emmeans # Mittelwerte </code></pre>
+<pre><code>##  gen emmean    SE df lower.CL upper.CL
+##  G01   5.16 0.302  6     4.17     6.15
+##  G02   4.51 0.302  6     3.52     5.50
+##  G03   3.34 0.302  6     2.35     4.33
+## 
+## Confidence level used: 0.95 
+## Conf-level adjustment: sidak method for 3 estimates</code></pre>
+<pre class="r"><code>means$contrasts # Differenzen zwischen Mittelwerten</code></pre>
+<pre><code>##  contrast  estimate    SE df t.ratio p.value
+##  G01 - G02    0.648 0.428  6 1.516   0.3488 
+##  G01 - G03    1.819 0.428  6 4.255   0.0127 
+##  G02 - G03    1.171 0.428  6 2.739   0.0754 
+## 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<p>Beim Betrachten der p-Werte der Differenzen fällt auf, dass nur die Differenz zwischen G01 und G03 signifikant ist, nicht aber die Unterschiede G01-G02 und G02-G03. Es ist üblich für solche Resultate die Buchstabendarstellung anzuwenden.</p>
+<pre class="r"><code>means &lt;- CLD(means$emmeans, Letters=letters)</code></pre>
+<pre><code>## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.
+## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</code></pre>
+<pre class="r"><code>means</code></pre>
+<pre><code>##  gen emmean    SE df lower.CL upper.CL .group
+##  G03   3.34 0.302  6     2.35     4.33  a    
+##  G02   4.51 0.302  6     3.52     5.50  ab   
+##  G01   5.16 0.302  6     4.17     6.15   b   
+## 
+## Confidence level used: 0.95 
+## Conf-level adjustment: sidak method for 3 estimates 
+## P value adjustment: tukey method for comparing a family of 3 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>Das <code>CLD()</code> statement hat der Mittelwerttabelle lediglich eine weitere Spalte hinzugefügt, in denen Buchstaben zu sehen sind. Für letztere gilt, dass zwei Mittelwerte, die einen gemeinsamen Buchstaben aufweisen, <strong>nicht</strong> signifikant voneinander unterscheiden.</p>
+</div>
+</div>
+<div id="ergebnisaufbereitung" class="section level1">
+<h1>Ergebnisaufbereitung</h1>
+<p>Schließlich kann man die Ergebnisse final in einem Plot darstellen. Gängig ist dafür ein Balkendiagramm:</p>
+<pre class="r"><code>ggplot(data=means, aes(x=gen)) +
+  geom_bar(aes(y=emmean), stat=&quot;identity&quot;, width=0.8) +
+  geom_errorbar(aes(ymin=emmean-SE, ymax=emmean+SE), width=0.4) +
+  geom_text(aes(y=(emmean+SE)*1.1, label=.group)) +
+  labs(y=&quot;Adjustierter Ertragsmittelwert ± Standardfehler&quot;, x=&quot;Sorte&quot;, 
+      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1f_crd_pdf_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Stattdessen kann aber auch ein Plot erstellt werden, der informativer ist, da er gleichzeitig Rohdaten und geschätzte Ergebnisse abbildet. Desweiteren fällt bei genauem Betrachten auf, dass die Buchstaben im Balkendiagramm nicht komplett zentriert sind. Das liegt daran, dass die Spalte mit den Buchstaben auch Leerzeichen enthält, also “a_”, “ab” und " b". Wir werden also auch diese Leerzeichen entfernen.</p>
+<pre class="r"><code>means$.group &lt;- gsub(&quot; &quot;, &quot;&quot;, means$.group, fixed = TRUE) # Leerzeichen entfernen
 
-a:visited {
-  color: #003f75ff;
-  background-color: transparent;
-  text-decoration: none;
-}
+ggplot() + theme_classic() +
+  # Rohdaten (crd)
+geom_boxplot(data=crd, aes(x=gen, y=yield), outlier.shape=NA, width=0.6) +
+geom_jitter(data=crd, aes(x=gen, y=yield), width=0.25, height=0, shape=1) +
+  # Ergebnisse (means)
+geom_point(data=means, aes(x=as.numeric(gen)+0.4, y=emmean), col=&quot;red&quot;, shape=16, size=2) +
+geom_errorbar(data=means, aes(x=as.numeric(gen)+0.4, ymin=lower.CL, ymax=upper.CL), col=&quot;red&quot;, width=0.1) +
+geom_text(data=means, aes(x=as.numeric(gen)+0.5, y=emmean, label =.group), col=&quot;red&quot;) + 
+labs(y=&quot;Schwarz: Ertrag\nRot: Adjustierter Ertragsmittelwert ± 95% Konfidenzintervall&quot;, x=&quot;Sorte&quot;, 
+      caption=&quot;Mittelwerte, die mit einem gemeinsamen Buchstaben versehen sind, sind laut Tukey-test nicht signifikant voneinander verschieden.&quot;)</code></pre>
+<p><img src="1f_crd_pdf_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
 
-a:hover {
-  color: #003f75ff;
-  background-color: transparent;
-  text-decoration: underline;
-}
-
-a:active {
-  color: #003f75ff;
-  background-color: transparent;
-  text-decoration: underline;
-}
-</style>
-<!-- Image -->
-<style>
-img {border-radius: 50%;}
-</style>
-<p><img src="https://avatars3.githubusercontent.com/u/31928213?s=400&u=d5ca44cc7f39c7f4e2e79b4cffeeb3d0d0a321fb&v=4" style="width:33%; margin-left: 20px" align="right" alt="Avatar"></p>
-<!-- Contact symbols -->
-<style>
-p.small {line-height: 1;}
-</style>
-<p class="small">
-<p><i class="fa fa-home" style="color: #003f75ff;"> </i> Hamburg, Germany </br></p>
-<p>Contact </br> <a href="mailto:schmidtpaul1989@outlook.com"> <i class="fa fa-envelope" style="color: #003f75ff;"> </i> schmidtpaul1989@outlook.com </a> </br> <a href="https://github.com/SchmidtPaul/"> <i class="fa fa-github" style="color: #003f75ff;"> </i> GitHub </a> </br> <a href="https://www.linkedin.com/in/schmidtpaul1989/"> <i class="fa fa-linkedin" style="color: #003f75ff;"> </i> LinkedIn </a> </br> <a href="https://www.researchgate.net/profile/Paul_Schmidt17"> <i class="fa fa-pencil" style="color: #003f75ff;"> </i> ResearchGate </a> </br> <a href="https://www.xing.com/profile/Paul_Schmidt393/cv"> <i class="fa fa-xing" style="color: #003f75ff;"> </i> Xing </a></p>
-<p>Websites </br> <a href="https://schmidtpaul.github.io/crashcouRse/"> <i class="fa fa-window-maximize" style="color: #003f75ff;"> </i> CrashcouRse </a> </br> <a href="https://schmidtpaul.github.io/DSFAIR/"> <i class="fa fa-window-maximize" style="color: #003f75ff;"> </i> DSFAIR: Data Science for Agriculture in R </a> </br> <a href="https://schmidtpaul.github.io/MMFAIR/"> <i class="fa fa-window-maximize" style="color: #003f75ff;"> </i> MMFAIR: Mixed Models for Agriculture in R </a> </br></p>
-</p>
-<table class="table" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;color: lightgrey !important;">
-English
-</th>
-<th style="text-align:left;color: lightgrey !important;">
-Deutsch
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-I completed my <strong>PhD</strong> in biostatistics at the University of Hohenheim in 2019 and have been working as a <strong>data scientist</strong> in life sciences at <a href="https://www.biomath.de/">BioMath</a> since then. I also give beginner and advanced <strong>workshops</strong> in R.
-</td>
-<td style="text-align:left;">
-Ich habe 2019 meine <strong>Promotion</strong> im Fachgebiet Biostatistik an der Universität Hohenheim abgeschlossen und arbeite seitdem als <strong>Data Scientist</strong> in den Life Sciences bei <a href="https://www.biomath.de/">BioMath</a>. Außerdem gebe ich <strong>Workshops</strong> in R für Einsteiger und Fortgeschrittene.
-</td>
-</tr>
-</tbody>
-</table>
-<table class=" lightable-minimal" style='font-size: 10px; font-family: "Trebuchet MS", verdana, sans-serif; margin-left: auto; margin-right: auto;'>
-<thead>
-<tr>
-<th style="text-align:left;">
-Time
-</th>
-<th style="text-align:left;">
-Title
-</th>
-<th style="text-align:left;">
-Language
-</th>
-<th style="text-align:left;">
-Location
-</th>
-<th style="text-align:left;">
-Duration
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Nov 2020
-</td>
-<td style="text-align:left;">
-Planning experimental designs, repeated measurements, and their analyses in R
-</td>
-<td style="text-align:left;">
-Eng
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Universität Kassel
-</td>
-<td style="text-align:left;">
-2d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Nov 2020
-</td>
-<td style="text-align:left;">
-Data science for life sciences with R (part 1)
-</td>
-<td style="text-align:left;">
-Ger
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/germany/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Thünen-Institut, Braunschweig
-</td>
-<td style="text-align:left;">
-3d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Oct 2020
-</td>
-<td style="text-align:left;">
-Experimental Design - Practicals in R
-</td>
-<td style="text-align:left;">
-Eng
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-CIHEAM Zaragoza via zoom
-</td>
-<td style="text-align:left;">
-5d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Mar 2020
-</td>
-<td style="text-align:left;">
-Real-time consultation on statistics and mixed models in R
-</td>
-<td style="text-align:left;">
-Eng
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Universität Kassel
-</td>
-<td style="text-align:left;">
-2d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Dec 2019
-</td>
-<td style="text-align:left;">
-Basics of applied statistics
-</td>
-<td style="text-align:left;">
-Ger
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/germany/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Universität Rostock
-</td>
-<td style="text-align:left;">
-2d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Nov 2019
-</td>
-<td style="text-align:left;">
-Data science for life sciences with R (part 2)
-</td>
-<td style="text-align:left;">
-Ger
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/germany/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Thünen-Institut, Braunschweig
-</td>
-<td style="text-align:left;">
-3d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Oct 2019
-</td>
-<td style="text-align:left;">
-Data science for life sciences with R (part 1)
-</td>
-<td style="text-align:left;">
-Ger
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/germany/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Thünen-Institut, Braunschweig
-</td>
-<td style="text-align:left;">
-3d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Sep 2019
-</td>
-<td style="text-align:left;">
-Essential basics of statistics
-</td>
-<td style="text-align:left;">
-Ger
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/germany/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Universität Rostock
-</td>
-<td style="text-align:left;">
-2d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Nov 2018
-</td>
-<td style="text-align:left;">
-Mixed models with R
-</td>
-<td style="text-align:left;">
-Ger
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/germany/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Thünen-Institut, Braunschweig
-</td>
-<td style="text-align:left;">
-3d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-May 2018
-</td>
-<td style="text-align:left;">
-Implementation of yield stability assessment with ASReml-R
-</td>
-<td style="text-align:left;">
-Eng
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Bangladesh Rice Research Institute, Gazipur
-</td>
-<td style="text-align:left;">
-1d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2016-2018
-</td>
-<td style="text-align:left;">
-Statistical analysis with SAS (monthly)
-</td>
-<td style="text-align:left;">
-Eng
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Universität Hohenheim, Stuttgart
-</td>
-<td style="text-align:left;">
-3d
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2016-2018
-</td>
-<td style="text-align:left;">
-Statistical analysis with R (monthly)
-</td>
-<td style="text-align:left;">
-Eng
-<html>
-<body>
-<img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-round-250.png" width="16" height="16">
-</body>
-</html>
-</td>
-<td style="text-align:left;">
-Universität Hohenheim, Stuttgart
-</td>
-<td style="text-align:left;">
-3d
-</td>
-</tr>
-</tbody>
-</table>
-
-&nbsp;
-<hr />
-<p style="text-align: center;">Bei Fragen kannst du mir gerne schreiben!</p>
-<p style="text-align: center;"><span style="color: #808080;"><em>schmidtpaul@hotmail.de</em></span></p>
-
-<!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<!-- Add font awesome icons -->
-<p style="text-align: center;">
-    <a href="https://www.researchgate.net/profile/Paul_Schmidt17/research" class="fa fa-pencil"></a>
-    <a href="https://www.linkedin.com/in/schmidtpaul1989/" class="fa fa-linkedin"></a>
-    <a href="https://www.xing.com/profile/Paul_Schmidt203/cv/" class="fa fa-xing"></a>
-    <a href="https://github.com/SchmidtPaul/" class="fa fa-github"></a>
-</p>
-
-&nbsp;
 
 
 </div>
